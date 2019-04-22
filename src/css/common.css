@@ -1,0 +1,204 @@
+    * {
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+    }
+    
+    .center {
+        text-align: center;
+    }
+    
+    .text_l {
+        text-align: left;
+    }
+    
+    .text_r {
+        text-align: right;
+    }
+    
+    .clear:after,
+    .clear:before {
+        display: block;
+        content: "";
+        clear: both;
+    }
+    
+    .inline-block {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    
+    .block {
+        display: block !important;
+    }
+    
+    .li_50 li {
+        width: 50%;
+    }
+    
+    .li_33 li {
+        width: 33.33333%;
+    }
+    
+    .li_25 li {
+        width: 25%;
+    }
+    
+    .li_20 li {
+        width: 20%;
+    }
+    
+    .ellipsis {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        display: block !important;
+    }
+    
+    .text-line2 {
+        display: -webkit-box !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+    
+    .weui-cells {
+        background-color: #fff;
+        margin-top: 20rpx;
+    }
+    
+    .weui-cell {
+        padding: 20rpx;
+        position: relative;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flex;
+        display: -o-flex;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -moz-align-items: center;
+        -ms-align-items: center;
+        -o-align-items: center;
+        align-items: center;
+        font-size: 30rpx;
+    }
+    
+    .weui-cell__bd {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        -moz-flex: 1;
+        -ms-flex: 1;
+        -o-flex: 1;
+        overflow: hidden;
+    }
+    
+    .weui-cells .weui-cell:before {
+        position: absolute;
+        left: 20rpx;
+        right: 20rpx;
+        content: "";
+        height: 1px;
+        background: #F2F2F2;
+        bottom: 0;
+    }
+    
+    .weui-cells .weui-cell:last-child:before {
+        display: none;
+    }
+    
+    .weui-cell__bd .msg {
+        color: #999999;
+    }
+    
+    .weui-input {
+        font-size: 30rpx;
+        height: auto !important;
+    }
+    
+    .weui-Area {
+        font-size: 30rpx;
+        width: 100%;
+        line-height: 1.5;
+    }
+    
+    .tips {
+        font-size: 26rpx;
+        color: #999999;
+    }
+    
+    .flex {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flex;
+        display: -o-flex;
+        display: flex;
+    }
+    
+    .flex1 {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        -moz-flex: 1;
+        -ms-flex: 1;
+        -o-flex: 1;
+        overflow: hidden;
+    }
+    
+    .flex2 {
+        -webkit-box-flex: 2;
+        -webkit-flex: 2;
+        flex: 2;
+        -moz-flex: 2;
+        -ms-flex: 2;
+        -o-flex: 2;
+        overflow: hidden;
+    }
+    
+    .flexAlignCneter {
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -moz-align-items: center;
+        -ms-align-items: center;
+        -o-align-items: center;
+        align-items: center;
+    }
+    
+    .flexAlignBaseline {
+        -webkit-box-align: baseline;
+        -webkit-align-items: baseline;
+        -moz-align-items: baseline;
+        -ms-align-items: baseline;
+        -o-align-items: baseline;
+        align-items: baseline;
+    }
+    
+    .flexAlignStart {
+        -webkit-box-align: flex-start;
+        -webkit-align-items: flex-start;
+        -moz-align-items: flex-start;
+        -ms-align-items: flex-start;
+        -o-align-items: flex-start;
+        align-items: flex-start;
+    }
+    
+    .swiperImg {
+        font-size: 0;
+        margin-top: 20rpx;
+    }
+    
+    .swiperImg image {
+        width: 100%;
+    }
+    
+    .fixed {
+        position: fixed;
+        z-index: 4;
+        width: 100%;
+    }
