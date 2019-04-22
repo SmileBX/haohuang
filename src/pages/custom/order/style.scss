@@ -1,0 +1,27 @@
+.searchBox {
+    height: 100.5rpx;
+}
+
+.searchBox .search::after {
+    position: fixed;
+    content: "";
+    top: -1px;
+    height: 1px;
+    width: 100%;
+    background: #f6f6f6;
+    top: 81rpx;
+    left: 0;
+}
+
+// 取消订单弹窗
+.eaditArea {
+    padding: 60rpx 26rpx;
+}
+
+.eaditArea .weui-area {
+    border: 1px solid #e5e5e5;
+    padding: 20rpx;
+    box-sizing: border-box;
+    border-radius: 8rpx;
+    height: 260rpx;
+}

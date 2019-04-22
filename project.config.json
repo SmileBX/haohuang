@@ -29,12 +29,19 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 1,
 			"list": [
 				{
 					"id": 0,
 					"name": "师傅的提交审核",
 					"pathName": "pages/master/smVerify/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "客户的我的订单",
+					"pathName": "pages/custom/order/main",
 					"query": "",
 					"scene": null
 				}

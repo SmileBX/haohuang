@@ -5,9 +5,14 @@
         "pages/counter/main"
     ],
     "subpackages": [{
-        "root": "pages/master",
-        "pages": ["smVerify/main"]
-    }],
+            "root": "pages/master",
+            "pages": ["smVerify/main"]
+        },
+        {
+            "root": "pages/custom",
+            "pages": ["order/main"]
+        }
+    ],
     "window": {
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#fff",

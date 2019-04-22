@@ -147,7 +147,7 @@ page {
     height: auto !important;
 }
 
-.weui-Area {
+.weui-area {
     font-size: 30rpx;
     width: 100%;
     line-height: 1.5;
@@ -187,7 +187,7 @@ page {
     overflow: hidden;
 }
 
-.flexAlignCneter {
+.flexAlignCenter {
     -webkit-box-align: center;
     -webkit-align-items: center;
     -moz-align-items: center;
@@ -237,6 +237,132 @@ page {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.weui-btn+.weui-btn {
+    margin-top: inherit;
+}
+
+
+/* tab */
+
+.tabBar {
+    font-size: 30rpx;
+    background: #fff;
+}
+
+.tabBar li {
+    text-align: center;
+    padding: 0 10rpx;
+    line-height: 80rpx;
+}
+
+.tabBar li .title {
+    display: inline-block;
+    position: relative;
+}
+
+.tabBar li .title::after {
+    position: absolute;
+    content: "";
+    background: transparent;
+    height: 2px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+
+.tabBar li.active .title {
+    color: #3f8bfe;
+}
+
+.tabBar li.active .title::after {
+    background: #3f8bfe;
+}
+
+
+/* 搜索 */
+
+.search {
+    padding: 14rpx 20rpx;
+    background: #fff;
+}
+
+.search .weui-input {
+    padding: 10rpx 0;
+    font-size: 28rpx;
+}
+
+.search .btn {
+    font-size: 28rpx;
+    color: #fff;
+    background: #3f8bfe;
+    border-radius: 200rpx;
+    line-height: 50rpx;
+    height: 50rpx;
+    display: inherit;
+    padding: 0 25rpx;
+}
+
+
+/* 弹窗 */
+
+.modal {
+    position: fixed;
+    z-index: 900;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.mask {
+    position: fixed;
+    background: rgba(0, 0, 0, .5);
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    top: 0;
+    left: 0;
+}
+
+.modal-content {
+    position: absolute;
+    z-index: 300;
+    background: #fff;
+    width: 100%;
+    left: 0;
+}
+
+.bottom__modal-content {
+    bottom: 0;
+}
+
+.modal__hd {
+    line-height: 90rpx;
+    font-size: 34rpx;
+    text-align: center;
+    position: relative;
+    padding: 0 100rpx;
+}
+
+.modal__hd.bb__modal__hd {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.modal__hd .close {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 90rpx;
+    height: 90rpx;
+}
+
+.modal__hd .close img {
+    height: 26rpx;
+    width: 26rpx;
 }
 
 
@@ -329,26 +455,31 @@ page {
 }
 
 .levelPanel {
-    background: #fff;
     display: block;
     padding: 0;
 }
 
 .levelPanel .item {
     margin-bottom: 20rpx;
+    background: #fff;
 }
 
 .levelPanel .item__hd {
     padding: 20rpx;
     font-size: 28rpx;
+    color: #999999;
 }
 
 .levelPanel .item__hd .status {
     color: #ff6666;
 }
 
+.levelPanel .item .box {
+    padding-bottom: 20rpx;
+}
+
 .levelPanel .item .outside {
-    padding: 20rpx;
+    padding: 20rpx 20rpx 0;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-flex;
@@ -364,28 +495,12 @@ page {
     position: relative;
 }
 
-.levelPanel .item .outside:after {
-    position: absolute;
-    right: 20rpx;
-    bottom: 0;
-    left: 20rpx;
-    content: '';
-    -webkit-transform: scaleY(.5);
-    -ms-transform: scaleY(.5);
-    transform: scaleY(.5);
-    border-bottom: 1px dashed #e6e6e6;
-}
-
-.levelPanel .item .outside:last-child:after {
-    display: none;
-}
-
 .levelPanel .item .outside .right {
     margin-left: 20rpx;
 }
 
 .levelPanel .item .outside .pictrueAll {
-    width: 28%;
+    width: 25%;
     margin-bottom: 0;
     margin-right: 20rpx;
 }
@@ -399,6 +514,7 @@ page {
 
 .levelPanel .item .outside .txtBox .title {
     margin-bottom: 10rpx;
+    margin-top: 0;
 }
 
 .levelPanel .item .outside .txtBox .progressLine {
@@ -474,6 +590,11 @@ page {
     padding: 0 20rpx;
 }
 
+.levelPanel .item .buyNum {
+    color: #999;
+    font-size: 26rpx;
+}
+
 .levelPanel .item .outside .txtBox .new-price {
     color: #ff6666;
     font-size: 36rpx;
@@ -484,7 +605,7 @@ page {
     padding: 20rpx;
     font-size: 24rpx;
     color: #333;
-    border-bottom: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .levelPanel .priceAllBox .hj_price {
@@ -497,8 +618,7 @@ page {
 }
 
 .levelPanel .item__ft .weui-btn {
-    min-width: 164rpx;
-    padding: 0 24rpx;
+    min-width: 150rpx;
     line-height: 60rpx;
     display: inline-block;
     vertical-align: middle;
@@ -507,18 +627,21 @@ page {
     margin-left: 20rpx;
     border-radius: 200rpx;
     background: none;
-}
-
-.levelPanel .item__ft uni-button:after {
-    border-radius: 200rpx;
+    border: 1px solid #e5e5e5;
+    text-align: center;
 }
 
 .levelPanel .item__ft .weui-btn.active {
-    color: #ff6666;
+    color: #f0370b;
+    border-color: #ff6666;
 }
 
-.levelPanel .item__ft .weui-btn.active:after {
-    border: 1px solid #ff6666;
+.bg__levelPanel .item .box {
+    background: #f6f6f6;
+}
+
+.order__levelPanel .item .outside .pictrueAll {
+    width: 20%;
 }
 
 
@@ -604,4 +727,17 @@ page {
 .ftBtn .btn.btn-active.fill {
     background: #ff6325;
     color: #fff;
+}
+
+.worker .tx {
+    width: 60rpx;
+    height: 60rpx;
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 0;
+}
+
+.worker .name {
+    font-size: 24rpx;
+    color: #999;
 }
