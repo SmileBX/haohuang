@@ -20,13 +20,24 @@
 			"current": -1,
 			"list": []
 		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
 		"game": {
 			"currentL": -1,
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
-			"list": []
+			"current": 0,
+			"list": [
+				{
+					"id": -1,
+					"name": "师傅的订单详情",
+					"pathName": "pages/master/orderDetail/main",
+					"scene": null
+				}
+			]
 		}
 	}
 }
