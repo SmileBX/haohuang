@@ -6,7 +6,7 @@
     ],
     "subpackages": [{
         "root": "pages/master",
-        "pages": ["orderDetail/main"]
+        "pages": ["smVerify/main"]
     }],
     "window": {
         "backgroundTextStyle": "light",

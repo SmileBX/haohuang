@@ -32,9 +32,10 @@
 			"current": 0,
 			"list": [
 				{
-					"id": -1,
-					"name": "师傅的订单详情",
-					"pathName": "pages/master/orderDetail/main",
+					"id": 0,
+					"name": "师傅的提交审核",
+					"pathName": "pages/master/smVerify/main",
+					"query": "",
 					"scene": null
 				}
 			]

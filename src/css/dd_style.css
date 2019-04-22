@@ -192,60 +192,6 @@
 }
 
 
-/* 上传图片 */
-
-.uploadImage {
-    display: block;
-}
-
-.uploadImage .upload-img {
-    margin-top: 20upx;
-    margin-right: 20upx;
-}
-
-.uploadImage .upload-img .img {
-    width: 100%;
-    height: 100%;
-}
-
-.uploadImage .upload-img .cancel {
-    display: block;
-    cursor: pointer;
-    position: absolute;
-    top: -18upx;
-    right: -18upx;
-    text-align: center;
-    color: #bbb;
-    z-index: 5;
-}
-
-.uploadImage .button-upload,
-.uploadImage .upload-img {
-    width: 200upx;
-    height: 200upx;
-    float: left;
-    position: relative;
-    border: 1px solid #e8e8e8;
-}
-
-.btnUploadAll {
-    text-align: center;
-    float: left;
-}
-
-.btnUploadAll .button-upload {
-    float: none;
-    margin-top: 20upx;
-    color: #e8e8e8;
-    cursor: pointer;
-    background: url(http://www.sc-mall.net/static/upimg.png) center no-repeat;
-    background-size: 100% 100%;
-    position: relative;
-    overflow: hidden;
-    border: none;
-}
-
-
 /* 购物车 */
 
 .noConPage {
@@ -1483,4 +1429,18 @@
     line-height: 30px;
     width: 94%;
     padding: 0 3%;
+}
+
+
+/* 内部师傅的提交审核 */
+
+.eaditFrom .weui-label {
+    display: block;
+    width: 120rpx;
+}
+
+.eaditFrom .weui-input {
+    border: 1px solid #f2f2f2;
+    border-radius: 8rpx;
+    padding: 12rpx 20rpx;
 }
