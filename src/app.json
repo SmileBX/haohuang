@@ -10,7 +10,14 @@
         },
         {
             "root": "pages/custom",
-            "pages": ["order/main", "schedule/main", "orderDetail/main", "addressList/main", "addAddress/main"]
+            "pages": [
+                "order/main",
+                "schedule/main",
+                "orderDetail/main",
+                "addressList/main",
+                "addAddress/main",
+                "appraise/main"
+            ]
         }
     ],
     "window": {

@@ -1,0 +1,43 @@
+.levelPanel .item .outside {
+    padding-left: 30rpx;
+}
+
+.levelPanel .item .outside .pictrueAll {
+    width: 15%;
+}
+
+.appraiseBox {
+    background: #fff;
+    margin-top: 20rpx;
+    padding: 30rpx 30rpx 20rpx;
+}
+
+.checkboxGroup {
+    color: #999;
+    padding-bottom: 10rpx;
+    font-size: 30rpx;
+}
+
+.checkboxGroup .title {
+    font-size: 32rpx;
+    font-weight: 600;
+    margin-bottom: 20rpx;
+    color: #000;
+}
+
+.checkboxGroup .checkbox {
+    display: block;
+    margin-bottom: 24rpx;
+    padding-left: 16rpx;
+}
+
+.checkboxGroup .eaditArea {
+    border: 1px solid #e5e5e5;
+    padding: 36rpx 20rpx;
+}
+
+.checkboxGroup .weui-area {
+    height: 140rpx;
+    font-size: 30rpx;
+    color: #000;
+}

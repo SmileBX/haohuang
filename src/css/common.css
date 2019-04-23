@@ -59,12 +59,32 @@ page {
     margin-top: 0 !important;
 }
 
+.mt20 {
+    margin-top: 40rpx !important;
+}
+
+.mt30 {
+    margin-top: 60rpx !important;
+}
+
 .mb20 {
-    margin-bottom: 20rpx !important;
+    margin-bottom: 40rpx !important;
 }
 
 .pb20 {
-    padding-bottom: 20rpx !important;
+    padding-bottom: 40rpx !important;
+}
+
+.bm0 {
+    bottom: 0 !important;
+}
+
+.pd0 {
+    padding: 0 !important;
+}
+
+.radius0 {
+    border-radius: 0 !important;
 }
 
 .bg_f4f7fc {
@@ -227,22 +247,6 @@ page {
     position: fixed;
     z-index: 4;
     width: 100%;
-}
-
-.bm0 {
-    bottom: 0 !important;
-}
-
-.mt30 {
-    margin-top: 60rpx !important;
-}
-
-.pd0 {
-    padding: 0 !important;
-}
-
-.radius0 {
-    border-radius: 0 !important;
 }
 
 .img {
