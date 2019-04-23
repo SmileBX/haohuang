@@ -3,7 +3,7 @@
 .memberTop {
     background: url(http://www.sc-mall.net/static/memberBg.jpg) center no-repeat;
     background-size: cover;
-    padding: 20upx 20upx 60upx;
+    padding: 20rpx 20rpx 60rpx;
     color: #fff;
 }
 
@@ -13,7 +13,7 @@
 
 .iconBtnBox .iconBtn {
     display: inline-block;
-    margin-left: 10upx;
+    margin-left: 10rpx;
 }
 
 .memberTop .iconBtnBox {
@@ -21,18 +21,18 @@
 }
 
 .memberTop .iconBtn {
-    width: 60upx;
-    height: 60upx;
+    width: 60rpx;
+    height: 60rpx;
 }
 
 .memberTop .iconBtn.icon_news {
     background: url(http://www.sc-mall.net/static/icon_news.png) center no-repeat;
-    background-size: 44upx 44upx;
+    background-size: 44rpx 44rpx;
 }
 
 .memberTop .iconBtn.icon_set {
     background: url(http://www.sc-mall.net/static/icon_set.png) center no-repeat;
-    background-size: 44upx 44upx;
+    background-size: 44rpx 44rpx;
 }
 
 .tx_info * {
@@ -52,17 +52,17 @@
     -ms-align-items: center;
     -o-align-items: center;
     align-items: center;
-    font-size: 28upx;
+    font-size: 28rpx;
 }
 
 .tx_info .tx {
-    margin-right: 20upx;
+    margin-right: 20rpx;
 }
 
 .tx_info .tx,
 .tx_info .tx image {
-    width: 110upx;
-    height: 110upx;
+    width: 110rpx;
+    height: 110rpx;
     border-radius: 50%;
 }
 
@@ -77,33 +77,33 @@
 }
 
 .memberTop .tx_info .info .name {
-    font-size: 34upx;
+    font-size: 34rpx;
 }
 
 .dd-list {
-    font-size: 24upx;
+    font-size: 24rpx;
     color: #5e5e5e;
     background: #fff;
 }
 
 .dd-list * {
-    font-size: 24upx;
+    font-size: 24rpx;
 }
 
 .dd-list .item {
-    padding: 22upx 20upx;
+    padding: 22rpx 20rpx;
 }
 
 .dd-list .iconImg,
 .dd-list .iconImg image {
-    width: 64upx;
-    height: 64upx;
+    width: 64rpx;
+    height: 64rpx;
     margin: 0 auto;
 }
 
 .dd-list .iconImg {
     position: relative;
-    margin-bottom: 4upx;
+    margin-bottom: 4rpx;
 }
 
 .dd-list.col__list .item {
@@ -116,35 +116,35 @@
 }
 
 .dd-list.number__col__list * {
-    font-size: 28upx;
+    font-size: 28rpx;
 }
 
 .dd-list.number__col__list .num {
-    font-size: 36upx;
+    font-size: 36rpx;
 }
 
 .memberIndex__section {
-    margin-top: 20upx;
+    margin-top: 20rpx;
 }
 
 .section__hd {
     background: #fff;
     position: relative;
-    padding: 16upx 20upx;
+    padding: 16rpx 20rpx;
 }
 
 .memberIndex__section .section__hd:after {
     position: absolute;
     content: "";
-    left: 20upx;
-    right: 20upx;
+    left: 20rpx;
+    right: 20rpx;
     height: 1px;
     background-color: #F2F2F2;
     bottom: 0;
 }
 
 .section__hd .title {
-    font-size: 32upx;
+    font-size: 32rpx;
 }
 
 .section__hd .weui-cell__ft {
@@ -153,14 +153,14 @@
 
 .section__hd .weui-cell__ft .more,
 .section__hd .weui-cell__ft .more * {
-    font-size: 24upx;
+    font-size: 24rpx;
 }
 
 
 /* 我的订单 */
 
 .tabList {
-    height: 80upx;
+    height: 80rpx;
 }
 
 .li_20 .swiper-tab-list {
@@ -170,24 +170,24 @@
 
 .li_20 .swiper-tab-list .s {
     display: inline-block;
-    line-height: 80upx;
-    height: 80upx;
-    /* padding:0 4upx; */
+    line-height: 80rpx;
+    height: 80rpx;
+    /* padding:0 4rpx; */
 }
 
 .tx__weui-cell {
     background-color: #fff;
-    padding: 30upx 20upx;
+    padding: 30rpx 20rpx;
 }
 
 .tx__weui-cell .weui-cell__hd {
     font-size: 0;
-    margin-right: 20upx;
+    margin-right: 20rpx;
 }
 
 .tx__weui-cell .tx {
-    width: 120upx;
-    height: 120upx;
+    width: 120rpx;
+    height: 120rpx;
     border-radius: 50%;
 }
 
@@ -196,7 +196,7 @@
 
 .noConPage {
     height: 100%;
-    padding: 0 40upx;
+    padding: 0 40rpx;
     text-align: center;
 }
 
@@ -211,64 +211,64 @@
 }
 
 .noDataImg {
-    width: 300upx;
+    width: 300rpx;
     margin: 0 auto;
-    margin-bottom: 32upx;
+    margin-bottom: 32rpx;
 }
 
 .noConPage .tips {
     color: #999999;
-    font-size: 32upx;
+    font-size: 32rpx;
 }
 
 .noConPage .btnBox {
-    margin-top: 70upx;
+    margin-top: 70rpx;
 }
 
 .cartGroupList .item__hd {
     background-color: #fff;
-    padding: 20upx 20upx 10upx;
+    padding: 20rpx 20rpx 10rpx;
 }
 
 .cartGroupList .item__hd .shopName {
     background: url(http://www.sc-mall.net/static/shopico.png) left center no-repeat;
-    background-size: 50upx;
-    padding-left: 64upx;
+    background-size: 50rpx;
+    padding-left: 64rpx;
 }
 
 .selNumRow {
-    height: 56upx !important;
+    height: 56rpx !important;
 }
 
 .selNumRow .uni-numbox__plus,
 .selNumRow .uni-numbox__value,
 .selNumRow .uni-numbox__minus {
-    line-height: 56upx;
-    width: 56upx;
-    height: 56upx;
+    line-height: 56rpx;
+    width: 56rpx;
+    height: 56rpx;
 }
 
 .selNumRow .uni-numbox__value {
-    width: 72upx;
+    width: 72rpx;
 }
 
 
 /* 购物车底部 */
 
 .cartFoot {
-    height: 104upx;
+    height: 104rpx;
 }
 
 .cartFoot .inner {
     background: #fff;
-    padding: 0 20upx;
-    height: 104upx;
-    bottom: 100upx;
+    padding: 0 20rpx;
+    height: 104rpx;
+    bottom: 100rpx;
 }
 
 .cartFoot .inner .btnPay {
     display: inline-flex;
-    margin-left: 10upx;
+    margin-left: 10rpx;
 }
 
 .cartFoot .inner .inner1 {
@@ -276,92 +276,27 @@
 }
 
 .cartFoot .inner .inner1 .msg {
-    font-size: 24upx;
+    font-size: 24rpx;
     color: #989898;
-    margin-right: 10upx;
+    margin-right: 10rpx;
 }
 
 .cartFoot .inner .allPrice {
     color: #ff6666;
-    font-size: 36upx;
-}
-
-
-/* 收货地址 */
-
-.addressList .item {
-    background-color: #fff;
-    margin-bottom: 20upx;
-}
-
-.addressList .item .IconsCK {
-    margin-right: 8upx;
-}
-
-.addressList .item .item__bd {
-    padding: 30upx 20upx;
-}
-
-.addressList .item .item__bd .remarks {
-    font-size: 30upx;
-}
-
-.addressList .item .item__bd .remarks .tel {
-    color: #999;
-    margin-left: 20upx;
-}
-
-.addressList .item .item__bd .address {
-    font-size: 28upx;
-    color: #333333;
-    line-height: 1.4;
-    margin-top: 6upx;
-}
-
-.addressList .item .item__bd .type {
-    color: #999;
-}
-
-.addressList .item .item__ft {
-    border-top: 1px solid #f2f2f2;
-    padding: 10upx 20upx;
-    line-height: 60upx;
-    color: #999999;
-}
-
-.addressList .item .item__ft .iconText {
-    margin-left: 30upx;
-}
-
-.addressList .item .item__ft .uni-icon {
-    font-size: 58upx;
-}
-
-.addAddress__weui-cells .weui-label {
-    width: 170upx;
-    display: block;
-}
-
-.addAddress__weui-cells .weui-Area {
-    height: 100upx;
-    line-height: 1.8;
-}
-
-.addAddress__weui-cells .weui-Area * {
-    line-height: 1.8;
+    font-size: 36rpx;
 }
 
 
 /* 订单详情 */
 
 .newsLogistics {
-    padding: 20upx;
+    padding: 20rpx;
     border-bottom: 1px solid #F2F2F2;
 }
 
 .newsLogistics .icon_xiaoche {
-    width: 60upx;
-    margin-right: 20upx;
+    width: 60rpx;
+    margin-right: 20rpx;
 }
 
 .newsLogistics * {
@@ -370,8 +305,8 @@
 
 .newsLogistics .txt {
     line-height: 1.4;
-    margin-bottom: 8upx;
-    font-size: 30upx;
+    margin-bottom: 8rpx;
+    font-size: 30rpx;
     color: #ff6666;
 }
 
@@ -380,12 +315,12 @@
 }
 
 .orderDetail__addressList .remarks {
-    padding-left: 76upx;
+    padding-left: 76rpx;
 }
 
 .orderDetail__addressList .address {
     position: relative;
-    padding-left: 76upx;
+    padding-left: 76rpx;
 }
 
 .orderDetail__addressList .address:after {
@@ -395,7 +330,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    font-size: 60upx;
+    font-size: 60rpx;
 }
 
 .goodsContent .levelPanel {
@@ -403,34 +338,34 @@
 }
 
 .priceDetail {
-    padding: 20upx 0;
-    margin-bottom: 20upx;
+    padding: 20rpx 0;
+    margin-bottom: 20rpx;
 }
 
 .priceDetail .flex {
-    padding: 0 20upx;
-    font-size: 30upx;
+    padding: 0 20rpx;
+    font-size: 30rpx;
     position: relative;
 }
 
 .priceDetail .flex * {
-    font-size: 30upx;
+    font-size: 30rpx;
 }
 
 .priceDetail .flex:last-child {
-    margin-top: 18upx;
-    padding-top: 18upx;
+    margin-top: 18rpx;
+    padding-top: 18rpx;
     border-top: 1px solid #F2F2F2;
 }
 
 .priceDetail .flex:last-child:after {
-    width: 24upx;
-    height: 24upx;
+    width: 24rpx;
+    height: 24rpx;
     border: 1px solid #F2F2F2;
     transform: rotate(-45deg);
-    top: -12upx;
+    top: -12rpx;
     content: "";
-    right: 60upx;
+    right: 60rpx;
     position: absolute;
     z-index: 2;
     background: #fff;
@@ -438,12 +373,12 @@
 
 .priceDetail .flex:last-child:before {
     position: absolute;
-    width: 60upx;
-    height: 20upx;
+    width: 60rpx;
+    height: 20rpx;
     content: "";
     background: #fff;
     top: 0;
-    right: 50upx;
+    right: 50rpx;
     z-index: 3;
 }
 
@@ -452,23 +387,23 @@
 
 .orderStatus {
     background: #ff6666;
-    font-size: 36upx;
+    font-size: 36rpx;
     color: #fff;
-    padding: 40upx 20upx;
+    padding: 40rpx 20rpx;
     text-align: center;
 }
 
 .orderInfo__hd {
-    padding: 20upx;
+    padding: 20rpx;
 }
 
 .orderInfo__hd .title {
-    font-size: 32upx;
+    font-size: 32rpx;
     display: inline-block;
     line-height: 1.1;
     vertical-align: middle;
     border-left: 2px solid #89674c;
-    padding-left: 16upx;
+    padding-left: 16rpx;
 }
 
 .orderInfo__hd .title * {
@@ -477,7 +412,7 @@
 
 .orderInfo__bd {
     color: #999;
-    padding: 0 20upx 16upx;
+    padding: 0 20rpx 16rpx;
     line-height: 1.5;
 }
 
@@ -486,18 +421,18 @@
 }
 
 .orderInfo__bd .item {
-    margin-bottom: 10upx;
+    margin-bottom: 10rpx;
 }
 
 .tag.btnCopy {
     color: #89674c;
     border-color: #89674c;
     padding: 0;
-    border-radius: 4upx;
+    border-radius: 4rpx;
     margin-bottom: 0;
-    margin-left: 30upx;
+    margin-left: 30rpx;
     line-height: 1.5;
-    min-width: 100upx;
+    min-width: 100rpx;
 }
 
 .lianxiBtns {
@@ -506,9 +441,9 @@
 
 .lianxiBtns,
 .lianxiBtns .lianxiBtn {
-    height: 90upx;
-    line-height: 90upx;
-    font-size: 32upx;
+    height: 90rpx;
+    line-height: 90rpx;
+    font-size: 32rpx;
 }
 
 .lianxiBtns .lianxiBtn {
@@ -520,21 +455,21 @@
 }
 
 .lianxiBtns .uni-icon {
-    margin-right: 14upx;
+    margin-right: 14rpx;
     vertical-align: baseline;
 }
 
 .successfoot .footerBtn,
 .successfoot {
-    height: 110upx;
+    height: 110rpx;
 }
 
 .successfoot .footerBtn {
-    padding: 0 20upx;
+    padding: 0 20rpx;
 }
 
 .btn_close.uni-icon {
-    font-size: 80upx;
+    font-size: 80rpx;
     font-weight: 600;
     color: #999;
 }
@@ -545,10 +480,10 @@
 
 .pay__modal .surePrice {
     text-align: center;
-    font-size: 78upx !important;
+    font-size: 78rpx !important;
     color: #000;
     font-weight: 500;
-    margin-top: 10upx;
+    margin-top: 10rpx;
 }
 
 .pay__modal .weui-cells .weui-cell:before,
@@ -563,7 +498,7 @@
 }
 
 .pay__modal .weui-cell * {
-    font-size: 32upx;
+    font-size: 32rpx;
     line-height: 1.8;
 }
 
@@ -579,12 +514,12 @@
 }
 
 .payMethods__modal .weui-cell {
-    padding: 36upx 20upx;
+    padding: 36rpx 20rpx;
 }
 
 .payMethods__modal .payImg {
-    width: 74upx;
-    margin-right: 20upx;
+    width: 74rpx;
+    margin-right: 20rpx;
 }
 
 .payMethods__modal .weui-cell__hd {
@@ -593,13 +528,13 @@
 
 .payMethods__modal .weui-cell__bd,
 .payMethods__modal .weui-cell__bd * {
-    font-size: 36upx;
+    font-size: 36rpx;
     color: #000;
 }
 
 .payMethods__modal .btn_close {
     font-weight: normal;
-    font-size: 60upx;
+    font-size: 60rpx;
 }
 
 
@@ -607,11 +542,11 @@
 
 .logistics {
     background: #fff;
-    padding-top: 40upx;
+    padding-top: 40rpx;
 }
 
 .logistics .addr {
-    padding-left: 50upx;
+    padding-left: 50rpx;
 }
 
 .logistics .addr .inner {
@@ -623,44 +558,44 @@
     content: "";
     left: 0;
     height: 100%;
-    top: 30upx;
+    top: 30rpx;
     width: 0;
     border-left: 1px dashed #1ec26b;
 }
 
 .logistics .addr .inner .dian {
     position: absolute;
-    left: -26upx;
+    left: -26rpx;
     top: 0;
     display: block;
-    width: 52upx;
-    height: 52upx;
+    width: 52rpx;
+    height: 52rpx;
     text-align: center;
-    line-height: 52upx;
+    line-height: 52rpx;
     color: #fff;
     background: #1ec26b;
     border-radius: 50%;
 }
 
 .logistics .addr .inner .addrInfo {
-    padding-left: 60upx;
-    padding-bottom: 40upx;
+    padding-left: 60rpx;
+    padding-bottom: 40rpx;
     line-height: 1.2;
     color: #505050;
 }
 
 .logistics .addr .inner .addrInfo .title {
-    font-size: 32upx;
-    padding: 4upx 0 10upx;
+    font-size: 32rpx;
+    padding: 4rpx 0 10rpx;
 }
 
 .logistics .addr .inner .addrInfo .txt {
-    font-size: 26upx;
-    padding-bottom: 10upx;
+    font-size: 26rpx;
+    padding-bottom: 10rpx;
 }
 
 .logisticsList {
-    padding-left: 50upx;
+    padding-left: 50rpx;
 }
 
 .logisticsList .item {
@@ -677,18 +612,18 @@
     content: "";
     left: 0;
     height: 100%;
-    top: 30upx;
+    top: 30rpx;
     width: 1px;
     background-color: #c9c9c9;
 }
 
 .logisticsList .item .dian {
     position: absolute;
-    left: -30upx;
+    left: -30rpx;
     top: 0;
     display: block;
-    width: 60upx;
-    height: 60upx;
+    width: 60rpx;
+    height: 60rpx;
 }
 
 .logisticsList .item .dian:after {
@@ -698,33 +633,33 @@
     margin: 0 auto;
     content: "";
     display: block;
-    height: 12upx;
-    width: 12upx;
+    height: 12rpx;
+    width: 12rpx;
     border-radius: 50%;
     border: 2px solid #c9c9c9;
-    top: 30upx;
+    top: 30rpx;
     background-color: #fff;
     z-index: 3;
 }
 
 .logisticsList .item .addrInfo {
-    padding-left: 60upx;
-    padding-bottom: 40upx;
+    padding-left: 60rpx;
+    padding-bottom: 40rpx;
     line-height: 1.2;
 }
 
 .logisticsList .item .addrInfo .title {
-    font-size: 32upx;
-    padding: 4upx 0 10upx;
+    font-size: 32rpx;
+    padding: 4rpx 0 10rpx;
 }
 
 .logisticsList .item .addrInfo .title .time {
-    font-size: 26upx;
+    font-size: 26rpx;
 }
 
 .logisticsList .item .addrInfo .txt {
-    font-size: 26upx;
-    padding-bottom: 10upx;
+    font-size: 26rpx;
+    padding-bottom: 10rpx;
 }
 
 .logisticsList .item:last-child:after {
@@ -740,9 +675,9 @@
     height: 100%;
     margin: 0;
     background: url(http://www.sc-mall.net/static/circle_gou.png) center no-repeat;
-    background-size: 50upx 50upx;
+    background-size: 50rpx 50rpx;
     border: none;
-    top: 10upx;
+    top: 10rpx;
 }
 
 
@@ -758,16 +693,16 @@
 }
 
 .addInvoice__weui-cells .weui-label {
-    width: 170upx;
+    width: 170rpx;
     display: block;
 }
 
 .addInvoice__weui-cells .tag {
     margin-bottom: 0;
-    min-width: 100upx;
+    min-width: 100rpx;
     border-color: #bfbfbf;
-    border-radius: 8upx;
-    margin-right: 40upx;
+    border-radius: 8rpx;
+    margin-right: 40rpx;
 }
 
 .addInvoice__weui-cells .tag.active {
@@ -776,7 +711,7 @@
 
 .addInvoice__weui-cells .msg {
     line-height: 1.2;
-    font-size: 26upx;
+    font-size: 26rpx;
 }
 
 
@@ -784,17 +719,17 @@
 
 .appraiseContent {
     background-color: #fff;
-    margin-bottom: 20upx;
+    margin-bottom: 20rpx;
 }
 
 .appraiseContent__hd {
-    padding: 20upx;
+    padding: 20rpx;
     border-bottom: 1px solid #F2F2F2;
 }
 
 .appraiseContent__hd .title {
-    font-size: 32upx;
-    margin-right: 60upx;
+    font-size: 32rpx;
+    margin-right: 60rpx;
 }
 
 .appraiseContent__hd .grade {
@@ -802,10 +737,10 @@
 }
 
 .appraiseContent__hd .grade .item {
-    font-size: 32upx;
+    font-size: 32rpx;
     display: inline-block;
     width: 33.3333333%;
-    padding-left: 60upx;
+    padding-left: 60rpx;
 }
 
 .appraiseContent__hd .grade .item.active {
@@ -814,40 +749,40 @@
 
 .appraiseContent__hd .grade .item.good {
     background: url(http://www.sc-mall.net/static/ping_good.png) left center no-repeat;
-    background-size: 48upx 48upx;
+    background-size: 48rpx 48rpx;
 }
 
 .appraiseContent__hd .grade .item.good.active {
     background: url(http://www.sc-mall.net/static/ping_good2.png) left center no-repeat;
-    background-size: 48upx 48upx;
+    background-size: 48rpx 48rpx;
 }
 
 .appraiseContent__hd .grade .item.middle {
     background: url(http://www.sc-mall.net/static/ping_middle.png) left center no-repeat;
-    background-size: 48upx 48upx;
+    background-size: 48rpx 48rpx;
 }
 
 .appraiseContent__hd .grade .item.middle.active {
     background: url(http://www.sc-mall.net/static/ping_middle2.png) left center no-repeat;
-    background-size: 48upx 48upx;
+    background-size: 48rpx 48rpx;
 }
 
 .appraiseContent__hd .grade .item.bad {
     background: url(http://www.sc-mall.net/static/ping_bad.png) left center no-repeat;
-    background-size: 48upx 48upx;
+    background-size: 48rpx 48rpx;
 }
 
 .appraiseContent__hd .grade .item.bad.active {
     background: url(http://www.sc-mall.net/static/ping_bad2.png) left center no-repeat;
-    background-size: 48upx 48upx;
+    background-size: 48rpx 48rpx;
 }
 
 .appraiseContent .areaBox {
-    padding: 20upx 20upx 0;
+    padding: 20rpx 20rpx 0;
 }
 
 .appraiseArea {
-    height: 180upx;
+    height: 180rpx;
 }
 
 
@@ -858,8 +793,8 @@
 }
 
 .comment-head .tx {
-    width: 80upx;
-    height: 80upx;
+    width: 80rpx;
+    height: 80rpx;
     border-radius: 50%;
     vertical-align: middle;
 }
@@ -869,22 +804,22 @@
     border-color: #ff6666;
     color: #ff6666;
     line-height: 2;
-    width: 160upx;
+    width: 160rpx;
     padding: 0;
     text-align: center;
 }
 
 .comment-content__hd {
     background: #fff;
-    font-size: 32upx;
-    padding: 20upx;
+    font-size: 32rpx;
+    padding: 20rpx;
     border-bottom: 1px solid #F2F2F2;
 }
 
 .commentList>.item {
-    padding: 10upx 20upx 0;
+    padding: 10rpx 20rpx 0;
     background-color: #fff;
-    margin-bottom: 20upx;
+    margin-bottom: 20rpx;
 }
 
 .commentList>.item .time {
@@ -893,23 +828,23 @@
 
 .commentList>.item .con {
     line-height: 1.4;
-    margin-bottom: 30upx;
-    font-size: 30upx;
+    margin-bottom: 30rpx;
+    font-size: 30rpx;
 }
 
 .commentList>.item>.item__ft {
-    padding: 0 0 20upx 0;
+    padding: 0 0 20rpx 0;
     color: #999;
-    font-size: 24upx;
+    font-size: 24rpx;
 }
 
 .commentList>.item>.item__ft .txt *,
 .commentList>.item>.item__ft .txt {
-    font-size: 26upx;
+    font-size: 26rpx;
 }
 
 .commentList>.item>.item__ft .txt {
-    margin-right: 30upx;
+    margin-right: 30rpx;
 }
 
 .li_33 .item {
@@ -921,17 +856,17 @@
 }
 
 .imgLise {
-    margin-right: -20upx;
-    padding-bottom: 20upx;
+    margin-right: -20rpx;
+    padding-bottom: 20rpx;
 }
 
 .imgLise .item {
     float: left;
-    margin-bottom: 20upx;
+    margin-bottom: 20rpx;
 }
 
 .imgLise .item .pictrueAll {
-    margin-right: 20upx;
+    margin-right: 20rpx;
 }
 
 .imgLise .item .pictrue {
@@ -958,7 +893,7 @@
 }
 
 .fwShop__weui-cells .weui-cell {
-    margin-bottom: 20upx;
+    margin-bottom: 20rpx;
     background-color: #fff;
 }
 
@@ -967,21 +902,21 @@
 }
 
 .fwShop__weui-cells .tx {
-    width: 80upx;
-    height: 80upx;
+    width: 80rpx;
+    height: 80rpx;
     border-radius: 50%;
-    margin-right: 20upx;
+    margin-right: 20rpx;
 }
 
 .fwShop__weui-cells .weui-cell__ft {
-    margin-left: 30upx;
+    margin-left: 30rpx;
 }
 
 .fwShop__weui-cells .btn {
     margin-bottom: 0;
     vertical-align: middle;
     line-height: 2;
-    font-size: 28upx;
+    font-size: 28rpx;
 }
 
 
@@ -998,10 +933,10 @@
 }
 
 .storeBaseInfo .tx {
-    width: 70upx;
-    height: 70upx;
+    width: 70rpx;
+    height: 70rpx;
     vertical-align: middle;
-    margin-right: 20upx;
+    margin-right: 20rpx;
 }
 
 .storeBaseInfo .weui-cell__bd,
@@ -1010,7 +945,7 @@
 }
 
 .storeBaseInfo .followNum {
-    font-size: 24upx;
+    font-size: 24rpx;
 }
 
 .storeBaseInfo .btn_follow {
@@ -1018,9 +953,9 @@
     color: #333;
     padding: 0;
     line-height: 2;
-    width: 120upx;
+    width: 120rpx;
     text-align: center;
-    font-size: 28upx;
+    font-size: 28rpx;
     vertical-align: middle;
 }
 
@@ -1052,14 +987,14 @@
 
 .li_33 .image-view,
 .li_33 .uni-product-image {
-    height: 200upx;
+    height: 200rpx;
 }
 
 
 /* 店铺底部 */
 
 .storeIndexBottom .navList {
-    height: 100upx;
+    height: 100rpx;
     background: #fff;
 }
 
@@ -1068,9 +1003,9 @@
 }
 
 .storeIndexBottom .navList .title {
-    height: 40upx;
-    line-height: 40upx;
-    font-size: 24upx;
+    height: 40rpx;
+    line-height: 40rpx;
+    font-size: 24rpx;
     color: #999;
 }
 
@@ -1079,49 +1014,49 @@
 }
 
 .storeIndexBottom .navList .iconImg {
-    height: 50upx;
+    height: 50rpx;
     display: block;
-    width: 50upx;
+    width: 50rpx;
     margin: 0 auto;
-    margin-top: 10upx;
+    margin-top: 10rpx;
 }
 
 .storeIndexBottom .navList .allP_icon .iconImg {
     background: url(http://www.sc-mall.net/static/sMenu2.png) center no-repeat;
-    background-size: 50upx;
+    background-size: 50rpx;
 }
 
 .storeIndexBottom .navList .allP_icon.active .iconImg {
     background: url(http://www.sc-mall.net/static/sMenu2_2.png) center no-repeat;
-    background-size: 50upx;
+    background-size: 50rpx;
 }
 
 .storeIndexBottom .navList .fenlei_icon .iconImg {
     background: url(http://www.sc-mall.net/static/sMenu3.png) center no-repeat;
-    background-size: 50upx;
+    background-size: 50rpx;
 }
 
 .storeIndexBottom .navList .fenlei_icon.active .iconImg {
     background: url(http://www.sc-mall.net/static/sMenu3_2.png) center no-repeat;
-    background-size: 46upx;
+    background-size: 46rpx;
 }
 
 .storeIndexBottom .navList .kefu_icon .iconImg {
     background: url(http://www.sc-mall.net/static/sMenu4.png) center no-repeat;
-    background-size: 50upx;
+    background-size: 50rpx;
 }
 
 .storeIndexBottom .navList .kefu_icon.active .iconImg {
     background: url(http://www.sc-mall.net/static/sMenu4_2.png) center no-repeat;
-    background-size: 50upx;
+    background-size: 50rpx;
 }
 
 .storeIndexBottom .logo {
-    width: 70upx !important;
-    height: 70upx !important;
+    width: 70rpx !important;
+    height: 70rpx !important;
     border-radius: 50%;
     margin: 0 auto;
-    margin-top: 15upx !important;
+    margin-top: 15rpx !important;
 }
 
 
@@ -1129,30 +1064,30 @@
 
 .uni-progress-inner-bar,
 .uni-progress-bar {
-    border-radius: 200upx;
+    border-radius: 200rpx;
 }
 
 .storeAppraise {
     background: #fff;
-    padding: 20upx;
-    font-size: 30upx;
-    margin-bottom: 20upx;
+    padding: 20rpx;
+    font-size: 30rpx;
+    margin-bottom: 20rpx;
 }
 
 .storeAppraise view {
-    font-size: 30upx;
+    font-size: 30rpx;
 }
 
 .rateList .item .title {
-    width: 150upx;
+    width: 150rpx;
     display: inline-block;
 }
 
 .rateList .item .bar {
     display: inline-block;
     vertical-align: middle;
-    width: 220upx;
-    margin-right: 30upx;
+    width: 220rpx;
+    margin-right: 30rpx;
 }
 
 .rateList .item .num {
@@ -1161,7 +1096,7 @@
 
 .storeInfo .weui-label {
     display: block;
-    width: 200upx;
+    width: 200rpx;
 }
 
 .storeInfo .txt {
@@ -1171,14 +1106,14 @@
 .title__hd {
     background: #fff;
     text-align: center;
-    padding: 20upx;
+    padding: 20rpx;
 }
 
 .title__hd .title {
     display: inline-block;
-    padding: 0 40upx;
+    padding: 0 40rpx;
     position: relative;
-    font-size: 32upx;
+    font-size: 32rpx;
 }
 
 .title__hd .title.bg_yz {
@@ -1186,7 +1121,7 @@
 }
 
 .title__hd .title.bg_yz {
-    padding: 0 70upx;
+    padding: 0 70rpx;
 }
 
 .title__hd .title.bg_yz:after,
@@ -1205,13 +1140,13 @@
 
 .title__hd .title.bg_yz:after,
 .title__hd .title.bg_yz:before {
-    height: 14upx;
-    width: 34upx;
+    height: 14rpx;
+    width: 34rpx;
     top: 0;
     background-repeat: no-repeat;
     background-size: 100% 100%;
     top: 50%;
-    margin-top: -7upx;
+    margin-top: -7rpx;
 }
 
 .title__hd .title.bg_yz:before {
@@ -1230,7 +1165,7 @@
 
 .saleMenuList .item {
     float: left;
-    padding: 16upx 20upx;
+    padding: 16rpx 20rpx;
     box-sizing: border-box;
 }
 
@@ -1240,142 +1175,142 @@
 
 .saleTips {
     background: #fff9d5;
-    padding: 10upx 20upx;
-    font-size: 26upx;
+    padding: 10rpx 20rpx;
+    font-size: 26rpx;
     color: #e78642;
     line-height: 1.3;
 }
 
 .saleTips * {
-    font-size: 26upx;
+    font-size: 26rpx;
 }
 
 .new__title__hd,
 .new__title__hd .title {
-    font-size: 26upx;
+    font-size: 26rpx;
     color: #999;
 }
 
 .new__title__hd .title {
     background: url(http://www.sc-mall.net/static/time.png) left center no-repeat;
-    background-size: 30upx 30upx;
+    background-size: 30rpx 30rpx;
 }
 
 
 /* 动态 */
 
 .welcomeTxt {
-    padding: 20upx;
+    padding: 20rpx;
     color: #666;
     background: #fff;
-    margin-bottom: 20upx;
-    font-size: 30upx;
+    margin-bottom: 20rpx;
+    font-size: 30rpx;
     line-height: 1.5;
 }
 
 .trendsList .item {
     background: #fff;
-    padding: 0 20upx;
-    margin-bottom: 20upx;
+    padding: 0 20rpx;
+    margin-bottom: 20rpx;
 }
 
 .trendsList .item .time {
-    padding: 20upx 0;
-    font-size: 32upx;
+    padding: 20rpx 0;
+    font-size: 32rpx;
     line-height: 1;
 }
 
 .trendsList .item .time .icon-shijian {
-    font-size: 44upx;
+    font-size: 44rpx;
     color: #333;
-    margin-right: 10upx;
+    margin-right: 10rpx;
     line-height: 1;
 }
 
 .trendsList .item .title {
-    font-size: 30upx;
+    font-size: 30rpx;
     font-weight: 700;
 }
 
 .trendsList .item .tit_con {
     color: #666666;
-    font-size: 26upx;
+    font-size: 26rpx;
     position: relative;
-    padding-left: 20upx;
+    padding-left: 20rpx;
 }
 
 .trendsList .item .tit_con:before {
     position: absolute;
     content: "";
     left: 0;
-    height: 24upx;
+    height: 24rpx;
     width: 3px;
     background: #666666;
     top: 50%;
-    margin-top: -12upx;
+    margin-top: -12rpx;
 }
 
 .trendsList .item .pic {
     display: block;
-    margin-top: 20upx;
+    margin-top: 20rpx;
 }
 
 .trendsList .item .item__ft {
-    padding: 20upx 0;
-    font-size: 24upx;
+    padding: 20rpx 0;
+    font-size: 24rpx;
     color: #666;
 }
 
 .trendsList .item .info-text {
     color: #7a7a7a;
-    margin-left: 40upx;
-    padding-left: 44upx;
-    font-size: 24upx;
+    margin-left: 40rpx;
+    padding-left: 44rpx;
+    font-size: 24rpx;
 }
 
 .trendsList .item .read {
     background: url(/static/eye.png) left center no-repeat;
-    background-size: 44upx;
-    padding-left: 50upx;
+    background-size: 44rpx;
+    padding-left: 50rpx;
     margin-left: 0;
 }
 
 .trendsList .item .comment {
     background: url(/static/pl_icon.png) left center no-repeat;
-    background-size: 34upx;
+    background-size: 34rpx;
 }
 
 .trendsList .item .zan {
     background: url(/static/zan2.png) left center no-repeat;
-    background-size: 34upx;
+    background-size: 34rpx;
 }
 
 
 /* 全部商品 */
 
 .storeAllPHead {
-    height: 100upx;
+    height: 100rpx;
 }
 
 .storeAllPHead .rightBox {
-    width: 120upx;
+    width: 120rpx;
 }
 
 .storeAllPHead .logo {
-    width: 60upx;
-    height: 60upx;
+    width: 60rpx;
+    height: 60rpx;
     border-radius: 50%;
     display: inline-block;
     vertical-align: middle;
 }
 
 .storeAllPHead .title {
-    font-size: 32upx;
+    font-size: 32rpx;
     font-weight: 700;
 }
 
 .storeAllPHead .titleBox {
-    padding: 0 20upx;
+    padding: 0 20rpx;
 }
 
 .storeAllPHead .titleBox view {
@@ -1383,7 +1318,7 @@
 }
 
 .storeAllPHead .titleBox .msg {
-    font-size: 22upx;
+    font-size: 22rpx;
     color: #999;
 }
 
@@ -1393,7 +1328,7 @@
 
 .searchBox {
     background-color: #fff;
-    padding: 0 20upx;
+    padding: 0 20rpx;
 }
 
 .searchBox .input-view {
@@ -1402,7 +1337,7 @@
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    padding: 0 20upx;
+    padding: 0 20rpx;
     height: 30px;
     border-radius: 15px;
     -webkit-flex-wrap: nowrap;
@@ -1432,6 +1367,9 @@
 }
 
 
+/* 这个项目是从这里开始的 */
+
+
 /* 内部师傅的提交审核 */
 
 .eaditFrom .weui-label {
@@ -1443,4 +1381,167 @@
     border: 1px solid #f2f2f2;
     border-radius: 8rpx;
     padding: 12rpx 20rpx;
+}
+
+
+/* 客户的查看进度 */
+
+.schedule {
+    background: #fff;
+    padding: 50rpx 20rpx 30rpx;
+}
+
+.schedule .item {
+    color: #999;
+}
+
+.schedule .item .time {
+    width: 100rpx;
+    text-align: right;
+    font-size: 24rpx;
+    margin-right: 50rpx;
+    line-height: 1.2;
+}
+
+.schedule .item .right {
+    padding-left: 50rpx;
+    font-size: 26rpx;
+    border-left: 1px solid #e0e0e0;
+    overflow: visible;
+    padding-bottom: 48rpx;
+}
+
+.schedule .item .status {
+    font-size: 34rpx;
+    padding-bottom: 10rpx;
+}
+
+.schedule .item .txtBox {
+    position: relative;
+}
+
+.schedule .item .statusIcon {
+    width: 60rpx;
+    height: 60rpx;
+    position: absolute;
+    left: -82rpx;
+}
+
+.schedule .item .txtBox::before,
+.schedule .item .txtBox:after {
+    position: absolute;
+    content: "";
+    left: -60rpx;
+    z-index: 4;
+}
+
+.schedule .item.small .txtBox::before {
+    width: 18rpx;
+    height: 18rpx;
+    border-radius: 50%;
+    background: #cecece;
+    top: 10rpx;
+}
+
+.schedule .item.active {
+    color: #000;
+}
+
+.schedule .item.active .time .date {
+    font-size: 30rpx;
+}
+
+.schedule .item.small.active .txtBox::before {
+    background: #ff662a;
+}
+
+.schedule .item:last-child .right {
+    border-left: none;
+}
+
+.schedule .item:last-child .txtBox:after {
+    width: 1px;
+    background: #e0e0e0;
+    height: 20rpx;
+    top: -10rpx;
+    z-index: 3;
+    left: -50rpx;
+}
+
+
+/* 收货地址 */
+
+.addImg {
+    width: 40rpx;
+    height: 40rpx;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10rpx;
+}
+
+.addressList .item {
+    background-color: #fff;
+    margin-top: 20rpx;
+}
+
+.addressList .item .item__bd {
+    padding: 30rpx 20rpx;
+}
+
+.addressList .item .item__bd .remarks {
+    font-size: 30rpx;
+}
+
+.addressList .item .item__bd .remarks .tel {
+    color: #999;
+    margin-left: 20rpx;
+}
+
+.addressList .item .item__bd .address {
+    font-size: 28rpx;
+    color: #333333;
+    line-height: 1.4;
+    margin-top: 6rpx;
+}
+
+.addressList .item .item__bd .type {
+    color: #999;
+}
+
+.addressList .item .item__ft {
+    border-top: 1px solid #f2f2f2;
+    padding: 10rpx 20rpx;
+    line-height: 60rpx;
+    color: #999999;
+}
+
+.addressList .item .item__ft .checked {
+    color: #3f8bfe;
+}
+
+.addressList .item .item__ft .iconText {
+    margin-left: 30rpx;
+}
+
+.addressList .item__ft .iconText .icon {
+    width: 36rpx;
+    height: 36rpx;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8rpx;
+}
+
+.addAddress__weui-cells .weui-cell:before {
+    left: 0;
+    right: 0;
+}
+
+.addAddress__weui-cells .weui-label {
+    width: 170rpx;
+    display: block;
+}
+
+.addAddress__weui-cells .weui-area {
+    height: 100rpx;
+    line-height: 1.8;
 }

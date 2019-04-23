@@ -233,6 +233,18 @@ page {
     bottom: 0 !important;
 }
 
+.mt30 {
+    margin-top: 60rpx !important;
+}
+
+.pd0 {
+    padding: 0 !important;
+}
+
+.radius0 {
+    border-radius: 0 !important;
+}
+
 .img {
     background-position: center center;
     background-repeat: no-repeat;
@@ -241,6 +253,38 @@ page {
 
 .weui-btn+.weui-btn {
     margin-top: inherit;
+}
+
+.IconsCK {
+    width: 40rpx;
+    height: 40rpx;
+    vertical-align: middle;
+    margin-right: 4rpx;
+}
+
+.icon-arrow {
+    display: inline-block;
+    font-size: 0;
+    width: 40rpx;
+    height: 40rpx;
+    position: relative;
+    vertical-align: middle;
+}
+
+.icon-arrow::before {
+    position: absolute;
+    content: "";
+    width: 16rpx;
+    height: 16rpx;
+    border: 1px solid #ccc;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+}
+
+.icon-arrow.arrow-right::before {
+    transform: rotate(45deg);
+    top: 10rpx;
+    left: 6rpx;
 }
 
 
@@ -363,6 +407,14 @@ page {
 .modal__hd .close img {
     height: 26rpx;
     width: 26rpx;
+}
+
+.btnCopy {
+    font-size: 26rpx;
+    border: 1px solid #ff662a;
+    color: #ff662a;
+    padding: 0 18rpx;
+    margin-left: 20rpx;
 }
 
 

@@ -367,7 +367,20 @@
 </template>
 <script>
 export default {
-    
+    onLoad() {
+      this.setBarTitle();
+  },
+  onShow() {},
+  data() {
+    return {};
+  },
+  methods: {
+    setBarTitle() {
+      wx.setNavigationBarTitle({
+        title: "我的订单"
+      });
+    }
+  }
 }
 </script>
 <style lang='scss' scoped>
