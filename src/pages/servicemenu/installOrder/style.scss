@@ -1,0 +1,62 @@
+.columnGroup {
+    font-size: 30rpx;
+    padding: 0 10rpx;
+}
+
+.columnGroup .item {
+    margin: 0 20rpx;
+    margin-bottom: 26rpx;
+}
+
+.columnGroup .ipt {
+    border: 1px solid #e5e5e5;
+    border-radius: 8rpx;
+    padding: 8rpx 10rpx;
+    margin-left: 12rpx;
+}
+
+.columnGroup .ipt .weui-input {
+    line-height: 1.8;
+}
+
+.columnGroup .ipt .txt {
+    font-size: 26rpx;
+    color: #999;
+}
+
+.eaditArea {
+    padding: 0 30rpx;
+}
+
+.eaditArea .weui-area {
+    border: 1px solid #e5e5e5;
+    padding: 20rpx;
+    font-size: 30rpx;
+    height: 200rpx;
+    box-sizing: border-box;
+    border-radius: 8rpx;
+}
+
+.btn-add {
+    display: block;
+    margin: 0 auto;
+    width: 400rpx;
+    line-height: 78rpx;
+    font-size: 32rpx;
+    text-align: center;
+    color: #ff5c29;
+    border-radius: 8rpx;
+    border: 1px solid #ff5c29;
+}
+
+.btn-add img {
+    display: inline-block;
+    height: 30rpx;
+    width: 30rpx;
+    vertical-align: middle;
+    margin-right: 10rpx;
+}
+
+.weui-cells {
+    color: #666;
+}

@@ -37,8 +37,7 @@
     </div>
 </template>
 <script>
-import "../../../css/common.css";
-import "../../../css/service.css";
+import "@/css/service.css";
 export default {
     onLoad(){
         this.setBarTitle()

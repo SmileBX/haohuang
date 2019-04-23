@@ -1,5 +1,5 @@
 <template>
-    <div class="box">
+    <div class="page">
        <!--搜索-->
        <div class="inputbox flex">
            <input type="text" placeholder="请输入您要搜索的内容">
@@ -25,8 +25,7 @@
     </div>
 </template>
 <script>
-import "../../../css/common.css";
-import "../../../css/service.css";
+import "@/css/dd_style.css";
 export default {
     onLoad(){
         this.setBarTitle()
@@ -41,6 +40,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+  @import "./style";
 </style>
 

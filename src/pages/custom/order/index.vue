@@ -344,7 +344,7 @@
       </div>
     </div>
     <!-- 取消订单弹窗 -->
-    <div class="modal">
+    <div class="modal" style="display:none;">
         <div class="mask"></div>
         <div class="modal-content bottom__modal-content" style="height:680rpx;">
             <div class="modal__hd bb__modal__hd">

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-import './css/common.css'; //全局引入weui.css样式
+import './css/common.css';
 
 Vue.config.productionTip = false
 App.mpType = 'app'
