@@ -7,7 +7,12 @@
     "subpackages": [{
         "root": "pages/master",
         "pages": ["orderDetail/main"]
-    }],
+    },
+    {
+        "root": "pages/servicemenu",
+        "pages": ["serviceOrder/main","installOrder/main","myOrder/main"]
+    }
+],
     "window": {
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#fff",

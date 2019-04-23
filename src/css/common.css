@@ -1,0 +1,72 @@
+/*单选按钮清除默认样式*/
+radio .wx-radio-input{ 
+    /* 自定义样式.... */
+      height: 40rpx; 
+      width: 40rpx;
+      border-radius: 50%;
+      border: 2rpx solid #999;
+      background: transparent;
+   }
+   
+  /* 选中后的 背景样式 （红色背景 无边框 可根据UI需求自己修改） */
+  radio .wx-radio-input.wx-radio-input-checked{
+     border: none;
+     background: #3f8bfe;
+  }
+  /* 选中后的 对勾样式 （白色对勾 可根据UI需求自己修改） */
+  radio .wx-radio-input.wx-radio-input-checked::before{
+     border-radius: 50%;/* 圆角 */
+     width: 45rpx; /* 选中后对勾大小，不要超过背景的尺寸 */
+     height: 45rpx; /* 选中后对勾大小，不要超过背景的尺寸 */
+     line-height: 45rpx;
+     text-align: center;
+     font-size:30rpx; /* 对勾大小 30rpx */
+     color:#fff; /* 对勾颜色 白色 */
+     background: #3f8bfe;
+     transform:translate(-50%, -50%) scale(1);
+     -webkit-transform:translate(-50%, -50%) scale(1);
+  }
+  /*弹性布局样式*/
+  .flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .clomn{
+    flex-direction: column;
+  }
+  /*弹性布局开头对齐*/
+  .flex-start{
+      justify-content: flex-start
+  }
+  /*弹性布局around*/
+  .flex-around  {
+    justify-content: space-around
+    }
+  /*底部按钮样式*/
+  .botbtn{
+    width:690rpx;
+    height:75rpx;
+    margin:0 auto;
+    background: #ff6325;
+    border-radius:10rpx;
+    line-height:75rpx;
+    color:#fff;
+    text-align: center;
+    position:fixed;
+    bottom:80rpx;
+  }
+  /*左右边距30rpx*/
+  .pad{
+      padding:0 30rpx;
+  }
+  /*向下的箭头*/
+  .bottom{
+      width:27rpx;
+      height:15rpx;
+  }
+  /*向右箭头*/
+  .right{
+      width:13rpx;
+      height:24rpx;
+  }
