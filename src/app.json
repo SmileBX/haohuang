@@ -5,14 +5,14 @@
         "pages/counter/main"
     ],
     "subpackages": [{
-        "root": "pages/master",
-        "pages": ["orderDetail/main"]
-    },
-    {
-        "root": "pages/servicemenu",
-        "pages": ["serviceOrder/main","installOrder/main","myOrder/main"]
-    }
-],
+            "root": "pages/master",
+            "pages": ["smVerify/main"]
+        },
+        {
+            "root": "pages/custom",
+            "pages": ["order/main", "schedule/main", "orderDetail/main", "addressList/main", "addAddress/main"]
+        }
+    ],
     "window": {
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#fff",
