@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 5,
+			"current": 6,
 			"list": [
 				{
 					"id": 0,
@@ -70,6 +70,13 @@
 					"id": -1,
 					"name": "新增地址",
 					"pathName": "pages/custom/addAddress/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "发表评价",
+					"pathName": "pages/custom/appraise/main",
 					"scene": null
 				}
 			]
