@@ -67,6 +67,10 @@ page {
     margin-top: 60rpx !important;
 }
 
+.mb10 {
+    margin-bottom: 20rpx !important;
+}
+
 .mb20 {
     margin-bottom: 40rpx !important;
 }
@@ -89,6 +93,10 @@ page {
 
 .bg_f4f7fc {
     background: #f4f7fc !important;
+}
+
+.bg_fff {
+    background: #fff !important;
 }
 
 .ellipsis {
@@ -124,18 +132,18 @@ page {
 }
 
 .bl__weui-cells__title {
-    padding-left: 46rpx;
+    padding-left: 48rpx;
 }
 
 .bl__weui-cells__title::after {
     position: absolute;
     content: "";
-    height: 36rpx;
+    height: 32rpx;
     width: 3px;
     background: #ff6325;
     left: 30rpx;
     top: 50%;
-    margin-top: -18rpx;
+    margin-top: -16rpx;
 }
 
 .weui-cell {
@@ -279,6 +287,23 @@ page {
     -ms-align-items: flex-start;
     -o-align-items: flex-start;
     align-items: flex-start;
+}
+
+.flexAlignEnd {
+    -webkit-box-align: flex-end;
+    -webkit-align-items: flex-end;
+    -moz-align-items: flex-end;
+    -ms-align-items: flex-end;
+    -o-align-items: flex-end;
+    align-items: flex-end;
+}
+
+.justifyContentEnd {
+    -webkit-justify-content: flex-end;
+    -moz-justify-content: flex-end;
+    -o-justify-content: flex-end;
+    -ms-justify-content: flex-end;
+    justify-content: flex-end;
 }
 
 
@@ -592,6 +617,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 
 .column .item .price {
     margin-bottom: 10rpx;
+    font-size: 30rpx;
 }
 
 .column .outside {
@@ -893,6 +919,32 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 
 .ftBtn .btn.btn-active.fill {
     background: #ff6325;
+    color: #fff;
+}
+
+.ftBtns {
+    height: 116rpx;
+}
+
+.ftBtns .btn {
+    width: 170rpx;
+    text-align: center;
+    line-height: 68rpx;
+    border-radius: 200rpx;
+    margin-left: 30rpx;
+}
+
+.ftBtns .inner {
+    padding-top: 20rpx;
+    padding-bottom: 20rpx;
+    border-top: 1px solid #ececec;
+}
+
+.btn.linear {
+    background: -moz-linear-gradient(to right, #fc8556, #ff6666);
+    background: -webkit-linear-gradient(to right, #fc8556, #ff6666);
+    background: -o-linear-gradient(to right, #fc8556, #ff6666);
+    background: linear-gradient(to right, #fc8556, #ff6666);
     color: #fff;
 }
 
