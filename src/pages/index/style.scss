@@ -1,0 +1,149 @@
+.indexPage {
+    background: #fff;
+    height: 100vh;
+}
+
+.main {
+    height: calc( 100vh - 104rpx);
+    overflow: hidden;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.searchBox {
+    background: #fff;
+    padding: 20rpx 30rpx;
+}
+
+.search {
+    padding: 0;
+    border: 1px solid #e5e5e5;
+    border-radius: 200rpx;
+}
+
+.search .weui-input {
+    padding: 4rpx 20rpx;
+}
+
+.searchIcon {
+    width: 36rpx;
+    height: 36rpx;
+    margin: 0 0 0 20rpx;
+}
+
+.banner {
+    padding: 0 30rpx;
+    margin-bottom: 20rpx;
+}
+
+.banner img {
+    border-radius: 12rpx;
+}
+
+// 关于浩煌
+.about .title {
+    padding: 20rpx 30rpx;
+    font-size: 34rpx;
+}
+
+.colorBlock {
+    padding: 0 20rpx;
+}
+
+.colorBlock .item {
+    width: 33.3333%;
+    float: left;
+}
+
+.colorBlock .item .inner {
+    margin: 0 10rpx;
+    background: #f9723d;
+    border-radius: 12rpx;
+    height: 270rpx;
+    color: #fff;
+    box-sizing: border-box;
+    padding: 30rpx 10rpx 0;
+    line-height: 1.3;
+}
+
+.colorBlock .circle {
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 50%;
+    background: #ef6129;
+    line-height: 1.2;
+    font-size: 32rpx;
+    padding: 0 16rpx;
+    box-sizing: border-box;
+    margin: 0 auto 20rpx;
+}
+
+.colorBlock .item:nth-child(2) .inner {
+    background: #f9b03d;
+}
+
+.colorBlock .item:nth-child(2) .circle {
+    background: #f1990e;
+}
+
+.colorBlock .item:nth-child(3) .inner {
+    background: #1cc46b;
+}
+
+.colorBlock .item:nth-child(3) .circle {
+    background: #07ba5b;
+}
+
+.about_con {
+    padding: 30rpx;
+    color: #676767;
+    font-size: 26rpx;
+    line-height: 1.8;
+}
+
+.about_con image {
+    width: 100%;
+    margin-bottom: 10rpx;
+}
+
+.about_con p {
+    text-indent: 2em;
+}
+
+.contactBox {
+    padding: 20rpx 0;
+}
+
+.contactLine {
+    background: #f8f8f8;
+    color: #676767;
+    height: 70rpx;
+    border-radius: 200rpx;
+    margin: 30rpx 0;
+    line-height: 70rpx;
+    padding: 0 30rpx;
+}
+
+.contactLine.tel {
+    font-size: 32rpx;
+}
+
+.contactLine img {
+    width: 48rpx;
+    margin-right: 30rpx;
+    margin-bottom: 0;
+}
+
+.contactLine p {
+    text-indent: 0;
+}
+
+.fixed__kf img {
+    width: 100rpx;
+    height: 100rpx;
+}
+
+.movearea {
+    width: 100%;
+    height: 100vh;
+}

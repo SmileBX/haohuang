@@ -306,6 +306,14 @@ page {
     justify-content: flex-end;
 }
 
+.justifyContentCenter {
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -o-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+}
+
 
 /* bx */
 
