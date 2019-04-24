@@ -31,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 6,
+			"current": 9,
 			"list": [
 				{
 					"id": 0,
@@ -79,6 +79,28 @@
 					"id": -1,
 					"name": "发表评价",
 					"pathName": "pages/custom/appraise/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "客服安装下单",
+					"pathName": "pages/servicemenu/installOrder/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 8,
+					"name": "客服绑定客户信息",
+					"pathName": "pages/servicemenu/bindCustomInfo/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "客服的我的订单",
+					"pathName": "pages/servicemenu/myOrder/main",
+					"query": "",
 					"scene": null
 				}
 			]

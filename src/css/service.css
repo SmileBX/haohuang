@@ -1,130 +1,215 @@
+/* .flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+} */
+
+.clomn {
+    flex-direction: column;
+}
+
+
+/*弹性布局开头对齐*/
+
+.flex-start {
+    justify-content: flex-start
+}
+
+
+/*弹性布局around*/
+
+.flex-around {
+    justify-content: space-around
+}
+
+
+/*左右边距30rpx*/
+
+.pad {
+    padding: 0 30rpx;
+}
+
+
+/*向下的箭头*/
+
+.bottom {
+    width: 27rpx;
+    height: 15rpx;
+}
+
+
+/*向右箭头*/
+
+
+/* .right {
+    width: 13rpx;
+    height: 24rpx;
+} */
+
+
 /*客服*/
-.box{
-    padding:0 30rpx;
+
+.box {
+    padding: 0 30rpx;
 }
-.inputbox input{
-    font-size:26rpx;
+
+.inputbox input {
+    font-size: 26rpx;
 }
-.cancleimg{
-    width:36rpx;
-    height:36rpx;
+
+.cancleimg {
+    width: 36rpx;
+    height: 36rpx;
 }
-.name{
-    font-size:28rpx;
-    margin-bottom:20rpx;
+
+.name {
+    font-size: 28rpx;
+    margin-bottom: 20rpx;
 }
-.address{
-    font-size:22rpx;
-    color:#878787;
-    margin-top:10rpx;
+
+.address {
+    font-size: 22rpx;
+    color: #878787;
+    margin-top: 10rpx;
 }
-.listbox{
-    margin-top:40rpx;
+
+.listbox {
+    margin-top: 40rpx;
 }
-.active{
-    color:#ff6325
+
+.active {
+    color: #ff6325
 }
-.installbox{
-    color:#797979;
-    font-size:28rpx;
+
+.installbox {
+    color: #797979;
+    font-size: 28rpx;
 }
-.cusname{
-    font-size:30rpx;
+
+.cusname {
+    font-size: 30rpx;
 }
-.borggray{
-    border:1rpx solid #ccc;
-    border-radius:10rpx;
+
+.borggray {
+    border: 1rpx solid #ccc;
+    border-radius: 10rpx;
 }
-.cusinfo p,.installdet>p,.tips{
-    padding:12rpx 15rpx;
+
+.cusinfo p,
+.installdet>p,
+.tips {
+    padding: 12rpx 15rpx;
 }
-.cusinfo p input{
-    color:#d4d4d4;
-    text-align:right;
+
+.cusinfo p input {
+    color: #d4d4d4;
+    text-align: right;
 }
-.installdet{
-    margin-top:40rpx;
+
+.installdet {
+    margin-top: 40rpx;
 }
-.install{
-    padding-left:10rpx;
-    border-left:5rpx solid #ff6325;
-    font-weight:500;
-    color:#1a1a1a
+
+.install {
+    padding-left: 10rpx;
+    border-left: 5rpx solid #ff6325;
+    font-weight: 500;
+    color: #1a1a1a
 }
-.datepic{
-    width:34rpx;
-    height:32rpx;
+
+.datepic {
+    width: 34rpx;
+    height: 32rpx;
 }
-.sizebox{
-    border-radius:10rpx;
-    margin-left:10rpx;
-    padding:0 10rpx;
-    border:1rpx solid rgb(221, 220, 220)
+
+.sizebox {
+    border-radius: 10rpx;
+    margin-left: 10rpx;
+    padding: 0 10rpx;
+    border: 1rpx solid rgb(221, 220, 220)
 }
-.tips{
+
+.tips {
     flex-wrap: wrap
 }
-.tips div{
-    width:28%;
+
+.tips div {
+    width: 28%;
 }
-.textinfo{
-    font-size:24rpx;
-    padding:20rpx;
-    height:200rpx;
+
+.textinfo {
+    font-size: 24rpx;
+    padding: 20rpx;
+    height: 200rpx;
 }
-.point{
-    font-size:20rpx;
+
+.point {
+    font-size: 20rpx;
 }
-.addpic{
-    width:80rpx;
-    height:93rpx;
-    margin-left:10rpx;
+
+.addpic {
+    width: 80rpx;
+    height: 93rpx;
+    margin-left: 10rpx;
 }
-.addvedio{
-    width:85rpx;
-    height:97rpx;
-    margin-left:10rpx;
+
+.addvedio {
+    width: 85rpx;
+    height: 97rpx;
+    margin-left: 10rpx;
 }
-.picarr{
-    margin-top:20rpx;
+
+.picarr {
+    margin-top: 20rpx;
 }
-.adddetbutton{
+
+.adddetbutton {
     text-align: center;
-    padding:50rpx 0 200rpx 0;
+    padding: 50rpx 0 200rpx 0;
 }
-.adddet{
-    width:350rpx;
-    height:64rpx;
+
+.adddet {
+    width: 350rpx;
+    height: 64rpx;
     display: inline-block;
 }
-.addtitle{
-    margin-top:20rpx;
+
+.addtitle {
+    margin-top: 20rpx;
 }
-.down{
-    width:16rpx;
-    height:11rpx;
-    margin-left:15rpx;
+
+.down {
+    width: 16rpx;
+    height: 11rpx;
+    margin-left: 15rpx;
 }
-.itemname{
-    color:#1a1a1a;
+
+.itemname {
+    color: #1a1a1a;
 }
-.orderlist{
-    margin-top:70rpx;
+
+.orderlist {
+    margin-top: 70rpx;
 }
-.ordertitle{
+
+.ordertitle {
     font-size: 32rpx;
-    margin-bottom:15rpx;
+    margin-bottom: 15rpx;
 }
-.blue{
-    background:#3f8bfe;
-    color:#fff;
-    font-size:30rpx;
-    padding:10rpx 25rpx;
-    border-radius:25rpx;
+
+.blue {
+    background: #3f8bfe;
+    color: #fff;
+    font-size: 30rpx;
+    padding: 10rpx 25rpx;
+    border-radius: 25rpx;
 }
-.item{
-    margin-bottom:20rpx;
+
+
+/* .item {
+    margin-bottom: 20rpx;
 }
-.item p{
-    margin-bottom:5rpx;
-}
+
+.item p {
+    margin-bottom: 5rpx;
+} */

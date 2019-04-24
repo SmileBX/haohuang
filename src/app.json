@@ -18,6 +18,14 @@
                 "addAddress/main",
                 "appraise/main"
             ]
+        },
+        {
+            "root": "pages/servicemenu",
+            "pages": [
+                "installOrder/main",
+                "myOrder/main",
+                "bindCustomInfo/main"
+            ]
         }
     ],
     "window": {
