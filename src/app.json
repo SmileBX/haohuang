@@ -24,7 +24,8 @@
             "pages": [
                 "installOrder/main",
                 "myOrder/main",
-                "bindCustomInfo/main"
+                "bindCustomInfo/main",
+                "orderDetail/main"
             ]
         }
     ],

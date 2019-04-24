@@ -1,15 +1,16 @@
 <template>
-    <div class="page">
+    <div class="page content">
        <!--搜索-->
-       <div class="inputbox flex">
-           <input type="text" placeholder="请输入您要搜索的内容">
+       <div class="inputbox flex flexAlignCenter">
+           <img src="/static/images/icons/search.png" class="searhimg">
+           <input type="text" placeholder="请输入客户名称或手机号码">
            <img src="/static/images/cancle.png" class="cancleimg">
        </div>
        <!--展示列表-->
        <div class="listbox">
             <radio-group @change="changes">
                 <label class="flex">
-                    <div>
+                    <div class="flex1">
                         <div class="name flex flex-start">
                             <p><span class="active">张</span>三</p><p>13526889966</p>
                         </div>
@@ -33,7 +34,7 @@ export default {
     methods:{
         setBarTitle() {
             wx.setNavigationBarTitle({
-                title: "客服下单"
+                title: "绑定客户信息"
             });
         },
     }

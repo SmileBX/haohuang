@@ -960,3 +960,8 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     font-size: 24rpx;
     color: #999;
 }
+/*页面内边距*/
+.allPadd{
+    padding:0 30rpx;
+
+}
