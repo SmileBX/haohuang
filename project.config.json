@@ -11,6 +11,8 @@
 	"compileType": "miniprogram",
 	"appid": "touristappid",
 	"projectname": "my-project",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
