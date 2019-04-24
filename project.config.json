@@ -9,7 +9,7 @@
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
-	"appid": "touristappid",
+	"appid": "wx3fef1ccc9946eb7b",
 	"projectname": "my-project",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
@@ -31,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 9,
+			"current": 10,
 			"list": [
 				{
 					"id": 0,
@@ -101,6 +101,12 @@
 					"name": "客服的我的订单",
 					"pathName": "pages/servicemenu/myOrder/main",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "客服订单详情",
+					"pathName": "pages/servicemenu/orderDetail/main",
 					"scene": null
 				}
 			]

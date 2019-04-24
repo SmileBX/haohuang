@@ -21,7 +21,9 @@
 .flex-around {
     justify-content: space-around
 }
-
+.flex-between {
+    justify-content: space-between
+}
 
 /*左右边距30rpx*/
 
