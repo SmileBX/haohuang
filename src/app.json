@@ -30,6 +30,16 @@
                 "bindCustomInfo/main",
                 "orderDetail/main"
             ]
+        },
+        {
+            "root": "pages/Account",
+            "pages": [
+                "login/main",
+                "warrant/main",
+                "loginfrom/main",
+                "register/main",
+                "FillInfp/main"
+            ]
         }
     ],
     "window": {

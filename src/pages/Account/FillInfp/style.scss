@@ -1,0 +1,79 @@
+.from {
+    margin-top: 20rpx
+}
+
+.from .ipt {
+    height: 50rpx;
+    width: 100%;
+    font-size: 30rpx
+}
+
+.ul-list {
+    padding: 0 30rpx;
+}
+
+.ul-list .li-cell {
+    border-bottom: 1px solid #eee;
+    padding: 20rpx 0;
+}
+
+.ul-list.noborder .li-cell,
+.ul-list .li-cell:last-child {
+    border-bottom: none
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.li-cell.flex .ipt {
+    width: 60%
+}
+
+.li-cell .lable {
+    line-height: 1;
+    font-size: 30rpx;
+    margin-bottom: 10rpx
+}
+
+.foot {
+    height: 120rpx;
+}
+
+.fixd-foot {
+    padding: 20rpx 30rpx;
+    background: #f4f7fc;
+    text-align: center;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 998;
+}
+
+.fixd-foot .btn {
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 30rpx;
+}
+
+.btn_org {
+    background: #ff6d3e;
+    color: #fff
+}
+
+.upbtn {
+    height: 200rpx;
+    width: 200rpx;
+    margin-top: 30rpx;
+    border-radius: 4px;
+    overflow: hidden
+}
+
+.upimg {
+    height: 100%;
+    width: 100%;
+    display: block
+}
