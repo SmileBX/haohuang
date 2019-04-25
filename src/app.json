@@ -3,7 +3,8 @@
         "pages/index/main",
         "pages/counter/main",
         "pages/news/main",
-        "pages/my/main"
+        "pages/my/main",
+        "pages/myInfo/main"
     ],
     "subpackages": [{
             "root": "pages/master",

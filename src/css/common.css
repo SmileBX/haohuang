@@ -75,6 +75,18 @@ page {
     margin-bottom: 40rpx !important;
 }
 
+.pt10 {
+    padding-top: 20rpx !important;
+}
+
+.pt20 {
+    padding-top: 40rpx !important;
+}
+
+.pt30 {
+    padding-top: 60rpx !important;
+}
+
 .pb20 {
     padding-bottom: 40rpx !important;
 }
@@ -347,6 +359,10 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     background: #3f8bfe;
     transform: translate(-50%, -50%) scale(1);
     -webkit-transform: translate(-50%, -50%) scale(1);
+}
+
+.radio-group .radio {
+    margin-right: 30rpx;
 }
 
 
@@ -1109,4 +1125,8 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 
 .memberTop .tx_info .name {
     font-weight: 600;
+}
+
+.sex__weui-cell .weui-cell__bd {
+    overflow: visible;
 }
