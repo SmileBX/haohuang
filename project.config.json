@@ -31,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 14,
+			"current": 15,
 			"list": [
 				{
 					"id": 0,
@@ -132,9 +132,16 @@
 					"scene": null
 				},
 				{
+					"id": 14,
+					"name": "师傅的提现方式",
+					"pathName": "pages/master/deposit/main",
+					"query": "",
+					"scene": null
+				},
+				{
 					"id": -1,
 					"name": "师傅的提现",
-					"pathName": "pages/master/deposit/main",
+					"pathName": "pages/master/depositmoney/main",
 					"query": "",
 					"scene": null
 				}

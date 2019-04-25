@@ -15,7 +15,8 @@
                 "smVerify/main",
                 "sum/main",
                 "deposit/main",
-                "integral/main"
+                "integral/main",
+                "depositmoney/main"
             ]
         },
         {
