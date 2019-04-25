@@ -369,6 +369,7 @@
 export default {
     onLoad() {
       this.setBarTitle();
+      
   },
   onShow() {},
   data() {
@@ -379,7 +380,8 @@ export default {
       wx.setNavigationBarTitle({
         title: "我的订单"
       });
-    }
+    },
+    
   }
 }
 </script>

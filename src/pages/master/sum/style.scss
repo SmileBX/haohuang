@@ -1,0 +1,27 @@
+.sum{
+    color:#fff;
+    background:linear-gradient(180deg,#5aa7fb,#6684f5);
+    height:320rpx;
+    width:100%;
+    font-size:20rpx;
+    flex-direction: column;
+    justify-content: center;
+    .money{
+        font-size:46rpx;
+    }
+}
+.tips{
+    font-size:20rpx;
+    color:#aaa;
+    width:100%;
+    text-align: center;
+    margin-top:40rpx;
+}
+.deposit{
+    position:relative;
+    bottom:0;
+    margin-top:130rpx;
+}
+.watch{
+    color:#ff3625;
+}

@@ -189,13 +189,16 @@ export default {
     onLoad(){
         this.setBarTitle()
     },
+   components: {
+    
+    },
     methods:{
         setBarTitle() {
             wx.setNavigationBarTitle({
                 title: "安装下单"
             });
         },
-    }
+    },
 }
 </script>
 <style lang="scss" scoped>

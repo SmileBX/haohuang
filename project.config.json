@@ -31,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 11,
+			"current": 14,
 			"list": [
 				{
 					"id": 0,
@@ -114,6 +114,27 @@
 					"id": -1,
 					"name": "客服的客户订单",
 					"pathName": "pages/servicemenu/customeOrder/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "师傅的余额",
+					"pathName": "pages/master/sum/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "师傅的积分",
+					"pathName": "pages/master/integral/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "师傅的提现",
+					"pathName": "pages/master/deposit/main",
 					"query": "",
 					"scene": null
 				}

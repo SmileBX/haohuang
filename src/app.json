@@ -8,7 +8,12 @@
     ],
     "subpackages": [{
             "root": "pages/master",
-            "pages": ["smVerify/main"]
+            "pages": [
+                "smVerify/main",
+                "sum/main",
+                "deposit/main",
+                "integral/main"
+            ]
         },
         {
             "root": "pages/custom",
