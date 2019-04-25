@@ -4,7 +4,10 @@
         "pages/counter/main",
         "pages/news/main",
         "pages/my/main",
-        "pages/myInfo/main"
+        "pages/myInfo/main",
+        "pages/orderDetail/main",
+        "pages/feedback/main"
+
     ],
     "subpackages": [{
             "root": "pages/master",
@@ -20,7 +23,6 @@
             "pages": [
                 "order/main",
                 "schedule/main",
-                "orderDetail/main",
                 "addressList/main",
                 "addAddress/main",
                 "appraise/main",

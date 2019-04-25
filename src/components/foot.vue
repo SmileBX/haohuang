@@ -12,7 +12,7 @@
           <img v-else src="/static/images/footer/ft2.png" class="iconImg" alt>
           <p class="title">订单</p>
         </li>
-        <li :class="{'active':activeIndex===2}" @click="gotoPage(2)">
+        <li :class="{'active':activeIndex===2}" @click="gotoPage(2)" v-if="identity !==3">
           <div class="circle">
             <img src="/static/images/footer/ft3.png" alt>
             <span>下单</span>
