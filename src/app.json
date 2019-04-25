@@ -1,7 +1,6 @@
 {
     "pages": [
         "pages/index/main",
-        "pages/counter/main",
         "pages/news/main",
         "pages/my/main",
         "pages/myInfo/main",
@@ -12,6 +11,9 @@
     "subpackages": [{
             "root": "pages/master",
             "pages": [
+                "addCrad/main",
+                "cardList/main",
+                "census/main",
                 "smVerify/main",
                 "sum/main",
                 "deposit/main",

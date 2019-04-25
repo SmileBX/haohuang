@@ -119,6 +119,10 @@ page {
     background: #fff !important;
 }
 
+.color_fd5412 {
+    color: #fd5412 !important;
+}
+
 .ellipsis {
     text-overflow: ellipsis;
     overflow: hidden;
