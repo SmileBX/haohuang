@@ -2,7 +2,8 @@
     "pages": [
         "pages/index/main",
         "pages/counter/main",
-        "pages/news/main"
+        "pages/news/main",
+        "pages/my/main"
     ],
     "subpackages": [{
             "root": "pages/master",
@@ -17,7 +18,6 @@
                 "addressList/main",
                 "addAddress/main",
                 "appraise/main",
-                "my/main",
                 "smOrder/main"
             ]
         },
