@@ -373,7 +373,21 @@ page {
 
 
 /* bx */
+/*弹性布局开头对齐*/
 
+.flex-start {
+    justify-content: flex-start
+}
+
+
+/*弹性布局around*/
+
+.flex-around {
+    justify-content: space-around
+}
+.flex-between {
+    justify-content: space-between
+}
 radio .wx-radio-input {
     /* 自定义样式.... */
     height: 40rpx;
@@ -494,7 +508,9 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 
 
 /* tab */
-
+.tabBarBox{
+    height:68rpx;
+}
 .tabBar {
     font-size: 30rpx;
     background: #fff;
