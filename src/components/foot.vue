@@ -95,24 +95,23 @@ export default {
       }
       if (that.identity == 2) {
         //客户
-        if (index === 1 || index === 2 || index===4 ) {
+        if (index === 1 || index === 2 || index === 4) {
           gotoUrl = that.page[index].url[1];
-        }else{
-            gotoUrl = that.page[index].url[0];
+        } else {
+          gotoUrl = that.page[index].url[0];
         }
       }
       if (that.identity == 3) {
         //师傅
-        if (index === 1 || index === 2 || index===4 ) {
+        if (index === 1 || index === 2 || index === 4) {
           gotoUrl = that.page[index].url[2];
-        }else{
+        } else {
           gotoUrl = that.page[index].url[0];
         }
       }
       wx.navigateTo({
-            url: gotoUrl
-        });
-      
+        url: gotoUrl
+      });
     }
   }
 };
