@@ -372,7 +372,34 @@ page {
 }
 
 
+/* numberList */
+
+.numberList {
+    text-align: center;
+    background: #fff;
+    padding: 20rpx 0;
+    margin-bottom: 20rpx;
+    font-size: 30rpx;
+    line-height: 1.4;
+}
+
+.numberList li {
+    padding: 0 20rpx;
+    border-left: 1px solid #e5e5e5;
+}
+
+.numberList li:first-child {
+    border-left: none;
+}
+
+.numberList li .num {
+    font-size: 36rpx;
+}
+
+
 /* bx */
+
+
 /*弹性布局开头对齐*/
 
 .flex-start {
@@ -385,9 +412,11 @@ page {
 .flex-around {
     justify-content: space-around
 }
+
 .flex-between {
     justify-content: space-between
 }
+
 radio .wx-radio-input {
     /* 自定义样式.... */
     height: 40rpx;
@@ -508,9 +537,11 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 
 
 /* tab */
-.tabBarBox{
-    height:68rpx;
+
+.tabBarBox {
+    height: 68rpx;
 }
+
 .tabBar {
     font-size: 30rpx;
     background: #fff;
@@ -578,7 +609,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     width: 64rpx;
     height: 64rpx;
     margin: 0 auto;
-    margin-bottom: 10rpx;
+    margin-bottom: 4rpx;
     position: relative;
 }
 
