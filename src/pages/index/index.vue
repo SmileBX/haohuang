@@ -80,7 +80,7 @@
           </div>
         </div>
       </div>
-      <foot :identity="2"></foot>
+      <foot :identity="1"></foot>
       <!-- 客服 -->
       <movable-view style="z-index:11;" x="300" y="460" direction="all" out-of-bounds="false" >
           <div class="fixed__kf">

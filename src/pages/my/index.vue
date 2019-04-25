@@ -14,6 +14,17 @@
                 </div>
             </div>
         </div>
+        <!-- 这个是师傅的时候才有的 -->
+        <ul class="numberList flex li_50" style="display:none;">
+            <li>
+                <p class="num">0</p>
+                <p class="title">积分</p>
+            </li>
+            <li>
+                <p class="num">0.00</p>
+                <p class="title">余额</p>
+            </li>
+        </ul>
         <div class="memberIndex__section mb10">
             <div class="section__hd weui-cell">
                 <div class="weui-cell__bd">
@@ -25,6 +36,7 @@
                 </div>
             </div>
             <div class="section__bd">
+                <!-- 客户的时候 -->
                 <ul class="navList li_20 center">
                     <li>
                         <div class="outside">
@@ -68,6 +80,43 @@
                         </div>
                     </li>
                 </ul>
+                <!-- 师傅的时候 -->
+                <ul class="navList li_25 center" style="display:none;">
+                    <li>
+                        <div class="outside">
+                            <div class="icon-img">
+                                <img src="/static/images/icons/shigongzhong.png" alt="">
+                            </div>
+                            <p class="title">施工中</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="outside">
+                            <div class="icon-img">
+                                <img src="/static/images/icons/daishenhe.png" alt="">
+                            </div>
+                            <p class="title">待审核</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="outside">
+                            <div class="icon-img">
+                                <img src="/static/images/icons/yianzhuang.png" alt="">
+                                <span class="circleNum">2</span>
+                            </div>
+                            <p class="title">已安装</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="outside">
+                            <div class="icon-img">
+                                <img src="/static/images/icons/weitongguo.png" alt="">
+                            </div>
+                            <p class="title">未通过</p>
+                        </div>
+                    </li>
+                    
+                </ul>
             </div>
         </div>
         <div class="memberIndex__section mb10">
@@ -77,6 +126,7 @@
                 </div>
             </div>
             <div class="section__bd">
+                <!-- 客户的时候 -->
                 <ul class="navList li_25 center navList2">
                     <li>
                         <div class="outside">
@@ -110,7 +160,50 @@
                             <p class="title">意见反馈</p>
                         </div>
                     </li>
-                    
+                </ul>
+                <!-- 师傅的时候 -->
+                <ul class="navList li_25 center navList2" style="display:none;">
+                    <li>
+                        <div class="outside">
+                            <div class="icon-img">
+                                <img src="/static/images/icons/tongji.png" alt="">
+                            </div>
+                            <p class="title">安装统计</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="outside">
+                            <div class="icon-img">
+                                <img src="/static/images/icons/mingxi.png" alt="">
+                            </div>
+                            <p class="title">对账明细</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="outside">
+                            <div class="icon-img">
+                                <img src="/static/images/icons/zhuanshukefu.png" alt="">
+                            </div>
+                            <p class="title">专属客服</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="outside">
+                            <div class="icon-img">
+                                <img src="/static/images/icons/yijianfankui.png" alt="">
+                            </div>
+                            <p class="title">意见反馈</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="outside">
+                            <div class="icon-img">
+                                <img src="/static/images/icons/card.png" alt="">
+                            </div>
+                            <p class="title">银行卡</p>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>

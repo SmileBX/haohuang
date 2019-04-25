@@ -1,0 +1,31 @@
+.payimg{
+    width:64rpx;
+    height:52rpx;
+}
+.cardpic{
+    width:58rpx;
+    height:58rpx;
+}
+.payitem{
+    justify-content: space-between;
+    box-sizing: border-box;
+    height:100rpx;
+    .card .column{
+        flex-direction: column;
+    }
+    .just{
+        align-items: flex-start;
+        margin-left:20rpx;
+    }
+    .cardnum{
+        font-size:24rpx;
+    }
+}
+.bank{
+    border-top:1rpx solid #eee;
+}
+.addcard{
+    // position:relative;
+    // bottom:0;
+    align-items: center;
+}

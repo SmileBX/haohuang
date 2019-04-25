@@ -1,0 +1,39 @@
+
+.cardpic{
+    width:58rpx;
+    height:58rpx;
+}
+.right_arrow{
+    width:14rpx;;
+    height:26rpx;
+}
+.title{
+    justify-content: space-between;
+    padding:30rpx 0;
+    .cardnnum{
+        margin-top:23rpx;
+    }
+}
+.charge{
+    border-top:1rpx solid #e3e3e3;
+    border-bottom:1rpx solid #e3e3e3;
+    padding:25rpx 0;
+    justify-content: space-between;
+    .apoint{
+        padding:10rpx 0;
+    }
+    input{
+         flex-grow: 1;
+         margin-left:20rpx;
+    }
+    
+}
+.tips{
+    font-size: 24rpx;
+    color:#aaa;
+    margin:32rpx 0 146rpx;
+}
+.addcard{
+    position:relative;
+    bottom:0;
+}

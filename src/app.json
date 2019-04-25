@@ -4,18 +4,26 @@
         "pages/counter/main",
         "pages/news/main",
         "pages/my/main",
-        "pages/myInfo/main"
+        "pages/myInfo/main",
+        "pages/orderDetail/main",
+        "pages/feedback/main"
+
     ],
     "subpackages": [{
             "root": "pages/master",
-            "pages": ["smVerify/main"]
+            "pages": [
+                "smVerify/main",
+                "sum/main",
+                "deposit/main",
+                "integral/main",
+                "depositmoney/main"
+            ]
         },
         {
             "root": "pages/custom",
             "pages": [
                 "order/main",
                 "schedule/main",
-                "orderDetail/main",
                 "addressList/main",
                 "addAddress/main",
                 "appraise/main",
@@ -28,7 +36,8 @@
                 "installOrder/main",
                 "myOrder/main",
                 "bindCustomInfo/main",
-                "orderDetail/main"
+                "orderDetail/main",
+                "customeOrder/main"
             ]
         },
         {
