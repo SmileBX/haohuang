@@ -35,7 +35,7 @@
 <script>
 import { getCurrentPageUrlWithArgs } from "@/utils";
 export default {
-  props: ["goUrl"],
+  props: ["identity"],   //identity: 1:客服；2：客户；3：师傅
   onLoad() {
     this.curPage = getCurrentPageUrlWithArgs();
     let that = this;
@@ -89,19 +89,19 @@ export default {
     gotoPage(index) {
         let that = this;
         let gotoUrl = '';
-      if (that.goUrl) {
-        gotoUrl = that.goUrl;
-      }else{
-        gotoUrl = that.page[index].url[0];
-      }
-      console.log("gotoUrl:"+gotoUrl);
-      if(gotoUrl == that.curPage){
-        return false;
-      }else{
-        wx.navigateTo({
-            url: gotoUrl
-        });
-      }
+      // if (that.goUrl) {
+      //   gotoUrl = that.goUrl;
+      // }else{
+      //   gotoUrl = that.page[index].url[0];
+      // }
+      // console.log("gotoUrl:"+gotoUrl);
+      // if(gotoUrl == that.curPage){
+      //   return false;
+      // }else{
+      //   wx.navigateTo({
+      //       url: gotoUrl
+      //   });
+      // }
       
     }
   }
