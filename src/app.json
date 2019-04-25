@@ -27,7 +27,8 @@
                 "installOrder/main",
                 "myOrder/main",
                 "bindCustomInfo/main",
-                "orderDetail/main"
+                "orderDetail/main",
+                "customeOrder/main"
             ]
         }
     ],

@@ -9,28 +9,20 @@
           <span class="title">待确认</span>
         </li>
         <li>
-          <span class="title">待付款</span>
+          <span class="title">已指派</span>
         </li>
         <li>
-          <span class="title">处理中</span>
+          <span class="title">安装中</span>
         </li>
         <li>
-          <span class="title">待评价</span>
+          <span class="title">已完成</span>
         </li>
       </ul>
     </div>
-    <!-- 搜索 -->
-    <div class="searchBox">
-      <div class="search flex flexAlignCenter fixed border-box" style="top:80rpx;">
-        <div class="ipt flex1">
-          <input type="text" class="weui-input"  disabled placeholder="请选择区域">
-        </div>
-        <div class="btn">搜索</div>
-      </div>
-    </div>
+    <!-- 订单列表-->
     <div class="tabContent">
       <!-- 订单 -->
-      <div class="column levelPanel bg__levelPanel order__levelPanel">
+      <div class="column levelPanel bg__levelPanel order__levelPanel"  style="margin-top:20rpx;">
         <div class="item">
           <div class="item__hd flex">
             <div class="flex1">
@@ -342,26 +334,6 @@
           </div> -->
         </div>
       </div>
-    </div>
-    <!-- 取消订单弹窗 -->
-    <div class="modal" style="display:none;">
-        <div class="mask"></div>
-        <div class="modal-content bottom__modal-content" style="height:680rpx;">
-            <div class="modal__hd bb__modal__hd">
-                <span class="close"><img src="/static/images/icons/close.png"   alt=""></span>
-                <h2 class="title">取消原因</h2>
-            </div>
-            <div class="modal__bd">
-                <div class="eaditArea">
-                    <textarea name="" placeholder="请备注说明原因" id="" class="weui-area"></textarea>
-                </div>
-            </div>
-            <div class="modal__ft flex ftBtn" style="height:100rpx;">
-                <div class="inner fixed bm0 border-box" style="padding:0;">
-                    <div class="btn btn-active fill" style="border-radius:0;">确定</div>
-                </div>
-            </div>
-        </div>
     </div>
   </div>
 </template>

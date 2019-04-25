@@ -1,0 +1,11 @@
+.page{
+    height: 100vh;
+}
+.tabContent{
+    height:calc(100vh-68rpx);
+    overflow: hidden;
+    overflow-y:auto;
+}
+.outside{
+    align-items: flex-start!important
+}
