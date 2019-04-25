@@ -80,7 +80,7 @@ export default {
         {
           //我的
           index: 4,
-          url: ["/pages/custom/my/main"]
+          url: ["/pages/my/main"]
         }
       ]
     };
@@ -95,7 +95,7 @@ export default {
       }
       if (that.identity == 2) {
         //客户
-        if (index === 1 || index === 2 || index === 4) {
+        if (index === 1 || index === 2) {
           gotoUrl = that.page[index].url[1];
         } else {
           gotoUrl = that.page[index].url[0];
@@ -103,7 +103,7 @@ export default {
       }
       if (that.identity == 3) {
         //师傅
-        if (index === 1 || index === 2 || index === 4) {
+        if (index === 1 || index === 2) {
           gotoUrl = that.page[index].url[2];
         } else {
           gotoUrl = that.page[index].url[0];

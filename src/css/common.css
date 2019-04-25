@@ -75,6 +75,18 @@ page {
     margin-bottom: 40rpx !important;
 }
 
+.pt10 {
+    padding-top: 20rpx !important;
+}
+
+.pt20 {
+    padding-top: 40rpx !important;
+}
+
+.pt30 {
+    padding-top: 60rpx !important;
+}
+
 .pb20 {
     padding-bottom: 40rpx !important;
 }
@@ -363,6 +375,10 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     -webkit-transform: translate(-50%, -50%) scale(1);
 }
 
+.radio-group .radio {
+    margin-right: 30rpx;
+}
+
 
 /*底部按钮样式*/
 
@@ -484,6 +500,64 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 
 .tabBar li.active .title::after {
     background: #3f8bfe;
+}
+
+
+/* navList */
+
+.navList {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    flex-flow: row wrap;
+    -webkit-flex-flow: row wrap;
+    -moz-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    -o-flex-flow: row wrap;
+    background-color: #fff;
+    line-height: 1.4;
+    font-size: 26rpx;
+    padding: 16rpx 0;
+}
+
+.navList li .outside {
+    display: block;
+    padding: 16rpx 10rpx;
+    color: #505050;
+}
+
+.navList li .icon-img {
+    width: 64rpx;
+    height: 64rpx;
+    margin: 0 auto;
+    margin-bottom: 10rpx;
+    position: relative;
+}
+
+.navList li img {
+    width: 64rpx;
+    height: 64rpx;
+}
+
+.circleNum {
+    position: absolute;
+    content: "";
+    top: -8rpx;
+    right: -8rpx;
+    font-size: 20rpx;
+    color: #fff;
+    background-color: #ff5c29;
+    width: 36rpx;
+    height: 36rpx;
+    line-height: 36rpx;
+    border-radius: 50%;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 
@@ -984,8 +1058,91 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     font-size: 24rpx;
     color: #999;
 }
-/*页面内边距*/
-.allPadd{
-    padding:0 30rpx;
 
+
+/*页面内边距*/
+
+.allPadd {
+    padding: 0 30rpx;
+}
+
+
+/* 会员中心 */
+
+.memberIndex__section {
+    background: #fff;
+}
+
+.memberIndex__section .section__hd {
+    line-height: 1.8;
+    position: relative;
+    font-size: 32rpx;
+}
+
+.memberIndex__section .section__hd::before {
+    position: absolute;
+    content: "";
+    left: 30rpx;
+    right: 30rpx;
+    bottom: 0;
+    height: 1px;
+    background: #e5e5e5;
+}
+
+.memberIndex__section .section__hd .weui-cell__ft {
+    margin-right: -20rpx;
+    font-size: 26rpx;
+    color: #505050;
+}
+
+.memberTop {
+    padding: 80rpx 30rpx;
+    position: relative;
+}
+
+.memberTop .bg_img {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    height: 100%;
+}
+
+.memberTop .conBox {
+    position: relative;
+    z-index: 3;
+}
+
+.tx_info .tx {
+    width: 120rpx;
+    height: 120rpx;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    margin-right: 24rpx;
+    background: #fff;
+    box-shadow: 2px 2px 2px #e6e7f8;
+}
+
+.tx_info .tx img {
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 50%;
+}
+
+.tx_info .info {
+    color: #333333;
+}
+
+.tx_info .name {
+    font-size: 32rpx;
+    margin-bottom: 8rpx;
+}
+
+.memberTop .tx_info .name {
+    font-weight: 600;
+}
+
+.sex__weui-cell .weui-cell__bd {
+    overflow: visible;
 }

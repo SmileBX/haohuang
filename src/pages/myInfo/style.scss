@@ -1,0 +1,40 @@
+.userhead {
+    padding: 40rpx;
+    text-align: center;
+    background: #fff;
+    margin-top: 20rpx;
+}
+
+.userhead .tx {
+    display: inline-block;
+}
+
+.userhead .tx img {
+    display: block;
+    width: 140rpx;
+    height: 140rpx;
+    margin-bottom: 10rpx;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.userhead .tx .txt {
+    color: #999;
+}
+
+.weui-cell .weui-label {
+    width: 160rpx;
+    display: block;
+}
+
+.infoForm .weui-cell__bd {
+    color: #666666;
+}
+
+.radio-group .radio {
+    margin-right: 70rpx;
+}
+
+.radio-group .radio:last-child {
+    margin-right: 0;
+}
