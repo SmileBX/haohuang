@@ -1,0 +1,104 @@
+.login {
+    padding: 40rpx;
+}
+
+.logo {
+    width: 100%;
+    padding: 100rpx 0;
+    text-align: center
+}
+
+.logoimg {
+    width: 150rpx;
+    height: 150rpx;
+}
+
+.login-btn {
+    padding: 6rpx 0;
+    font-size: 30rpx;
+    margin-bottom: 30rpx
+}
+
+.btn_gree {
+    background: #19ab18;
+    color: #fff
+}
+
+.info {
+    text-align: center;
+    margin-top: 100rpx
+}
+
+.info span {
+    display: inline;
+    color: #004898
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.popup-tel {
+    width: 100%;
+    background: #ffffff;
+    padding: 40rpx 40rpx;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 101;
+}
+
+.popup-tel .ul-list .li-cell {
+    padding: 20rpx 0;
+    border-bottom: 1px solid #eee;
+}
+
+.popup-tel .pop-hd {
+    line-height: 80rpx;
+    font-size: 32rpx;
+    margin-bottom: 30rpx;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.popup-tel .pop-hd .logomin {
+    display: block;
+    height: 80rpx;
+    width: 80rpx;
+    border-radius: 50%;
+}
+
+.popup-tel .pop-hd span {
+    margin: 0 20rpx
+}
+
+.popup-tel .ul-list .li-cell:last-child {
+    border-bottom: none;
+}
+
+.popup-tel .h2 {
+    font-size: 54rpx
+}
+
+.popup-tel .li-cell-l span {
+    margin-right: 20rpx
+}
+
+.popModal .btn {
+    text-align: center;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 30rpx;
+    width: 320rpx;
+    border-radius: 6px;
+    background: #ededed;
+    color: #333
+}
+
+.popModal .btn.btn_gree {
+    background: #07c062;
+    color: #fff;
+}

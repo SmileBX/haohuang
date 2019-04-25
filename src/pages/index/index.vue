@@ -127,7 +127,7 @@ export default {
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
-        title: "浩慌"
+        title: "浩煌"
       });
     }
   }

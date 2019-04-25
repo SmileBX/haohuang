@@ -17,7 +17,8 @@
                 "smVerify/main",
                 "sum/main",
                 "deposit/main",
-                "integral/main"
+                "integral/main",
+                "depositmoney/main"
             ]
         },
         {
@@ -39,6 +40,16 @@
                 "bindCustomInfo/main",
                 "orderDetail/main",
                 "customeOrder/main"
+            ]
+        },
+        {
+            "root": "pages/Account",
+            "pages": [
+                "login/main",
+                "warrant/main",
+                "loginfrom/main",
+                "register/main",
+                "FillInfp/main"
             ]
         }
     ],
