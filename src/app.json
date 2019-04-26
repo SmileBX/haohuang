@@ -7,8 +7,12 @@
         "pages/orderDetail/main",
         "pages/feedback/main",
         "pages/newsList/main",
-        "pages/newsDetail/main"
-
+        "pages/newsDetail/main",
+        "pages/login/main",
+        "pages/warrant/main",
+        "pages/loginfrom/main",
+        "pages/register/main",
+        "pages/FillInfp/main"
     ],
     "subpackages": [{
             "root": "pages/master",
@@ -45,16 +49,6 @@
                 "bindCustomInfo/main",
                 "orderDetail/main",
                 "customeOrder/main"
-            ]
-        },
-        {
-            "root": "pages/Account",
-            "pages": [
-                "login/main",
-                "warrant/main",
-                "loginfrom/main",
-                "register/main",
-                "FillInfp/main"
             ]
         }
     ],
