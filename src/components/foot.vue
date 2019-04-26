@@ -54,7 +54,7 @@ export default {
   onShow() {},
   data() {
     return {
-      activeIndex: 0,
+      activeIndex: "",
       curPage: "",
       page: [
         {

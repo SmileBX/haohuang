@@ -53,28 +53,26 @@ function request(url, method, data, curPage, header = {}) {
             },
             success: function(res) {
                 wx.hideLoading();
-                //console.log(res,"全局方法")
-                switch (res.data.code) {
-                    case 0:
-                        resolve(res.data);
-                        break;
-                    case 2:
-                        wx.showToast({
-                                title: '需要重新登录!',
-                                icon: 'none'
-                            })
-                            // logins();
-                        setTimeout(() => {
-                            wx.redirectTo({ url: '/pages/login/main?askUrl=' + curPage })
-                        }, 1000)
-                        reject(false)
-                        break;
-                    default:
-                        reject(false)
-                        wx.showToast({
-                            title: res.msg + '!',
+                if (res.data.code === 0) {
+                    resolve(res.data);
+                } else if (res.data.code === 2) {
+                    wx.showToast({
+                            title: '需要重新登录!',
                             icon: 'none'
                         })
+                        // logins();
+                    setTimeout(() => {
+                        wx.redirectTo({
+                            url: '/pages/login/main?askUrl=' + curPage
+                        })
+                    }, 1000);
+                    reject(false);
+                } else {
+                    wx.showToast({
+                        title: res.data.msg + '!',
+                        icon: 'none'
+                    })
+                    reject(false)
                 }
             },
             fail: function(error) {
@@ -115,7 +113,28 @@ export function toLogin(objUrl) { //identity: 1:客服；2：客户；3：师傅
     }
 }
 
-
+//验证手机号
+export function valPhone(tel) {
+    var r_phone = /^[1][3,4,5,6,7,8][0-9]{9}$/;
+    // var phoneNumber = $.trim($('#phoneNumber').val());
+    if (tel == "") {
+        wx.showToast({
+            title: "手机号不能为空!",
+            icon: "none",
+            duration: 2000
+        });
+        return false;
+    }
+    if (!r_phone.test(tel)) {
+        wx.showToast({
+            title: "请输入正确的手机格式!",
+            icon: "none",
+            duration: 2000
+        });
+        return false;
+    }
+    return true;
+}
 
 export default {
     host,
@@ -124,5 +143,6 @@ export default {
     post,
     formatNumber,
     formatTime,
-    getCurrentPageUrlWithArgs
+    getCurrentPageUrlWithArgs,
+    valPhone: valPhone
 }
