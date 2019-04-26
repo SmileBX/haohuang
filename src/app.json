@@ -5,12 +5,16 @@
         "pages/my/main",
         "pages/myInfo/main",
         "pages/orderDetail/main",
-        "pages/feedback/main"
+        "pages/feedback/main",
+        "pages/newsList/main",
+        "pages/newsDetail/main"
 
     ],
     "subpackages": [{
             "root": "pages/master",
             "pages": [
+                "addCradSuccess/main",
+                "addCrad2/main",
                 "addCrad/main",
                 "cardList/main",
                 "census/main",

@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="tips__txt flex">
-      <img src alt>
+      <img src="/static/images/icons/tips.png" alt class="icon_tips">
       <div class="txtBox flex1">
            姓名必须和身份证中的一样，务必保证银行卡信息正确，否则无法退款
       </div>
@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div class="ftBtn">
+    <div class="ftBtn pt20 pb20">
       <div class="inner">
         <div class="btn btn-active fill">下一步</div>
       </div>

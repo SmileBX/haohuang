@@ -376,6 +376,22 @@ page {
 }
 
 
+/* tips__txt */
+
+.tips__txt {
+    font-size: 24rpx;
+    color: #878787;
+    padding: 14rpx 30rpx;
+    line-height: 1.4;
+}
+
+.tips__txt .icon_tips {
+    width: 36rpx;
+    height: 36rpx;
+    margin-right: 18rpx;
+}
+
+
 /* numberList */
 
 .numberList {

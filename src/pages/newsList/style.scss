@@ -1,0 +1,38 @@
+.newsList {
+    padding: 0 40rpx;
+}
+
+.newsList .item {
+    margin: 30rpx 0;
+}
+
+.item .time {
+    font-size: 24rpx;
+}
+
+.item .time span {
+    background: #cfd0d4;
+    color: #fff;
+    padding: 4rpx 10rpx;
+    border-radius: 4rpx;
+}
+
+.contentBox {
+    background: #fff;
+    border-radius: 10rpx;
+    padding: 0 30rpx;
+    font-size: 26rpx;
+    color: #666666;
+    margin-top: 30rpx;
+}
+
+.contentBox .title {
+    font-size: 30rpx;
+    padding: 20rpx 0;
+    border-bottom: 1px solid #e5e5e5;
+    color: #000;
+}
+
+.contentBox .con {
+    padding: 20rpx 0;
+}
