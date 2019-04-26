@@ -1,0 +1,43 @@
+.login {
+    padding: 40rpx;
+}
+
+.logo {
+    width: 100%;
+    padding: 100rpx 0;
+    text-align: center
+}
+
+.logoimg {
+    width: 150rpx;
+    height: 150rpx;
+}
+
+.login-btn {
+    padding: 6rpx 0;
+    font-size: 30rpx;
+    margin-bottom: 30rpx
+}
+
+.btn_gree {
+    background: #19ab18;
+    color: #fff
+}
+
+.auth-text {
+    padding: 0 40rpx 40rpx;
+    text-align: justify;
+}
+
+.auth-text .main {
+    display: block;
+    font-size: 30rpx;
+    font-weight: 600
+}
+
+.auth-text .sub {
+    display: block;
+    font-size: 28rpx;
+    color: #888;
+    margin-top: 20rpx;
+}

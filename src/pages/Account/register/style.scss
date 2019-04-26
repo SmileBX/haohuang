@@ -1,0 +1,113 @@
+.login {
+    padding: 40rpx;
+}
+
+.logo {
+    width: 100%;
+    padding: 10rpx 0 50rpx;
+    text-align: center
+}
+
+.logoimg {
+    width: 150rpx;
+    height: 150rpx;
+}
+
+.login-btn {
+    padding: 6rpx 0;
+    font-size: 30rpx;
+    margin-bottom: 30rpx;
+}
+
+.btn_org {
+    background: #ff6d3e;
+    color: #fff
+}
+
+.btn_org.dis {
+    background: #fc9677;
+    color: #fff
+}
+
+.info {
+    text-align: center;
+    margin-top: 100rpx
+}
+
+.info span {
+    display: inline;
+    color: #004898
+}
+
+.from {
+    margin-bottom: 40rpx
+}
+
+.from .ipt {
+    height: 60rpx;
+    width: 100%;
+    font-size: 30rpx
+}
+
+.tabbar {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    margin-bottom: 20upx
+}
+
+.tabbar .tab-item {
+    width: 50%;
+    line-height: 80rpx;
+    font-size: 30rpx;
+}
+
+.tabbar .tab-item.active {
+    color: #ff6d3e
+}
+
+.tabbar .s {
+    display: inline-block;
+    border-bottom: 1px solid transparent;
+}
+
+.tabbar .tab-item.active .s {
+    border-bottom-color: #ff6d3e
+}
+
+.ul-list .li-cell {
+    border-bottom: 1px solid #eee;
+    padding: 20rpx 10rpx;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.li-cell.flex .ipt {
+    width: 60%
+}
+
+.li-cell-r {
+    color: #666;
+    line-height: 60rpx;
+}
+
+.getCode {
+    display: block;
+    width: 200rpx;
+    text-align: center;
+    position: relative;
+}
+
+.getCode::before {
+    display: block;
+    content: "";
+    height: 40rpx;
+    border-left: 1px solid #e2e2e2;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top: -20rpx
+}

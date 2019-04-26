@@ -1,0 +1,87 @@
+.sum {
+    color: #fff;
+    background: linear-gradient(180deg, #5aa7fb, #6684f5);
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    padding: 70rpx 30rpx 26rpx;
+    text-align: center;
+}
+
+.sum .priceBox {
+    font-size: 20rpx;
+    margin-bottom: 70rpx;
+}
+
+.sum .money {
+    font-size: 46rpx;
+}
+
+.tabBox .numberList {
+    background: none;
+    border-radius: 200rpx;
+    border: 1px solid rgba(255, 255, 255, .5);
+    margin-bottom: 0;
+    font-size: 28rpx;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+}
+
+.tabBox .numberList li {
+    padding: 0 20rpx;
+    line-height: 56rpx;
+    border-left: none;
+    position: relative;
+}
+
+.tabBox .numberList li::before {
+    position: absolute;
+    content: "";
+    left: -1px;
+    height: 26rpx;
+    top: 50%;
+    margin-top: -13rpx;
+    width: 1px;
+    background: rgba(255, 255, 255, .4);
+}
+
+.tabBox .numberList li:first-child::before {
+    display: none;
+}
+
+.tabBox .numberList li.active {
+    background: rgba(255, 255, 255, .4)
+}
+
+.census__section {
+    margin-top: 20rpx;
+    color: #5e5e5e;
+}
+
+.section__hd {
+    padding: 20rpx 30rpx;
+    line-height: 1.8;
+    font-size: 32rpx;
+    position: relative;
+}
+
+.section__hd::before {
+    position: absolute;
+    bottom: 0;
+    content: "";
+    left: 30rpx;
+    right: 30rpx;
+    height: 1px;
+    background: #e5e5e5;
+}
+
+.numberList2 {
+    color: #5e5e5e;
+    padding: 30rpx 0;
+}
+
+.numberList2 .num {
+    font-size: 32rpx;
+    margin-top: 10rpx;
+}

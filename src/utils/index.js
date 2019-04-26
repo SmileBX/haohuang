@@ -1,4 +1,8 @@
-function formatNumber(n) {
+//API接口地址
+const host = 'http://hhapi.wtvxin.com/api/';
+const filePath = 'https://hh.wtvxin.com';
+
+export function formatNumber(n) {
     const str = n.toString()
     return str[1] ? str : `0${str}`
 }
@@ -73,7 +77,73 @@ export function getCurrentPageUrlWithArgs() {
     return urlWithArgs
 }
 
+//请求封装
+function request(url, method, data, curPage, header = {}) {
+    wx.showLoading({
+        title: '加载中' //数据请求前loading
+    })
+    return new Promise((resolve, reject) => {
+        wx.request({
+            url: host + url, //仅为示例，并非真实的接口地址
+            method: method,
+            data: data,
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            success: function(res) {
+                wx.hideLoading();
+                switch (res.code) {
+                    case 0:
+                        resolve(res.data);
+                        break;
+                    case 2:
+                        wx.showToast({
+                                title: '需要重新登录!',
+                                icon: 'none'
+                            })
+                            // logins();
+                        setTimeout(() => {
+                            wx.navigateTo({ url: '/pages/login/main?askUrl=' + curPage })
+                        }, 1000)
+                        reject(false)
+                        break;
+                    default:
+                        reject(false)
+                        wx.showToast({
+                            title: res.msg + '!',
+                            icon: 'none'
+                        })
+                }
+            },
+            fail: function(error) {
+                wx.hideLoading();
+                wx.showToast({
+                    title: error + '，请刷新页面重试!',
+                    icon: 'none'
+                })
+                reject(false)
+            },
+            complete: function() {
+                wx.hideLoading();
+            }
+        })
+    })
+}
+
+export function get(url, data, curpage) { //curpage：是传进来的当前地址在没有登录的时候，把这个参数传到登录哪里，如果登录了就跳回curpage
+    return request(url, 'GET', data, curpage)
+}
+
+export function post(url, data, curpage) {
+    return request(url, 'POST', data, curpage)
+}
+
+
 export default {
+    host,
+    filePath,
+    get,
+    post,
     formatNumber,
     formatTime,
     getCurrentPageUrlWithArgs

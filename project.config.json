@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
 	"description": "项目配置文件。",
 	"setting": {
 		"urlCheck": true,
@@ -155,4 +156,184 @@
 			]
 		}
 	}
+=======
+    "description": "项目配置文件。",
+    "setting": {
+        "urlCheck": true,
+        "es6": false,
+        "postcss": true,
+        "minified": true,
+        "newFeature": true
+    },
+    "miniprogramRoot": "dist/wx/",
+    "compileType": "miniprogram",
+    "appid": "wx73dbae1cbf851757",
+    "projectname": "my-project",
+    "simulatorType": "wechat",
+    "simulatorPluginLibVersion": {},
+    "condition": {
+        "search": {
+            "current": -1,
+            "list": []
+        },
+        "conversation": {
+            "current": -1,
+            "list": []
+        },
+        "plugin": {
+            "current": -1,
+            "list": []
+        },
+        "game": {
+            "currentL": -1,
+            "list": []
+        },
+        "miniprogram": {
+            "current": 15,
+            "list": [{
+                    "id": 0,
+                    "name": "师傅的提交审核",
+                    "pathName": "pages/master/smVerify/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客户的我的订单",
+                    "pathName": "pages/custom/order/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客户的查看进度",
+                    "pathName": "pages/custom/schedule/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客户的订单详情",
+                    "pathName": "pages/custom/orderDetail/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客户的收货地址",
+                    "pathName": "pages/custom/addressList/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "新增地址",
+                    "pathName": "pages/custom/addAddress/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "发表评价",
+                    "pathName": "pages/custom/appraise/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客服安装下单",
+                    "pathName": "pages/servicemenu/installOrder/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": 8,
+                    "name": "客服绑定客户信息",
+                    "pathName": "pages/servicemenu/bindCustomInfo/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客服的我的订单",
+                    "pathName": "pages/servicemenu/myOrder/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客服订单详情",
+                    "pathName": "pages/servicemenu/orderDetail/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    <<
+                    << << < HEAD "name": "登录",
+                    "pathName": "pages/Account/login/main",
+                    ===
+                    === =
+                    "name": "客服的客户订单",
+                    "pathName": "pages/servicemenu/customeOrder/main",
+                    >>>
+                    >>> > 35e e15faa998be9a88b9b5dbe9111c3dba185ee7 "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    <<
+                    << << < HEAD "name": "登录授权",
+                    "pathName": "pages/Account/warrant/main",
+                    ===
+                    === =
+                    "name": "师傅的余额",
+                    "pathName": "pages/master/sum/main",
+                    >>>
+                    >>> > 35e e15faa998be9a88b9b5dbe9111c3dba185ee7 "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    <<
+                    << << < HEAD "name": "密码登录",
+                    "pathName": "pages/Account/loginfrom/main",
+                    ===
+                    === =
+                    "name": "师傅的积分",
+                    "pathName": "pages/master/integral/main",
+                    >>>
+                    >>> > 35e e15faa998be9a88b9b5dbe9111c3dba185ee7 "query": "",
+                    "scene": null
+                },
+                { <<
+                    << << < HEAD "id": -1,
+                    "name": "注册",
+                    "pathName": "pages/Account/register/main",
+                    ===
+                    === =
+                    "id": 14,
+                    "name": "师傅的提现方式",
+                    "pathName": "pages/master/deposit/main",
+                    >>>
+                    >>> > 35e e15faa998be9a88b9b5dbe9111c3dba185ee7 "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    <<
+                    << << < HEAD "name": "填写审核资料",
+                    "pathName": "pages/Account/FillInfp/main",
+                    ===
+                    === =
+                    "name": "师傅的提现",
+                    "pathName": "pages/master/depositmoney/main",
+                    "query": "",
+                    >>>
+                    >>> > 35e e15faa998be9a88b9b5dbe9111c3dba185ee7 "scene": null
+                }
+            ]
+        }
+    }
+>>>>>>> 34ff8285dd98a8c11bb8407fa6e28dc25fb69c49
 }
