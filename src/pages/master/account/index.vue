@@ -21,8 +21,8 @@
         </div>
         
      </div>
-     <p style="text-align:center;font-size:30rpx;color:#666;padding:120rpx 20rpx 80rpx;">暂无数据</p>
-    <p class="ovedMsg" v-if="isOved" style="text-align:center;padding:20rpx;font-size:26rpx;color:#666;">我也是有底线的</p> 
+     <!-- <p style="text-align:center;font-size:30rpx;color:#666;padding:120rpx 20rpx 80rpx;">暂无数据</p>
+    <p class="ovedMsg" v-if="isOved" style="text-align:center;padding:20rpx;font-size:26rpx;color:#666;">我也是有底线的</p>  -->
   </div>
 </template>
 
@@ -44,7 +44,7 @@ export default {
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
-        title: "我的积分"
+        title: "对账明细"
       });
     }
     
