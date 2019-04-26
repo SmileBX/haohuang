@@ -28,7 +28,8 @@
                 "deposit/main",
                 "integral/main",
                 "depositmoney/main",
-                "account/main"
+                "account/main",
+                "chooseBank/main"
             ]
         },
         {

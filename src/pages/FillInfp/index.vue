@@ -10,7 +10,11 @@
                     <div class="lable">身份证号</div>
                     <input class="ipt" type="text" placeholder="请输入您的身份证号">
                 </div>
-                 <div class="li-cell">
+                <div class="li-cell">
+                    <div class="lable">银行名称</div>
+                    <input class="ipt" type="text" placeholder="请输入银行名称">
+                </div>
+                <div class="li-cell">
                     <div class="lable">开户行名称</div>
                     <input class="ipt" type="text" placeholder="请输入您的开户行名称">
                 </div>

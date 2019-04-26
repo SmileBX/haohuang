@@ -1,8 +1,8 @@
 <template>
   <div class="allPadd">
       <radio-group @change="changes">
-        <!--微信-->
-          <label class="column payitem">
+        <!-- 微信 -->
+          <!-- <label class="column payitem">
             <div class="column">
               <img src="/static/images/icons/wx.png" class="payimg">
               <div class="column just">
@@ -10,7 +10,7 @@
               </div>
             </div>
             <input type="radio" name="payType" :checked="payType==0" value="0">
-          </label>
+          </label> -->
           <!--银行卡-->
           <div class="bank">
               <label class="column payitem">
