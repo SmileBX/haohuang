@@ -39,7 +39,7 @@ export function getCurrentPageUrlWithArgs() {
 }
 
 //请求封装
-function request(url, method, data, identity, curPage, header = {}) {
+function request(url, method, data, curPage, header = {}) {
     wx.showLoading({
         title: '加载中' //数据请求前loading
     })
@@ -64,7 +64,7 @@ function request(url, method, data, identity, curPage, header = {}) {
                             })
                             // logins();
                         setTimeout(() => {
-                            wx.redirectTo({ url: '/pages/login/main?identity=' + identity + 'askUrl=' + curPage })
+                            wx.redirectTo({ url: '/pages/login/main?askUrl=' + curPage })
                         }, 1000)
                         reject(false)
                         break;
@@ -91,16 +91,16 @@ function request(url, method, data, identity, curPage, header = {}) {
     })
 }
 
-export function get(url, data, identity, curpage) { //curpage：是传进来的当前地址在没有登录的时候，把这个参数传到登录哪里，如果登录了就跳回curpage
-    return request(url, 'GET', data, identity, curpage)
+export function get(url, data, curpage) { //curpage：是传进来的当前地址在没有登录的时候，把这个参数传到登录哪里，如果登录了就跳回curpage
+    return request(url, 'GET', data, curpage)
 }
 
-export function post(url, data, identity, curpage) {
-    return request(url, 'POST', data, identity, curpage)
+export function post(url, data, curpage) {
+    return request(url, 'POST', data, curpage)
 }
 
 //提供全局方法，维护和判断accessToken
-export function toLogin(identity, objUrl) { //identity: 1:客服；2：客户；3：师傅
+export function toLogin(objUrl) { //identity: 1:客服；2：客户；3：师傅
     const userId = wx.getStorageSync('userId');
     const token = wx.getStorageSync('token');
     if (userInfo && userId && token) {
@@ -108,7 +108,7 @@ export function toLogin(identity, objUrl) { //identity: 1:客服；2：客户；
     } else {
         var objUrl = objUrl.replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
         wx.redirectTo({
-            url: "/pages/login/main?identity=" + identity + "&askUrl=" + objUrl
+            url: "/pages/login/main?askUrl=" + objUrl
         });
         return false;
     }
