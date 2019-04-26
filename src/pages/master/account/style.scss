@@ -1,0 +1,37 @@
+.account{
+    border-top:1rpx solid #e3e3e3;
+    color:#5f5f5f;
+    .tips{
+        padding:20rpx 0;
+        p+p{
+            margin-top:20rpx;
+        }
+    }
+}
+/*订单模块*/
+.scorelist{
+    margin-top:10rpx;
+    .scoreitem{
+        justify-content: space-between;
+        align-items: flex-start;
+        padding:0;
+        .time{
+            font-size:22rpx;
+            color:#aaa;
+            margin-top:5rpx;
+        }
+    }
+    .scoreitem:not(:first-child){
+        margin-top:20rpx;
+    }
+    .iteminfo{
+        flex-direction: column;
+        align-items: flex-start;
+        .orderInfo{
+            margin-top:10rpx;
+        }
+    }
+}
+.itemcolor{
+    color:#ff6325;
+}
