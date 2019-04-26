@@ -72,6 +72,7 @@ export default {
     this.identity = this.$root.$mp.query.identity;
     //identity: 1:客服；2：客户；3：师傅
     //验证码类型 会员注册0,会员登录1,会员找回密码2,会员重新绑定手机3,会员找回支付密码4,会员微信绑定手机号5,师傅登录6,师傅注册7,客服登录8,订单通知9
+    console.log(this.identity);
     if (this.identity == 1) {
       this.codeType = 8;
     }
@@ -144,8 +145,10 @@ export default {
           //客服
           if (this.type == 0) {
             //密码登录
+            this.CustomerServiceLoginByMobile();
           }
           if (this.type == 1) {
+              this.CustomerServiceLoginByCode();
           } else {
             return false;
           }
@@ -166,8 +169,10 @@ export default {
           //师傅
           if (this.type == 0) {
             //密码登录
+            this.InstalMasterLoginByMobile();
           }
           if (this.type == 1) {
+            this.InstalMasterLoginByCode();
           } else {
             return false;
           }
@@ -218,6 +223,7 @@ export default {
         VerifyCode: this.Code
       });
       if (result.code === 0) {
+          let that = this;
         wx.setStorageSync("userId", result.MemberId);
         wx.setStorageSync("token", result.MemberToken);
         wx.showToast({
@@ -227,7 +233,7 @@ export default {
           success: function() {
             setTimeout(function() {
               wx.redirectTo({
-                url: "/pages/my/main?identity="+that.identity
+                url: "/pages/my/main?identity=" + that.identity
               });
             }, 1500);
           }
@@ -251,7 +257,105 @@ export default {
           success: function() {
             setTimeout(function() {
               wx.redirectTo({
-                url: "/pages/my/main?identity="+that.identity
+                url: "/pages/my/main?identity=" + that.identity
+              });
+            }, 1500);
+          }
+        });
+      }
+    },
+    //师傅的
+    //密码登录
+    async InstalMasterLoginByMobile() {
+      let result = await post("Login/InstalMasterLoginByMobile", {
+        Mobile: this.Tel,
+        PassWord: this.Pwd
+      });
+      if (result.code === 0) {
+        let that = this;
+        wx.setStorageSync("userId", result.data.MemberId);
+        wx.setStorageSync("token", result.data.MemberToken);
+        wx.showToast({
+          title: "登录成功",
+          icon: "success",
+          duration: 1500,
+          success: function() {
+            setTimeout(function() {
+              wx.redirectTo({
+                url: "/pages/my/main?identity=" + that.identity
+              });
+            }, 1500);
+          }
+        });
+      }
+    },
+    //验证码登录
+    async InstalMasterLoginByCode() {
+      let result = await post("Login/InstalMasterLoginByCode", {
+        Mobile: this.Tel,
+        VerifyCode: this.Code
+      });
+      if (result.code === 0) {
+          let that = this;
+        wx.setStorageSync("userId", result.MemberId);
+        wx.setStorageSync("token", result.MemberToken);
+        wx.showToast({
+          title: "登录成功",
+          icon: "success",
+          duration: 1500,
+          success: function() {
+            setTimeout(function() {
+              wx.redirectTo({
+                url: "/pages/my/main?identity=" + that.identity
+              });
+            }, 1500);
+          }
+        });
+      }
+    },
+    //客服登录
+    //验证码登录
+    async CustomerServiceLoginByCode() {
+      let result = await post("Login/CustomerServiceLoginByCode", {
+        Mobile: this.Tel,
+        VerifyCode: this.Code
+      });
+      if (result.code === 0) {
+          let that = this;
+        wx.setStorageSync("userId", result.MemberId);
+        wx.setStorageSync("token", result.MemberToken);
+        wx.showToast({
+          title: "登录成功",
+          icon: "success",
+          duration: 1500,
+          success: function() {
+            setTimeout(function() {
+              wx.redirectTo({
+                url: "/pages/my/main?identity=" + that.identity
+              });
+            }, 1500);
+          }
+        });
+      }
+    },
+    //密码登录
+    async CustomerServiceLoginByMobile(){
+      let result = await post("Login/CustomerServiceLoginByMobile",{
+        Mobile: this.Tel,
+        PassWord: this.Pwd
+      })
+      if (result.code === 0) {
+          let that = this;
+        wx.setStorageSync("userId", result.MemberId);
+        wx.setStorageSync("token", result.MemberToken);
+        wx.showToast({
+          title: "登录成功",
+          icon: "success",
+          duration: 1500,
+          success: function() {
+            setTimeout(function() {
+              wx.redirectTo({
+                url: "/pages/my/main?identity=" + that.identity
               });
             }, 1500);
           }
