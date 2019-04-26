@@ -9,6 +9,7 @@
         "pages/newsList/main",
         "pages/newsDetail/main",
         "pages/login/main",
+        "pages/login2/main",
         "pages/warrant/main",
         "pages/loginfrom/main",
         "pages/register/main",
