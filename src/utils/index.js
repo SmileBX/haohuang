@@ -53,7 +53,8 @@ function request(url, method, data, curPage, header = {}) {
             },
             success: function(res) {
                 wx.hideLoading();
-                switch (res.code) {
+                //console.log(res,"全局方法")
+                switch (res.data.code) {
                     case 0:
                         resolve(res.data);
                         break;

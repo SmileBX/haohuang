@@ -68,13 +68,13 @@
           <div class="contactLine flex tel flexAlignCenter">
             <img src="/static/images/icons/tel.png" mode="widthFix" />  
             <div class="txtBox flex1">
-              <p>0755-86650403</p>
+              <p>{{companyInfo.CompanyTel}}</p>
             </div>
           </div>
           <div class="contactLine flex flexAlignCenter">
              <img src="/static/images/icons/address_2.png" mode="widthFix" alt>
             <div class="txtBox flex1">
-              <p>深圳市南山区西丽镇大磡村工业二路17号</p>
+              <p>{{companyInfo.CompanyAddress}}</p>
             </div>
           </div>
           </div>
@@ -94,37 +94,41 @@
 </template>
 <script>
 import foot from "@/components/foot.vue";
+import { post , get } from "../../utils"
 import "@/css/dd_style.css";
 export default {
   onLoad() {
     this.setBarTitle();
+    this.getBanner();
+    this.getConpanyInfo()
+  },
+  onShow(){
+      
   },
   data() {
     return {
-      bannerList: [
-        {
-          Url: "fd",
-          Pic: "/static/images/of/banner1.jpg"
-        },
-        {
-          Url: "fd",
-          Pic: "/static/images/of/banner1.jpg"
-        },
-        {
-          Url: "fd",
-          Pic: "/static/images/of/banner1.jpg"
-        },
-        {
-          Url: "fd",
-          Pic: "/static/images/of/banner1.jpg"
-        }
-      ]
+      bannerList: [],
+      companyInfo:{}
     };
   },
   components: {
     foot
   },
   methods: {
+    async getBanner(){
+        const res = await post("Banner/BannerList",{
+          "type":1
+       })
+       if(res.code==0){
+         this.bannerList = res.data
+       }
+    },
+    async getConpanyInfo(){
+      const res = await get("Banner/GetCompanyInfo")
+      if(res.code==0){
+          this.companyInfo=res.data
+      }
+    },
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "浩煌"
