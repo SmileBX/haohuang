@@ -22,6 +22,8 @@ export function formatTime(date) {
     return `${t1} ${t2}`
 }
 
+
+
 export function getCurrentPageUrlWithArgs() {
     const pages = getCurrentPages()
     const currentPage = pages[pages.length - 1]

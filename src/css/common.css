@@ -472,6 +472,10 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 .radio-group .radio {
     margin-right: 30rpx;
 }
+/*弹性布局垂直对齐*/
+.flexDirection{
+    flex-direction:column;
+}
 
 
 /*底部按钮样式*/

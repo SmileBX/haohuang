@@ -1,5 +1,5 @@
 <template>
-  <div class="allPadd" style="border-top:1rpx solid #e3e3e3;">
+    <div class="allPadd" style="border-top:1rpx solid #e3e3e3;">
       <div class="column  title">
           <div class="column">
               <img src="/static/images/icons/gong.png" class="cardpic">
@@ -18,7 +18,7 @@
           </p>
       </div>
       <div class="tips">可提现金额￥8652.00</div>
-      <div class="botbtn addcard"></span>提现</div>
+      <div class="botbtn addcard">提现</div>
   </div>
 </template>
 <script>

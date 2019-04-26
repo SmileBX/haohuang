@@ -22,7 +22,8 @@
                 "sum/main",
                 "deposit/main",
                 "integral/main",
-                "depositmoney/main"
+                "depositmoney/main",
+                "account/main"
             ]
         },
         {
