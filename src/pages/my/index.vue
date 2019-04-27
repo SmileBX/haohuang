@@ -211,11 +211,26 @@
     </div>
 </template>
 <script>
+import { post } from "@/utils";
 import foot from "@/components/foot.vue";
 import "@/css/dd_style.css";
 export default {
+    onLoad(){
+      this.identity = this.$root.$mp.query.identity;
+    },
+    onShow(){
+
+    },
+    data() {
+        return {
+            identity:""
+        }
+    },
     components:{
         foot
+    },
+    methods: {
+        
     }
 }
 </script>

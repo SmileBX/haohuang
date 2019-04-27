@@ -58,16 +58,23 @@
     </div>
 </template>
 <script>
+import { post, valPhone } from "@/utils";
 export default {
     onLoad() {
         this.setBarTitle();
+    },
+    onShow(){
+     this.userId = wx.getStorage("userId");
+     this.token = wx.getStorage("token");
     },
     components:{
       
     },
     data() {
         return {
-           
+           userId:"",
+           token:"",
+           realName:""
         }
     },
     methods: {
@@ -92,6 +99,14 @@ export default {
                 
                 }
             }
+        })
+    },
+    async sumbitMasterApplication(){
+        let that = this;
+        let result= await post("InstalMaster/SumbitMasterApplication",{
+            MasterId:that.userId,
+            MasterToken:that.token,
+            RealName:that.realName
         })
     }
   }

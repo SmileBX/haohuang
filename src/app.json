@@ -13,7 +13,10 @@
         "pages/warrant/main",
         "pages/loginfrom/main",
         "pages/register/main",
-        "pages/FillInfp/main"
+        "pages/FillInfp/main",
+        "pages/forgetPassword/main",
+        "pages/wxBindTel/main"
+
     ],
     "subpackages": [{
             "root": "pages/master",

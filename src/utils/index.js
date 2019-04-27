@@ -57,22 +57,22 @@ function request(url, method, data, curPage, header = {}) {
                     resolve(res.data);
                 } else if (res.data.code === 2) {
                     wx.showToast({
-                            title: '需要重新登录!',
-                            icon: 'none'
-                        })
-                        // logins();
+                        title: '需要重新登录!',
+                        icon: 'none'
+                    })
                     setTimeout(() => {
                         wx.redirectTo({
                             url: '/pages/login/main?askUrl=' + curPage
                         })
                     }, 1000);
-                    reject(res.data);
+
                 } else {
+                    resolve(res.data);
                     wx.showToast({
                         title: res.data.msg + '!',
                         icon: 'none'
                     })
-                    reject(res.data);
+
                 }
             },
             fail: function(error) {
@@ -81,7 +81,6 @@ function request(url, method, data, curPage, header = {}) {
                     title: error + '，请刷新页面重试!',
                     icon: 'none'
                 })
-                reject(res.data);
             },
             complete: function() {
                 wx.hideLoading();
@@ -145,8 +144,9 @@ async function wxMemberLogin(code, iv, encryptedData, identity) {
     });
     if (result.code === 0) { //登录成功
         //把返回的userId、token保存起来
-        wx.setStorageSync("userId", result.MemberId);
-        wx.setStorageSync("token", result.MemberToken);
+        wx.setStorageSync("userId", result.data.MemberId);
+        wx.setStorageSync("token", result.data.MemberAccessToken);
+        wx.setStorageSync("openId", result.data.MemberOpenId);
         wx.showToast({
             title: '登录成功',
             icon: 'success',
@@ -160,7 +160,25 @@ async function wxMemberLogin(code, iv, encryptedData, identity) {
             }
         })
     }
+    if (result.code === 100) {
+        wx.setStorageSync("openId", result.data.MemberOpenId);
+        wx.setStorageSync("unionid", result.data.MemberUnionid);
+        wx.showToast({
+            title: result.msg,
+            icon: 'none',
+            duration: 1500,
+            success: function() {
+                setTimeout(function() {
+                    wx.redirectTo({
+                        url: '/pages/wxBindTel/main?identity=' + identity
+                    })
+                }, 1500);
+            }
+        })
+    }
 }
+
+
 
 //师傅直接微信登录
 async function wxInstalMasterLogin(code, iv, encryptedData, identity) {
@@ -170,8 +188,9 @@ async function wxInstalMasterLogin(code, iv, encryptedData, identity) {
         encryptedData
     });
     if (result.code === 0) { //登录成功
-        wx.setStorageSync("userId", result.MemberId);
-        wx.setStorageSync("token", result.MemberToken);
+        wx.setStorageSync("userId", result.data.MemberId);
+        wx.setStorageSync("token", result.data.MemberAccessToken);
+        wx.setStorageSync("openId", result.data.MemberOpenId);
         wx.showToast({
             title: '登录成功',
             icon: 'success',
@@ -185,18 +204,27 @@ async function wxInstalMasterLogin(code, iv, encryptedData, identity) {
             }
         })
     }
+    if (result.code === 100) {
+        wx.setStorageSync("openId", result.data.MemberOpenId);
+        wx.setStorageSync("unionid", result.data.MemberUnionid);
+        console.log("ddddd");
+        wx.redirectTo({
+            url: '/pages/wxBindTel/main?identity=' + identity
+        })
+    }
 }
 
 //客服微信直接登录
 async function wxCustomerServiceLogin(code, iv, encryptedData, identity) {
-    let result = await post("Login/InstalMasterLogin", {
+    let result = await post("Login/CustomerServiceLogin", {
         iv,
         code,
         encryptedData
     });
     if (result.code === 0) { //登录成功
-        wx.setStorageSync("userId", result.MemberId);
-        wx.setStorageSync("token", result.MemberToken);
+        wx.setStorageSync("userId", result.data.MemberId);
+        wx.setStorageSync("token", result.data.MemberAccessToken);
+        wx.setStorageSync("openId", result.data.MemberOpenId);
         wx.showToast({
             title: '登录成功',
             icon: 'success',
@@ -219,7 +247,6 @@ export function Login(identity) {
             if (res.code) {
                 wx.getUserInfo({
                     success(res2) {
-                        console.log(res2);
                         wx.setStorageSync("userInfo", res2.userInfo);
                         if (identity == 1) { //identity: 1:客服；2：客户；3：师傅
                             wxCustomerServiceLogin(res.code, res2.iv, res2.encryptedData, identity);

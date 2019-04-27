@@ -27,7 +27,7 @@
         </div>
       </div>
       <button
-        @click="rechangePwd"
+        @click="bindTel"
         :disabled="Tel==''"
         :class="['login-btn btn_org',Tel==''?'dis':'']"
       >确定</button>
@@ -43,14 +43,16 @@ export default {
   onShow() {
     //identity: 1:客服；2：客户；3：师傅
     this.identity = this.$root.$mp.query.identity;
-    if(this.identity==1){
-
+    //验证码类型 会员注册0,会员登录1,会员找回密码2,会员重新绑定手机3,会员找回支付密码4,会员微信绑定手机号5,师傅登录6,师傅注册7,客服登录8,师傅绑定银行卡9,师傅微信绑定手机号10,师傅找回密码11,客服找回密码12,订单通知13
+    this.unionid = wx.getStorageSync("unionid");
+    this.openId = wx.getStorageSync("openId");
+    this.nickName = wx.getStorageSync("userInfo").nickName;
+    this.avatarUrl = wx.getStorageSync("userInfo").avatarUrl;
+    if (this.identity == 2) {
+      this.codeType = 5;
     }
-    if(this.identity==2){
-
-    }
-    if(this.identity==3){
-      
+    if (this.identity == 3) {
+      this.codeType = 10;
     }
   },
   components: {},
@@ -65,14 +67,18 @@ export default {
       Pwd: "",
       Pwd2: "",
       Code: "",
-      identity:"",
-      codeType:""
+      identity: "",
+      codeType: "",
+      nickName: "", //微信昵称
+      avatarUrl: "", //微信头像
+      unionid: "",
+      openId: ""
     };
   },
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
-        title: "忘记密码"
+        title: "绑定手机号"
       });
     },
     regResetPwdValOther() {
@@ -117,17 +123,24 @@ export default {
         }
       }
     },
-    rechangePwd() {
+    bindTel() {
       //点击注册按钮
       if (valPhone(this.Tel) && this.regResetPwdValOther()) {
-        this.ForgetPassword();
+        if (this.identity == 2) {
+          this.MemberBindOrRegister();
+        }
+        if (this.identity == 3) {
+          this.MasterBindOrRegister();
+        } else {
+          return false;
+        }
       }
     },
     //获取验证码
     async getWxBindTelCode() {
       let result = await post("Login/GetWxBindTelCode", {
         Mobile: this.Tel,
-        CodeType: 1
+        CodeType: this.codeType
       });
       if (result.code === 0) {
         this.has_click = true;
@@ -150,12 +163,59 @@ export default {
         }, 1000);
       }
     },
-    async ForgetPassword(){  //忘记密码
-      let result = await post("User/ForgetPassword",{
-        Mobile:this.Tel,
-        VerifyCode:this.Code,
-        SecondPassWord:this.Pwd
-      })
+    //客户绑定
+    async MemberBindOrRegister() {
+      let result = await post("Login/MemberBindOrRegister", {
+        Mobile: this.Tel,
+        VerifyCode: this.Code,
+        PassWord: this.Pwd,
+        Unionid: this.unionid,
+        OpenId: this.openId,
+        nickName: this.nickName,
+        avatarUrl: this.avatarUrl
+      });
+      wx.setStorageSync("openId", result.data.MemberOpenId);
+      wx.setStorageSync("userId", result.data.MemberId);
+      wx.token("userId", result.data.MemberAccessToken);
+      let that = this;
+      wx.showToast({
+        title: "登录成功!",
+        icon: "none",
+        duration: 1500,
+        success: function() {
+          wx.redirectTo({
+            url: "/pages/my/main?identity=" + that.identity
+          });
+        }
+      });
+    },
+    //师傅的绑定
+    async MasterBindOrRegister() {
+      let result = await post("Login/MemberBindOrRegister", {
+        Mobile: this.Tel,
+        VerifyCode: this.Code,
+        PassWord: this.Pwd,
+        Unionid: this.unionid,
+        OpenId: this.openId,
+        nickName: this.nickName,
+        avatarUrl: this.avatarUrl
+      });
+      if (result.code === 0) {
+        wx.setStorageSync("openId", result.data.MemberOpenId);
+        wx.setStorageSync("userId", result.data.MemberId);
+        wx.token("userId", result.data.MemberAccessToken);
+        let that = this;
+        wx.showToast({
+          title: "登录成功!",
+          icon: "none",
+          duration: 1500,
+          success: function() {
+            wx.redirectTo({
+              url: "/pages/my/main?identity=" + that.identity
+            });
+          }
+        });
+      }
     }
   }
 };
