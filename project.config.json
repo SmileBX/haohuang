@@ -1,160 +1,187 @@
 {
-	"description": "项目配置文件。",
-	"setting": {
-		"urlCheck": false,
-		"es6": false,
-		"postcss": true,
-		"minified": true,
-		"newFeature": true,
-		"autoAudits": false,
-		"checkInvalidKey": true
-	},
-	"miniprogramRoot": "dist/wx/",
-	"compileType": "miniprogram",
-	"appid": "wx73dbae1cbf851757",
-	"projectname": "my-project",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"currentL": -1,
-			"list": []
-		},
-		"miniprogram": {
-			"current": 16,
-			"list": [
-				{
-					"id": 0,
-					"name": "师傅的提交审核",
-					"pathName": "pages/master/smVerify/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "客户的我的订单",
-					"pathName": "pages/custom/order/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "客户的查看进度",
-					"pathName": "pages/custom/schedule/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "客户的收货地址",
-					"pathName": "pages/custom/addressList/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "新增地址",
-					"pathName": "pages/custom/addAddress/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "发表评价",
-					"pathName": "pages/custom/appraise/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "客服安装下单",
-					"pathName": "pages/servicemenu/installOrder/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": 8,
-					"name": "客服绑定客户信息",
-					"pathName": "pages/servicemenu/bindCustomInfo/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "客服的我的订单",
-					"pathName": "pages/servicemenu/myOrder/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "客服订单详情",
-					"pathName": "pages/servicemenu/orderDetail/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": 10,
-					"name": "师傅的对账明细",
-					"pathName": "pages/master/account/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "师傅的提现选择",
-					"pathName": "pages/master/deposit/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "师傅的提现",
-					"pathName": "pages/master/depositmoney/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "师傅的我的积分",
-					"pathName": "pages/master/integral/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "师傅的余额",
-					"pathName": "pages/master/sum/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "师傅提交资料审核",
-					"pathName": "pages/FillInfp/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "师傅的选择银行",
-					"pathName": "pages/master/chooseBank/main",
-					"query": "",
-					"scene": null
-				}
-			]
-		}
-	}
+    "description": "项目配置文件。",
+    "setting": {
+        "urlCheck": false,
+        "es6": false,
+        "postcss": true,
+        "minified": true,
+        "newFeature": true,
+        "autoAudits": false,
+        "checkInvalidKey": true
+    },
+    "miniprogramRoot": "dist/wx/",
+    "compileType": "miniprogram",
+    "appid": "wx7905f58c88cf60e6",
+    "projectname": "my-project",
+    "simulatorType": "wechat",
+    "simulatorPluginLibVersion": {},
+    "condition": {
+        "search": {
+            "current": -1,
+            "list": []
+        },
+        "conversation": {
+            "current": -1,
+            "list": []
+        },
+        "plugin": {
+            "current": -1,
+            "list": []
+        },
+        "game": {
+            "currentL": -1,
+            "list": []
+        },
+        "miniprogram": {
+            "current": 16,
+            "list": [{
+                    "id": 0,
+                    "name": "师傅的提交审核",
+                    "pathName": "pages/master/smVerify/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客户的我的订单",
+                    "pathName": "pages/custom/order/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客户的查看进度",
+                    "pathName": "pages/custom/schedule/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客户的收货地址",
+                    "pathName": "pages/custom/addressList/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "新增地址",
+                    "pathName": "pages/custom/addAddress/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "发表评价",
+                    "pathName": "pages/custom/appraise/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客服安装下单",
+                    "pathName": "pages/servicemenu/installOrder/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": 8,
+                    "name": "客服绑定客户信息",
+                    "pathName": "pages/servicemenu/bindCustomInfo/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客服的我的订单",
+                    "pathName": "pages/servicemenu/myOrder/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "客服订单详情",
+                    "pathName": "pages/servicemenu/orderDetail/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": 10,
+                    "name": "师傅的对账明细",
+                    "pathName": "pages/master/account/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "师傅的提现选择",
+                    "pathName": "pages/master/deposit/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "师傅的提现",
+                    "pathName": "pages/master/depositmoney/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "师傅的我的积分",
+                    "pathName": "pages/master/integral/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "师傅的余额",
+                    "pathName": "pages/master/sum/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "师傅提交资料审核",
+                    "pathName": "pages/FillInfp/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "师傅的选择银行",
+                    "pathName": "pages/master/chooseBank/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "登录入口选择身份",
+                    "pathName": "pages/login2/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "选择登录方式",
+                    "pathName": "pages/login/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "h5的登录",
+                    "pathName": "pages/loginfrom/main",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "h5的注册",
+                    "pathName": "pages/register/main",
+                    "query": "",
+                    "scene": null
+                }
+            ]
+        }
+    }
 }

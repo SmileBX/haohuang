@@ -6,7 +6,7 @@
       </div>
 
       <button class="login-btn" @click="gotoPage">登录/注册</button>
-      <button class="login-btn btn_gree" @click="loginTel">微信手机号快捷登录</button>
+      <button class="login-btn btn_gree" @click="loginTel" open-type="getUserInfo">微信手机号快捷登录</button>
       <div class="info">
         <p>
           若您的微信手机号未注册，将为您直接注册，注册即视为同
@@ -51,6 +51,7 @@
   </div>
 </template>
 <script>
+import {Login } from "@/utils";
 export default {
   onLoad() {
     this.setBarTitle();
@@ -63,7 +64,8 @@ export default {
   data() {
     return {
       identity: "",
-      isPop_Tel: false
+      isPop_Tel: false,
+      authorize:false  //是否授权了
     };
   },
   methods: {
@@ -80,7 +82,9 @@ export default {
       });
     },
     loginTel() {
-      this.isPop_Tel = true;
+      let that = this;
+      // this.isPop_Tel = true;
+      Login(this.identity);
     },
     cancel: function() {
       let _this = this;

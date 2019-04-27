@@ -48,7 +48,7 @@
           <span @click="gotoReg">新用户注册</span>
         </div>
         <div class="flex1 text_r">
-          <span class="color_fd5412">忘记密码</span>
+          <span class="color_fd5412" @click="gotoForfetPassword">忘记密码</span>
         </div>
       </div>
       <div class="info">
@@ -103,6 +103,9 @@ export default {
     },
     tabclick(index) {
       this.type = index;
+    },
+    gotoForfetPassword(){
+      wx.navigateTo() 
     },
     valOther() {
       if (this.type == 0) {

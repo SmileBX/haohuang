@@ -66,13 +66,13 @@ function request(url, method, data, curPage, header = {}) {
                             url: '/pages/login/main?askUrl=' + curPage
                         })
                     }, 1000);
-                    reject(false);
+                    reject(res.data);
                 } else {
                     wx.showToast({
                         title: res.data.msg + '!',
                         icon: 'none'
                     })
-                    reject(false)
+                    reject(res.data);
                 }
             },
             fail: function(error) {
@@ -81,7 +81,7 @@ function request(url, method, data, curPage, header = {}) {
                     title: error + '，请刷新页面重试!',
                     icon: 'none'
                 })
-                reject(false)
+                reject(res.data);
             },
             complete: function() {
                 wx.hideLoading();
@@ -129,14 +129,139 @@ export function valPhone(tel) {
         wx.showToast({
             title: "请输入正确的手机格式!",
             icon: "none",
-            duration: 2000
+            duration: 1500
         });
         return false;
     }
     return true;
 }
 
+//用户直接微信登录
+async function wxMemberLogin(code, iv, encryptedData, identity) {
+    let result = await post("Login/MemberLogin", {
+        iv,
+        code,
+        encryptedData
+    });
+    if (result.code === 0) { //登录成功
+        //把返回的userId、token保存起来
+        wx.setStorageSync("userId", result.MemberId);
+        wx.setStorageSync("token", result.MemberToken);
+        wx.showToast({
+            title: '登录成功',
+            icon: 'success',
+            duration: 1500,
+            success: function() {
+                setTimeout(function() {
+                    wx.redirectTo({
+                        url: '/pages/my/main?identity=' + identity
+                    })
+                }, 1500);
+            }
+        })
+    }
+}
+
+//师傅直接微信登录
+async function wxInstalMasterLogin(code, iv, encryptedData, identity) {
+    let result = await post("Login/InstalMasterLogin", {
+        iv,
+        code,
+        encryptedData
+    });
+    if (result.code === 0) { //登录成功
+        wx.setStorageSync("userId", result.MemberId);
+        wx.setStorageSync("token", result.MemberToken);
+        wx.showToast({
+            title: '登录成功',
+            icon: 'success',
+            duration: 1500,
+            success: function() {
+                setTimeout(function() {
+                    wx.redirectTo({
+                        url: '/pages/my/main?identity=' + identity
+                    })
+                }, 1500);
+            }
+        })
+    }
+}
+
+//客服微信直接登录
+async function wxCustomerServiceLogin(code, iv, encryptedData, identity) {
+    let result = await post("Login/InstalMasterLogin", {
+        iv,
+        code,
+        encryptedData
+    });
+    if (result.code === 0) { //登录成功
+        wx.setStorageSync("userId", result.MemberId);
+        wx.setStorageSync("token", result.MemberToken);
+        wx.showToast({
+            title: '登录成功',
+            icon: 'success',
+            duration: 1500,
+            success: function() {
+                setTimeout(function() {
+                    wx.redirectTo({
+                        url: '/pages/my/main?identity=' + identity
+                    })
+                }, 1500);
+            }
+        })
+    }
+}
+
+//微信直接登录
+export function Login(identity) {
+    wx.login({
+        success(res) {
+            if (res.code) {
+                wx.getUserInfo({
+                    success(res2) {
+                        console.log(res2);
+                        wx.setStorageSync("userInfo", res2.userInfo);
+                        if (identity == 1) { //identity: 1:客服；2：客户；3：师傅
+                            wxCustomerServiceLogin(res.code, res2.iv, res2.encryptedData, identity);
+                        }
+                        if (identity == 2) { //identity: 1:客服；2：客户；3：师傅
+                            wxMemberLogin(res.code, res2.iv, res2.encryptedData, identity);
+                        }
+                        if (identity == 3) {
+                            wxInstalMasterLogin(res.code, res2.iv, res2.encryptedData, identity);
+                        }
+                    },
+                    fail() {
+                        wx.showToast({
+                            title: '授权失败，请重新执行!',
+                            icon: 'none',
+                            duration: 1500
+                        })
+                    }
+                })
+            } else {
+                wx.showToast({
+                    title: res.errMsg,
+                    icon: "none",
+                    duration: 1500
+                });
+            }
+        },
+        fail() {
+            wx.showToast({
+                title: "调取登录失败!",
+                icon: "none",
+                duration: 1500
+            });
+        }
+    })
+
+}
+
+
+
 export default {
+    Login,
     host,
     filePath,
     get,
