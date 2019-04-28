@@ -62,8 +62,9 @@
         </div>
         <div class="about_con">
           <img src="/static/images/of/about.jpg" alt mode="widthFix" >
-          <p>浩煌公司从2006年创业以来，一直专注于商业空间展示、道具、产品专柜、橱窗、图片制作、印刷、活动策划设计及制作施工等业务。</p>
-          <p>浩煌总部设于深圳，办公和生产厂区面积一万多平米，员工近300名。我们的安装团队有30人左右，分别在北京，上海，深圳，沈阳，西安，昆明，新疆，济南，武汉等地方设有驻点办事处专门负责安装及维护，覆盖华东，华南，华北，华西，华中，东北等区域，每个办事处驻点都配备专业的安装工具，安装人员具有高空作业证及电工证等岗位证件，确保售后服务完善到位。</p>
+          <p v-html="companyInfo.CompanyDescription"></p>
+          <!-- <p>浩煌公司从2006年创业以来，一直专注于商业空间展示、道具、产品专柜、橱窗、图片制作、印刷、活动策划设计及制作施工等业务。</p>
+          <p>浩煌总部设于深圳，办公和生产厂区面积一万多平米，员工近300名。我们的安装团队有30人左右，分别在北京，上海，深圳，沈阳，西安，昆明，新疆，济南，武汉等地方设有驻点办事处专门负责安装及维护，覆盖华东，华南，华北，华西，华中，东北等区域，每个办事处驻点都配备专业的安装工具，安装人员具有高空作业证及电工证等岗位证件，确保售后服务完善到位。</p> -->
           <div class="contactBox">
           <div class="contactLine flex tel flexAlignCenter">
             <img src="/static/images/icons/tel.png" mode="widthFix" />  
@@ -125,6 +126,7 @@ export default {
     },
     async getConpanyInfo(){
       const res = await get("Banner/GetCompanyInfo")
+      console.log(res,"res公司信息")
       if(res.code==0){
           this.companyInfo=res.data
       }
