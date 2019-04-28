@@ -101,8 +101,11 @@ export default {
       }
       if (that.identity == 2) {
         //客户
+        console.log(index)
         if (index === 1 || index === 2) {
-          gotoUrl = that.page[index].url[1];
+          //gotoUrl = that.page[index].url[1];
+          gotoUrl = that.page[index].url[0];
+          console.log(that.page[index],"客户身份")
         } else {
           gotoUrl = that.page[index].url[0];
         }

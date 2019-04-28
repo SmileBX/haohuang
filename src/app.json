@@ -57,10 +57,15 @@
             ]
         }
     ],
+    "usingComponents":{
+        "van-datetime-picker": "../static/vant/datetime-picker/index",
+        "van-action-sheet": "../static/vant/action-sheet/index"
+    },
     "window": {
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#fff",
         "navigationBarTitleText": "WeChat",
         "navigationBarTextStyle": "black"
     }
+    
 }
