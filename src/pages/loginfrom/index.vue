@@ -69,7 +69,12 @@ export default {
     this.setBarTitle();
   },
   onShow() {
-    this.identity = this.$root.$mp.query.identity;
+    this.identity = wx.getStorageSync("identity");
+    if(!this.identity){
+      wx.reLaunch({
+        url: '/pages/login2/main'
+      })
+    }
     //identity: 1:客服；2：客户；3：师傅
     // 会员注册0,
     //         会员登录1,
@@ -124,7 +129,7 @@ export default {
       let that = this;
       wx.navigateTo(
         {
-          url:"/pages/forgetPassword/main?identity="+that.identity
+          url:"/pages/forgetPassword/main"
         }
       ) 
     },
@@ -209,7 +214,7 @@ export default {
       let that = this;
       //跳转到注册
       wx.navigateTo({
-        url: "/pages/register/main?identity=" + that.identity
+        url: "/pages/register/main"
       });
     },
     //获取验证码
@@ -257,7 +262,7 @@ export default {
           success: function() {
             setTimeout(function() {
               wx.reLaunch({
-                url: "/pages/my/main?identity=" + that.identity
+                url: "/pages/my/main"
               });
             }, 1500);
           }

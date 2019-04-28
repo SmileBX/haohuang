@@ -54,7 +54,12 @@ export default {
     this.setBarTitle();
   },
   onShow() {
-    this.identity = this.$root.$mp.query.identity;
+    this.identity = wx.getStorageSync("identity");
+    if(!this.identity){
+      wx.reLaunch({
+        url: '/pages/login2/main'
+      })
+    }
     //identity: 1:客服；2：客户；3：师傅
      // 会员注册0,
     //  会员登录1,
@@ -201,7 +206,7 @@ export default {
           success: function() {
             setTimeout(function() {
               wx.redirectTo({
-                url: "/pages/loginfrom/main?identity=" + that.identity
+                url: "/pages/loginfrom/main"
               });
             }, 1500);
           }

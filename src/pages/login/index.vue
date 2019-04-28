@@ -57,7 +57,12 @@ export default {
     this.setBarTitle();
   },
   onShow() {
-    this.identity = this.$root.$mp.query.identity;
+    this.identity = wx.getStorageSync("identity");
+    if(!this.identity){
+      wx.reLaunch({
+        url: '/pages/login2/main'
+      })
+    }
     //identity: 1:客服；2：客户；3：师傅
   },
   components: {},
@@ -76,31 +81,13 @@ export default {
         let that = this;
       //跳转到h5的登录注册
       wx.navigateTo({
-        url: "/pages/loginfrom/main?identity="+that.identity
+        url: "/pages/loginfrom/main"
       });
     },
     loginTel() {
       let that = this;
       // this.isPop_Tel = true;
-      Login(this.identity);
-    },
-    cancel: function() {
-      let _this = this;
-      wx.showModal({
-        title: "提示",
-        content: "需要通过授权才能继续，请重新点击并授权！",
-        showCancel: false,
-        confirmColor: "#19ab18",
-        success(res) {
-          if (res.confirm) {
-            _this.isPop_Tel = false;
-          } else if (res.cancel) {
-          }
-        }
-      });
-    },
-    confirm: function() {
-      this.isPop_Tel = false;
+      Login();
     }
   }
 };

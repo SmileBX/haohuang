@@ -188,7 +188,7 @@
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoFeedback">
               <div class="icon-img">
                 <img src="/static/images/icons/yijianfankui.png" alt>
               </div>
@@ -222,9 +222,8 @@
               <p class="title">专属客服</p>
             </div>
           </li>
-
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoFeedback">
               <div class="icon-img">
                 <img src="/static/images/icons/yijianfankui.png" alt>
               </div>
@@ -232,7 +231,7 @@
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoCardList">
               <div class="icon-img">
                 <img src="/static/images/icons/card.png" alt>
               </div>
@@ -250,14 +249,14 @@
               <p class="title">客户订单</p>
             </div>
           </li>
-           <li>
-            <div class="outside">
+          <!-- <li>
+            <div class="outside" @click="gotoFeedback">
               <div class="icon-img">
                 <img src="/static/images/icons/yijianfankui.png" alt>
               </div>
               <p class="title">意见反馈</p>
             </div>
-          </li>
+          </li>-->
         </ul>
       </div>
     </div>
@@ -265,34 +264,37 @@
   </div>
 </template>
 <script>
-import { post } from "@/utils";
+import { post, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
 import foot from "@/components/foot.vue";
 import "@/css/dd_style.css";
 export default {
   onLoad() {},
   onShow() {
-    this.identity = this.$root.$mp.query.identity;
+    this.curPage = getCurrentPageUrlWithArgs();
+    this.identity = wx.getStorageSync("identity");
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    console.log("当前的身份："+this.identity);
-    if(this.identity==1){
-      this.GetCustomerServiceInfo();
+    if (toLogin(this.curPage)) {
+      if (this.identity == 1) {
+        this.GetCustomerServiceInfo();
+      }
+      if (this.identity == 2) {
+        this.GetMemberInfo();
+      }
+      if (this.identity == 3) {
+        this.GetInstalMasterInfo();
+      }
     }
-    if(this.identity==2){
-      this.GetMemberInfo();
-    }
-    if(this.identity==3){
-      this.GetInstalMasterInfo();
-    }
-    
+    console.log("当前的身份：" + this.identity);
   },
   data() {
     return {
+      curPage: "",
       userId: "",
       token: "",
       identity: "",
-      hasData:false,
-      info:{}
+      hasData: false,
+      info: {}
     };
   },
   components: {
@@ -304,47 +306,93 @@ export default {
         title: "个人中心"
       });
     },
+    gotoFeedback() {
+      //跳转到反馈页面
+      let that = this;
+      wx.navigateTo({
+        url: "/pages/feedback/main"
+      });
+    },
+    gotoCardList() {
+      let that = this;
+      wx.navigateTo({
+        url: "/pages/master/cardList/main"
+      });
+    },
     //客户的
     async GetMemberInfo() {
-        let result = await post("User/GetMemberInfo",{
-            UserId:this.userId,
-            Token:this.token
-        })
-        if(result.code===0){
-            if(Object.keys(result.data).length>0){
-                this.$set(result.data,"Mobile",result.data.Mobile.substring(0,3)+"****"+result.data.Mobile.substring(result.data.Mobile.length-4))
-                this.hasData = true;
-                this.info = result.data;
-            }
+      let result = await post(
+        "User/GetMemberInfo",
+        {
+          UserId: this.userId,
+          Token: this.token
+        },
+        this.curPage
+      );
+      if (result.code === 0) {
+        if (Object.keys(result.data).length > 0) {
+          this.$set(
+            result.data,
+            "Mobile",
+            result.data.Mobile.substring(0, 3) +
+              "****" +
+              result.data.Mobile.substring(result.data.Mobile.length - 4)
+          );
+          wx.setStorageSync("mobile", result.data.Mobile);
+          this.hasData = true;
+          this.info = result.data;
         }
+      }
     },
     //师傅的
-    async GetInstalMasterInfo(){
-        let result = await post("InstalMaster/GetInstalMasterInfo",{
-            UserId:this.userId,
-            Token:this.token
-        });
-        if(result.code===0){
-            if(Object.keys(result.data).length>0){
-                this.$set(result.data,"Mobile",result.data.Mobile.substring(0,3)+"****"+result.data.Mobile.substring(result.data.Mobile.length-4))
-                this.hasData = true;
-                this.info = result.data;
-            }
+    async GetInstalMasterInfo() {
+      let result = await post(
+        "InstalMaster/GetInstalMasterInfo",
+        {
+          UserId: this.userId,
+          Token: this.token
+        },
+        this.curPage
+      );
+      if (result.code === 0) {
+        if (Object.keys(result.data).length > 0) {
+          this.$set(
+            result.data,
+            "Mobile",
+            result.data.Mobile.substring(0, 3) +
+              "****" +
+              result.data.Mobile.substring(result.data.Mobile.length - 4)
+          );
+          wx.setStorageSync("mobile", result.data.Mobile);
+          this.hasData = true;
+          this.info = result.data;
         }
+      }
     },
     //客服的
-    async GetCustomerServiceInfo(){
-      let result = await post("CustomerService/GetCustomerServiceInfo",{
-            UserId:this.userId,
-            Token:this.token
-        });
-        if(result.code===0){
-            if(Object.keys(result.data).length>0){
-                this.$set(result.data,"Mobile",result.data.Mobile.substring(0,3)+"****"+result.data.Mobile.substring(result.data.Mobile.length-4))
-                this.hasData = true;
-                this.info = result.data;
-            }
+    async GetCustomerServiceInfo() {
+      let result = await post(
+        "CustomerService/GetCustomerServiceInfo",
+        {
+          UserId: this.userId,
+          Token: this.token
+        },
+        this.curPage
+      );
+      if (result.code === 0) {
+        if (Object.keys(result.data).length > 0) {
+          this.$set(
+            result.data,
+            "Mobile",
+            result.data.Mobile.substring(0, 3) +
+              "****" +
+              result.data.Mobile.substring(result.data.Mobile.length - 4)
+          );
+          wx.setStorageSync("mobile", result.data.Mobile);
+          this.hasData = true;
+          this.info = result.data;
         }
+      }
     }
   }
 };

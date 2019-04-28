@@ -42,7 +42,12 @@ export default {
   },
   onShow() {
     //identity: 1:客服；2：客户；3：师傅
-    this.identity = this.$root.$mp.query.identity;
+    this.identity = wx.getStorageSync("identity");
+    if(!this.identity){
+      wx.reLaunch({
+        url: '/pages/login2/main'
+      })
+    }
     console.log("身份："+this.identity);
    // 会员注册0,
     //  会员登录1,
@@ -198,7 +203,7 @@ export default {
         duration: 1500,
         success: function() {
           wx.reLaunch({
-            url: "/pages/my/main?identity=" + that.identity
+            url: "/pages/my/main"
           });
         }
       });

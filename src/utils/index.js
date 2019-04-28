@@ -62,7 +62,7 @@ function request(url, method, data, curPage, header = {}) {
                     })
                     setTimeout(() => {
                         wx.redirectTo({
-                            url: '/pages/login/main?askUrl=' + curPage
+                            url: '/pages/login2/main?askUrl=' + curPage
                         })
                     }, 1000);
 
@@ -101,13 +101,20 @@ export function post(url, data, curpage) {
 export function toLogin(objUrl) { //identity: 1:客服；2：客户；3：师傅
     const userId = wx.getStorageSync('userId');
     const token = wx.getStorageSync('token');
-    if (userInfo && userId && token) {
+    const identity = wx.getStorageSync('identity');
+    if (userId && token && identity) {
         return true;
     } else {
-        var objUrl = objUrl.replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
-        wx.redirectTo({
-            url: "/pages/login/main?askUrl=" + objUrl
-        });
+        if (objUrl) {
+            let gotoUrl = objUrl.replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
+            wx.redirectTo({
+                url: "/pages/login2/main?askUrl=" + gotoUrl
+            });
+        } else {
+            wx.redirectTo({
+                url: "/pages/login2/main"
+            });
+        }
         return false;
     }
 }
@@ -136,7 +143,7 @@ export function valPhone(tel) {
 }
 
 //用户直接微信登录
-async function wxMemberLogin(code, iv, encryptedData, identity) {
+async function wxMemberLogin(code, iv, encryptedData) {
     let result = await post("Login/MemberLogin", {
         iv,
         code,
@@ -154,7 +161,7 @@ async function wxMemberLogin(code, iv, encryptedData, identity) {
             success: function() {
                 setTimeout(function() {
                     wx.reLaunch({
-                        url: '/pages/my/main?identity=' + identity
+                        url: '/pages/my/main'
                     })
                 }, 1500);
             }
@@ -170,7 +177,7 @@ async function wxMemberLogin(code, iv, encryptedData, identity) {
             success: function() {
                 setTimeout(function() {
                     wx.redirectTo({
-                        url: '/pages/wxBindTel/main?identity=' + identity
+                        url: '/pages/wxBindTel/main'
                     })
                 }, 1500);
             }
@@ -181,7 +188,7 @@ async function wxMemberLogin(code, iv, encryptedData, identity) {
 
 
 //师傅直接微信登录
-async function wxInstalMasterLogin(code, iv, encryptedData, identity) {
+async function wxInstalMasterLogin(code, iv, encryptedData) {
     let result = await post("Login/InstalMasterLogin", {
         iv,
         code,
@@ -198,7 +205,7 @@ async function wxInstalMasterLogin(code, iv, encryptedData, identity) {
             success: function() {
                 setTimeout(function() {
                     wx.reLaunch({
-                        url: '/pages/my/main?identity=' + identity
+                        url: '/pages/my/main'
                     })
                 }, 1500);
             }
@@ -209,13 +216,13 @@ async function wxInstalMasterLogin(code, iv, encryptedData, identity) {
         wx.setStorageSync("unionid", result.data.MasterUnionId);
         console.log("ddddd");
         wx.redirectTo({
-            url: '/pages/wxBindTel/main?identity=' + identity
+            url: '/pages/wxBindTel/main'
         })
     }
 }
 
 //客服微信直接登录
-async function wxCustomerServiceLogin(code, iv, encryptedData, identity) {
+async function wxCustomerServiceLogin(code, iv, encryptedData) {
     let result = await post("Login/CustomerServiceLogin", {
         iv,
         code,
@@ -232,7 +239,7 @@ async function wxCustomerServiceLogin(code, iv, encryptedData, identity) {
             success: function() {
                 setTimeout(function() {
                     wx.reLaunch({
-                        url: '/pages/my/main?identity=' + identity
+                        url: '/pages/my/main'
                     })
                 }, 1500);
             }
@@ -241,21 +248,22 @@ async function wxCustomerServiceLogin(code, iv, encryptedData, identity) {
 }
 
 //微信直接登录
-export function Login(identity) {
+export function Login() {
     wx.login({
         success(res) {
             if (res.code) {
                 wx.getUserInfo({
                     success(res2) {
                         wx.setStorageSync("userInfo", res2.userInfo);
+                        let identity = wx.getStorageSync("identity");
                         if (identity == 1) { //identity: 1:客服；2：客户；3：师傅
-                            wxCustomerServiceLogin(res.code, res2.iv, res2.encryptedData, identity);
+                            wxCustomerServiceLogin(res.code, res2.iv, res2.encryptedData);
                         }
                         if (identity == 2) { //identity: 1:客服；2：客户；3：师傅
-                            wxMemberLogin(res.code, res2.iv, res2.encryptedData, identity);
+                            wxMemberLogin(res.code, res2.iv, res2.encryptedData);
                         }
                         if (identity == 3) {
-                            wxInstalMasterLogin(res.code, res2.iv, res2.encryptedData, identity);
+                            wxInstalMasterLogin(res.code, res2.iv, res2.encryptedData);
                         }
                     },
                     fail() {
@@ -289,6 +297,7 @@ export function Login(identity) {
 
 export default {
     Login,
+    toLogin,
     host,
     filePath,
     get,
