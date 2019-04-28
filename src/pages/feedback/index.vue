@@ -141,7 +141,7 @@ export default {
       }
     },
     smFeedBack() {
-      if (toLogin(THIS.curPage)) {
+      if (toLogin(this.curPage)) {
         //提交反馈
         if (this.validate()) {
           if (this.identity == 2) {
