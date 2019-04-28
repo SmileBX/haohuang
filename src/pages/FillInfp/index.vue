@@ -12,7 +12,7 @@
                 </div>
                 <div class="li-cell">
                     <div class="lable">银行名称</div>
-                    <input class="ipt" type="text" placeholder="请输入银行名称">
+                    <input class="ipt" disabled="true" type="text" placeholder="请输入银行名称">
                 </div>
                 <div class="li-cell">
                     <div class="lable">开户行名称</div>
@@ -55,20 +55,23 @@
                 <button class="btn btn_org" @click="Submint">提交</button>
             </div>
         </div>
+        <chooseBank></chooseBank>
     </div>
 </template>
 <script>
+import chooseBank from "@/components/chooseBank.vue";
 import { post, valPhone } from "@/utils";
 export default {
     onLoad() {
         this.setBarTitle();
     },
     onShow(){
-     this.userId = wx.getStorage("userId");
-     this.token = wx.getStorage("token");
+        console.log("fffffffffffffff");
+        this.userId =wx.getStorageSync("userId");
+        this.token = wx.getStorageSync("token");
     },
     components:{
-      
+      chooseBank
     },
     data() {
         return {
@@ -107,6 +110,7 @@ export default {
             MasterId:that.userId,
             MasterToken:that.token,
             RealName:that.realName
+
         })
     }
   }

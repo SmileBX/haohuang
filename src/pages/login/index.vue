@@ -17,7 +17,7 @@
       </div>
     </div>
     <!-- 授权使用手机号 -->
-    <div class="popModal" v-if="isPop_Tel">
+    <!-- <div class="popModal" v-if="isPop_Tel">
       <div class="mask"></div>
       <div class="popup popup-tel">
         <div class="pop-hd">
@@ -47,7 +47,7 @@
           <div class="btn btn_gree" @click="confirm">允许</div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -63,9 +63,7 @@ export default {
   components: {},
   data() {
     return {
-      identity: "",
-      isPop_Tel: false,
-      authorize:false  //是否授权了
+      identity: ""
     };
   },
   methods: {

@@ -153,7 +153,7 @@ async function wxMemberLogin(code, iv, encryptedData, identity) {
             duration: 1500,
             success: function() {
                 setTimeout(function() {
-                    wx.redirectTo({
+                    wx.reLaunch({
                         url: '/pages/my/main?identity=' + identity
                     })
                 }, 1500);
@@ -197,7 +197,7 @@ async function wxInstalMasterLogin(code, iv, encryptedData, identity) {
             duration: 1500,
             success: function() {
                 setTimeout(function() {
-                    wx.redirectTo({
+                    wx.reLaunch({
                         url: '/pages/my/main?identity=' + identity
                     })
                 }, 1500);
@@ -205,8 +205,8 @@ async function wxInstalMasterLogin(code, iv, encryptedData, identity) {
         })
     }
     if (result.code === 100) {
-        wx.setStorageSync("openId", result.data.MemberOpenId);
-        wx.setStorageSync("unionid", result.data.MemberUnionid);
+        wx.setStorageSync("openId", result.data.MasterUnionId);
+        wx.setStorageSync("unionid", result.data.MasterUnionId);
         console.log("ddddd");
         wx.redirectTo({
             url: '/pages/wxBindTel/main?identity=' + identity
@@ -231,7 +231,7 @@ async function wxCustomerServiceLogin(code, iv, encryptedData, identity) {
             duration: 1500,
             success: function() {
                 setTimeout(function() {
-                    wx.redirectTo({
+                    wx.reLaunch({
                         url: '/pages/my/main?identity=' + identity
                     })
                 }, 1500);

@@ -19,10 +19,10 @@
             </div>
           </div>
           <div class="li-cell">
-            <input class="ipt" type="text" placeholder="请输入密码" v-model="Pwd">
+            <input class="ipt" type="password" placeholder="请输入密码" v-model="Pwd">
           </div>
           <div class="li-cell">
-            <input class="ipt" type="text" placeholder="请输入确认密码" v-model="Pwd2">
+            <input class="ipt" type="password" placeholder="请输入确认密码" v-model="Pwd2">
           </div>
         </div>
       </div>
@@ -43,13 +43,29 @@ export default {
   onShow() {
     //identity: 1:客服；2：客户；3：师傅
     this.identity = this.$root.$mp.query.identity;
-    //验证码类型 会员注册0,会员登录1,会员找回密码2,会员重新绑定手机3,会员找回支付密码4,会员微信绑定手机号5,师傅登录6,师傅注册7,客服登录8,师傅绑定银行卡9,师傅微信绑定手机号10,师傅找回密码11,客服找回密码12,订单通知13
+    console.log("身份："+this.identity);
+   // 会员注册0,
+    //  会员登录1,
+    //  会员找回密码2,
+    //  会员找回支付密码3,
+    //  会员修改手机号4,
+    //  会员重新绑定手机号5,
+    //  会员微信绑定手机号6,
+    //   师傅登录7,
+    //   师傅注册8,
+    //   师傅绑定银行卡9,
+    //   师傅微信绑定手机号10,
+    //   师傅修改手机号11,
+    //   师傅重新绑定手机号12,
+    //   师傅找回密码13,
+    //   客服登录14,
+    //   客服找回密码15,
     this.unionid = wx.getStorageSync("unionid");
     this.openId = wx.getStorageSync("openId");
     this.nickName = wx.getStorageSync("userInfo").nickName;
     this.avatarUrl = wx.getStorageSync("userInfo").avatarUrl;
     if (this.identity == 2) {
-      this.codeType = 5;
+      this.codeType = 6;
     }
     if (this.identity == 3) {
       this.codeType = 10;
@@ -131,8 +147,6 @@ export default {
         }
         if (this.identity == 3) {
           this.MasterBindOrRegister();
-        } else {
-          return false;
         }
       }
     },
@@ -183,7 +197,7 @@ export default {
         icon: "none",
         duration: 1500,
         success: function() {
-          wx.redirectTo({
+          wx.reLaunch({
             url: "/pages/my/main?identity=" + that.identity
           });
         }
@@ -191,7 +205,7 @@ export default {
     },
     //师傅的绑定
     async MasterBindOrRegister() {
-      let result = await post("Login/MemberBindOrRegister", {
+      let result = await post("Login/MasterBindOrRegister", {
         Mobile: this.Tel,
         VerifyCode: this.Code,
         PassWord: this.Pwd,
@@ -206,12 +220,12 @@ export default {
         wx.token("userId", result.data.MemberAccessToken);
         let that = this;
         wx.showToast({
-          title: "登录成功!",
+          title: "请填写申请师傅的资料!",
           icon: "none",
           duration: 1500,
           success: function() {
-            wx.redirectTo({
-              url: "/pages/my/main?identity=" + that.identity
+            wx.reLaunch({
+              url: "/pages/FillInfp/main"
             });
           }
         });
