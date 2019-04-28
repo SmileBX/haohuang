@@ -15,7 +15,7 @@
       </div>
     </div>
     <!-- 这个是师傅的时候才有的 -->
-    <ul class="numberList flex li_50" style="display:none;" v-if="hasData">
+    <ul class="numberList flex li_50" v-if="hasData && identity==3">
       <li>
         <p class="num">0</p>
         <p class="title">积分</p>
@@ -37,7 +37,7 @@
       </div>
       <div class="section__bd">
         <!-- 客户的时候 -->
-        <ul class="navList li_20 center">
+        <ul class="navList li_20 center" v-if="identity==2">
           <li>
             <div class="outside">
               <div class="icon-img">
@@ -81,7 +81,7 @@
           </li>
         </ul>
         <!-- 师傅的时候 -->
-        <ul class="navList li_25 center" style="display:none;">
+        <ul class="navList li_25 center" v-if="identity==3">
           <li>
             <div class="outside">
               <div class="icon-img">
@@ -116,6 +116,42 @@
             </div>
           </li>
         </ul>
+        <!-- 客服的时候 -->
+        <ul class="navList li_25 center" v-if="identity==1">
+          <li>
+            <div class="outside">
+              <div class="icon-img">
+                <img src="/static/images/icons/daiqueren.png" alt>
+              </div>
+              <p class="title">待确认</p>
+            </div>
+          </li>
+          <li>
+            <div class="outside">
+              <div class="icon-img">
+                <img src="/static/images/icons/serve_point.png" alt>
+              </div>
+              <p class="title">已指派</p>
+            </div>
+          </li>
+          <li>
+            <div class="outside">
+              <div class="icon-img">
+                <img src="/static/images/icons/shigongzhong.png" alt>
+                <span class="circleNum">2</span>
+              </div>
+              <p class="title">安装中</p>
+            </div>
+          </li>
+          <li>
+            <div class="outside">
+              <div class="icon-img">
+                <img src="/static/images/icons/serve_com.png" alt>
+              </div>
+              <p class="title">已完成</p>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
     <div class="memberIndex__section mb10">
@@ -126,7 +162,7 @@
       </div>
       <div class="section__bd">
         <!-- 客户的时候 -->
-        <ul class="navList li_25 center navList2">
+        <ul class="navList li_25 center navList2" v-if="identity==2">
           <li>
             <div class="outside">
               <div class="icon-img">
@@ -161,7 +197,7 @@
           </li>
         </ul>
         <!-- 师傅的时候 -->
-        <ul class="navList li_25 center navList2" style="display:none;">
+        <ul class="navList li_25 center navList2" v-if="identity==3">
           <li>
             <div class="outside">
               <div class="icon-img">
@@ -204,9 +240,28 @@
             </div>
           </li>
         </ul>
+        <!-- 客服的时候 -->
+        <ul class="navList li_25 center navList2" v-if="identity==1">
+          <li>
+            <div class="outside">
+              <div class="icon-img">
+                <img src="/static/images/icons/serve_order.png" alt>
+              </div>
+              <p class="title">客户订单</p>
+            </div>
+          </li>
+           <li>
+            <div class="outside">
+              <div class="icon-img">
+                <img src="/static/images/icons/yijianfankui.png" alt>
+              </div>
+              <p class="title">意见反馈</p>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
-    <foot :identity="2"></foot>
+    <foot :identity="identity"></foot>
   </div>
 </template>
 <script>
@@ -219,7 +274,17 @@ export default {
     this.identity = this.$root.$mp.query.identity;
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    this.GetMemberInfo();
+    console.log("当前的身份："+this.identity);
+    if(this.identity==1){
+      this.GetCustomerServiceInfo();
+    }
+    if(this.identity==2){
+      this.GetMemberInfo();
+    }
+    if(this.identity==3){
+      this.GetInstalMasterInfo();
+    }
+    
   },
   data() {
     return {
@@ -256,6 +321,20 @@ export default {
     //师傅的
     async GetInstalMasterInfo(){
         let result = await post("InstalMaster/GetInstalMasterInfo",{
+            UserId:this.userId,
+            Token:this.token
+        });
+        if(result.code===0){
+            if(Object.keys(result.data).length>0){
+                this.$set(result.data,"Mobile",result.data.Mobile.substring(0,3)+"****"+result.data.Mobile.substring(result.data.Mobile.length-4))
+                this.hasData = true;
+                this.info = result.data;
+            }
+        }
+    },
+    //客服的
+    async GetCustomerServiceInfo(){
+      let result = await post("CustomerService/GetCustomerServiceInfo",{
             UserId:this.userId,
             Token:this.token
         });

@@ -37,21 +37,27 @@ import { getCurrentPageUrlWithArgs } from "@/utils";
 export default {
   props: ["identity"], //identity: 1:客服；2：客户；3：师傅
   onLoad() {
+    
+  },
+  created(){
+    console.log("dddddddddddddddd");
     this.curPage = getCurrentPageUrlWithArgs();
+    console.log("当前的页面："+this.curPage);
     let that = this;
     that.page.forEach(element => {
       let num = 0;
       element.url.forEach(item => {
-        if (that.curPage == item) {
+        if (that.curPage.split("?")[0] == item) {
           num++;
         }
       });
       if (num === 1) {
         that.activeIndex = element.index;
+        
       }
     });
+    console.log("activeIndex:"+that.activeIndex);
   },
-  onShow() {},
   data() {
     return {
       activeIndex: "",
