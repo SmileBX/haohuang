@@ -10,9 +10,14 @@
                     <div class="lable">身份证号</div>
                     <input class="ipt" type="text" placeholder="请输入您的身份证号">
                 </div>
-                <div class="li-cell">
+                <div class="li-cell" style="border-bottom:none;">
                     <div class="lable">银行名称</div>
-                    <input class="ipt" disabled="true" type="text" placeholder="请输入银行名称">
+                    <div class="selectBox flex flexAlignCenter">
+                        <div class="iptBox">
+                           <input class="ipt" disabled="true" type="text" placeholder="请选择银行名称">
+                        </div>
+                        <span class="icon-arrow arrow-down"></span>
+                    </div>
                 </div>
                 <div class="li-cell">
                     <div class="lable">开户行名称</div>
@@ -21,6 +26,15 @@
                  <div class="li-cell">
                     <div class="lable">银行卡号</div>
                     <input class="ipt" type="text" placeholder="请输入您的银行卡号">
+                </div>
+                <div class="li-cell">
+                    <div class="lable">区域绑定</div>
+                    <div class="selectBox flex flexAlignCenter">
+                        <div class="iptBox">
+                           <input class="ipt" disabled="true" type="text" placeholder="请选择区域选择">
+                        </div>
+                        <span class="icon-arrow arrow-down"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,11 +69,11 @@
                 <button class="btn btn_org" @click="Submint">提交</button>
             </div>
         </div>
-        <chooseBank></chooseBank>
     </div>
 </template>
 <script>
-import chooseBank from "@/components/chooseBank.vue";
+
+import "@/css/dd_style.css";
 import { post, valPhone } from "@/utils";
 export default {
     onLoad() {
@@ -71,7 +85,6 @@ export default {
         this.token = wx.getStorageSync("token");
     },
     components:{
-      chooseBank
     },
     data() {
         return {

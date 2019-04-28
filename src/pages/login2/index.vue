@@ -35,8 +35,9 @@ export default {
       });
     },
     gotoLogin(index) {
+      wx.setStorageSync("identity",index);
       wx.navigateTo({
-        url: "/pages/login/main?identity=" + index
+        url: "/pages/login/main"
       });
     }
   }

@@ -472,9 +472,12 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 .radio-group .radio {
     margin-right: 30rpx;
 }
+
+
 /*弹性布局垂直对齐*/
-.flexDirection{
-    flex-direction:column;
+
+.flexDirection {
+    flex-direction: column;
 }
 
 
@@ -1048,6 +1051,16 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     padding-left: 30rpx;
     padding-bottom: 20rpx;
     margin-bottom: 20rpx;
+    position: relative;
+}
+
+.uploadImage .close {
+    position: absolute;
+    width: 40rpx;
+    height: 40rpx;
+    top: -10rpx;
+    right: -10rpx;
+    z-index: 4;
 }
 
 .uploadTitle {
