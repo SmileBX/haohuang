@@ -87,7 +87,7 @@
 </template>
 <script>
 import areaList from "@/utils/areaList";
-import {post} from "@/utils/index";
+import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 export default {
     onLoad() {
       this.setBarTitle();
@@ -98,9 +98,15 @@ export default {
         this.editAddress(id)
       }
   },
-  onShow() {},
+  onShow() {
+      this.curPage = getCurrentPageUrlWithArgs();
+      this.identity = wx.getStorageSync("identity");
+      this.userId = wx.getStorageSync("userId");
+      this.token = wx.getStorageSync("token");
+  },
   data() {
     return {
+      curPage: "",
       areaList,
       showArea: false,
       name: "",
@@ -114,8 +120,8 @@ export default {
       // showDefault: true,
       // isshow: false,
       // index: 0,
-      token: wx.getStorageSync("token"),
-      userid: wx.getStorageSync('userId'),
+      token: "",
+      userid: "",
       buttonText:'保存'
       // provArray: ["A", "B", "C"]
     };
@@ -141,7 +147,9 @@ export default {
             Id:id,
             UserId:this.userid,
             Token: this.token
-        })
+        },
+          this.curPage
+        )
         console.log(res,"更改编辑用户信息")
           this.buttonText= '修改';
           this.name=res.data.name;
@@ -179,7 +187,7 @@ export default {
         }
         if(this.buttonText === '修改'){
             params.Id=this.$root.$mp.query.id;//修改地址
-            post('/Address/UpdateAddress',params).then(res=>{
+            post('/Address/UpdateAddress',params,this.curPage).then(res=>{
                 wx.showToast({
                   title: res.msg,
                   icon: "success"
@@ -190,7 +198,7 @@ export default {
             })
         }else{
           //新增
-          post('/Address/AddAddress',params).then(res=>{
+          post('/Address/AddAddress',params,this.curPage).then(res=>{
               wx.showToast({
                 title: res.msg,
                 icon: "success"
