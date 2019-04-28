@@ -1,0 +1,33 @@
+.delmask{
+    width:540rpx;
+    height:220rpx;
+    z-index:9990;
+    position: fixed;
+    flex-direction:column;
+    justify-content: space-between;
+    background:#fff;
+    top:450rpx;
+    left:120rpx;
+    border-radius: 15rpx;
+
+}
+.delmask p{
+    height:50%;
+    width:100%;
+    line-height: 110rpx;
+    text-align:center;
+}
+.btntitle{
+    font-weight: bold;
+}
+.buttontbn{
+    justify-content: space-around;
+    border-top:1rpx solid #f4f4f4;
+}
+.buttontbn text{
+    width:50%;
+}
+.buttontbn text+text{
+    color:#ff6325;
+    border-left:1rpx solid #f4f4f4;
+}

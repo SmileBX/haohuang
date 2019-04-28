@@ -270,17 +270,19 @@ export default {
         Mobile: this.Tel,
         PassWord: this.Pwd
       });
+        console.log("1111",result);
       if (result.code === 0) {
         let that = this;
         wx.setStorageSync("userId", result.data.MemberId);
         wx.setStorageSync("token", result.data.MemberToken);
+        console.log("dfsdfsdfdsfsdf");
         wx.showToast({
           title: "登录成功",
           icon: "success",
           duration: 1500,
           success: function() {
             setTimeout(function() {
-              wx.reLaunch({
+              wx.redirectTo({
                 url: "/pages/my/main?identity=" + that.identity
               });
             }, 1500);
