@@ -275,22 +275,14 @@ export default {
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     if (toLogin(this.curPage)) {
-      if (this.identity == 1) {
-        this.GetCustomerServiceInfo();
-      }
-      if (this.identity == 2) {
-        this.GetMemberInfo();
-      }
-      if (this.identity == 3) {
-        this.GetInstalMasterInfo();
-      }
+      this.getInfo();
     }
     console.log("当前的身份：" + this.identity);
   },
   data() {
     return {
       curPage: "",
-      curPage: "",   
+      curPage: "",
       userId: "",
       token: "",
       identity: "",
@@ -320,67 +312,26 @@ export default {
         url: "/pages/master/cardList/main"
       });
     },
-    gotoMyInfo(){
+    gotoMyInfo() {
       wx.navigateTo({
         url: "/pages/myInfo/main"
       });
     },
-    //客户的
-    async GetMemberInfo() {
-      let result = await post(
-        "User/GetMemberInfo",
-        {
-          UserId: this.userId,
-          Token: this.token
-        },
-        this.curPage
-      );
-      if (result.code === 0) {
-        if (Object.keys(result.data).length > 0) {
-          wx.setStorageSync("mobile", result.data.Mobile);
-          this.$set(
-            result.data,
-            "Mobile",
-            result.data.Mobile.substring(0, 3) +
-              "****" +
-              result.data.Mobile.substring(result.data.Mobile.length - 4)
-          );
-          
-          this.hasData = true;
-          this.info = result.data;
-        }
+    async getInfo() {
+      let objUrl = "";
+      if (this.identity == 1) {
+        //客服
+        objUrl = "CustomerService/GetCustomerServiceInfo";
       }
-    },
-    //师傅的
-    async GetInstalMasterInfo() {
-      let result = await post(
-        "InstalMaster/GetInstalMasterInfo",
-        {
-          UserId: this.userId,
-          Token: this.token
-        },
-        this.curPage
-      );
-      if (result.code === 0) {
-        if (Object.keys(result.data).length > 0) {
-          wx.setStorageSync("mobile", result.data.Mobile);
-          this.$set(
-            result.data,
-            "Mobile",
-            result.data.Mobile.substring(0, 3) +
-              "****" +
-              result.data.Mobile.substring(result.data.Mobile.length - 4)
-          );
-          
-          this.hasData = true;
-          this.info = result.data;
-        }
+      if (this.identity == 2) {
+        objUrl = "User/GetMemberInfo";
       }
-    },
-    //客服的
-    async GetCustomerServiceInfo() {
+      if (this.identity == 3) {
+        //师傅
+        objUrl = "InstalMaster/GetInstalMasterInfo";
+      }
       let result = await post(
-        "CustomerService/GetCustomerServiceInfo",
+        objUrl,
         {
           UserId: this.userId,
           Token: this.token
@@ -397,7 +348,6 @@ export default {
               "****" +
               result.data.Mobile.substring(result.data.Mobile.length - 4)
           );
-          
           this.hasData = true;
           this.info = result.data;
         }
