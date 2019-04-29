@@ -157,8 +157,6 @@ export default {
     },
     //师傅的反馈
     async InstalMasterFeedBack() {
-      let result = await post(
-        "InstalMaster/MemberFeedBack",
       let result = await post("InstalMaster/MemberFeedBack",
         {
           UserId: this.userId,
@@ -169,7 +167,6 @@ export default {
         },
         this.curPage
       );
-      )
       if (result.code === 0) {
         let that = this;
         wx.showToast({

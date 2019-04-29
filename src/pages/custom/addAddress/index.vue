@@ -86,28 +86,34 @@
   </div>
 </template>
 <script>
-import areaList from "@/utils/areaList";
+// import areaList from "@/utils/areaList";
 import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 export default {
     onLoad() {
       this.setBarTitle();
       //编辑地址的需要
       const id = this.$root.$mp.query.id 
-      console.log(id)  
+      console.log(id,"id")  
       if(id){
         this.editAddress(id)
       }
+      
+      
   },
   onShow() {
       this.curPage = getCurrentPageUrlWithArgs();
       this.identity = wx.getStorageSync("identity");
       this.userId = wx.getStorageSync("userId");
       this.token = wx.getStorageSync("token");
+      this.getprovinces()
   },
   data() {
     return {
       curPage: "",
-      areaList,
+      areaList:[],
+      province_list:{}, //省
+      city_list:{},//市
+      county_list:{}, //区
       showArea: false,
       name: "",
       phone:'',
@@ -245,7 +251,31 @@ export default {
     },onAddress(e){
       this.address = e.mp.detail
     },
-
+    //获取省code  ---province_list
+    async getprovinces() {
+       if(toLogin(this.curPage)){
+          console.log(111111111111)
+          const res = await post("Area/GetArea", {
+            Types: "Province"
+          });
+          //  let { Code,Name}=res.data
+          console.log(res,"地址")
+       }
+    },
+    //获取市code ----city_list
+    async getcitys() {
+      let citys = await post("Area/GetArea", {
+        Types: "City",
+        Code: this.provincesCode
+      });
+    },
+    //获取县code  ---county_list
+    async getQu() {
+      let qus = await post("Area/GetArea", {
+        Types: "District",
+        Code: this.cityCode
+      });
+    },
 
   }
 }
