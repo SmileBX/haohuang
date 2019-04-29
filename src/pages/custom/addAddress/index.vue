@@ -86,7 +86,7 @@
   </div>
 </template>
 <script>
-// import areaList from "@/utils/areaList";
+import areaList from "@/utils/areaList";
 import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 export default {
     onLoad() {
@@ -110,10 +110,7 @@ export default {
   data() {
     return {
       curPage: "",
-      areaList:[],
-      province_list:{}, //省
-      city_list:{},//市
-      county_list:{}, //区
+      areaList,
       showArea: false,
       name: "",
       phone:'',
@@ -250,32 +247,8 @@ export default {
       this.phone = e.mp.detail
     },onAddress(e){
       this.address = e.mp.detail
-    },
-    //获取省code  ---province_list
-    async getprovinces() {
-       if(toLogin(this.curPage)){
-          console.log(111111111111)
-          const res = await post("Area/GetArea", {
-            Types: "Province"
-          });
-          //  let { Code,Name}=res.data
-          console.log(res,"地址")
-       }
-    },
-    //获取市code ----city_list
-    async getcitys() {
-      let citys = await post("Area/GetArea", {
-        Types: "City",
-        Code: this.provincesCode
-      });
-    },
-    //获取县code  ---county_list
-    async getQu() {
-      let qus = await post("Area/GetArea", {
-        Types: "District",
-        Code: this.cityCode
-      });
-    },
+    }
+   
 
   }
 }

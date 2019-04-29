@@ -115,6 +115,7 @@ export default {
             this.Mobile = Mobile
             this.Avatar = Avatar
             this.Sex = Sex
+            console.log(Avatar,"头像")
         }
       }
     },
@@ -167,6 +168,9 @@ export default {
             sourceType: ['album'],
             success: (result)=>{
                 console.log(result)
+                let imgArr=result.tempFilePaths
+                
+
             },
             fail: ()=>{},
             complete: ()=>{}
