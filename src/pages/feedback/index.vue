@@ -144,49 +144,20 @@ export default {
       if (toLogin(this.curPage)) {
         //提交反馈
         if (this.validate()) {
-          if (this.identity == 2) {
-            //客户
-            this.MemberFeedBack();
-          }
-          if (this.identity == 3) {
-            //师傅
-            this.InstalMasterFeedBack();
-          }
+          this.submitFeedBack();
         }
       }
     },
-    //师傅的反馈
-    async InstalMasterFeedBack() {
-      let result = await post("InstalMaster/MemberFeedBack",
-        {
-          UserId: this.userId,
-          Token: this.token,
-          Content: this.content,
-          PicList: JSON.stringify(this.imgPathArr2),
-          Type: 0
-        },
-        this.curPage
-      );
-      if (result.code === 0) {
-        let that = this;
-        wx.showToast({
-          title: "提交成功！",
-          icon: "none",
-          duration: 1500,
-          success: function() {
-            setTimeout(function() {
-              wx.reLaunch({
-                url: "/pages/my/main"
-              });
-            }, 1500);
-          }
-        });
+    async submitFeedBack(){
+      let objUrl = "";
+      if(this.identity==2) { //客户
+        objUrl = "InstalMaster/MemberFeedBack";
       }
-    },
-    //客户的反馈
-    async MemberFeedBack() {
+      if(this.identity==3) { //师傅
+        objUrl = "User/MemberFeedBack";
+      }
       let result = await post(
-        "User/MemberFeedBack",
+        objUrl,
         {
           UserId: this.userId,
           Token: this.token,
