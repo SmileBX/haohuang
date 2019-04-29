@@ -105,7 +105,6 @@ export default {
       this.identity = wx.getStorageSync("identity");
       this.userId = wx.getStorageSync("userId");
       this.token = wx.getStorageSync("token");
-      this.getprovinces()
   },
   data() {
     return {
