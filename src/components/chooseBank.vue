@@ -5,7 +5,7 @@
       <div
         class="payitem flex flexAlignCenter" :class="{'active':activeIndex===index}"
         v-for="(item,index) in banklist"
-        :key="index" @click="selectCardName(index,item.Id)"
+        :key="index" @click="selectCardList(index,item.Id)"
       >
         <div class="card flex1 flex flexAlignCenter">
           <img :src="item.BankLogo" class="cardpic" mode="widthFix">
@@ -22,6 +22,7 @@
 import { post, get } from "../utils";
 import "@/css/dd_style.css";
 export default {
+  props:["backUrl"],
   onLoad() {
   },
   created() {
@@ -39,9 +40,29 @@ export default {
     };
   },
   methods: {
-    selectCardName(index,id){
+    selectCardList(index,id){
       this.activeIndex = index;
-
+      const selectCard = this.$store.state.selectCard;
+      if(!selectAddress.status){
+        return false
+      }
+      let cardInfo = {
+        id,
+        bankLogo:this.banklist[index].BankLogo,
+        bankName:this.banklist[index].BankName
+      };
+      // cardInfo: { //选择的银行卡id
+      //       id: "",
+      //       bankLogo: "",
+      //       bankName: ""
+      //   }
+      // 设置提交订单参数
+      this.$store.commit('update',{cardInfo});
+      // 跳转到上一页
+      // wx.redirectTo({ url: selectAddress.url});
+      wx.navigateBack()
+      // 跳转到上一页
+      // wx.redirectTo({ url: ""});
     },
     async getBankinfoList() {
       let result = await get("Bank/GetBankinfoList");

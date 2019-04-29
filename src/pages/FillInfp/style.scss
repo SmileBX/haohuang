@@ -84,3 +84,20 @@
     border-radius: 8rpx;
     margin-top: 20rpx;
 }
+
+.van-popup {
+    z-index: 4000 !important;
+}
+
+.upbtn {
+    position: relative;
+    overflow: visible;
+}
+
+.upbtn .close {
+    position: absolute;
+    width: 40rpx;
+    height: 40rpx;
+    right: -16rpx;
+    top: -16rpx;
+}

@@ -176,3 +176,88 @@
     height: 100rpx;
     line-height: 1.8;
 }
+
+
+/* 遮罩 */
+
+.shadeAll {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    z-index: 2000;
+    height: 100%;
+    top: 0;
+}
+
+.shadeAll .mask {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    z-index: 40;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    top: 0;
+}
+
+.shadeAll .shade {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    z-index: 20;
+    z-index: 40;
+    height: 100%;
+    top: 0;
+    display: inherit;
+}
+
+.shadeAll .shade.alignCenter__shade {
+    display: table;
+}
+
+.shadeAll .shade.alignCenter__shade .shade__bd {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.shadeAll .shade.alignCenter__shade .shade__bd .shadeContent {
+    background-color: #fff;
+}
+
+.shadeAll .shade.alignBottom__shade .shade__bd {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 750px;
+    margin: 0 auto;
+    background-color: #fff;
+}
+
+.shadeAll .shadeContent__bd {
+    max-height: 60vh;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.shadeAll .shadeContent__hd {
+    font-size: 36rpx;
+    color: #333;
+    line-height: 90rpx;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.shadeAll .shadeContent__hd .title {
+    line-height: 90rpx;
+    display: inline-block;
+    vertical-align: top;
+    max-width: 80%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
