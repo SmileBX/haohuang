@@ -4,7 +4,7 @@
       <img src="/static/images/icons/membertop_1.jpg" class="bg_img" mode="scaleToFill" alt>
       <div class="conBox">
         <div class="tx_info flex flexAlignCenter">
-          <div class="tx" @click="gotoMyInfo">
+          <div class="tx" @click="gotoMyInfo" style="border:1px solid red">
             <img :src="info.Avatar" alt>
           </div>
           <div class="info flex1">
@@ -281,8 +281,7 @@ export default {
   },
   data() {
     return {
-      curPage: "",
-      curPage: "",
+      curPage: "",   
       userId: "",
       token: "",
       identity: "",

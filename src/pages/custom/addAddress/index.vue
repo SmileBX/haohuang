@@ -93,16 +93,19 @@ export default {
       this.setBarTitle();
       //编辑地址的需要
       const id = this.$root.$mp.query.id 
-      console.log(id)  
+      console.log(id,"id")  
       if(id){
         this.editAddress(id)
       }
+      
+      
   },
   onShow() {
       this.curPage = getCurrentPageUrlWithArgs();
       this.identity = wx.getStorageSync("identity");
       this.userId = wx.getStorageSync("userId");
       this.token = wx.getStorageSync("token");
+      this.getprovinces()
   },
   data() {
     return {
@@ -143,23 +146,25 @@ export default {
         this.districtCode ='';
     },
     async editAddress(id){
-        const res = await post('/Address/GetInfo',{
-            Id:id,
-            UserId:this.userid,
-            Token: this.token
-        },
-          this.curPage
-        )
-        console.log(res,"更改编辑用户信息")
-          this.buttonText= '修改';
-          this.name=res.data.name;
-          this.phone=res.data.tel;
-          this.isDefault=res.data.is_def?true:false;
-          this.area=res.data.addressstr;
-          this.address=res.data.address;
-          this.provinceCode=res.data.province;
-          this.cityCode=res.data.city;
-          this.districtCode =res.data.district;
+      if(toLogin(this.curPage)){
+          const res = await post('/Address/GetInfo',{
+              Id:id,
+              UserId:this.userid,
+              Token: this.token
+          },
+            this.curPage
+          )
+          console.log(res,"更改编辑用户信息")
+            this.buttonText= '修改';
+            this.name=res.data.name;
+            this.phone=res.data.tel;
+            this.isDefault=res.data.is_def?true:false;
+            this.area=res.data.addressstr;
+            this.address=res.data.address;
+            this.provinceCode=res.data.province;
+            this.cityCode=res.data.city;
+            this.districtCode =res.data.district;
+      }
     },
     submit(){
         const toast = this.jiaoyan()
@@ -185,31 +190,32 @@ export default {
             StreetCode:'',
             PostCode:''
         }
-        if(this.buttonText === '修改'){
-            params.Id=this.$root.$mp.query.id;//修改地址
-            post('/Address/UpdateAddress',params,this.curPage).then(res=>{
-                wx.showToast({
-                  title: res.msg,
-                  icon: "success"
-                });
-                setTimeout(()=> {
-                    wx.redirectTo({ url: "/pages/custom/addressList/main" });
-                  },1500)
-            })
-        }else{
-          //新增
-          post('/Address/AddAddress',params,this.curPage).then(res=>{
-              wx.showToast({
-                title: res.msg,
-                icon: "success"
-              });
-                setTimeout(()=> {
-                  wx.redirectTo({ url: "/pages/custom/addressList/main" });
-                },1500)
-        
-          })
+        if(toLogin(this.curPage)){
+            if(this.buttonText === '修改'){
+                params.Id=this.$root.$mp.query.id;//修改地址
+                post('/Address/UpdateAddress',params,this.curPage).then(res=>{
+                    wx.showToast({
+                      title: res.msg,
+                      icon: "success"
+                    });
+                    setTimeout(()=> {
+                        wx.redirectTo({ url: "/pages/custom/addressList/main" });
+                      },1500)
+                })
+            }else{
+              //新增
+              post('/Address/AddAddress',params,this.curPage).then(res=>{
+                  wx.showToast({
+                    title: res.msg,
+                    icon: "success"
+                  });
+                    setTimeout(()=> {
+                      wx.redirectTo({ url: "/pages/custom/addressList/main" });
+                    },1500)
+            
+              })
+            }
         }
-
     },
     confirmArea(area){
         this.showArea = false
@@ -241,8 +247,8 @@ export default {
       this.phone = e.mp.detail
     },onAddress(e){
       this.address = e.mp.detail
-    },
-
+    }
+   
 
   }
 }

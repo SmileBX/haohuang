@@ -166,7 +166,7 @@ export default {
           Type: 0
         },
         this.curPage
-      )
+      );
       if (result.code === 0) {
         let that = this;
         wx.showToast({
