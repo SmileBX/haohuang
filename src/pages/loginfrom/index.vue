@@ -113,7 +113,11 @@ export default {
       Code: "",
       identity: "",
       codeType: "",
-      codeMsg: "获取验证码"
+      codeMsg: "获取验证码",
+      timer: null,
+      count: "",
+      TIME_COUNT: 60,
+      has_click: false
     };
   },
   methods: {
@@ -287,8 +291,8 @@ export default {
           duration: 1500,
           success: function() {
             setTimeout(function() {
-              wx.redirectTo({
-                url: "/pages/my/main?identity=" + that.identity
+              wx.reLaunch({
+                url: "/pages/my/main"
               });
             }, 1500);
           }
@@ -313,11 +317,16 @@ export default {
           success: function() {
             setTimeout(function() {
               wx.reLaunch({
-                url: "/pages/my/main?identity=" + that.identity
+                url: "/pages/my/main"
               });
             }, 1500);
           }
         });
+      }
+      if(result.code===102){  //没有填写审核资料
+         wx.navigateTo({
+          url: '/pages/FillInfp/main'
+        })
       }
     },
     //验证码登录
@@ -327,7 +336,7 @@ export default {
         VerifyCode: this.Code
       });
       if (result.code === 0) {
-          let that = this;
+        let that = this;
         wx.setStorageSync("userId", result.data.MasterId);
         wx.setStorageSync("token", result.data.MasterToken);
         wx.showToast({
@@ -337,11 +346,16 @@ export default {
           success: function() {
             setTimeout(function() {
               wx.reLaunch({
-                url: "/pages/my/main?identity=" + that.identity
+                url: "/pages/my/main"
               });
             }, 1500);
           }
         });
+      }
+      if(result.code===102){  //没有填写审核资料
+         wx.navigateTo({
+          url: '/pages/FillInfp/main'
+        })
       }
     },
     //客服登录
@@ -386,7 +400,7 @@ export default {
           success: function() {
             setTimeout(function() {
               wx.reLaunch({
-                url: "/pages/my/main?identity=" + that.identity
+                url: "/pages/my/main"
               });
             }, 1500);
           }
