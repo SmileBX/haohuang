@@ -57,12 +57,15 @@ export default {
   onShow() {
       this.page=1;
       this.sitelist=[]
+      this.curPage = getCurrentPageUrlWithArgs();
+      this.identity = wx.getStorageSync("identity");
       this.userid=wx.getStorageSync("userId")
       this.token=wx.getStorageSync("token")
       this.geSiteList()
   },
   data() {
     return {
+       curPage: "", 
         userid:'',
         token:'',
         isshow: true,
@@ -82,26 +85,30 @@ export default {
       });
     },
     async geSiteList(){
-      const res = await post("/Address/AddressList", {
-          UserId: this.userid,
-          Token: this.token,
-          Page: this.page,
-          PageSize: this.pageSize
-      });
-      if(this.page===1){
-       this.sitelist= []
+      if(toLogin(this.curPage)){
+          const res = await post("/Address/AddressList", {
+              UserId: this.userid,
+              Token: this.token,
+              Page: this.page,
+              PageSize: this.pageSize
+          },
+            this.curPage
+          );
+          if(this.page===1){
+          this.sitelist= []
+          }
+          for (let i = 0; i < res.data.length; i += 1) {
+            const list = res.data[i];
+            this.sitelist.push({
+              id: list.id,
+              name: list.name,
+              phone: list.tel,
+              site: list.addressinfo,
+              checked: list.is_def
+            });
+          }
+          console.log(this.sitelist,"列表数组")
       }
-      for (let i = 0; i < res.data.length; i += 1) {
-        const list = res.data[i];
-        this.sitelist.push({
-          id: list.id,
-          name: list.name,
-          phone: list.tel,
-          site: list.addressinfo,
-          checked: list.is_def
-        });
-      }
-      console.log(this.sitelist,"列表数组")
     },
     changeDefault(i){ //设置默认
         const params={
@@ -109,7 +116,7 @@ export default {
             UserId: this.userid,
             Token: this.token
         }
-        post("Address/SetDefaultaddress",params)
+        post("Address/SetDefaultaddress",params,this.curPage)
     },
     radioChange(e){  //设置选中样式
       var arrs = this.sitelist;
@@ -139,7 +146,7 @@ export default {
                 Id: id,
                 UserId: this.userid,
                 Token: this.token
-            }).then(res=>{
+            },this.curPage).then(res=>{
                 that.sitelist.spilce(i,1)
                 this.$router.go(0)
             })

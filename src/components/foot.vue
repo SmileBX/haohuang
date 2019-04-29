@@ -1,7 +1,6 @@
 <template>
   <div class="foot">
     <div class="inner">
-      <ul class="list li_20 clear center">
       <ul class="list clear center" :class="[identity !==3 ? 'li_20':'li_25']">
         <li :class="{'active':activeIndex===0}" @click="gotoPage(0)">
           <img v-if="activeIndex===0" src="/static/images/footer/ft1_2.png" class="iconImg" alt>

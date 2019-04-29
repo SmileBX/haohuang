@@ -289,7 +289,6 @@ export default {
   },
   data() {
     return {
-      curPage: "",
       curPage: "",   
       userId: "",
       token: "",
