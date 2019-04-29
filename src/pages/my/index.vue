@@ -4,7 +4,7 @@
       <img src="/static/images/icons/membertop_1.jpg" class="bg_img" mode="scaleToFill" alt>
       <div class="conBox">
         <div class="tx_info flex flexAlignCenter">
-          <div class="tx">
+          <div class="tx" @click="gotoMyInfo">
             <img :src="info.Avatar" alt>
           </div>
           <div class="info flex1">
@@ -319,6 +319,11 @@ export default {
         url: "/pages/master/cardList/main"
       });
     },
+    gotoMyInfo(){
+      wx.navigateTo({
+        url: "/pages/myInfo/main"
+      });
+    },
     //客户的
     async GetMemberInfo() {
       let result = await post(
@@ -331,6 +336,7 @@ export default {
       );
       if (result.code === 0) {
         if (Object.keys(result.data).length > 0) {
+          wx.setStorageSync("mobile", result.data.Mobile);
           this.$set(
             result.data,
             "Mobile",
@@ -338,7 +344,7 @@ export default {
               "****" +
               result.data.Mobile.substring(result.data.Mobile.length - 4)
           );
-          wx.setStorageSync("mobile", result.data.Mobile);
+          
           this.hasData = true;
           this.info = result.data;
         }
@@ -356,6 +362,7 @@ export default {
       );
       if (result.code === 0) {
         if (Object.keys(result.data).length > 0) {
+          wx.setStorageSync("mobile", result.data.Mobile);
           this.$set(
             result.data,
             "Mobile",
@@ -363,7 +370,7 @@ export default {
               "****" +
               result.data.Mobile.substring(result.data.Mobile.length - 4)
           );
-          wx.setStorageSync("mobile", result.data.Mobile);
+          
           this.hasData = true;
           this.info = result.data;
         }
@@ -381,6 +388,7 @@ export default {
       );
       if (result.code === 0) {
         if (Object.keys(result.data).length > 0) {
+          wx.setStorageSync("mobile", result.data.Mobile);
           this.$set(
             result.data,
             "Mobile",
@@ -388,7 +396,7 @@ export default {
               "****" +
               result.data.Mobile.substring(result.data.Mobile.length - 4)
           );
-          wx.setStorageSync("mobile", result.data.Mobile);
+          
           this.hasData = true;
           this.info = result.data;
         }

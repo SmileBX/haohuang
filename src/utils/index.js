@@ -219,6 +219,11 @@ async function wxInstalMasterLogin(code, iv, encryptedData) {
             url: '/pages/wxBindTel/main'
         })
     }
+    if (result.code === 102) { //没有填写审核资料
+        wx.navigateTo({
+            url: '/pages/FillInfp/main'
+        })
+    }
 }
 
 //客服微信直接登录

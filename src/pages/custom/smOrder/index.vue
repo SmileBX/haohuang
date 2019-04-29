@@ -139,13 +139,13 @@
               <!--时间选择 不需要弹框-->
               <van-action-sheet :show="showDate" @close="showDate=false" @select="showDate=false">
                   <van-datetime-picker
-                      type="date"
-                      :value="currentDate"
-                      @confirm="onInput($event,index)"
-                      @cancel="showDate=false"
-                      :min-date="minDate"
-                      :formatter="formatter"
-                      title="请选择时间"
+                  type="date"
+                  :value="currentDate"
+                  @confirm="onInput($event,index)"
+                  @cancel="showDate=false"
+                  :min-date="minDate"
+                  :formatter="formatter"
+                  title="请选择时间"
                   />
               </van-action-sheet>         
          </div>
@@ -333,15 +333,15 @@ export default {
         this.showType=false
         this.isShow=false
       },
-      onInput(e,index){
-          // console.log(e,index)
+      onInput(e,i){
+          console.log(e)
           const  date= new Date(e.mp.detail)
           const year = date.getFullYear()
           let month = date.getMonth()+1
           let dd = date.getDate()
           month.toString().length<2 ? (month= "0"+month) : month
           dd.toString().length<2 ? (dd="0"+dd) : dd
-         this.prolist[index].estimateTime = `${year}-${month}-${dd}`
+          this.prolist[i].estimateTime = `${year}-${month}-${dd}`
           this.showDate = false
           console.log(this.estimateTime,"交付时间")
       },

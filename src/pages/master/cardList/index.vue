@@ -1,13 +1,13 @@
 <template>
   <div class="page">
     <div class="cardList">
-      <div class="item flex">
+      <div class="item flex" v-for="(item,index) in cardList" :key="index">
         <img src="/static/images/card/jianshe.png" class="bg" alt>
         <div class="cardImg">
-          <img src="/static/images/card/card1.png" alt>
+          <img :src="item.BankLogo" alt>
         </div>
         <div class="txtBox">
-          <p class="title">中国建设银行</p>
+          <p class="title">{{item.BankName}}</p>
           <p class="type">储蓄卡</p>
           <p class="number">
             <span class="xing">****</span>
