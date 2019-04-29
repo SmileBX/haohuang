@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 16,
+			"current": 21,
 			"list": [
 				{
 					"id": 0,
@@ -180,6 +180,12 @@
 					"name": "h5的注册",
 					"pathName": "pages/register/main",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "客户下单",
+					"pathName": "pages/custom/smOrder/main",
 					"scene": null
 				}
 			]

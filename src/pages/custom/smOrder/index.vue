@@ -139,14 +139,13 @@
               <!--时间选择 不需要弹框-->
               <van-action-sheet :show="showDate" @close="showDate=false" @select="showDate=false">
                   <van-datetime-picker
-                  type="date"
-                  :value="currentDate"
-                  @confirm="onInput"
-                  @change="getIndex(index)"
-                  @cancel="showDate=false"
-                  :min-date="minDate"
-                  :formatter="formatter"
-                  title="请选择时间"
+                      type="date"
+                      :value="currentDate"
+                      @confirm="onInput($event,index)"
+                      @cancel="showDate=false"
+                      :min-date="minDate"
+                      :formatter="formatter"
+                      title="请选择时间"
                   />
               </van-action-sheet>         
          </div>
@@ -288,30 +287,30 @@ export default {
         isShow:false, //遮罩层
         showType:false,  //普通选择的弹框
         showPaymask:false,//支付确认弹框
-        proname:"",//项目名称
-        speclong:"",//厚
-        specwide:"",//宽
-        spechign:"",//高
-        specnum:"",//数量
-        orderType:"",//订单类型 --0:设计,1:制作,2:安装,3:设计-制作,4:制作-安装,5:设计-制作-安装
-        referencePicList:"",//参考图片
-        estimateTime:"",//交付时间
-        makestatic:"",//制作材料
-        installstatic:"",//安装材料
-        remark:"",//备注说明
-        offerTotal:"",//总金额
+        // proname:"",//项目名称
+        // speclong:"",//厚
+        // specwide:"",//宽
+        // spechign:"",//高
+        // specnum:"",//数量
+        // orderType:"",//订单类型 --0:设计,1:制作,2:安装,3:设计-制作,4:制作-安装,5:设计-制作-安装
+        // referencePicList:"",//参考图片
+        // estimateTime:"",//交付时间
+        // makestatic:"",//制作材料
+        // installstatic:"",//安装材料
+        // remark:"",//备注说明
+        // offerTotal:"",//总金额
         ContactName:"",//联系人
         Tel:"",//电话
         Addr:"",//地址
         masktitle:'设计',
         tip:0,//点击增加明细增加子订单的次数标识
         proitem:{
-          orderType:"",spechign:"",speclong:"",spechign:"",specnum:"",referencePicList:"",
+          orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:"",
           estimateTime:"",remark:"",offerTotal:"",makestatic:"",installstatic:"",proname:""
         },
         prolist:[
           {
-          orderType:"",spechign:"",speclong:"",spechign:"",specnum:"",referencePicList:"",
+          orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:"",
           estimateTime:"",remark:"",offerTotal:"",makestatic:"",installstatic:"",proname:""
           },
         ],//orderType类型...
@@ -334,18 +333,15 @@ export default {
         this.showType=false
         this.isShow=false
       },
-      getIndex(index){
-          console.log(index)
-      },
-      onInput(e){
-          console.log(e)
+      onInput(e,index){
+          // console.log(e,index)
           const  date= new Date(e.mp.detail)
           const year = date.getFullYear()
           let month = date.getMonth()+1
           let dd = date.getDate()
           month.toString().length<2 ? (month= "0"+month) : month
           dd.toString().length<2 ? (dd="0"+dd) : dd
-          this.estimateTime = `${year}-${month}-${dd}`
+         this.prolist[index].estimateTime = `${year}-${month}-${dd}`
           this.showDate = false
           console.log(this.estimateTime,"交付时间")
       },
