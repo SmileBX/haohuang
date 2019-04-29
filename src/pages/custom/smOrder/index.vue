@@ -141,8 +141,7 @@
                   <van-datetime-picker
                   type="date"
                   :value="currentDate"
-                  @confirm="onInput"
-                  @change="getIndex(index)"
+                  @confirm="onInput($event,index)"
                   @cancel="showDate=false"
                   :min-date="minDate"
                   :formatter="formatter"
@@ -334,10 +333,7 @@ export default {
         this.showType=false
         this.isShow=false
       },
-      getIndex(index){
-          console.log(index)
-      },
-      onInput(e){
+      onInput(e,i){
           console.log(e)
           const  date= new Date(e.mp.detail)
           const year = date.getFullYear()
@@ -345,7 +341,7 @@ export default {
           let dd = date.getDate()
           month.toString().length<2 ? (month= "0"+month) : month
           dd.toString().length<2 ? (dd="0"+dd) : dd
-          this.estimateTime = `${year}-${month}-${dd}`
+          this.prolist[i].estimateTime = `${year}-${month}-${dd}`
           this.showDate = false
           console.log(this.estimateTime,"交付时间")
       },
