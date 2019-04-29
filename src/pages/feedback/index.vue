@@ -141,7 +141,6 @@ export default {
       }
     },
     smFeedBack() {
-      if (toLogin(THIS.curPage)) {
       if (toLogin(this.curPage)) {
         //提交反馈
         if (this.validate()) {
@@ -158,8 +157,7 @@ export default {
     },
     //师傅的反馈
     async InstalMasterFeedBack() {
-      let result = await post(
-        "InstalMaster/MemberFeedBack",
+      let result = await post("InstalMaster/MemberFeedBack",
         {
           UserId: this.userId,
           Token: this.token,
@@ -168,7 +166,7 @@ export default {
           Type: 0
         },
         this.curPage
-      );
+      )
       if (result.code === 0) {
         let that = this;
         wx.showToast({
