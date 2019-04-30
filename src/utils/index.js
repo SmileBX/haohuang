@@ -143,113 +143,118 @@ export function valPhone(tel) {
 }
 
 //用户直接微信登录
-async function wxMemberLogin(code, iv, encryptedData) {
-    let result = await post("Login/MemberLogin", {
+function wxMemberLogin(code, iv, encryptedData) {
+    post("Login/MemberLogin", {
         iv,
         code,
         encryptedData
+    }).then(result => {
+        if (result.code === 0) { //登录成功
+            //把返回的userId、token保存起来
+            wx.setStorageSync("userId", result.data.MemberId);
+            wx.setStorageSync("token", result.data.MemberAccessToken);
+            wx.setStorageSync("openId", result.data.MemberOpenId);
+            wx.showToast({
+                title: '登录成功',
+                icon: 'success',
+                duration: 1500,
+                success: function() {
+                    setTimeout(function() {
+                        wx.reLaunch({
+                            url: '/pages/my/main'
+                        })
+                    }, 1500);
+                }
+            })
+        }
+        if (result.code === 100) {
+            wx.setStorageSync("openId", result.data.MemberOpenId);
+            wx.setStorageSync("unionid", result.data.MemberUnionid);
+            wx.showToast({
+                title: result.msg,
+                icon: 'none',
+                duration: 1500,
+                success: function() {
+                    setTimeout(function() {
+                        wx.redirectTo({
+                            url: '/pages/wxBindTel/main'
+                        })
+                    }, 1500);
+                }
+            })
+        }
     });
-    if (result.code === 0) { //登录成功
-        //把返回的userId、token保存起来
-        wx.setStorageSync("userId", result.data.MemberId);
-        wx.setStorageSync("token", result.data.MemberAccessToken);
-        wx.setStorageSync("openId", result.data.MemberOpenId);
-        wx.showToast({
-            title: '登录成功',
-            icon: 'success',
-            duration: 1500,
-            success: function() {
-                setTimeout(function() {
-                    wx.reLaunch({
-                        url: '/pages/my/main'
-                    })
-                }, 1500);
-            }
-        })
-    }
-    if (result.code === 100) {
-        wx.setStorageSync("openId", result.data.MemberOpenId);
-        wx.setStorageSync("unionid", result.data.MemberUnionid);
-        wx.showToast({
-            title: result.msg,
-            icon: 'none',
-            duration: 1500,
-            success: function() {
-                setTimeout(function() {
-                    wx.redirectTo({
-                        url: '/pages/wxBindTel/main'
-                    })
-                }, 1500);
-            }
-        })
-    }
+
 }
 
 
 
 //师傅直接微信登录
-async function wxInstalMasterLogin(code, iv, encryptedData) {
-    let result = await post("Login/InstalMasterLogin", {
+function wxInstalMasterLogin(code, iv, encryptedData) {
+    post("Login/InstalMasterLogin", {
         iv,
         code,
         encryptedData
+    }).then(result => {
+        if (result.code === 0) { //登录成功
+            wx.setStorageSync("userId", result.data.MasterId);
+            wx.setStorageSync("token", result.data.MasterToken);
+            wx.setStorageSync("openId", result.data.MasterOpenId);
+            wx.showToast({
+                title: '登录成功',
+                icon: 'success',
+                duration: 1500,
+                success: function() {
+                    setTimeout(function() {
+                        wx.reLaunch({
+                            url: '/pages/my/main'
+                        })
+                    }, 1500);
+                }
+            })
+        }
+        if (result.code === 100) {
+            wx.setStorageSync("openId", result.data.MasterUnionId);
+            wx.setStorageSync("unionid", result.data.MasterUnionId);
+            wx.redirectTo({
+                url: '/pages/wxBindTel/main'
+            })
+        }
+        if (result.code === 102) { //没有填写审核资料
+            wx.navigateTo({
+                url: '/pages/FillInfp/main'
+            })
+        }
     });
-    if (result.code === 0) { //登录成功
-        wx.setStorageSync("userId", result.data.MemberId);
-        wx.setStorageSync("token", result.data.MemberAccessToken);
-        wx.setStorageSync("openId", result.data.MemberOpenId);
-        wx.showToast({
-            title: '登录成功',
-            icon: 'success',
-            duration: 1500,
-            success: function() {
-                setTimeout(function() {
-                    wx.reLaunch({
-                        url: '/pages/my/main'
-                    })
-                }, 1500);
-            }
-        })
-    }
-    if (result.code === 100) {
-        wx.setStorageSync("openId", result.data.MasterUnionId);
-        wx.setStorageSync("unionid", result.data.MasterUnionId);
-        console.log("ddddd");
-        wx.redirectTo({
-            url: '/pages/wxBindTel/main'
-        })
-    }
-    if (result.code === 102) { //没有填写审核资料
-        wx.navigateTo({
-            url: '/pages/FillInfp/main'
-        })
-    }
+
 }
 
 //客服微信直接登录
-async function wxCustomerServiceLogin(code, iv, encryptedData) {
-    let result = await post("Login/CustomerServiceLogin", {
+function wxCustomerServiceLogin(code, iv, encryptedData) {
+    post("Login/CustomerServiceLogin", {
         iv,
         code,
         encryptedData
+    }).then(result => {
+        if (result.code === 0) { //登录成功
+            wx.setStorageSync("userId", result.data.ServiceId);
+            wx.setStorageSync("token", result.data.ServiceToken);
+            wx.setStorageSync("openId", result.data.ServiceOpenId);
+            wx.showToast({
+                title: '登录成功',
+                icon: 'success',
+                duration: 1500,
+                success: function() {
+                    setTimeout(function() {
+                        wx.reLaunch({
+                            url: '/pages/my/main'
+                        })
+                    }, 1500);
+                }
+            })
+        }
     });
-    if (result.code === 0) { //登录成功
-        wx.setStorageSync("userId", result.data.MemberId);
-        wx.setStorageSync("token", result.data.MemberAccessToken);
-        wx.setStorageSync("openId", result.data.MemberOpenId);
-        wx.showToast({
-            title: '登录成功',
-            icon: 'success',
-            duration: 1500,
-            success: function() {
-                setTimeout(function() {
-                    wx.reLaunch({
-                        url: '/pages/my/main'
-                    })
-                }, 1500);
-            }
-        })
-    }
+
 }
 
 //微信直接登录
@@ -299,12 +304,13 @@ export function Login() {
 }
 
 
-
+export {
+    host,
+    filePath,
+}
 export default {
     Login,
     toLogin,
-    host,
-    filePath,
     get,
     post,
     formatNumber,

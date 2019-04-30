@@ -53,8 +53,8 @@ export default {
     this.curPage = getCurrentPageUrlWithArgs();
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    if(toLogin(this.curPage)){
-        this.getBankList();
+    if (toLogin(this.curPage)) {
+      this.getBankList();
     }
   },
   data() {
@@ -62,8 +62,8 @@ export default {
       curPage: "",
       userId: "",
       token: "",
-      page:1,
-      cardList:[]
+      page: 1,
+      cardList: []
     };
   },
   methods: {
@@ -72,28 +72,32 @@ export default {
         title: "我的银行卡"
       });
     },
-    gotoAddCard(){
-        console.log("dddddd");
-      let that = this;
+    gotoAddCard() {
       wx.navigateTo({
         url: "/pages/master/addCard/main"
       });
     },
-    async getBankList(){
-      let result = await post("Bank/BankList",{
-        UserId:this.userId,
-        Token:this.token,
-        page:this.page,
-        pagesize:this.pageSize
-      },this.curPage)
-      if(result.code===0){
-        if(result.data.lenght>0){
-            if(this.page===1){
-              this.cardList = [];
+    async getBankList() {
+      let that = this;
+      post(
+        "Bank/BankList",
+        {
+          UserId: that.userId,
+          Token: that.token,
+          page: that.page,
+          pagesize: that.pageSize
+        },
+        that.curPage
+      ).then(result => {
+        if (result.code === 0) {
+          if (result.data.lenght > 0) {
+            if (that.page === 1) {
+              that.cardList = [];
             }
-            this.cardList = result.data;
+            that.cardList = result.data;
+          }
         }
-      }
+      });
     }
   }
 };

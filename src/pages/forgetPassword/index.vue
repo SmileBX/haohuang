@@ -60,14 +60,14 @@ export default {
     //         客服登录14,
     //         客服找回密码15,
 
-    if(this.identity==1){
-      this.codeType =15;
+    if (this.identity == 1) {
+      this.codeType = 15;
     }
-    if(this.identity==2){
-      this.codeType =2;
+    if (this.identity == 2) {
+      this.codeType = 2;
     }
-    if(this.identity==3){
-      this.codeType =13;
+    if (this.identity == 3) {
+      this.codeType = 13;
     }
   },
   components: {},
@@ -82,8 +82,8 @@ export default {
       Pwd: "",
       Pwd2: "",
       Code: "",
-      identity:"",
-      codeType:""
+      identity: "",
+      codeType: ""
     };
   },
   methods: {
@@ -128,7 +128,7 @@ export default {
       return true;
     },
     getCode() {
-      console.log("ddd:"+this.codeType);
+      console.log("ddd:" + this.codeType);
       if (valPhone(this.Tel)) {
         if (!this.has_click) {
           this.getWxBindTelCode();
@@ -138,58 +138,62 @@ export default {
     rechangePwd() {
       //点击注册按钮
       if (valPhone(this.Tel) && this.regResetPwdValOther()) {
-        this.ForgetPassword();  
+        this.ForgetPassword();
       }
     },
     //获取验证码
     async getWxBindTelCode() {
-      let result = await post("Login/GetWxBindTelCode", {
-        Mobile: this.Tel,
-        CodeType: this.codeType
+      let that = this;
+      post("Login/GetWxBindTelCode", {
+        Mobile: that.Tel,
+        CodeType: that.codeType
+      }).then(result => {
+        if (result.code === 0) {
+          that.has_click = true;
+          const TIME_COUNT = 90; // 90s后重新获取验证码
+          that.count = TIME_COUNT;
+          wx.showToast({
+            title: "发送成功，请注意查收!",
+            icon: "none",
+            duration: 1500
+          });
+          that.timer = setInterval(() => {
+            if (that.count > 0 && that.count <= TIME_COUNT) {
+              this.count--;
+              that.codeMsg = that.count + "s后重新获取";
+            } else {
+              clearInterval(that.timer);
+              that.timer = null;
+              that.codeMsg = "获取验证码";
+            }
+          }, 1000);
+        }
       });
-      if (result.code === 0) {
-        this.has_click = true;
-        const TIME_COUNT = 90; // 90s后重新获取验证码
-        this.count = TIME_COUNT;
-        wx.showToast({
-          title: "发送成功，请注意查收!",
-          icon: "none",
-          duration: 1500
-        });
-        this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.count--;
-            this.codeMsg = this.count + "s后重新获取";
-          } else {
-            clearInterval(this.timer);
-            this.timer = null;
-            this.codeMsg = "获取验证码";
-          }
-        }, 1000);
-      }
     },
-    async ForgetPassword(){  //会员忘记密码
-      let result = await post("Login/ForgetPassword",{
-        Mobile:this.Tel,
-        VerifyCode:this.Code,
-        PassWord:this.Pwd,
-        IdentityType:this.identity
-      })
-      if(result.code===0){
-        let that = this;
-        wx.showToast({
-          title: "修改密码成功!",
-          icon: "none",
-          duration: 1500,
-          success:function(){
-            setTimeout(function() {
-              wx.redirectTo({
-                url: "/pages/loginfrom/main?identity=" + that.identity
-              });
-            }, 1500);
-          }
-        });
-      }
+    ForgetPassword() {
+      let that = this;
+      //会员忘记密码
+      post("Login/ForgetPassword", {
+        Mobile: that.Tel,
+        VerifyCode: that.Code,
+        PassWord: that.Pwd,
+        IdentityType: that.identity
+      }).then(result => {
+        if (result.code === 0) {
+          wx.showToast({
+            title: "修改密码成功!",
+            icon: "none",
+            duration: 1500,
+            success: function() {
+              setTimeout(function() {
+                wx.redirectTo({
+                  url: "/pages/loginfrom/main?identity=" + that.identity
+                });
+              }, 1500);
+            }
+          });
+        }
+      });
     }
   }
 };

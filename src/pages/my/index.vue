@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div class="memberTop" v-if="hasData">
+    <div class="memberTop">
       <img src="/static/images/icons/membertop_1.jpg" class="bg_img" mode="scaleToFill" alt>
       <div class="conBox">
         <div class="tx_info flex flexAlignCenter">
@@ -9,7 +9,8 @@
           </div>
           <div class="info flex1">
             <p class="name">{{info.NickName}}</p>
-            <p class="perId">{{info.Mobile}}</p>
+            <p class="perId" v-if="identity==2 || identity==3">{{info.Mobile}}</p>
+            <p class="perId" v-if="identity==1">{{info.MobileStr}}</p>
           </div>
         </div>
       </div>
@@ -274,14 +275,27 @@ export default {
     this.identity = wx.getStorageSync("identity");
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
+    this.info = {};
     if (toLogin(this.curPage)) {
-      this.getInfo();
+      if (this.identity == 1) {
+        //客服
+        this.GetCustomerServiceInfo();
+      }
+      if (this.identity == 2) {
+        //客户
+        this.GetMemberInfo();
+      }
+      if (this.identity == 3) {
+        //师傅
+        this.GetInstalMasterInfo();
+        console.log(this.info);
+      }
     }
     console.log("当前的身份：" + this.identity);
   },
   data() {
     return {
-      curPage: "",   
+      curPage: "",
       userId: "",
       token: "",
       identity: "",
@@ -316,41 +330,76 @@ export default {
         url: "/pages/myInfo/main"
       });
     },
-    async getInfo() {
-      let objUrl = "";
-      if (this.identity == 1) {
-        //客服
-        objUrl = "CustomerService/GetCustomerServiceInfo";
-      }
-      if (this.identity == 2) {
-        objUrl = "User/GetMemberInfo";
-      }
-      if (this.identity == 3) {
-        //师傅
-        objUrl = "InstalMaster/GetInstalMasterInfo";
-      }
-      let result = await post(
-        objUrl,
+    GetCustomerServiceInfo() {
+      let that = this;
+      //客服的信息
+      post(
+        "CustomerService/GetCustomerServiceInfo",
         {
-          UserId: this.userId,
-          Token: this.token
+          CsdId: that.userId,
+          Token: that.token
         },
-        this.curPage
-      );
-      if (result.code === 0) {
-        if (Object.keys(result.data).length > 0) {
+        that.curPage
+      ).then(result => {
+        if (result.code === 0) {
+          that.hasData = true;
+          that.info = result.data;
+        }
+      });
+    },
+    GetInstalMasterInfo() {
+      //师傅的信息
+      let that = this;
+      post(
+        "InstalMaster/GetInstalMasterInfo",
+        {
+          MasterId: that.userId,
+          Token: that.token
+        },
+        that.curPage
+      ).then(result => {
+        console.log(result);
+        if (result.code === 0) {
+          console.log("gfgfgfgfgfg");
+          console.log("_______________");
           wx.setStorageSync("mobile", result.data.Mobile);
-          this.$set(
+          that.$set(
             result.data,
             "Mobile",
             result.data.Mobile.substring(0, 3) +
               "****" +
               result.data.Mobile.substring(result.data.Mobile.length - 4)
           );
-          this.hasData = true;
-          this.info = result.data;
+          that.hasData = true;
+          console.log("oooo" + that.hasData);
+          that.info = result.data;
         }
-      }
+      });
+    },
+    GetMemberInfo() {
+      let that = this;
+      //客户信息
+      post(
+        "User/GetMemberInfo",
+        {
+          UserId: that.userId,
+          Token: that.token
+        },
+        that.curPage
+      ).then(result => {
+        if (result.code === 0) {
+          wx.setStorageSync("mobile", result.data.Mobile);
+          that.$set(
+            result.data,
+            "Mobile",
+            result.data.Mobile.substring(0, 3) +
+              "****" +
+              result.data.Mobile.substring(result.data.Mobile.length - 4)
+          );
+          that.hasData = true;
+          that.info = result.data;
+        }
+      });
     }
   }
 };

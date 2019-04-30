@@ -144,44 +144,74 @@ export default {
       if (toLogin(this.curPage)) {
         //提交反馈
         if (this.validate()) {
-          this.submitFeedBack();
+          if (this.identity == 2) {
+            this.MemberFeedBack();
+          }
+          if (this.identity == 3) {
+            this.MasterFeedBack();
+          }
         }
       }
     },
-    async submitFeedBack(){
-      let objUrl = "";
-      if(this.identity==2) { //客户
-        objUrl = "InstalMaster/MemberFeedBack";
-      }
-      if(this.identity==3) { //师傅
-        objUrl = "User/MemberFeedBack";
-      }
-      let result = await post(
-        objUrl,
+    MasterFeedBack() {
+      let that = this;
+      //师傅的
+      post(
+        "InstalMaster/MemberFeedBack",
         {
-          UserId: this.userId,
-          Token: this.token,
-          Content: this.content,
-          PicList: JSON.stringify(this.imgPathArr2),
+          MasterId: that.userId,
+          Token: that.token,
+          Content: that.content,
+          PicList: JSON.stringify(that.imgPathArr2),
           Type: 0
         },
-        this.curPage
-      );
-      if (result.code === 0) {
-        let that = this;
-        wx.showToast({
-          title: "提交成功！",
-          icon: "none",
-          duration: 1500,
-          success: function() {
-            setTimeout(function() {
-              wx.reLaunch({
-                url: "/pages/my/main"
-              });
-            }, 1500);
-          }
-        });
-      }
+        that.curPage
+      ).then(result => {
+        if (result.code === 0) {
+          wx.showToast({
+            title: "提交成功！",
+            icon: "none",
+            duration: 1500,
+            success: function() {
+              setTimeout(function() {
+                wx.reLaunch({
+                  url: "/pages/my/main"
+                });
+              }, 1500);
+            }
+          });
+        }
+      });
+    },
+    MemberFeedBack() {
+      let that = this;
+      //客户的
+      post(
+        "User/MemberFeedBack",
+        {
+          UserId: that.userId,
+          Token: that.token,
+          Content: that.content,
+          PicList: JSON.stringify(that.imgPathArr2),
+          Type: 0
+        },
+        that.curPage
+      ).then(result => {
+        if (result.code === 0) {
+          wx.showToast({
+            title: "提交成功！",
+            icon: "none",
+            duration: 1500,
+            success: function() {
+              setTimeout(function() {
+                wx.reLaunch({
+                  url: "/pages/my/main"
+                });
+              }, 1500);
+            }
+          });
+        }
+      });
     }
   }
 };

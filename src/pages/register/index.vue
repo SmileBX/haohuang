@@ -55,13 +55,13 @@ export default {
   },
   onShow() {
     this.identity = wx.getStorageSync("identity");
-    if(!this.identity){
+    if (!this.identity) {
       wx.reLaunch({
-        url: '/pages/login2/main'
-      })
+        url: "/pages/login2/main"
+      });
     }
     //identity: 1:客服；2：客户；3：师傅
-     // 会员注册0,
+    // 会员注册0,
     //  会员登录1,
     //  会员找回密码2,
     //  会员找回支付密码3,
@@ -164,68 +164,75 @@ export default {
     },
     //获取验证码
     async getWxBindTelCode() {
-      let result = await post("Login/GetWxBindTelCode", {
-        Mobile: this.Tel,
-        CodeType: this.codeType
+      let that = this;
+      post("Login/GetWxBindTelCode", {
+        Mobile: that.Tel,
+        CodeType: that.codeType
+      }).then(result => {
+        if (result.code === 0) {
+          that.has_click = true;
+          const TIME_COUNT = 90; // 90s后重新获取验证码
+          that.count = TIME_COUNT;
+          wx.showToast({
+            title: "发送成功，请注意查收!",
+            icon: "none",
+            duration: 1500
+          });
+          that.timer = setInterval(() => {
+            if (that.count > 0 && that.count <= TIME_COUNT) {
+              that.count--;
+              that.codeMsg = that.count + "s后重新获取";
+            } else {
+              clearInterval(that.timer);
+              that.timer = null;
+              that.codeMsg = "获取验证码";
+            }
+          }, 1000);
+        }
       });
-      if (result.code === 0) {
-        this.has_click = true;
-        const TIME_COUNT = 90; // 90s后重新获取验证码
-        this.count = TIME_COUNT;
-        wx.showToast({
-          title: "发送成功，请注意查收!",
-          icon: "none",
-          duration: 1500
-        });
-        this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.count--;
-            this.codeMsg = this.count + "s后重新获取";
-          } else {
-            clearInterval(this.timer);
-            this.timer = null;
-            this.codeMsg = "获取验证码";
-          }
-        }, 1000);
-      }
     },
     //客户的注册
-    async MemberMobileRegister() {
-      let result = await post("Login/MemberMobileRegister", {
-        Mobile: this.Tel,
-        PassWord: this.Pwd,
-        OkPassWord: this.Pwd2,
-        VerifyCode: this.Code
+    MemberMobileRegister() {
+      let that = this;
+      post("Login/MemberMobileRegister", {
+        Mobile: that.Tel,
+        PassWord: that.Pwd,
+        OkPassWord: that.Pwd2,
+        VerifyCode: that.Code
+      }).then(result => {
+        if (result.code === 0) {
+          wx.showToast({
+            title: "注册成功，请前往登录!",
+            icon: "none",
+            duration: 1500,
+            success: function() {
+              setTimeout(function() {
+                wx.redirectTo({
+                  url: "/pages/loginfrom/main"
+                });
+              }, 1500);
+            }
+          });
+        }
       });
-      if (result.code === 0) {
-        let that = this;
-        wx.showToast({
-          title: "注册成功，请前往登录!",
-          icon: "none",
-          duration: 1500,
-          success: function() {
-            setTimeout(function() {
-              wx.redirectTo({
-                url: "/pages/loginfrom/main"
-              });
-            }, 1500);
-          }
-        });
-      }
     },
     //师傅注册
-    async InstalMasterMobileRegister() {
-      let result = await post("Login/InstalMasterMobileRegister", {
-        Mobile: this.Tel,
-        PassWord: this.Pwd,
-        OkPassWord: this.Pwd2,
-        VerifyCode: this.Code
+    InstalMasterMobileRegister() {
+      let that =  this;
+      post("Login/InstalMasterMobileRegister", {
+        Mobile: that.Tel,
+        PassWord: that.Pwd,
+        OkPassWord: that.Pwd2,
+        VerifyCode: that.Code
+      }).then(result => {
+        if (result.code === 102) {
+          wx.setStorageSync("userId", result.data.MasterId);
+          wx.setStorageSync("token", result.data.MasterToken);
+          wx.redirectTo({
+            url: "/pages/FillInfp/main"
+          });
+        }
       });
-      if (result.code === 0) {
-        wx.redirectTo({
-          url: "/pages/FillInfp/main"
-        });
-      }
     }
   }
 };
