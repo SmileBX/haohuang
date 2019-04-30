@@ -173,23 +173,23 @@
         <!-- 地址选择 -->
         <div class="weui-cells smDetail__weui-cells">
             <div class="weui-cells__title">选择地址</div>
-            <div class="addressList">
-                <div class="item flex flexAlignCenter nosite">
-                      <img src="/static/images/icons/addsite.png" class="site" alt>
-                      <div class="item__bd flex1" style="padding-left:20rpx;">新增收货地址</div>
-                      <span class="icon-arrow arrow-right"></span> 
-                </div>      
-                <div class="item flex flexAlignCenter">
+            <div class="addressList" @click="toAddress">
+                <div class="item flex flexAlignCenter" v-if="addressinfo.length>0">
                     <img src="/static/images/icons/address.png" class="addrIcon" alt>
                     <div class="item__bd flex1">
                         <p class="remarks">
-                        <span class="name">张三</span>
-                        <span class="tel">0755-23105899</span>
+                        <span class="name">{{addressinfo[0].name}}</span>
+                        <span class="tel">{{addressinfo[0].tel}}</span>
                         </p>
-                        <p class="address">店铺地址：挖个点个反对</p>
-                        <p class="address">详细地址：深圳市龙华区民治大道展涛科技大厦</p>
+                        <p class="address">店铺地址：{{addressinfo[0].address}}</p>
+                        <p class="address">详细地址：{{addressinfo[0].addressinfo}}</p>
                     </div>
                     <span class="icon-arrow arrow-right"></span>
+                </div>
+                <div class="item flex flexAlignCenter nosite" v-else >
+                      <img src="/static/images/icons/addsite.png" class="site" alt>
+                      <div class="item__bd flex1" style="padding-left:20rpx;">新增收货地址</div>
+                      <span class="icon-arrow arrow-right"></span> 
                 </div>
             </div>
         </div>
@@ -207,7 +207,7 @@
       </div>
     </movable-area>
     <!--弹层-->
-    <div class="mask" v-if="isShow"></div>
+    <div class="mask" v-if="isShow" catchtouchmove='true'></div>
     <!--选择类型--> 
     <div class="maskType border-box" v-if="showType">
         <div class="flex">
@@ -215,13 +215,15 @@
               <span class="title">{{masktitle}}</span>
               <span class="color size" @click="confirm">确定</span>
         </div>
-        <scroll-view class="showItem">
-            <p class="itemactive">设计+制作+安装</p>
-            <p>设计</p>
-            <p>设计+制作</p>
-            <p>制作</p>
-            <p>安装</p>
-            <p>制作+安装</p>
+        <scroll-view :scroll-y="true" style="height:600rpx;" class="showItem" >
+          <div v-for="(item,index) in kuaidiList" :key="index">
+              <p :class="index==active?'itemactive':''" @click="chose(index)">{{item.Company}}</p>
+              <!-- <p>设计</p>
+              <p>设计+制作</p>
+              <p>制作</p>
+              <p>安装</p>
+              <p>制作+安装</p> -->  
+          </div>
         </scroll-view>
     </div>
     <!--支付成功弹框-->
@@ -241,12 +243,17 @@
   </div>
 </template>
 <script>
+import { get,post, toLogin, getCurrentPageUrlWithArgs, valPhone } from "@/utils";
 import "@/css/dd_style.css";
 export default {
   onLoad(){
     this.setBarTitle();
   },
   onShow(){
+        this.curPage = getCurrentPageUrlWithArgs();
+        this.identity = wx.getStorageSync("identity");
+        this.userId = wx.getStorageSync("userId");
+        this.token = wx.getStorageSync("token");
         this.speclong = ""
         this.specwide = ""
         this.spechign = ""
@@ -257,6 +264,26 @@ export default {
         this.remark = ""
         this.offerTotal = ""
         this.tip=0
+        this.active = 0
+        this.addressinfo=[]
+        // this.postMsg = '选择快递'
+
+        //获取收货地址
+        if(wx.getStorageSync('addressinfo')){
+            console.log(wx.getStorageSync('addressinfo'))
+            const _address=wx.getStorageSync('addressinfo')
+            this.addressinfo.push({
+                  name:_address.name,
+                  tel:_address.phone,
+                  address:_address.site,
+                  addressinfo:_address.site
+
+            })
+            console.log( this.addressinfo.length)
+        }else{
+            this.getDefaultAddress()
+        }
+        
   },
   watch:{
    
@@ -281,7 +308,12 @@ export default {
           }
           return value;
         },
-        postMsg:'',//快递选择
+        userId: "",
+        token: "",
+        curPage: "",
+        identity: "",
+        active:0,//选中的标记
+        postMsg:'选择快递',//快递选择
         showDate:false,  //日期 组件 不需要遮罩层
         isShow:false, //遮罩层
         showType:false,  //普通选择的弹框
@@ -313,7 +345,8 @@ export default {
           estimateTime:"",remark:"",offerTotal:"",makestatic:"",installstatic:"",proname:""
           },
         ],//orderType类型...
-
+        kuaidiList:[],//快递种类
+        addressinfo:[],//默认的收货地址
 
     }
   },
@@ -328,7 +361,17 @@ export default {
         this.showType=false
       },
       confirm(){
-        this.masktitle=0
+        // console.log(this.masktitle,this.active)
+        if(this.masktitle=="请选择快递类型"){
+          console.log(this.masktitle,"1111111111111111")
+            for(let i in this.kuaidiList){
+              if(i*1==this.active){
+                // console.log(i)
+                this.postMsg = this.kuaidiList[i].Company
+              }
+            }
+        }
+        //  this.masktitle=0
         this.showType=false
         this.isShow=false
       },
@@ -366,7 +409,20 @@ export default {
       },
       //选择快递
       chosePost(){
+        this.isShow=true;
+        this.showType=true;
+        this.masktitle="请选择快递类型"
+        if(toLogin(this.curPage)){
+            const res = get('Address/KuaiDiList',this.curPage).then(res=>{
+              console.log(res)
+              this.kuaidiList = res.data
+            })
+            
+        }
         
+      },
+      chose(e){
+        this.active=e
       },
       //选择订单类型
       choseType(e){
@@ -374,7 +430,24 @@ export default {
         this.showType=true;
         console.log(e,"type")
         post('')
-      }
+      },
+      //获取用户默认的收货地址
+      getDefaultAddress(){
+         if(toLogin(this.curPage)){
+           const res = post('Address/defaultaddress_New',{
+             UserId:this.userId,
+             Token:this.token,
+             IsDefault:1
+           },this.curPage).then(res=>{
+             console.log(res,"默认收货地址")
+             this.addressinfo.push(res.data)
+           })
+         } 
+      },
+      //去往我的地址页面
+      toAddress(){
+          wx.navigateTo({url:'/pages/custom/addressList/main?url=smOrder'})
+      },
   }
 };
 </script>

@@ -9,8 +9,10 @@
           </div>
           <div class="info flex1">
             <p class="name">{{info.NickName}}</p>
-            <p class="perId" v-if="identity==2 || identity==3">{{info.Mobile}}  <span class="editPhone">修改手机号</span></p>
-            <p class="perId" v-if="identity==1">{{info.MobileStr}}</p>
+            <p class="perId" v-if="identity==2 || identity==3">{{info.Mobile}}        <span class="editPhone" @click="updateMobile" v-if="identity==2 || identity==3">修改手机号</span>
+            </p>
+            <p class="perId" v-if="identity==1">{{info.MobileStr}}
+            </p>
           </div>
         </div>
       </div>
@@ -325,10 +327,13 @@ export default {
         url: "/pages/master/cardList/main"
       });
     },
-    gotoMyInfo() {
-      wx.navigateTo({
-        url: "/pages/myInfo/main"
-      });
+    gotoMyInfo() {  //客服跟师傅暂时不能修改个人信息
+      if(this.identity==2){
+          wx.navigateTo({
+            url: "/pages/myInfo/main"
+          });
+      }
+      
     },
     GetCustomerServiceInfo() {
       let that = this;
@@ -400,7 +405,13 @@ export default {
           that.info = result.data;
         }
       });
-    }
+    },
+    //更改用户手机号码
+    updateMobile() {
+      wx.navigateTo({
+        url: "/pages/setPhone/main"
+      });
+    },
   }
 };
 </script>

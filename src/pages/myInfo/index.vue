@@ -73,8 +73,20 @@ export default {
     this.token = wx.getStorageSync("token");
     //获取展示用户信息
     if (toLogin(this.curPage)) {
-      this.getInfo();
+      if (this.identity == 1) {
+        //客服
+        this.GetCustomerServiceInfo();
+      }
+      if (this.identity == 2) {
+        //客户
+        this.GetMemberInfo();
+      }
+      if (this.identity == 3) {
+        //师傅
+        this.GetInstalMasterInfo();
+      }
     }
+    console.log("当前的身份：" + this.identity);
   },
   data() {
     return {
@@ -91,11 +103,11 @@ export default {
       imgBase: "" //头像路径
     };
   },
-  watch: {
-    imgBase() {
-      this.updataImg();
-    }
-  },
+  // watch: {
+  //   imgBase() {
+  //     this.updataImg();
+  //   }
+  // },
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
@@ -103,48 +115,111 @@ export default {
       });
     },
     //首次加载获取用户信息
-    async getInfo() {
-      let objUrl = "";
-      if (this.identity == 1) {
-        //客服
-        objUrl = "CustomerService/GetCustomerServiceInfo";
-      }
-      if (this.identity == 2) {
-        objUrl = "User/GetMemberInfo";
-      }
-      if (this.identity == 3) {
-        //师傅
-        objUrl = "InstalMaster/GetInstalMasterInfo";
-      }
-      let result = await post(
-        objUrl,
+    GetCustomerServiceInfo() {
+      let that = this;
+      //客服的信息
+      post(
+        "CustomerService/GetCustomerServiceInfo",
         {
-          UserId: this.userId,
-          Token: this.token
+          CsdId: that.userId,
+          Token: that.token
         },
-        this.curPage
+        that.curPage
       ).then(result => {
         if (result.code === 0) {
-          if (Object.keys(result.data).length > 0) {
-            wx.setStorageSync("mobile", result.data.Mobile);
-            let { NickName, Mobile, Avatar, Sex, Birthday } = result.data;
-            this.NickName = NickName;
-            this.Mobile = Mobile;
-            if ((this.imgBase.length = 0)) {
-              this.Avatar = Avatar;
-            }
-            if (Sex == "男") {
+          wx.setStorageSync("mobile", result.data.Mobile);
+          console.log(result.data)
+            const info = result.data;
+            this.NickName = info.NickName;
+            this.Mobile = info.MobileStr;
+            if (info.Sex == "男") {
               this.Sex = 1;
             } else {
               this.Sex = 0;
             }
             console.log(this.Sex);
-            this.Birthday = Birthday;
+            this.Birthday = info.Birthday
+            console.log(this.imgBase.length,"头像的长度")
+            if ((this.imgBase.length == 0)) {
+              this.Avatar = info.Avatar;
+            }
+            
+           
             console.log(this.Mobile, this.Avatar, "手机号,头像");
-          }
         }
       });
     },
+    GetInstalMasterInfo() {
+      //师傅的信息
+      let that = this;
+      post(
+        "InstalMaster/GetInstalMasterInfo",
+        {
+          MasterId: that.userId,
+          Token: that.token
+        },
+        that.curPage
+      ).then(result => {
+        console.log(result);
+        if (result.code === 0) {
+          wx.setStorageSync("mobile", result.data.Mobile);
+            wx.setStorageSync("mobile", result.data.Mobile);
+          console.log(result.data)
+            const info = result.data;
+            this.NickName = info.NickName;
+            this.Mobile = info.Mobile;
+            if (info.Sex == "男") {
+              this.Sex = 1;
+            } else {
+              this.Sex = 0;
+            }
+            console.log(this.Sex);
+            this.Birthday = info.Birthday
+            console.log(this.imgBase.length,"头像的长度")
+            if ((this.imgBase.length == 0)) {
+              this.Avatar = info.Avatar;
+            }
+            
+           
+            console.log(this.Mobile, this.Avatar, "手机号,头像");
+        }
+      });
+    },
+    GetMemberInfo() {
+      let that = this;
+      //客户信息
+      post(
+        "User/GetMemberInfo",
+        {
+          UserId: that.userId,
+          Token: that.token
+        },
+        that.curPage
+      ).then(result => {
+        if (result.code === 0) {
+          wx.setStorageSync("mobile", result.data.Mobile);
+          console.log(result.data)
+            const info = result.data;
+            this.NickName = info.NickName;
+            this.Mobile = info.Mobile;
+            if (info.Sex == "男") {
+              this.Sex = 1;
+            } else {
+              this.Sex = 0;
+            }
+            console.log(this.Sex);
+            this.Birthday = info.Birthday
+            console.log(this.imgBase.length,"头像的长度")
+            if ((this.imgBase.length == 0)) {
+              this.Avatar = info.Avatar;
+            }
+            
+           
+            console.log(this.Mobile, this.Avatar, "手机号,头像");
+        }
+      });
+    },
+    
     //上传用户头像
     changeAvatar() {
       wx.chooseImage({
@@ -215,13 +290,7 @@ export default {
       //   });
       // }
     },
-    //更改用户手机号码
-    updateMobile() {
-      wx.navigateTo({
-        url: "/pages/setPhone/main"
-      });
-    },
-    //保存用户信息
+    //保存用户信息 ----修改用户性别 头像 昵称
     async saveInfo() {
       this.updataImg();
       if (toLogin(this.curPage) && valPhone(this.Mobile) && this.NickName) {

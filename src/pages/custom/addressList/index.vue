@@ -3,7 +3,7 @@
     <div class="addressList">
       <radio-group class="radio-group" @change="radioChange">
           <div v-for="(item,index) in sitelist" :key="item.id">
-            <div class="item">
+            <div class="item" @click="choseAddress(index)">
               <div class="item__bd">
                 <div class="remarks">
                   <span class="name">{{item.name}}</span>
@@ -48,7 +48,7 @@
   </div>
 </template>
 <script>
-import { post } from "@/utils/index";
+import { get,post, toLogin, getCurrentPageUrlWithArgs, valPhone } from "@/utils";
 import Dialog from "../../../../static/vant/dialog/dialog";
 export default {
     onLoad() {
@@ -62,10 +62,14 @@ export default {
       this.userid=wx.getStorageSync("userId")
       this.token=wx.getStorageSync("token")
       this.geSiteList()
+     
+
+     
   },
   data() {
     return {
-       curPage: "", 
+        curPage: "",
+        identity:'',
         userid:'',
         token:'',
         isshow: true,
@@ -90,6 +94,7 @@ export default {
               UserId: this.userid,
               Token: this.token,
               Page: this.page,
+
               PageSize: this.pageSize
           },
             this.curPage
@@ -156,6 +161,12 @@ export default {
         //on cancle
       })
     },
+    //选择地址
+    choseAddress(e){
+        console.log(e,this.sitelist[e])
+        wx.setStorageSync("addressinfo",this.sitelist[e])
+        wx.navigateBack()
+    }
 
   },
     // 下拉刷新
