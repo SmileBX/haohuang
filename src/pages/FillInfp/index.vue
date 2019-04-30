@@ -160,6 +160,7 @@ export default {
           icon: "none",
           duration: 1500
         });
+        return false;
       }
       if (this.IdentifyNumber == "") {
         wx.showToast({
@@ -167,6 +168,17 @@ export default {
           icon: "none",
           duration: 1500
         });
+        return false;
+      }
+      if (
+        !/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(this.IdentifyNumber)
+      ) {
+        wx.showToast({
+          title: "请输入正确的身份证号格式!",
+          icon: "none",
+          duration: 1500
+        });
+        return false;
       }
       if (this.BankId == "") {
         wx.showToast({
@@ -174,6 +186,7 @@ export default {
           icon: "none",
           duration: 1500
         });
+        return false;
       }
       if (this.BankAddress == "") {
         wx.showToast({
@@ -181,6 +194,7 @@ export default {
           icon: "none",
           duration: 1500
         });
+        return false;
       }
       if (this.BankNo == "") {
         wx.showToast({
@@ -188,19 +202,61 @@ export default {
           icon: "none",
           duration: 1500
         });
+        return false;
       }
-      if (!/^([1-9]{1})(\d{15}|\d{16}|\d{17}|\d{18}|\d{19}|\d{20})$/.test(this.BankNo)) {
+      if (
+        !/^([1-9]{1})(\d{15}|\d{16}|\d{17}|\d{18}|\d{19}|\d{20})$/.test(
+          this.BankNo
+        )
+      ) {
         wx.showToast({
-          title: "请输入正确的!",
+          title: "请输入正确的银行卡号!",
           icon: "none",
           duration: 1500
         });
+        return false;
+      }
+      if (this.area == "") {
+        wx.showToast({
+          title: "请选择区域!",
+          icon: "none",
+          duration: 1500
+        });
+        return false;
+      }
+      if (this.ElectricianImg == "") {
+        wx.showToast({
+          title: "请上传电工证!",
+          icon: "none",
+          duration: 1500
+        });
+        return false;
+      }
+      if (this.WelderImg == "") {
+        wx.showToast({
+          title: "请上传焊工证!",
+          icon: "none",
+          duration: 1500
+        });
+        return false;
+      }
+      if (this.HighAltitudeImg == "") {
+        wx.showToast({
+          title: "请上传高空证!",
+          icon: "none",
+          duration: 1500
+        });
+        return false;
+      }
+      return true;
+    },
+    Submint() {
+      if (this.valOther()) {
+        this.sumbitMasterApplication();
       }
     },
-    Submint() {},
     selectArea() {
       this.showArea = true;
-      console.log("dddddd");
     },
     confirmArea(area) {
       this.showArea = false;
@@ -304,9 +360,9 @@ export default {
         this.OtherImg = "";
       }
     },
-    async sumbitMasterApplication() {
+    sumbitMasterApplication() {
       let that = this;
-      let result = await post("InstalMaster/SumbitMasterApplication", {
+      post("InstalMaster/SumbitMasterApplication", {
         MasterId: that.userId,
         MasterToken: that.token,
         ProvinceCode: that.provinceCode,
@@ -321,21 +377,32 @@ export default {
         WelderImg: that.WelderImg,
         HighAltitudeImg: that.HighAltitudeImg,
         OtherImg: that.OtherImg
-      });
-      if (result.code === 0) {
-        wx.showModal({
-          title: "审核资料提交成功",
-          content:
-            "审核资料需要1~7个工作日才能完成，请耐心等待，审核通过会以短信方式通知您",
-          showCancel: false,
-          confirmColor: "#ff7e22",
-          success(res) {
-            if (res.confirm) {
-            } else if (res.cancel) {
+      }).then(result => {
+        if (result.code === 0) {
+          this.$store.commit("setSelectCard", {
+            url: "",
+            status: false
+          });
+          wx.showModal({
+            title: "审核资料提交成功",
+            content:
+              "审核资料需要1~7个工作日才能完成，请耐心等待，审核通过会以短信方式通知您",
+            showCancel: false,
+            confirmColor: "#ff7e22",
+            success(res) {
+              if (res.confirm) {
+                wx.reLaunch({
+                  url: "/pages/login2/main"
+                });
+              } else if (res.cancel) {
+                wx.reLaunch({
+                  url: "/pages/login2/main"
+                });
+              }
             }
-          }
-        });
-      }
+          });
+        }
+      });
     }
   }
 };

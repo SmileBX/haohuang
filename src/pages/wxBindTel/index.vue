@@ -35,7 +35,7 @@
   </div>
 </template>
 <script>
-import { post, valPhone } from "@/utils";
+import { host, post, valPhone } from "@/utils";
 export default {
   onLoad() {
     this.setBarTitle();
@@ -43,13 +43,13 @@ export default {
   onShow() {
     //identity: 1:客服；2：客户；3：师傅
     this.identity = wx.getStorageSync("identity");
-    if(!this.identity){
+    if (!this.identity) {
       wx.reLaunch({
-        url: '/pages/login2/main'
-      })
+        url: "/pages/login2/main"
+      });
     }
-    console.log("身份："+this.identity);
-   // 会员注册0,
+    console.log("身份：" + this.identity);
+    // 会员注册0,
     //  会员登录1,
     //  会员找回密码2,
     //  会员找回支付密码3,
@@ -156,85 +156,113 @@ export default {
       }
     },
     //获取验证码
-    async getWxBindTelCode() {
-      let result = await post("Login/GetWxBindTelCode", {
-        Mobile: this.Tel,
-        CodeType: this.codeType
+    getWxBindTelCode() {
+      let that = this;
+      post("Login/GetWxBindTelCode", {
+        Mobile: that.Tel,
+        CodeType: that.codeType
+      }).then(result => {
+        if (result.code === 0) {
+          that.has_click = true;
+          const TIME_COUNT = 90; // 90s后重新获取验证码
+          that.count = TIME_COUNT;
+          wx.showToast({
+            title: "发送成功，请注意查收!",
+            icon: "none",
+            duration: 1500
+          });
+          that.timer = setInterval(() => {
+            if (that.count > 0 && that.count <= TIME_COUNT) {
+              that.count--;
+              that.codeMsg = that.count + "s后重新获取";
+            } else {
+              clearInterval(that.timer);
+              that.timer = null;
+              that.codeMsg = "获取验证码";
+            }
+          }, 1000);
+        }
       });
-      if (result.code === 0) {
-        this.has_click = true;
-        const TIME_COUNT = 90; // 90s后重新获取验证码
-        this.count = TIME_COUNT;
-        wx.showToast({
-          title: "发送成功，请注意查收!",
-          icon: "none",
-          duration: 1500
-        });
-        this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.count--;
-            this.codeMsg = this.count + "s后重新获取";
-          } else {
-            clearInterval(this.timer);
-            this.timer = null;
-            this.codeMsg = "获取验证码";
-          }
-        }, 1000);
-      }
     },
     //客户绑定
-    async MemberBindOrRegister() {
-      let result = await post("Login/MemberBindOrRegister", {
-        Mobile: this.Tel,
-        VerifyCode: this.Code,
-        PassWord: this.Pwd,
-        Unionid: this.unionid,
-        OpenId: this.openId,
-        nickName: this.nickName,
-        avatarUrl: this.avatarUrl
-      });
-      wx.setStorageSync("openId", result.data.MemberOpenId);
-      wx.setStorageSync("userId", result.data.MemberId);
-      wx.token("userId", result.data.MemberAccessToken);
+    MemberBindOrRegister() {
       let that = this;
-      wx.showToast({
-        title: "登录成功!",
-        icon: "none",
-        duration: 1500,
-        success: function() {
-          wx.reLaunch({
-            url: "/pages/my/main"
+      post("Login/MemberBindOrRegister", {
+        Mobile: that.Tel,
+        VerifyCode: that.Code,
+        PassWord: that.Pwd,
+        Unionid: that.unionid,
+        OpenId: that.openId,
+        nickName: that.nickName,
+        avatarUrl: that.avatarUrl
+      }).then(result => {
+        if (result.code === 0) {
+          wx.setStorageSync("openId", result.data.MemberOpenId);
+          wx.setStorageSync("userId", result.data.MemberId);
+          wx.token("userId", result.data.MemberAccessToken);
+          wx.showToast({
+            title: "登录成功!",
+            icon: "none",
+            duration: 1500,
+            success: function() {
+              wx.reLaunch({
+                url: "/pages/my/main"
+              });
+            }
           });
         }
       });
     },
     //师傅的绑定
-    async MasterBindOrRegister() {
-      let result = await post("Login/MasterBindOrRegister", {
-        Mobile: this.Tel,
-        VerifyCode: this.Code,
-        PassWord: this.Pwd,
-        Unionid: this.unionid,
-        OpenId: this.openId,
-        nickName: this.nickName,
-        avatarUrl: this.avatarUrl
+    MasterBindOrRegister() {
+      let that = this;
+      post("Login/MasterBindOrRegister", {
+        Mobile: that.Tel,
+        VerifyCode: that.Code,
+        PassWord: that.Pwd,
+        Unionid: that.unionid,
+        OpenId: that.openId,
+        nickName: that.nickName,
+        avatarUrl: that.avatarUrl
+      }).then(result => {
+        if (result.code === 102) {
+          wx.setStorageSync("openId", result.data.MasterOpenId);
+          wx.setStorageSync("userId", result.data.MasterId);
+          wx.setStorageSync("token", result.data.MasterToken);
+          wx.reLaunch({
+            url: "/pages/FillInfp/main"
+          });
+        }
       });
-      if (result.code === 0) {
-        wx.setStorageSync("openId", result.data.MemberOpenId);
-        wx.setStorageSync("userId", result.data.MemberId);
-        wx.token("userId", result.data.MemberAccessToken);
-        let that = this;
-        wx.showToast({
-          title: "请填写申请师傅的资料!",
-          icon: "none",
-          duration: 1500,
-          success: function() {
-            wx.reLaunch({
-              url: "/pages/FillInfp/main"
-            });
-          }
-        });
-      }
+    },
+    //客服的绑定
+    async CustomerServiceBind() {
+      let that = this;
+      post("Login/MasterBindOrRegister", {
+        Mobile: that.Tel,
+        VerifyCode: that.Code,
+        PassWord: that.Pwd,
+        Unionid: that.unionid,
+        OpenId: that.openId,
+        nickName: that.nickName,
+        avatarUrl: that.avatarUrl
+      }).then(result => {
+        if (result.code === 0) {
+          wx.setStorageSync("openId", result.data.ServiceOpenId);
+          wx.setStorageSync("userId", result.data.ServiceId);
+          wx.token("userId", result.data.ServiceToken);
+          wx.showToast({
+            title: "登录成功!",
+            icon: "none",
+            duration: 1500,
+            success: function() {
+              wx.reLaunch({
+                url: "/pages/my/main"
+              });
+            }
+          });
+        }
+      });
     }
   }
 };

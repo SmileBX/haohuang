@@ -39,44 +39,45 @@ export default {
     return {
       userId: "",
       token: "",
-      activeIndex:0,
+      activeIndex: -1,
       banklist: []
     };
   },
-  components: {
-  },
+  components: {},
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "选择银行名称"
       });
     },
-    selectCardList(index,id){
+    selectCardList(index, id) {
       let cardInfo = {
         id,
-        bankLogo:this.banklist[index].BankLogo,
-        bankName:this.banklist[index].BankName
+        bankLogo: this.banklist[index].BankLogo,
+        bankName: this.banklist[index].BankName
       };
       this.activeIndex = index;
       const selectCard = this.$store.state.selectCard;
-      if(!selectCard.status){
-        return false
+      if (!selectCard.status) {
+        return false;
       }
 
       // 设置提交订单参数
-      this.$store.commit('update',{cardInfo});
+      this.$store.commit("update", { cardInfo });
       // 跳转到上一页
-      wx.redirectTo({ url: selectCard.url});
+      wx.redirectTo({ url: selectCard.url });
       // 跳转到上一页
       // wx.redirectTo({ url: ""});
     },
-    async getBankinfoList() {
-      let result = await get("Bank/GetBankinfoList");
-      if (result.code === 0) {
-        if (result.data.length > 0) {
-          this.banklist = result.data;
+    getBankinfoList() {
+      let that = this;
+      get("Bank/GetBankinfoList").then(result => {
+        if (result.code === 0) {
+          if (result.data.length > 0) {
+            that.banklist = result.data;
+          }
         }
-      }
+      });
     }
   }
 };

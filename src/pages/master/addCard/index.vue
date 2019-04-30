@@ -2,9 +2,7 @@
   <div class="page">
     <div class="tips__txt flex">
       <img src="/static/images/icons/tips.png" alt class="icon_tips">
-      <div class="txtBox flex1">
-           姓名必须和身份证中的一样，务必保证银行卡信息正确，否则无法退款
-      </div>
+      <div class="txtBox flex1">姓名必须和身份证中的一样，务必保证银行卡信息正确，否则无法退款</div>
     </div>
     <div class="addCard__form bg_fff">
       <div class="select__weui-cells">
@@ -48,7 +46,7 @@
           <div class="flex1">
             <input type="text" placeholder="请输入手机验证码" v-model="Code" class="weui-input">
           </div>
-          <span class="btnCode"  @click="getCode">{{codeMsg}}</span>
+          <span class="btnCode" @click="getCode">{{codeMsg}}</span>
         </div>
       </div>
     </div>
@@ -60,12 +58,12 @@
   </div>
 </template>
 <script>
-import { post,valPhone,toLogin,getCurrentPageUrlWithArgs} from "@/utils";
+import { post, valPhone, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
 export default {
   onLoad() {
     this.setBarTitle();
   },
-  onShow(){
+  onShow() {
     //identity: 1:客服；2：客户；3：师傅
     // 会员注册0,
     //         会员登录1,
@@ -88,8 +86,11 @@ export default {
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     console.log(this.mobile);
-    if(this.mobile){
-      this.tel = this.mobile.substring(0, 3) +"****" +this.mobile.substring(this.mobile.length - 4);
+    if (this.mobile) {
+      this.tel =
+        this.mobile.substring(0, 3) +
+        "****" +
+        this.mobile.substring(this.mobile.length - 4);
     }
   },
   data() {
@@ -97,19 +98,19 @@ export default {
       curPage: "",
       userId: "",
       token: "",
-      bankCardName:"", //持卡人人名字
-      bankCardNo:"",  //银行卡号
-      bankAddress:"",  //开户地址
-      bankId:1,  //选择的银行Id
-      mobile:"",
-      tel:"",
-      Code:"",
-      codeMsg:"获取验证码",
+      bankCardName: "", //持卡人人名字
+      bankCardNo: "", //银行卡号
+      bankAddress: "", //开户地址
+      bankId: 1, //选择的银行Id
+      mobile: "",
+      tel: "",
+      Code: "",
+      codeMsg: "获取验证码",
       timer: null,
       count: "",
       TIME_COUNT: 60,
       has_click: false
-    }
+    };
   },
   methods: {
     setBarTitle() {
@@ -117,35 +118,39 @@ export default {
         title: "添加银行卡"
       });
     },
-    valOther(){
-      if(this.bankCardName==""){
+    valOther() {
+      if (this.bankCardName == "") {
         wx.showToast({
-          title: '请输入持卡人姓名!',
-          icon: 'none',
+          title: "请输入持卡人姓名!",
+          icon: "none",
           duration: 1500
-        })
+        });
         return false;
       }
-      if(this.bankCardNo == ""){
+      if (this.bankCardNo == "") {
         wx.showToast({
-          title: '请输入银行卡号!',
-          icon: 'none',
+          title: "请输入银行卡号!",
+          icon: "none",
           duration: 1500
-        })
+        });
         return false;
       }
-      if(!/^([1-9]{1})(\d{15}|\d{16}|\d{17}|\d{18}|\d{19}|\d{20})$/.test(this.bankCardNo)){
-         wx.showToast({
-          title: '请输入正确的卡号格式!',
-          icon: 'none',
+      if (
+        !/^([1-9]{1})(\d{15}|\d{16}|\d{17}|\d{18}|\d{19}|\d{20})$/.test(
+          this.bankCardNo
+        )
+      ) {
+        wx.showToast({
+          title: "请输入正确的卡号格式!",
+          icon: "none",
           duration: 1500
-        })
+        });
         return false;
       }
       return true;
     },
-    bindCard(){
-      if(this.valOther() && toLogin(this.curPage)){
+    bindCard() {
+      if (this.valOther() && toLogin(this.curPage)) {
         this.addBank();
       }
     },
@@ -156,51 +161,59 @@ export default {
         }
       }
     },
-     //获取验证码
+    //获取验证码
     async getWxBindTelCode() {
-      let result = await post("Login/GetWxBindTelCode", {
-        Mobile: this.mobile,
+      let that = this;
+      post("Login/GetWxBindTelCode", {
+        Mobile: that.mobile,
         CodeType: 9
+      }).then(result => {
+        if (result.code === 0) {
+          that.has_click = true;
+          const TIME_COUNT = 90; // 90s后重新获取验证码
+          that.count = TIME_COUNT;
+          wx.showToast({
+            title: "发送成功，请注意查收!",
+            icon: "none",
+            duration: 1500
+          });
+          that.timer = setInterval(() => {
+            if (that.count > 0 && that.count <= TIME_COUNT) {
+              that.count--;
+              that.codeMsg = that.count + "s后重新获取";
+            } else {
+              clearInterval(that.timer);
+              that.timer = null;
+              that.codeMsg = "获取验证码";
+            }
+          }, 1000);
+        }
       });
-      if (result.code === 0) {
-        this.has_click = true;
-        const TIME_COUNT = 90; // 90s后重新获取验证码
-        this.count = TIME_COUNT;
-        wx.showToast({
-          title: "发送成功，请注意查收!",
-          icon: "none",
-          duration: 1500
-        });
-        this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.count--;
-            this.codeMsg = this.count + "s后重新获取";
-          } else {
-            clearInterval(this.timer);
-            this.timer = null;
-            this.codeMsg = "获取验证码";
-          }
-        }, 1000);
-      }
     },
-    async addBank(){
-      let result = await post("Bank/AddBank",{
-        UserId:this.userId,
-        Token:this.token,
-        BankCardName:this.bankCardName,
-        BankCardNo:this.bankCardNo,
-        BankAddress:this.bankAddress,
-        BankId:this.bankId,
-        Mobile: this.mobile,
-        VerifyCode: this.Code
-      },this.curPage)
-      if(result.code===0){
-        wx.showToast({
-          title: "新增成功!",
-          icon: "none",
-          duration: 1500
-        });
-      }
+    addBank() {
+      let that = this;
+      post(
+        "Bank/AddBank",
+        {
+          UserId: that.userId,
+          Token: that.token,
+          BankCardName: that.bankCardName,
+          BankCardNo: that.bankCardNo,
+          BankAddress: that.bankAddress,
+          BankId: that.bankId,
+          Mobile: that.mobile,
+          VerifyCode: that.Code
+        },
+        that.curPage
+      ).then(result => {
+        if (result.code === 0) {
+          wx.showToast({
+            title: "新增成功!",
+            icon: "none",
+            duration: 1500
+          });
+        }
+      });
     }
   }
 };
