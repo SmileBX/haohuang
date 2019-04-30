@@ -184,6 +184,7 @@ export default {
               that.codeMsg = that.count + "s后重新获取";
             } else {
               clearInterval(that.timer);
+              that.has_click = false;
               that.timer = null;
               that.codeMsg = "获取验证码";
             }
