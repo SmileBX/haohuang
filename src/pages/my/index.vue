@@ -9,7 +9,7 @@
           </div>
           <div class="info flex1">
             <p class="name">{{info.NickName}}</p>
-            <p class="perId" v-if="identity==2 || identity==3">{{info.Mobile}}</p>
+            <p class="perId" v-if="identity==2 || identity==3">{{info.Mobile}}  <span class="editPhone">修改手机号</span></p>
             <p class="perId" v-if="identity==1">{{info.MobileStr}}</p>
           </div>
         </div>

@@ -47,9 +47,9 @@
                 <div class="weui-cell__bd" @click="updateMobile">
                     <span type="text">{{Mobile}}</span>
                 </div>
-                <div class="weui-cell__ft">
+                <!-- <div class="weui-cell__ft">
                     <span class="icon-arrow arrow-right" @click="updateMobile"></span>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="ftBtn pt30">

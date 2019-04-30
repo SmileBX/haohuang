@@ -30,7 +30,7 @@
                     <input type="text" class="weui-input" placeholder="请输入（必填）" style="margin-left:20rpx;" v-model="item.proname">
                   </div>
                 </div>
-                <div class="select__weui-cells">
+                <div class="select__weui-cells" @click="choseType(index)">
                   <div class="weui-cells__title">选择类型</div>
                   <div class="ipt flex flexAlignCenter">
                     <div class="flex1">
@@ -162,9 +162,9 @@
         <div class="weui-cells smDetail__weui-cells">
           <div class="select__weui-cells">
             <div class="weui-cells__title">快递选择</div>
-            <div class="ipt flex flexAlignCenter">
+            <div class="ipt flex flexAlignCenter" @click="chosePost">
               <div class="flex1">
-                <input type="text" class="weui-input" placeholder="请输入（必填）">
+                <span class="weui-input">{{postMsg}}</span>
               </div>
               <span class="icon-arrow arrow-right"></span>
             </div>
@@ -259,16 +259,14 @@ export default {
         this.tip=0
   },
   watch:{
-    // prolist(){
-    //    console.log(this.prolist,"plist")
-    // }
-    prolist: {
-    handler(proname) {
-      console.log(this.prolist,"plist-watch");
-    },
-    immediate: true,
-    deep: true
-  }
+   
+  //   prolist: {
+  //   handler(proname) {
+  //     console.log(this.prolist,"plist-watch");
+  //   },
+  //   immediate: true,
+  //   deep: true
+  // }
 
   },
   data(){
@@ -283,6 +281,7 @@ export default {
           }
           return value;
         },
+        postMsg:'',//快递选择
         showDate:false,  //日期 组件 不需要遮罩层
         isShow:false, //遮罩层
         showType:false,  //普通选择的弹框
@@ -364,6 +363,17 @@ export default {
             this.proitem={}
             console.log(this.prolist,"1111111111111")
           }
+      },
+      //选择快递
+      chosePost(){
+        
+      },
+      //选择订单类型
+      choseType(e){
+        this.isShow=true;
+        this.showType=true;
+        console.log(e,"type")
+        post('')
       }
   }
 };
