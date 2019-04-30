@@ -16,7 +16,8 @@
         "pages/FillInfp/main",
         "pages/forgetPassword/main",
         "pages/wxBindTel/main",
-        "pages/chooseBank/main"
+        "pages/chooseBank/main",
+        "pages/setPhone/main"
 
     ],
     "subpackages": [{

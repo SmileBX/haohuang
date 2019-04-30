@@ -152,17 +152,19 @@ export default {
               Token: this.token
           },
             this.curPage
-          )
-          console.log(res,"更改编辑用户信息")
-            this.buttonText= '修改';
-            this.name=res.data.name;
-            this.phone=res.data.tel;
-            this.isDefault=res.data.is_def?true:false;
-            this.area=res.data.addressstr;
-            this.address=res.data.address;
-            this.provinceCode=res.data.province;
-            this.cityCode=res.data.city;
-            this.districtCode =res.data.district;
+          ).then(res=>{
+              console.log(res,"更改编辑用户信息")
+              this.buttonText= '修改';
+              this.name=res.data.name;
+              this.phone=res.data.tel;
+              this.isDefault=res.data.is_def?true:false;
+              this.area=res.data.addressstr;
+              this.address=res.data.address;
+              this.provinceCode=res.data.province;
+              this.cityCode=res.data.city;
+              this.districtCode =res.data.district;
+          })
+          
       }
     },
     submit(){
