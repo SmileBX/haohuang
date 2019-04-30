@@ -1,5 +1,5 @@
 //API接口地址
-const host = 'http://hhapi.wtvxin.com/api/';
+const host = 'https://hhapi.wtvxin.com/api/';
 const filePath = 'https://hh.wtvxin.com';
 
 export function formatNumber(n) {
@@ -58,19 +58,21 @@ function request(url, method, data, curPage, header = {}) {
                 } else if (res.data.code === 2) {
                     wx.showToast({
                         title: '需要重新登录!',
-                        icon: 'none'
+                        icon: 'none',
+                        duration: 1500
                     })
                     setTimeout(() => {
                         wx.redirectTo({
                             url: '/pages/login2/main?askUrl=' + curPage
                         })
-                    }, 1000);
+                    }, 1500);
 
                 } else {
                     resolve(res.data);
                     wx.showToast({
                         title: res.data.msg + '!',
-                        icon: 'none'
+                        icon: 'none',
+                        duration: 1500
                     })
 
                 }
@@ -79,7 +81,8 @@ function request(url, method, data, curPage, header = {}) {
                 wx.hideLoading();
                 wx.showToast({
                     title: error + '，请刷新页面重试!',
-                    icon: 'none'
+                    icon: 'none',
+                    duration: 1500
                 })
             },
             complete: function() {

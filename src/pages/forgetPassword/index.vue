@@ -162,6 +162,7 @@ export default {
               this.count--;
               that.codeMsg = that.count + "s后重新获取";
             } else {
+              that.has_click = false;
               clearInterval(that.timer);
               that.timer = null;
               that.codeMsg = "获取验证码";
