@@ -103,7 +103,7 @@ export default {
   onShow() {
       this.curPage = getCurrentPageUrlWithArgs();
       this.identity = wx.getStorageSync("identity");
-      this.userId = wx.getStorageSync("userId");
+      this.userid = wx.getStorageSync("userId");
       this.token = wx.getStorageSync("token");
   },
   data() {
@@ -168,6 +168,7 @@ export default {
       }
     },
     submit(){
+        console.log(this.provinceCode,"城市code")
         const toast = this.jiaoyan()
         console.log(toast)
         if(toast){
@@ -229,6 +230,7 @@ export default {
         this.cityCode=areas[1].code||'',
         this.districtCode=areas[2].code||'',
         this.area = text;
+
     },
     jiaoyan(){
       if(!this.name){
