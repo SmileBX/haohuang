@@ -21,20 +21,20 @@
           </div>
         </div>
         <!--订单-->
-        <div v-for="(item,index) in prolist" :key="index">
+        <div v-for="(item,lindex) in prolist" :key="lindex">
               <!--子no1-->
               <div class="weui-cells smDetail__weui-cells" style="padding-top:10rpx;">
-                <div class="select__weui-cells flex ipt flexAlignCenter">
+                <div class="select__weui-cells flex  flexAlignCenter">
                   <div class="weui-cells__title">项目名称:</div>
                   <div class="flex1">
                     <input type="text" class="weui-input" placeholder="请输入（必填）" style="margin-left:20rpx;" v-model="item.proname">
                   </div>
                 </div>
-                <div class="select__weui-cells" @click="choseType(index)">
+                <div class="select__weui-cells" @click="choseType(lindex) ">
                   <div class="weui-cells__title">选择类型</div>
                   <div class="ipt flex flexAlignCenter">
                     <div class="flex1">
-                      <input type="text" class="weui-input" placeholder="请输入（必填）" v-model="item.orderType">
+                      <input type="text" disabled class="weui-input" placeholder="请选择（必填）" v-model="item.orderType">
                     </div>
                     <span class="icon-arrow arrow-right"></span>
                   </div>
@@ -76,18 +76,18 @@
                 </div>
                 <div class="select__weui-cells">
                   <div class="weui-cells__title">制作材料</div>
-                  <div class="ipt flex flexAlignCenter">
+                  <div class="ipt flex flexAlignCenter" @click="choseMartic(1,lindex)">
                     <div class="flex1">
-                      <input type="text" class="weui-input" placeholder="请输入（必填）" v-model="item.makestatic">
+                      <input type="text"  disabled class="weui-input" placeholder="请选择（必填）" v-model="item.makestatic">
                     </div>
                     <span class="icon-arrow arrow-right"></span>
                   </div>
                 </div>
                 <div class="select__weui-cells">
                   <div class="weui-cells__title">安装材料</div>
-                  <div class="ipt flex flexAlignCenter">
+                  <div class="ipt flex flexAlignCenter" @click="choseMartic(2,lindex)">
                     <div class="flex1">
-                      <input type="text" class="weui-input" placeholder="请输入（必填）" v-model="item.installstatic">
+                      <input type="text" disabled class="weui-input" placeholder="请选择（必填）" v-model="item.installstatic">
                     </div>
                     <span class="icon-arrow arrow-right"></span>
                   </div>
@@ -96,39 +96,40 @@
                 <div class="weui-item">
                   <div class="weui-cells__title">
                     参考图片
-                    <span class="tips">(可添加多张图)</span>
+                    <span class="tips">({{item.referencePicList.length}}/{{imgLenght}})</span>
                   </div>
                   <div class="uploadImage clear">
+                    <!-- 上传展示的图片 -->
+                    <div class="upload-img img" style="width:160rpx;height:160rpx;" v-for="(img,sindex) in item.referencePicList" :key="sindex">
+                        <div class="delete" @click="deleteImg(sindex,lindex)">×</div>
+                        <img :src="img"  style="width:160rpx;height:160rpx;" alt>
+                    </div>
                     <div
                       class="button-upload"
-                      style="background-image:url(/static/images/icons/upload_2.png);"
-                    ></div>
-                    <!-- 上传展示的图片 -->
-                    <div class="upload-img img" style="background-image:url(/static/images/of/a1.png)"></div>
-                    <div class="upload-img img" style="background-image:url(/static/images/of/a1.png)"></div>
-                    <div class="upload-img img" style="background-image:url(/static/images/of/a1.png)"></div>
-                    <div class="upload-img img" style="background-image:url(/static/images/of/a1.png)"></div>
+                      style="background-image:url(/static/images/icons/upload_2.png);" v-show="isShowBtnUpload" @click="chosseImg(lindex)">
+                    </div>
+                  
                   </div>
                 </div>
                 <div class="select__weui-cells">
                   <div class="weui-cells__title">交付时间</div>
-                  <div class="ipt flex flexAlignCenter">
-                    <div class="flex1">
+                  <div class="ipt flex flexAlignCenter"  @click="showDate=true">
+                    <div class="flex1" >
                       <input type="text" disabled="true" class="weui-input" placeholder="请选择日期" v-model="item.estimateTime">
                     </div>
-                    <img src="/static/images/icons/date.png" alt class="icon-date" @click="showDate=true">
+                    <img src="/static/images/icons/date.png" alt class="icon-date">
                   </div>
                 </div>
                 <div class="weui-item">
                   <div class="weui-cells__title">备注说明</div>
                   <div class="eaditArea">
-                    <textarea name class="weui-area" id placeholder="输入维护服务要求" v-model="item.remark"></textarea>
+                    <textarea name class="weui-area" placeholder="请输入备注内容" v-model="item.remark"></textarea>
                   </div>
                 </div>
                 <div class="priceBox flex">
                   <div class="flex1">金额</div>
                   <div>
-                    <span class="price">{{item.offerTotal}}</span>
+                    <span class="price">{{offerTotal}} 200</span>
                   </div>
                 </div>
               </div>
@@ -141,13 +142,33 @@
                   <van-datetime-picker
                   type="date"
                   :value="currentDate"
-                  @confirm="onInput($event,index)"
+                  @confirm="onInput($event,lindex)"
                   @cancel="showDate=false"
                   :min-date="minDate"
                   :formatter="formatter"
                   title="请选择时间"
                   />
-              </van-action-sheet>         
+              </van-action-sheet>  
+               <!--选择类型--> 
+                <div class="maskType border-box" v-if="showType">
+                    <div class="flex">
+                          <span class="size" @click="cancle">取消</span>
+                          <span class="title">{{masktitle}}</span>
+                          <span class="color size" @click="subConfirm(lindex)">确定</span>
+                    </div>
+                    <scroll-view :scroll-y="true" style="height:600rpx;" class="showItem" @scrolltolower="loadMore">
+                      <div v-for="(item,index) in list" :key="index">
+                          <p :class="index==active?'itemactive':''" @click="chose(index)">{{item.name}}
+                            &nbsp;&nbsp;<span v-if="item.Price">￥{{item.Price}}</span>
+                          </p>
+                          <!-- <p>设计</p>
+                          <p>设计+制作</p>
+                          <p>制作</p>
+                          <p>安装</p>
+                          <p>制作+安装</p> -->  
+                      </div>
+                    </scroll-view>
+                </div>      
          </div>
         <!--下面是订单的汇总金额以及用户信息选择-->
         <!--按钮增加明细-->
@@ -174,7 +195,7 @@
         <div class="weui-cells smDetail__weui-cells">
             <div class="weui-cells__title">选择地址</div>
             <div class="addressList" @click="toAddress">
-                <div class="item flex flexAlignCenter" v-if="addressinfo.length>0">
+                <div class="item flex flexAlignCenter" v-if="addressinfo.length>=0">
                     <img src="/static/images/icons/address.png" class="addrIcon" alt>
                     <div class="item__bd flex1">
                         <p class="remarks">
@@ -195,7 +216,7 @@
         </div>
         <div class="ftBtn" style="height:156rpx;" @click="showDate=true">
           <div class="inner fixed bm0 border-box bg_f4f7fc">
-            <div class="btn btn-active fill">确认下单</div>
+            <div class="btn btn-active fill" @click="submit">确认下单</div>
           </div>
         </div>
         <!-- 客服 -->
@@ -208,24 +229,6 @@
     </movable-area>
     <!--弹层-->
     <div class="mask" v-if="isShow" catchtouchmove='true'></div>
-    <!--选择类型--> 
-    <div class="maskType border-box" v-if="showType">
-        <div class="flex">
-              <span class="size" @click="cancle">取消</span>
-              <span class="title">{{masktitle}}</span>
-              <span class="color size" @click="confirm">确定</span>
-        </div>
-        <scroll-view :scroll-y="true" style="height:600rpx;" class="showItem" >
-          <div v-for="(item,index) in kuaidiList" :key="index">
-              <p :class="index==active?'itemactive':''" @click="chose(index)">{{item.Company}}</p>
-              <!-- <p>设计</p>
-              <p>设计+制作</p>
-              <p>制作</p>
-              <p>安装</p>
-              <p>制作+安装</p> -->  
-          </div>
-        </scroll-view>
-    </div>
     <!--支付成功弹框-->
     <div class="paySuccess border-box column" v-if="showPaymask">
         <div class="title">{{orderType}}订单</div>
@@ -235,8 +238,8 @@
             <p class="replay">稍后客服确认订单回复您</p>
         </div>
         <div class="flex btn">
-            <p class="backindex">返回首页</p>
-            <p class="sure">确认</p>
+            <p class="backindex" @click="backIndex">返回首页</p>
+            <p class="sure" @click="showPaymask=false">确认</p>
         </div>
     </div>
     
@@ -248,12 +251,16 @@ import "@/css/dd_style.css";
 export default {
   onLoad(){
     this.setBarTitle();
+    this.imgBase= []
+    this.imgPathArr= []
+    this.isShowBtnUpload= true
   },
   onShow(){
         this.curPage = getCurrentPageUrlWithArgs();
         this.identity = wx.getStorageSync("identity");
         this.userId = wx.getStorageSync("userId");
         this.token = wx.getStorageSync("token");
+        this.page=1
         this.speclong = ""
         this.specwide = ""
         this.spechign = ""
@@ -279,21 +286,33 @@ export default {
                   addressinfo:_address.site
 
             })
-            console.log( this.addressinfo.length)
+           // console.log( this.addressinfo.length)
         }else{
             this.getDefaultAddress()
         }
         
   },
+  computed:{
+      // offerTotal(){  //小计
+      //    console.log(this.prolist,"this.prolist[i]")
+      //   for(let i=0;i<this.prolist.length;i++){
+      //     console.log(this.prolist[i].makestatic,this.prolist[i].installstatic,"makestatic")
+      //       //this.prolist[i].makestatic
+      //   }
+      // },
+  },
   watch:{
    
-  //   prolist: {
-  //   handler(proname) {
-  //     console.log(this.prolist,"plist-watch");
-  //   },
-  //   immediate: true,
-  //   deep: true
-  // }
+    prolist: {
+    handler(offerTotal) {
+      for(let i=0;i<this.prolist.length;i++){
+          console.log(this.prolist[i].makestatic,this.prolist[i].installstatic,"makestatic")
+            //this.prolist[i].makestatic
+        }
+    },
+    immediate: true,
+    deep: true
+  }
 
   },
   data(){
@@ -336,18 +355,28 @@ export default {
         masktitle:'设计',
         tip:0,//点击增加明细增加子订单的次数标识
         proitem:{
-          orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:"",
+          orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],
           estimateTime:"",remark:"",offerTotal:"",makestatic:"",installstatic:"",proname:""
         },
         prolist:[
           {
-          orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:"",
+          orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],
           estimateTime:"",remark:"",offerTotal:"",makestatic:"",installstatic:"",proname:""
           },
-        ],//orderType类型...
+        ],
+        list:[],
+        typelist:[],//orderType类型...
         kuaidiList:[],//快递种类
         addressinfo:[],//默认的收货地址
-
+        pageSize:10,//制作材料 安装材料
+        page:1,
+        allPage:0,//总页数
+        count:0,//总数
+        isLoad:false,
+        isShowBtnUpload: true,//显示上传按钮的状态
+        // imgPathArr: [],
+        imgBase: [],
+        imgLenght:10
     }
   },
   methods:{
@@ -360,17 +389,26 @@ export default {
         this.isShow=false
         this.showType=false
       },
-      confirm(){
-        // console.log(this.masktitle,this.active)
-        if(this.masktitle=="请选择快递类型"){
-          console.log(this.masktitle,"1111111111111111")
-            for(let i in this.kuaidiList){
-              if(i*1==this.active){
-                // console.log(i)
-                this.postMsg = this.kuaidiList[i].Company
-              }
+      subConfirm(n){
+       // console.log(this.masktitle,"3333333")
+        for(let i in this.list){
+          if(i*1==this.active){
+            // console.log(i)
+            if(this.masktitle=="请选择快递类型"){
+              this.postMsg = this.list[i].name
             }
+            if(this.masktitle=="请选择订单类型"){
+              this.prolist[n].orderType=this.list[i].name
+            }
+            if(this.masktitle=="请选择制作材料"){
+              this.prolist[n].makestatic=this.list[i].name+"  "+"￥"+this.list[i].Price 
+            }
+            if(this.masktitle=="请选择安装材料"){
+               this.prolist[n].installstatic=this.list[i].name +"  "+"￥"+ this.list[i].Price 
+            }
+          } 
         }
+      
         //  this.masktitle=0
         this.showType=false
         this.isShow=false
@@ -409,6 +447,8 @@ export default {
       },
       //选择快递
       chosePost(){
+        this.active=0
+        this.list=[]
         this.isShow=true;
         this.showType=true;
         this.masktitle="请选择快递类型"
@@ -416,6 +456,20 @@ export default {
             const res = get('Address/KuaiDiList',this.curPage).then(res=>{
               console.log(res)
               this.kuaidiList = res.data
+               let info={}
+              for(let i=0;i<this.kuaidiList.length;i++){
+                info={
+                  name:this.kuaidiList[i].Company,
+                  Id:this.kuaidiList[i].Id,
+                  Code:this.kuaidiList[i].Code,
+                  IsDel:this.kuaidiList[i].IsDel,
+                  Price:this.kuaidiList[i].Price
+              }
+              this.list.push(info)
+              }
+            
+            console.log(this.list,"快递")
+              
             })
             
         }
@@ -426,21 +480,145 @@ export default {
       },
       //选择订单类型
       choseType(e){
+        this.active=0
+        this.list=[]
         this.isShow=true;
         this.showType=true;
+        this.masktitle="请选择订单类型"
         console.log(e,"type")
-        post('')
+        if(toLogin(this.curPage)){
+            get('/Order/GetOrderType',this.curPage).then(res=>{
+              console.log(res,"订单类型")
+              this.typelist=res.data
+              let info={}
+              for(let i=0;i<this.typelist.length;i++){
+                info={
+                  name:this.typelist[i].EnumText
+              }
+              this.list.push(info)
+              }
+              
+              console.log(this.list,"订单类型")
+            })
+        }
       },
+      //制作材料////安装材料
+      choseMartic(e,n){ 
+        this.page=1
+        this.list=[]
+        this.active=0
+        this.isShow=true;
+        this.showType=true;
+        if(e==1){
+             this.masktitle="请选择制作材料"
+        }else{
+            this.masktitle="请选择安装材料"
+        }
+        if(toLogin(this.curPage)){
+          post('/Product/ProductList',{
+              UserId:this.userId,
+              Token:this.token,
+              page:this.page,
+              pageSize: this.pageSize
+          },this.curPage).then(res=>{
+            this.count=res.count
+            if (parseInt(this.count) % this.pageSize === 0) {
+                this.allPage = this.count / this.pageSize;
+            } else {
+              this.allPage = parseInt(this.count / this.pageSize) + 1;
+            }
+           let _list=[]
+           _list=_list.concat(res.data)
+            console.log(res,"制作材料 安装材料")
+            let info={}
+            for(let i=0;i<_list.length;i++){
+              info={
+                name:_list[i].Name,
+                Id:_list[i].Id,
+                Price:_list[i].Price,
+              }
+              this.list.push(info)
+            }
+             if (this.allPage > this.page) {
+                this.isLoad = true;
+              } else {
+                this.isLoad = false;
+              }
+            
+          })
+        }
+      },
+      //上传参考图片
+      chosseImg(n) {
+      const that = this;
+      console.log(n)
+      let num = 0;
+      if (that.prolist[n].referencePicList.length < that.imgLenght) {
+        num = that.imgLenght - that.prolist[n].referencePicList.length;
+        console.log(num,"最大图片数量")
+        wx.chooseImage({
+          count: num, //最大图片数量=最大数量-临时路径的数量
+          sizeType: ["compressed"], //图片尺寸 original--原图；compressed--压缩图
+          sourceType: ["album", "camera"], //选择图片的位置 album--相册选择, 'camera--使用相机
+          success: res => {
+            const imgPathArr = that.prolist[n].referencePicList
+            that.prolist[n].referencePicList = []
+            that.prolist[n].referencePicList = imgPathArr.concat(res.tempFilePaths);
+                    console.log(res.tempFilePaths,'base')
+                    console.log(that.prolist[n].referencePicList,'that.prolist[n].referencePicList')
+            that.updateImg(n)
+          }
+        });
+      }
+    },
+    // 更新图片数据
+    updateImg(n){
+      console.log(this.prolist[n].referencePicList.length,'that.prolist[n].referencePicList1111111111')
+        // 判断是否大于图片最大数量
+        if (this.prolist[n].referencePicList.length === this.imgLenght*1) {
+          this.isShowBtnUpload = false;
+        }else{
+          this.isShowBtnUpload = true;
+        }
+        this.imgBase=[]
+        // 根据临时路径数组imgPathArr获取base64图片
+        for (let i = 0; i < this.prolist[n].referencePicList.length; i++) {
+          wx.getFileSystemManager().readFile({
+            filePath: (this.prolist[n].referencePicList)[i], //选择图片返回的相对路径
+            encoding: "base64", //编码格式
+            success: res => {
+              //成功的回调
+              this.imgBase.push({
+                PicUrl: "data:image/png;base64," + res.data.toString()
+              });
+          
+            }
+          });
+        }
+    },
+    deleteImg(i,n) {
+      this.imgBase.splice(i, 1);
+      this.prolist[n].referencePicList.splice(i, 1);
+      if (this.prolist[n].referencePicList.length < this.imgLenght*1) {
+        this.isShowBtnUpload = null;
+        this.isShowBtnUpload = true;
+      }
+      this.updateImg(n)
+    },
+      
+
+
       //获取用户默认的收货地址
       getDefaultAddress(){
+          this.addressinfo={}
          if(toLogin(this.curPage)){
            const res = post('Address/defaultaddress_New',{
              UserId:this.userId,
              Token:this.token,
              IsDefault:1
            },this.curPage).then(res=>{
-             console.log(res,"默认收货地址")
-             this.addressinfo.push(res.data)
+              this.addressinfo.push(res.data)
+              //console.log(this.addressinfo.length,"默认收货地址")
            })
          } 
       },
@@ -448,6 +626,19 @@ export default {
       toAddress(){
           wx.navigateTo({url:'/pages/custom/addressList/main?url=smOrder'})
       },
+      //返回首页
+      backIndex(){
+        wx.redirectTo({url:'/pages/index/main'})
+      },
+      loadMore(){
+        if (this.isLoad) {
+            this.page++;
+            this.choseMartic();
+          }
+      },
+      submit(){
+         console.log(this.prolist,"this.prolist[i]")
+      }
   }
 };
 </script>

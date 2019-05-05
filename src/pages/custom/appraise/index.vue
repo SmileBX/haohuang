@@ -101,6 +101,7 @@
   </div>
 </template>
 <script>
+//根据订单的类型 获取评论要显示的评论种类
 export default {
     onLoad() {
       this.setBarTitle();
