@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 24,
+			"current": 12,
 			"list": [
 				{
 					"id": 0,
@@ -120,7 +120,7 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 12,
 					"name": "师傅的提现",
 					"pathName": "pages/master/depositmoney/main",
 					"query": "",
@@ -207,6 +207,7 @@
 					"id": -1,
 					"name": "修改手机号码",
 					"pathName": "pages/setPhone/main",
+					"query": "",
 					"scene": null
 				}
 			]

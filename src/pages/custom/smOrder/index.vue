@@ -74,7 +74,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="select__weui-cells">
+                <div class="select__weui-cells" v-show="item.orderType!='设计' && item.orderType!='安装'">
                   <div class="weui-cells__title">制作材料</div>
                   <div class="ipt flex flexAlignCenter" @click="choseMartic(1,lindex)">
                     <div class="flex1">
@@ -83,7 +83,7 @@
                     <span class="icon-arrow arrow-right"></span>
                   </div>
                 </div>
-                <div class="select__weui-cells">
+                <div class="select__weui-cells" v-show="item.orderType!='设计' && item.orderType!='制作' && item.orderType!='设计_制作'">
                   <div class="weui-cells__title">安装材料</div>
                   <div class="ipt flex flexAlignCenter" @click="choseMartic(2,lindex)">
                     <div class="flex1">
@@ -129,7 +129,7 @@
                 <div class="priceBox flex">
                   <div class="flex1">金额</div>
                   <div>
-                    <span class="price">{{offerTotal}} 200</span>
+                    <span class="price">￥{{item.offerTotal}}</span>
                   </div>
                 </div>
               </div>
@@ -158,7 +158,13 @@
                     </div>
                     <scroll-view :scroll-y="true" style="height:600rpx;" class="showItem" @scrolltolower="loadMore">
                       <div v-for="(item,index) in list" :key="index">
-                          <p :class="index==active?'itemactive':''" @click="chose(index)">{{item.name}}
+                          <!-- <p :class="{'itemactive':item.statu}" @click="chose(index)" style="margin-top:3rpx;">{{item.name}}
+                            &nbsp;&nbsp;<span v-if="item.Price">￥{{item.Price}}</span>
+                          </p> -->
+                          <p :class="{'itemactive':item.statu}" @click="chose(index)" style="margin-top:3rpx;" v-if="masktitle=='请选择制作材料' || masktitle=='请选择安装材料'">{{item.name}}
+                            &nbsp;&nbsp;<span v-if="item.Price">￥{{item.Price}}</span>
+                          </p>
+                          <p :class="index==active?'itemactive':''" @click="chose(index)" style="margin-top:3rpx;" v-else>{{item.name}}
                             &nbsp;&nbsp;<span v-if="item.Price">￥{{item.Price}}</span>
                           </p>
                           <!-- <p>设计</p>
@@ -178,7 +184,7 @@
           </div>
         </div>
         <!-- 总金额 -->
-        <div class="flex allPriceBox bg_fff mt10">总金额(员)：500</div>
+        <div class="flex allPriceBox bg_fff mt10">总金额(员)：￥{{Total || 0}}</div>
         <!-- 快递选择 -->
         <div class="weui-cells smDetail__weui-cells">
           <div class="select__weui-cells">
@@ -293,21 +299,40 @@ export default {
         
   },
   computed:{
-      // offerTotal(){  //小计
-      //    console.log(this.prolist,"this.prolist[i]")
-      //   for(let i=0;i<this.prolist.length;i++){
-      //     console.log(this.prolist[i].makestatic,this.prolist[i].installstatic,"makestatic")
-      //       //this.prolist[i].makestatic
-      //   }
-      // },
+      Total(){  //总计
+        console.log(this.prolist,"this.prolist[i]")
+        let count=0
+        for(let i=0;i<this.prolist.length;i++){
+           count+=this.prolist[i].offerTotal
+        }
+        return count
+      },
   },
   watch:{
-   
+    //小计
     prolist: {
     handler(offerTotal) {
       for(let i=0;i<this.prolist.length;i++){
-          console.log(this.prolist[i].makestatic,this.prolist[i].installstatic,"makestatic")
-            //this.prolist[i].makestatic
+        if(this.prolist[i].makestatic.length>0 || this.prolist[i].installstatic.length>0){
+          let subtotal1=0
+          let subtotal2=0
+          for(let m of this.prolist[i].makestatic){
+              // console.log(m,"item")
+              // console.log(m.split('￥')[1]*1)
+              subtotal1+=m.split('￥')[1]*1
+              //console.log(subtotal1,"小计111111111")
+          }
+          for(let k of this.prolist[i].installstatic){
+              // console.log(m,"item")
+              // console.log(m.split('￥')[1]*1)
+              subtotal2+=k.split('￥')[1]*1
+
+          }
+            this.prolist[i].offerTotal=subtotal1+subtotal2
+            //console.log(this.prolist[i].offerTotal,"小计")
+          }else{
+            this.prolist[i].offerTotal=0
+          }
         }
     },
     immediate: true,
@@ -356,12 +381,12 @@ export default {
         tip:0,//点击增加明细增加子订单的次数标识
         proitem:{
           orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:"",installstatic:"",proname:""
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:"",proname:""
         },
         prolist:[
           {
           orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:"",installstatic:"",proname:""
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:"",proname:""
           },
         ],
         list:[],
@@ -400,13 +425,22 @@ export default {
             if(this.masktitle=="请选择订单类型"){
               this.prolist[n].orderType=this.list[i].name
             }
-            if(this.masktitle=="请选择制作材料"){
-              this.prolist[n].makestatic=this.list[i].name+"  "+"￥"+this.list[i].Price 
-            }
-            if(this.masktitle=="请选择安装材料"){
-               this.prolist[n].installstatic=this.list[i].name +"  "+"￥"+ this.list[i].Price 
-            }
-          } 
+            
+          }
+          console.log(typeof this.list[i].statu,"材料选择p标识选择背景")///////////////////////////////////////////
+          if(this.list[i].statu*1===1){
+              if(this.masktitle=="请选择制作材料"){
+                  this.prolist[n].makestatic.push(this.list[i].name+"  "+"￥"+this.list[i].Price +"   ")
+                  //this.prolist[n].makestatic+=this.list[i].name+"  "+"￥"+this.list[i].Price +"   "
+                  console.log(this.prolist[n].makestatic,"arr制作材料list")
+              }
+              if(this.masktitle=="请选择安装材料"){
+                  this.prolist[n].installstatic.push(this.list[i].name +"  "+"￥"+ this.list[i].Price+"   ")
+              } 
+           console.log(this.list[i].statu,"材料选择p标识选择背景")
+
+          }
+          
         }
       
         //  this.masktitle=0
@@ -414,7 +448,7 @@ export default {
         this.isShow=false
       },
       onInput(e,i){
-          console.log(e)
+          console.log(e,"时间")
           const  date= new Date(e.mp.detail)
           const year = date.getFullYear()
           let month = date.getMonth()+1
@@ -477,15 +511,23 @@ export default {
       },
       chose(e){
         this.active=e
+        if(this.list[e].statu){
+          this.$set(this.list[e],'statu',false);
+        }else{
+          this.$set(this.list[e],'statu',true);
+        }
+
       },
       //选择订单类型
-      choseType(e){
+      choseType(n){
         this.active=0
         this.list=[]
         this.isShow=true;
         this.showType=true;
+        this.prolist[n].makestatic=[] 
+        this.prolist[n].installstatic=[]
         this.masktitle="请选择订单类型"
-        console.log(e,"type")
+        //console.log(n,"type")
         if(toLogin(this.curPage)){
             get('/Order/GetOrderType',this.curPage).then(res=>{
               console.log(res,"订单类型")
@@ -493,7 +535,8 @@ export default {
               let info={}
               for(let i=0;i<this.typelist.length;i++){
                 info={
-                  name:this.typelist[i].EnumText
+                  name:this.typelist[i].EnumText,
+                  Id:this.typelist[i].EnumId,
               }
               this.list.push(info)
               }
@@ -511,8 +554,14 @@ export default {
         this.showType=true;
         if(e==1){
              this.masktitle="请选择制作材料"
+            //  this.prolist[n].makestatic='' 
+              this.prolist[n].makestatic=[] 
+              //this.prolist[n].installstatic=''
         }else{
             this.masktitle="请选择安装材料"
+            //this.prolist[n].makestatic='' 
+            this.prolist[n].installstatic=[]
+             // this.prolist[n].installstatic=''
         }
         if(toLogin(this.curPage)){
           post('/Product/ProductList',{
@@ -536,8 +585,10 @@ export default {
                 name:_list[i].Name,
                 Id:_list[i].Id,
                 Price:_list[i].Price,
+                statu:false
               }
               this.list.push(info)
+              
             }
              if (this.allPage > this.page) {
                 this.isLoad = true;

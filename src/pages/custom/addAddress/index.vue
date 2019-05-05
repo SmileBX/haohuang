@@ -39,6 +39,7 @@
       <van-cell-group>
         <van-field clearable label="收货人" :value="name" @change="onName" placeholder="请输入收货人姓名" title-width="70px"/>
         <van-field clearable label="手机号码" :value="phone" @change="onPhone"  placeholder="请输入手机号码" title-width="70px"/>
+        <van-field clearable label="店铺地址" :value="site" @change="onSite"  placeholder="请输入店铺地址" title-width="70px"/>
         <van-field
           clearable
           label="所在地区"
@@ -91,20 +92,22 @@ import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 export default {
     onLoad() {
       this.setBarTitle();
-      //编辑地址的需要
+      
+      
+      
+  },
+  onShow() {
+    //编辑地址的需要
+      
+      this.curPage = getCurrentPageUrlWithArgs();
+      this.identity = wx.getStorageSync("identity");
+      this.userid = wx.getStorageSync("userId");
+      this.token = wx.getStorageSync("token");
       const id = this.$root.$mp.query.id 
       console.log(id,"id")  
       if(id){
         this.editAddress(id)
       }
-      
-      
-  },
-  onShow() {
-      this.curPage = getCurrentPageUrlWithArgs();
-      this.identity = wx.getStorageSync("identity");
-      this.userid = wx.getStorageSync("userId");
-      this.token = wx.getStorageSync("token");
   },
   data() {
     return {
@@ -113,6 +116,7 @@ export default {
       showArea: false,
       name: "",
       phone:'',
+      site:'',//店铺地址
       area:'',
       provinceCode:'',
       cityCode:'',
@@ -144,25 +148,26 @@ export default {
         this.cityCode='';
         this.districtCode ='';
     },
-    async editAddress(id){
-      if(toLogin(this.curPage)){
-          const res = await post('/Address/GetInfo',{
+    editAddress(id){
+      let that = this;
+      if(toLogin(that.curPage)){
+          post('Address/GetInfo',{
               Id:id,
-              UserId:this.userid,
-              Token: this.token
+              UserId:that.userid,
+              Token: that.token
           },
-            this.curPage
+            that.curPage
           ).then(res=>{
               console.log(res,"更改编辑用户信息")
-              this.buttonText= '修改';
-              this.name=res.data.name;
-              this.phone=res.data.tel;
-              this.isDefault=res.data.is_def?true:false;
-              this.area=res.data.addressstr;
-              this.address=res.data.address;
-              this.provinceCode=res.data.province;
-              this.cityCode=res.data.city;
-              this.districtCode =res.data.district;
+              that.buttonText= '修改';
+              that.name=res.data.name;
+              that.phone=res.data.tel;
+              that.isDefault=res.data.is_def?true:false;
+              that.area=res.data.addressstr;
+              that.address=res.data.address;
+              that.provinceCode=res.data.province;
+              that.cityCode=res.data.city;
+              that.districtCode =res.data.district;
           })
           
       }
@@ -250,6 +255,8 @@ export default {
       this.phone = e.mp.detail
     },onAddress(e){
       this.address = e.mp.detail
+    },onSite(e){
+      this.site = e.mp.detail
     }
    
 
