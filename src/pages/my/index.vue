@@ -261,6 +261,11 @@
         </ul>
       </div>
     </div>
+    <div class="ftBtn">
+      <div class="inner">
+        <div class="btn btn-active fill" @click="outLogin">退出登录</div>
+      </div>
+    </div>
     <foot :identity="identity"></foot>
   </div>
 </template>
@@ -400,6 +405,18 @@ export default {
           that.info = result.data;
         }
       });
+    },
+    outLogin(){  //退出登录
+      wx.setStorageSync('userId',"");
+      wx.setStorageSync('token',"");
+      wx.setStorageSync('identity',"");
+      wx.setStorageSync('openId',"");
+      wx.setStorageSync('unionid',"");
+       wx.setStorageSync('mobile',"");
+      wx.setStorageSync('userInfo',"");
+      wx.redirectTo({
+        url:"/pages/login2/main"
+      })
     }
   }
 };

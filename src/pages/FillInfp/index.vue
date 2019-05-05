@@ -111,6 +111,7 @@ export default {
     this.setBarTitle();
   },
   onShow() {
+    // this.initData();
     this.BankId = this.$store.state.cardInfo.id;
     this.bankName = this.$store.state.cardInfo.bankName;
     console.log("BankId:" + this.BankId);
@@ -148,6 +149,31 @@ export default {
     };
   },
   methods: {
+    initData(){
+      this.curPage="";
+      this.areaList;
+      this.showArea=false;
+     this.userId="";
+     this.token="";
+     this.realName=""; //师傅真实姓名
+     this.IdentifyNumber=""; //师傅的身份证号
+      this.BankId=""; //选择的银行
+      this.BankAddress=""; //开户行名称
+      this.BankNo=""; //银行卡卡号
+      this.ElectricianImg=""; //电工证书
+      this.ElectricianImgSrc="";
+      this.WelderImg=""; //焊工证书
+      this.WelderImgSrc="";
+      this.HighAltitudeImg=""; //高空证书
+      this.HighAltitudeImgSrc="";
+      this.OtherImg=""; //其他证书图片非必填的
+      this.OtherImgSrc="";
+      this.ProvinceCode=""; //所属省份
+      this.CityCode=""; //	所属市区
+      this.AreaCode=""; //所属区县
+      this.area="";
+      this.bankName="";
+    },
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "填写审核资料"

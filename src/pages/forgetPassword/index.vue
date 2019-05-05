@@ -41,6 +41,7 @@ export default {
     this.setBarTitle();
   },
   onShow() {
+    // this.initData();
     //identity: 1:客服；2：客户；3：师傅
     this.identity = this.$root.$mp.query.identity;
     // 会员注册0,
@@ -87,6 +88,19 @@ export default {
     };
   },
   methods: {
+    initData(){
+      this.codeMsg= "获取验证码";
+      this.timer= null;
+      this.count= "";
+      this.TIME_COUNT= 60;
+      this.has_click= false;
+      this.Tel= "";
+      this.Pwd= "";
+      this.Pwd2= "";
+      this.Code= "";
+      this.identity= "";
+      this.codeType= "";
+    },
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "忘记密码"

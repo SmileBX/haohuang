@@ -69,6 +69,7 @@ export default {
     this.setBarTitle();
   },
   onShow() {
+    // this.initData();
     this.identity = wx.getStorageSync("identity");
     if (!this.identity) {
       wx.reLaunch({
@@ -121,6 +122,19 @@ export default {
     };
   },
   methods: {
+    initData(){
+      this.type = 0;
+      this.Tel = "";
+      this.Pwd = "";
+      this.Code = "";
+      this.identity = "";
+      this.codeType = "";
+      this.codeMsg = "获取验证码";
+      this.timer = null;
+      this.count = "";
+      this.TIME_COUNT = 60;
+      this.has_click = false;
+    },
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "登录"
@@ -240,6 +254,7 @@ export default {
               that.count--;
               that.codeMsg = that.count + "s后重新获取";
             } else {
+              that.has_click = false;
               clearInterval(that.timer);
               that.timer = null;
               that.codeMsg = "获取验证码";

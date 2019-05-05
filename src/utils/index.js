@@ -152,10 +152,12 @@ function wxMemberLogin(code, iv, encryptedData) {
         code,
         encryptedData
     }).then(result => {
+        console.log("++++++++++++++");
+        console.log(result);
         if (result.code === 0) { //登录成功
             //把返回的userId、token保存起来
             wx.setStorageSync("userId", result.data.MemberId);
-            wx.setStorageSync("token", result.data.MemberAccessToken);
+            wx.setStorageSync("token", result.data.MemberToken);
             wx.setStorageSync("openId", result.data.MemberOpenId);
             wx.showToast({
                 title: '登录成功',
@@ -224,6 +226,9 @@ function wxInstalMasterLogin(code, iv, encryptedData) {
             })
         }
         if (result.code === 102) { //没有填写审核资料
+            wx.setStorageSync("userId", result.data.MasterId);
+            wx.setStorageSync("token", result.data.MasterToken);
+            wx.setStorageSync("openId", result.data.MasterOpenId);
             wx.navigateTo({
                 url: '/pages/FillInfp/main'
             })

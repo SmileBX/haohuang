@@ -41,6 +41,7 @@ export default {
     this.setBarTitle();
   },
   onShow() {
+    // this.initData();
     //identity: 1:客服；2：客户；3：师傅
     this.identity = wx.getStorageSync("identity");
     if (!this.identity) {
@@ -97,6 +98,23 @@ export default {
     };
   },
   methods: {
+    initData() {
+      this.codeMsg = "获取验证码";
+      this.timer = null;
+      this.count = "";
+      this.TIME_COUNT = 60;
+      this.has_click = false;
+      this.Tel = "";
+      this.Pwd = "";
+      this.Pwd2 = "";
+      this.Code = "";
+      this.identity = "";
+      this.codeType = "";
+      this.nickName = ""; //微信昵称
+      this.avatarUrl = ""; //微信头像
+      this.unionid = "";
+      this.openId = "";
+    },
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "绑定手机号"
@@ -200,17 +218,21 @@ export default {
         if (result.code === 0) {
           wx.setStorageSync("openId", result.data.MemberOpenId);
           wx.setStorageSync("userId", result.data.MemberId);
-          wx.token("userId", result.data.MemberAccessToken);
-          wx.showToast({
-            title: "登录成功!",
-            icon: "none",
-            duration: 1500,
-            success: function() {
-              wx.reLaunch({
-                url: "/pages/my/main"
-              });
-            }
+          wx.setStorageSync("token", result.data.MemberToken);
+          console.log("______________");
+          wx.reLaunch({
+            url: "/pages/my/main"
           });
+          // wx.showToast({
+          //   title: "登录成功",
+          //   icon: "success",
+          //   duration: 1500,
+          //   success: function() {
+          //     setTimeout(function() {
+
+          //     }, 1500);
+          //   }
+          // });
         }
       });
     },
@@ -226,10 +248,17 @@ export default {
         nickName: that.nickName,
         avatarUrl: that.avatarUrl
       }).then(result => {
+        console.log("师傅的绑定手机号");
+        console.log(result);
+        wx.setStorageSync("openId", result.data.MasterOpenId);
+        wx.setStorageSync("userId", result.data.MasterId);
+        wx.setStorageSync("token", result.data.MasterToken);
+        if (result.code === 0) {
+          wx.reLaunch({
+            url: "/pages/my/main"
+          });
+        }
         if (result.code === 102) {
-          wx.setStorageSync("openId", result.data.MasterOpenId);
-          wx.setStorageSync("userId", result.data.MasterId);
-          wx.setStorageSync("token", result.data.MasterToken);
           wx.reLaunch({
             url: "/pages/FillInfp/main"
           });
@@ -249,19 +278,25 @@ export default {
         avatarUrl: that.avatarUrl
       }).then(result => {
         if (result.code === 0) {
+          console.log("dsddddsddssddsddsdsddd");
           wx.setStorageSync("openId", result.data.ServiceOpenId);
           wx.setStorageSync("userId", result.data.ServiceId);
-          wx.token("userId", result.data.ServiceToken);
-          wx.showToast({
-            title: "登录成功!",
-            icon: "none",
-            duration: 1500,
-            success: function() {
-              wx.reLaunch({
-                url: "/pages/my/main"
-              });
-            }
+          wx.setStorageSync("token", result.data.ServiceToken);
+          wx.reLaunch({
+            url: "/pages/my/main"
           });
+          // wx.showToast({
+          //   title: "登录成功",
+          //   icon: "success",
+          //   duration: 1500,
+          //   success: function() {
+          //     setTimeout(function() {
+          //       wx.redirectTo({
+          //         url: "/pages/my/main"
+          //       });
+          //     }, 1500);
+          //   }
+          // });
         }
       });
     }
