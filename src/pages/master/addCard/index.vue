@@ -20,9 +20,15 @@
         </div>
       </div>
       <div class="select__weui-cells">
-        <div class="ipt flex flexAlignCenter">
+        <div class="ipt flex flexAlignCenter" @click="selectCardName">
           <div class="flex1">
-            <input type="text" placeholder="选择银行名称" disabled="true" class="weui-input">
+            <input
+              type="text"
+              placeholder="选择银行名称"
+              disabled="true"
+              :value="bankName"
+              class="weui-input"
+            >
           </div>
           <span class="icon-arrow arrow-right"></span>
         </div>
@@ -64,6 +70,8 @@ export default {
     this.setBarTitle();
   },
   onShow() {
+    this.bankId = this.$store.state.cardInfo.id;
+    this.bankName = this.$store.state.cardInfo.bankName;
     //identity: 1:客服；2：客户；3：师傅
     // 会员注册0,
     //         会员登录1,
@@ -101,7 +109,8 @@ export default {
       bankCardName: "", //持卡人人名字
       bankCardNo: "", //银行卡号
       bankAddress: "", //开户地址
-      bankId: 1, //选择的银行Id
+      bankId: "", //选择的银行Id
+      bankName: "",
       mobile: "",
       tel: "",
       Code: "",
@@ -117,6 +126,32 @@ export default {
       wx.setNavigationBarTitle({
         title: "添加银行卡"
       });
+    },
+    initData(){
+      this.curPage ="";
+      this.userId = "";
+      this.token = "";
+      this.bankCardName = ""; //持卡人人名字
+      this.bankCardNo = ""; //银行卡号
+      this.bankAddress = ""; //开户地址
+      this.bankId = ""; //选择的银行Id
+      this.bankName = "";
+      this.mobile = "";
+      this.tel = "";
+      this.Code = "";
+      this.codeMsg = "获取验证码";
+      this.timer = null;
+      this.count = "";
+      this.TIME_COUNT = 60;
+      this.has_click = false;
+    },
+    selectCardName() {
+      //选择银行卡
+      this.$store.commit("setSelectCard", {
+        url: "/pages/master/addCard/main",
+        status: true
+      });
+      wx.navigateTo({ url: "/pages/chooseBank/main" });
     },
     valOther() {
       if (this.bankCardName == "") {
@@ -211,7 +246,15 @@ export default {
           wx.showToast({
             title: "新增成功!",
             icon: "none",
-            duration: 1500
+            duration: 1500,
+            success: function() {
+              setTimeout(function() {
+                that.initData();
+                wx.redirectTo({
+                  url: "/pages/master/cardList/main"
+                });
+              }, 1500);
+            }
           });
         }
       });

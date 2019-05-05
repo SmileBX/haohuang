@@ -70,6 +70,9 @@ export default {
     this.openId = wx.getStorageSync("openId");
     this.nickName = wx.getStorageSync("userInfo").nickName;
     this.avatarUrl = wx.getStorageSync("userInfo").avatarUrl;
+    if (this.identity == 1) {  //客服的绑定
+      this.codeType = 16;
+    }
     if (this.identity == 2) {
       this.codeType = 6;
     }

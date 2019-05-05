@@ -111,7 +111,7 @@ export default {
     this.setBarTitle();
   },
   onShow() {
-    // this.initData();
+    
     this.BankId = this.$store.state.cardInfo.id;
     this.bankName = this.$store.state.cardInfo.bankName;
     console.log("BankId:" + this.BankId);
@@ -417,10 +417,12 @@ export default {
             confirmColor: "#ff7e22",
             success(res) {
               if (res.confirm) {
+                that.initData();
                 wx.reLaunch({
                   url: "/pages/login2/main"
                 });
               } else if (res.cancel) {
+                that.initData();
                 wx.reLaunch({
                   url: "/pages/login2/main"
                 });
