@@ -20,11 +20,11 @@
     <!-- 这个是师傅的时候才有的 -->
     <ul class="numberList flex li_50" v-if="hasData && identity==3">
       <li>
-        <p class="num">0</p>
+        <p class="num">{{info.Score}}</p>
         <p class="title">积分</p>
       </li>
       <li>
-        <p class="num">0.00</p>
+        <p class="num">{{info.Wallet}}</p>
         <p class="title">余额</p>
       </li>
     </ul>
@@ -40,11 +40,12 @@
       </div>
       <div class="section__bd">
         <!-- 客户的时候 -->
-        <ul class="navList li_20 center" v-if="identity==2">
+        <ul class="navList li_25 center" v-if="identity==2">
           <li>
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/daiqueren.png" alt>
+                <span class="circleNum" v-if="info.notconfirmNum>0">{{info.notconfirmNum}}</span>
               </div>
               <p class="title">待确认</p>
             </div>
@@ -53,6 +54,7 @@
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/daifukuan.png" alt>
+                <span class="circleNum" v-if="info.notpayNum>0">{{info.notpayNum}}</span>
               </div>
               <p class="title">待付款</p>
             </div>
@@ -61,7 +63,7 @@
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/chulizhong.png" alt>
-                <span class="circleNum">2</span>
+                <span class="circleNum" v-if="info.handleNum>0">{{info.handleNum}}</span>
               </div>
               <p class="title">处理中</p>
             </div>
@@ -70,18 +72,19 @@
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/daipinjia.png" alt>
+                <span class="circleNum" v-if="info.notcommentNum>0">{{info.notcommentNum}}</span>
               </div>
               <p class="title">待评价</p>
             </div>
           </li>
-          <li>
+          <!-- <li>
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/shouhou.png" alt>
               </div>
               <p class="title">售后</p>
             </div>
-          </li>
+          </li> -->
         </ul>
         <!-- 师傅的时候 -->
         <ul class="navList li_25 center" v-if="identity==3">
@@ -89,6 +92,7 @@
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/shigongzhong.png" alt>
+                <span class="circleNum" v-if="info.constructionNum>0">{{info.constructionNum}}</span>
               </div>
               <p class="title">施工中</p>
             </div>
@@ -97,6 +101,7 @@
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/daishenhe.png" alt>
+                <span class="circleNum" v-if="info.notauditNum>0">{{info.notauditNum}}</span>
               </div>
               <p class="title">待审核</p>
             </div>
@@ -105,7 +110,7 @@
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/yianzhuang.png" alt>
-                <span class="circleNum">2</span>
+                <span class="circleNum" v-if="info.auditOKNum>0">{{info.auditOKNum}}</span>
               </div>
               <p class="title">已安装</p>
             </div>
@@ -114,6 +119,7 @@
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/weitongguo.png" alt>
+                <span class="circleNum" v-if="info.auditNoNum>0">{{info.auditNoNum}}</span>
               </div>
               <p class="title">未通过</p>
             </div>
@@ -125,6 +131,7 @@
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/daiqueren.png" alt>
+                <span class="circleNum" v-if="info.notconfirmNum>0">{{info.notconfirmNum}}</span>
               </div>
               <p class="title">待确认</p>
             </div>
@@ -133,23 +140,26 @@
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/serve_point.png" alt>
+                <span class="circleNum" v-if="info.notpayNum>0">{{info.notpayNum}}</span>
               </div>
-              <p class="title">已指派</p>
+              <p class="title">已确认</p>
             </div>
           </li>
           <li>
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/shigongzhong.png" alt>
-                <span class="circleNum">2</span>
+                <span class="circleNum" v-if="info.handleNum>0">{{info.handleNum}}</span>
               </div>
-              <p class="title">安装中</p>
+              <!-- 处理中 -->
+              <p class="title">安装中</p>  
             </div>
           </li>
           <li>
             <div class="outside">
               <div class="icon-img">
                 <img src="/static/images/icons/serve_com.png" alt>
+                <span class="circleNum" v-if="info.overNum>0">{{info.overNum}}</span>
               </div>
               <p class="title">已完成</p>
             </div>
@@ -261,6 +271,11 @@
             </div>
           </li>-->
         </ul>
+      </div>
+    </div>
+    <div class="ftBtn">
+      <div class="inner">
+        <div class="btn btn-active fill" @click="outLogin">退出登录</div>
       </div>
     </div>
     <foot :identity="identity"></foot>
@@ -406,12 +421,24 @@ export default {
         }
       });
     },
+    outLogin(){  //退出登录
+      wx.setStorageSync('userId',"");
+      wx.setStorageSync('token',"");
+      wx.setStorageSync('identity',"");
+      wx.setStorageSync('openId',"");
+      wx.setStorageSync('unionid',"");
+       wx.setStorageSync('mobile',"");
+      wx.setStorageSync('userInfo',"");
+      wx.redirectTo({
+        url:"/pages/login2/main"
+      })
+    },
     //更改用户手机号码
     updateMobile() {
       wx.navigateTo({
         url: "/pages/setPhone/main"
       });
-    },
+    }
   }
 };
 </script>
