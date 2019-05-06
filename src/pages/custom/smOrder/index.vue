@@ -27,7 +27,7 @@
                 <div class="select__weui-cells flex  flexAlignCenter">
                   <div class="weui-cells__title">项目名称:</div>
                   <div class="flex1">
-                    <input type="text" class="weui-input" placeholder="请输入（必填）" style="margin-left:20rpx;" v-model="item.proname">
+                    <input type="text" class="weui-input" placeholder="请输入（必填）" style="margin-left:20rpx;" v-model="item.orderName">
                   </div>
                 </div>
                 <div class="select__weui-cells" @click="choseType(lindex) ">
@@ -156,7 +156,7 @@
                           <span class="title">{{masktitle}}</span>
                           <span class="color size" @click="subConfirm(lindex)">确定</span>
                     </div>
-                    <scroll-view :scroll-y="true" style="height:600rpx;" class="showItem" @scrolltolower="loadMore">
+                    <scroll-view :scroll-y="true" style="height:480rpx;" class="showItem" @scrolltolower="loadMore">
                       <div v-for="(item,index) in list" :key="index">
                           <!-- <p :class="{'itemactive':item.statu}" @click="chose(index)" style="margin-top:3rpx;">{{item.name}}
                             &nbsp;&nbsp;<span v-if="item.Price">￥{{item.Price}}</span>
@@ -292,6 +292,7 @@ export default {
                   addressinfo:_address.site
 
             })
+            this.adressId=_address.id
            // console.log( this.addressinfo.length)
         }else{
             this.getDefaultAddress()
@@ -362,7 +363,7 @@ export default {
         isShow:false, //遮罩层
         showType:false,  //普通选择的弹框
         showPaymask:false,//支付确认弹框
-        // proname:"",//项目名称
+        // orderName:"",//项目名称
         // speclong:"",//厚
         // specwide:"",//宽
         // spechign:"",//高
@@ -381,12 +382,12 @@ export default {
         tip:0,//点击增加明细增加子订单的次数标识
         proitem:{
           orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:"",proname:""
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:"",orderName:""
         },
         prolist:[
           {
           orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:"",proname:""
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:"",orderName:""
           },
         ],
         list:[],
@@ -401,7 +402,10 @@ export default {
         isShowBtnUpload: true,//显示上传按钮的状态
         // imgPathArr: [],
         imgBase: [],
-        imgLenght:10
+        imgLenght:10,
+        adressId:0, //地址编号
+        proLists:[],//材料--制作材料 安装材料
+        logisticsType:0    //物流类型 0-快递 1-物流 2-自提
     }
   },
   methods:{
@@ -421,14 +425,15 @@ export default {
             // console.log(i)
             if(this.masktitle=="请选择快递类型"){
               this.postMsg = this.list[i].name
+             console.log( this.postMsg.indexOf('物流'),"6666666666666666666666666666666")
             }
             if(this.masktitle=="请选择订单类型"){
               this.prolist[n].orderType=this.list[i].name
             }
             
           }
-          console.log(typeof this.list[i].statu,"材料选择p标识选择背景")///////////////////////////////////////////
-          if(this.list[i].statu*1===1){
+          console.log(typeof this.list[i].statu,"材料选择p标识选择背景")
+          if(this.list[i].statu){
               if(this.masktitle=="请选择制作材料"){
                   this.prolist[n].makestatic.push(this.list[i].name+"  "+"￥"+this.list[i].Price +"   ")
                   //this.prolist[n].makestatic+=this.list[i].name+"  "+"￥"+this.list[i].Price +"   "
@@ -437,7 +442,7 @@ export default {
               if(this.masktitle=="请选择安装材料"){
                   this.prolist[n].installstatic.push(this.list[i].name +"  "+"￥"+ this.list[i].Price+"   ")
               } 
-           console.log(this.list[i].statu,"材料选择p标识选择背景")
+         //  console.log(this.list[i].statu,"材料选择p标识选择背景")
 
           }
           
@@ -669,7 +674,8 @@ export default {
              IsDefault:1
            },this.curPage).then(res=>{
               this.addressinfo.push(res.data)
-              //console.log(this.addressinfo.length,"默认收货地址")
+              this.adressId=res.data.id
+              console.log(this.addressinfo,"默认收货地址")
            })
          } 
       },
@@ -688,7 +694,29 @@ export default {
           }
       },
       submit(){
-         console.log(this.prolist,"this.prolist[i]")
+         console.log(this.prolist,"this.prolist")
+         for(let i=0;i<this.prolist.length;i++){
+            let proLists=[]//材料--制作材料 安装材料
+            let item={
+              Id:i+1,
+              Num:1,
+              pType:0
+            }
+            let info={
+                adressId:this.adressId,  //地址编号
+                orderType:this.prolist[i].orderType,  //项目名称
+                speclong:this.prolist[i].speclong,    //厚
+                specwide:this.prolist[i].specwide,  //宽 
+                spechign:this.prolist[i].spechign,      //高
+                specnum:this.prolist[i].specnum,        //数量   
+                remark:this.prolist[i].remark,      //备注
+                referencePicList:this.prolist[i].referencePicList,    //图片集合 
+                estimateTime:this.prolist[i].estimateTime,    //完成时间
+                offerTotal:this.prolist[i].offerTotal      //总金额
+            }
+         }
+         
+
       }
   }
 };
