@@ -1,23 +1,19 @@
 <template>
   <div class="account">
-    <div class="tips bg_fff" style="padding:16rpx 30rpx;">
-      <p>已出账单</p>
-    </div>
     <div class="scorelist">
-      <div class="month">3月</div>
-      <div class="scoreitem column flexAlignStart">
+      <div class="month">
+        <span class="selectTime" @click="selectTime">
+          {{timeMsg}}
+          <span class="icon-arrow arrow-down"></span>
+        </span>
+      </div>
+      <div class="scoreitem column" v-for="(item,index) in scoreList" :key="index">
         <div class="column iteminfo">
-          <p class="title">灯箱安装</p>
-          <div class="orderInfo">
-            <p class="time">订单编号：1316546798797964</p>
-            <p class="time">下单时间：04/01 15：39：21</p>
-            <p class="time">完成时间：04/01 15：39：21</p>
-          </div>
+          <p class="title">{{item.Remark}}</p>
+          <p class="time">时间:{{item.CreateTime}}</p>
         </div>
-        <div class="column flexDirection flexAlignEnd">
-          <p class="itemcolor">+￥4800</p>
-          <p class="time">在线支付</p>
-        </div>
+        <div class="itemcolor" v-if="item.BudgetType===0">￥{{item.Change}}</div>
+        <div class="reduceColor" v-if="item.BudgetType===1">￥{{item.Change}}</div>
       </div>
     </div>
     <p style="text-align:center;font-size:30rpx;color:#666;padding:120rpx 20rpx 80rpx;" v-if="hasScoreData">暂无数据</p>
@@ -35,20 +31,29 @@
     </van-action-sheet>
   </div>
 </template>
-
 <script>
+import { post, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
 import "@/css/common.css";
 export default {
   onLoad() {
     this.setBarTitle();
   },
   onShow() {
+    this.beginTime = ""; //开始时间
+      this.endTime = "";
+      this.monthTime = "";
     this.initData();
     this.curPage = getCurrentPageUrlWithArgs();
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
+    // let myDate = new Date();
+    // let year = myDate.getFullYear();
+    // let month = myDate.getMonth()+1;
+    // let day = myDate.getDate();
+    // this.beginTime = year+"-"+month+'-'+day;
+    // this.endTime = year+"-"+month+'-'+1;
     if (toLogin(this.curPage)) {
-      this.getWalletList();
+      this.getDrawMoneyApplyList();
     }
   },
   data() {
@@ -77,7 +82,7 @@ export default {
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
-        title: "对账明细"
+        title: "提现记录"
       });
     },
     initData() {
@@ -90,16 +95,33 @@ export default {
       this.hasScoreData = false;
       this.scoreList = []; 
     },
-    getWalletList() {
+    selectTime() {
+      //选择时间
+      this.showDate = true;
+      console.log("gggggggg");
+    },
+    onInput(e, i) {
+      console.log(e, "时间");
+      const date = new Date(e.mp.detail);
+      let year = date.getFullYear();
+      let month = date.getMonth()+1;
+      this.beginTime = `${year}-01-01`;
+      this.endTime = `${year+1}-01-01`;
+      this.monthTime = month;
+      this.showDate = false;
+      this.timeMsg = `${year}年${month}月`;
+      this.initData();
+      this.getDrawMoneyApplyList();
+    },
+    getDrawMoneyApplyList() {
       let that = this;
       post(
-        "InstalMaster/GetInstalMaster_WalletList",
+        "InstalMaster/DrawMoneyApplyList",
         {
           MasterId: that.userId,
           Token: that.token,
           page: that.page,
           pagesize: that.pageSize,
-          WalletType:1,
           BeginTime: that.beginTime,
           EndTime: that.endTime,
           MonthTime:that.monthTime
@@ -161,7 +183,7 @@ export default {
   onReachBottom() {
     if (this.isLoad) {
       this.page++;
-      this.getWalletList();
+      this.getDrawMoneyApplyList();
     } else {
       if (this.page > 1) {
         this.isOved = true;
@@ -176,3 +198,4 @@ export default {
 <style lang="scss" scoped>
 @import "./style";
 </style>
+
