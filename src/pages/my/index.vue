@@ -157,12 +157,12 @@
             </div>
           </li>
           <li>
-            <div class="outside" @click="gotoUrl(9)">
+            <div class="outside" @click="gotoUrl(8)">
               <div class="icon-img">
                 <img src="/static/images/icons/serve_com.png" alt>
                 <span class="circleNum" v-if="info.overNum>0">{{info.overNum}}</span>
               </div>
-              <p class="title">已完成</p>
+              <p class="title">待评论</p>
             </div>
           </li>
         </ul>
