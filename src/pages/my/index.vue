@@ -20,11 +20,11 @@
     </div>
     <!-- 这个是师傅的时候才有的 -->
     <ul class="numberList flex li_50" v-if="hasData && identity==3">
-      <li>
+      <li @click="gotoIntegral">
         <p class="num">{{info.Score}}</p>
         <p class="title">积分</p>
       </li>
-      <li>
+      <li @click="gotoSun">
         <p class="num">{{info.Wallet}}</p>
         <p class="title">余额</p>
       </li>
@@ -213,7 +213,7 @@
         <!-- 师傅的时候 -->
         <ul class="navList li_25 center navList2" v-if="identity==3">
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoCensus">
               <div class="icon-img">
                 <img src="/static/images/icons/tongji.png" alt>
               </div>
@@ -328,6 +328,24 @@ export default {
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "个人中心"
+      });
+    },
+     gotoSun() {
+      //跳转到余额
+      wx.navigateTo({
+        url: "/pages/master/sum/main"
+      });
+    },
+    gotoIntegral() {
+      //跳转积分
+      wx.navigateTo({
+        url: "/pages/master/integral/main"
+      });
+    },
+    gotoCensus() {
+      //跳转到安装明细
+      wx.navigateTo({
+        url: "/pages/master/census/main"
       });
     },
     gotoFeedback() {

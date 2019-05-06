@@ -8,7 +8,7 @@
         </div>
         <div class="txtBox">
           <p class="title">{{item.BankName}}</p>
-          <p class="type">[解绑银行卡]</p>
+          <p class="type"><span @click="DeleteBank(index,item.Id)">[解绑银行卡]</span></p>
           <p class="number">
             <span class="xing" v-for="(item2,index2) in item.cardNoArr" :key="index2">{{item2}}</span>
           </p>
@@ -22,6 +22,7 @@
         </div>
       </div>
     </div>
+    <van-button>button</van-button>
   </div>
 </template>
 <script>
@@ -31,6 +32,7 @@ export default {
     this.setBarTitle();
   },
   onShow() {
+    this.initData();
     this.curPage = getCurrentPageUrlWithArgs();
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
@@ -44,7 +46,7 @@ export default {
       userId: "",
       token: "",
       page: 1,
-      pageSize:2,
+      pageSize:4,
       count:0,
       allPage:0,
       isLoad:false,
@@ -57,6 +59,18 @@ export default {
       wx.setNavigationBarTitle({
         title: "我的银行卡"
       });
+    },
+    initData(){
+      this.curPage = "";
+     this.userId = "";
+      this.token = "";
+      this.page = 1;
+      this.pageSize =4;
+      this.count =0;
+      this.allPage =0;
+      this.isLoad =false;
+      this.isOved =false;
+      this.cardList = [];
     },
     gotoAddCard() {
       wx.navigateTo({
@@ -71,7 +85,7 @@ export default {
           UserId: that.userId,
           Token: that.token,
           page: that.page,
-          pageSize: that.pageSize
+          pagesize: that.pageSize
         },
         that.curPage
       ).then(result => {
@@ -107,7 +121,7 @@ export default {
         }
       });
     },
-    DeleteBank(cardId) {
+    DeleteBank(index,cardId) {
       let that = this;
       post(
         "Bank/DeleteBank",
@@ -122,7 +136,12 @@ export default {
           wx.showToast({
             title: "解绑成功!",
             icon: "none",
-            duration: 1500
+            duration: 1500,
+            success:function(){
+              setTimeout(function(){
+                that.cardList.splice(index,1);
+              },1500)
+            }
           });
         }
       });
