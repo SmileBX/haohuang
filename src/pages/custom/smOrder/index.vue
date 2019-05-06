@@ -220,7 +220,7 @@
                 </div>
             </div>
         </div>
-        <div class="ftBtn" style="height:156rpx;" @click="showDate=true">
+        <div class="ftBtn" style="height:156rpx;z-index:9999999">
           <div class="inner fixed bm0 border-box bg_f4f7fc">
             <div class="btn btn-active fill" @click="submit">确认下单</div>
           </div>
@@ -282,13 +282,13 @@ export default {
         // this.postMsg = '选择快递'
 
         //获取收货地址
-        if(wx.getStorageSync('addressinfo')){
+        if(this.$root.$mp.query.url){
             console.log(wx.getStorageSync('addressinfo'))
             const _address=wx.getStorageSync('addressinfo')
             this.addressinfo.push({
                   name:_address.name,
                   tel:_address.phone,
-                  address:_address.site,
+                  address:_address.shopname,
                   addressinfo:_address.site
 
             })
@@ -297,6 +297,7 @@ export default {
         }else{
             this.getDefaultAddress()
         }
+        
         
   },
   computed:{
@@ -381,13 +382,13 @@ export default {
         masktitle:'设计',
         tip:0,//点击增加明细增加子订单的次数标识
         proitem:{
-          orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:"",orderName:""
+          orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],imgBase:[],
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:""
         },
         prolist:[
           {
-          orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:"",orderName:""
+          orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],imgBase:[],
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:""
           },
         ],
         list:[],
@@ -401,11 +402,13 @@ export default {
         isLoad:false,
         isShowBtnUpload: true,//显示上传按钮的状态
         // imgPathArr: [],
-        imgBase: [],
+        // imgBase: [],
         imgLenght:10,
         adressId:0, //地址编号
-        proLists:[],//材料--制作材料 安装材料
-        logisticsType:0    //物流类型 0-快递 1-物流 2-自提
+        // proLists:[],//材料--制作材料 安装材料
+        // proMastic:[],//制作材料集合
+        // proIns:[],  //安装材料集合
+        logisticsType:3    //物流类型 0-快递 1-物流 2-自提
     }
   },
   methods:{
@@ -425,27 +428,50 @@ export default {
             // console.log(i)
             if(this.masktitle=="请选择快递类型"){
               this.postMsg = this.list[i].name
-             console.log( this.postMsg.indexOf('物流'),"6666666666666666666666666666666")
+             if( this.postMsg.indexOf('物流')!=-1){
+                this.logisticsType=1
+             }else{
+                this.logisticsType=0
+             }
             }
             if(this.masktitle=="请选择订单类型"){
               this.prolist[n].orderType=this.list[i].name
             }
             
           }
-          console.log(typeof this.list[i].statu,"材料选择p标识选择背景")
+         // console.log(typeof this.list[i].statu,"背景")
           if(this.list[i].statu){
               if(this.masktitle=="请选择制作材料"){
                   this.prolist[n].makestatic.push(this.list[i].name+"  "+"￥"+this.list[i].Price +"   ")
                   //this.prolist[n].makestatic+=this.list[i].name+"  "+"￥"+this.list[i].Price +"   "
-                  console.log(this.prolist[n].makestatic,"arr制作材料list")
+                  //选中的材料--制作材料 安装材料
+                  let item1={
+                      Id:this.list[i].Id,
+                      Num:1,
+                      pType:0
+                    }
+                    console.log(item1)
+                   this.prolist[n].proMastic.push(item1)
+                  // this.proLists=this.proLists.concat(this.proMastic)
+                  console.log(this.prolist[n].proMastic,"zhizuo材料集合")
+                  //console.log(this.prolist[n].makestatic,"arr制作材料list")
               }
               if(this.masktitle=="请选择安装材料"){
                   this.prolist[n].installstatic.push(this.list[i].name +"  "+"￥"+ this.list[i].Price+"   ")
+                   //选中的材料--制作材料 安装材料
+                  let  item2={
+                      Id:this.list[i].Id,
+                      Num:1,
+                      pType:0
+                    }
+                     this.prolist[n].proIns.push(item2)
+                  //  this.proLists=this.proLists.concat(this.proIns)
+                  console.log(this.prolist[n].proIns,"anzhuang材料集合")
               } 
-         //  console.log(this.list[i].statu,"材料选择p标识选择背景")
+              
+           console.log(this.list[i].statu,"材料选择p标识选择背景")
 
           }
-          
         }
       
         //  this.masktitle=0
@@ -561,11 +587,13 @@ export default {
              this.masktitle="请选择制作材料"
             //  this.prolist[n].makestatic='' 
               this.prolist[n].makestatic=[] 
+             this.prolist[n].proMastic=[]
               //this.prolist[n].installstatic=''
         }else{
             this.masktitle="请选择安装材料"
             //this.prolist[n].makestatic='' 
             this.prolist[n].installstatic=[]
+            this.prolist[n].proIns=[]
              // this.prolist[n].installstatic=''
         }
         if(toLogin(this.curPage)){
@@ -636,7 +664,6 @@ export default {
         }else{
           this.isShowBtnUpload = true;
         }
-        this.imgBase=[]
         // 根据临时路径数组imgPathArr获取base64图片
         for (let i = 0; i < this.prolist[n].referencePicList.length; i++) {
           wx.getFileSystemManager().readFile({
@@ -644,7 +671,7 @@ export default {
             encoding: "base64", //编码格式
             success: res => {
               //成功的回调
-              this.imgBase.push({
+              this.prolist[n].imgBase.push({
                 PicUrl: "data:image/png;base64," + res.data.toString()
               });
           
@@ -653,7 +680,7 @@ export default {
         }
     },
     deleteImg(i,n) {
-      this.imgBase.splice(i, 1);
+      this.prolist[n].imgBase.splice(i, 1);
       this.prolist[n].referencePicList.splice(i, 1);
       if (this.prolist[n].referencePicList.length < this.imgLenght*1) {
         this.isShowBtnUpload = null;
@@ -661,19 +688,24 @@ export default {
       }
       this.updateImg(n)
     },
-      
-
-
       //获取用户默认的收货地址
       getDefaultAddress(){
-          this.addressinfo={}
+         this.addressinfo={}
          if(toLogin(this.curPage)){
            const res = post('Address/defaultaddress_New',{
              UserId:this.userId,
              Token:this.token,
              IsDefault:1
            },this.curPage).then(res=>{
-              this.addressinfo.push(res.data)
+              console.log(res.data,"获取默认")
+              //this.addressinfo=res.data
+               this.addressinfo.push({
+                  name:res.data.name,
+                  tel:res.data.tel,
+                  address:res.data.shopname,
+                  addressinfo:res.data.addressinfo
+
+              })
               this.adressId=res.data.id
               console.log(this.addressinfo,"默认收货地址")
            })
@@ -696,12 +728,8 @@ export default {
       submit(){
          console.log(this.prolist,"this.prolist")
          for(let i=0;i<this.prolist.length;i++){
-            let proLists=[]//材料--制作材料 安装材料
-            let item={
-              Id:i+1,
-              Num:1,
-              pType:0
-            }
+            let _proLists=this.prolist[i].proMastic.concat(this.prolist[i].proIns)
+            console.log(_proLists,"材料集合提交")
             let info={
                 adressId:this.adressId,  //地址编号
                 orderType:this.prolist[i].orderType,  //项目名称
@@ -712,7 +740,8 @@ export default {
                 remark:this.prolist[i].remark,      //备注
                 referencePicList:this.prolist[i].referencePicList,    //图片集合 
                 estimateTime:this.prolist[i].estimateTime,    //完成时间
-                offerTotal:this.prolist[i].offerTotal      //总金额
+                offerTotal:this.prolist[i].offerTotal,     //总金额
+                proLists:_proLists, //材料集合
             }
          }
          

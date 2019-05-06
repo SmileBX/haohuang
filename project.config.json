@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 12,
+			"current": 25,
 			"list": [
 				{
 					"id": 0,
@@ -207,6 +207,13 @@
 					"id": -1,
 					"name": "修改手机号码",
 					"pathName": "pages/setPhone/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "师傅的个人银行卡列表",
+					"pathName": "pages/master/cardList/main",
 					"query": "",
 					"scene": null
 				}

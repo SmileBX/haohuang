@@ -147,6 +147,7 @@ export default {
         this.provinceCode='';
         this.cityCode='';
         this.districtCode ='';
+        this.site=''
     },
     editAddress(id){
       let that = this;
@@ -168,6 +169,7 @@ export default {
               that.provinceCode=res.data.province;
               that.cityCode=res.data.city;
               that.districtCode =res.data.district;
+              that.site = res.data.shopname
           })
           
       }
@@ -194,6 +196,7 @@ export default {
             ProvinceCode: this.provinceCode,
             CityCode: this.cityCode,
             DistrictCode : this.districtCode,
+            ShopName:this.site,
             StreetCode:'',
             PostCode:''
         }
