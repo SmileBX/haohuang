@@ -1,28 +1,33 @@
 <template>
   <div class="page">
-    <div class="cardList" v-if="cardList.length>0">
-      <div class="item flex" v-for="(item,index) in cardList" :key="index">
-        <img src="/static/images/card/cardBg.png" class="bg" alt>
-        <div class="cardImg">
-          <img :src="item.BankLogo" alt>
-        </div>
-        <div class="txtBox">
-          <p class="title">{{item.BankName}}</p>
-          <p class="type"><span @click="DeleteBank(index,item.Id)">[解绑银行卡]</span></p>
-          <p class="number">
-            <span class="xing" v-for="(item2,index2) in item.cardNoArr" :key="index2">{{item2}}</span>
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="ftBtn" style="height:154rpx;">
-      <div class="inner fixed bm0 border-box" style="background:#fff;">
-        <div class="btn btn-active fill" @click="gotoAddCard">
-          <img src="/static/images/icons/add.png" class="addImg">添加银行卡
+    <scroll-view scroll-y @scrolltolower="loadMore" style="height:100%;">
+      <div class="cardList" v-if="cardList.length>0">
+        <div class="item flex" v-for="(item,index) in cardList" :key="index">
+          <img src="/static/images/card/cardBg.png" class="bg" alt>
+          <div class="cardImg">
+            <img :src="item.BankLogo" alt>
+          </div>
+          <div class="txtBox">
+            <p class="title">{{item.BankName}}</p>
+            <p class="type">
+              <span @click="DeleteBank(index,item.Id)">[解绑银行卡]</span>
+            </p>
+            <p class="number">
+              <span class="xing" v-for="(item2,index2) in item.cardNoArr" :key="index2">{{item2}}</span>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-    <van-button>button</van-button>
+      <p style="text-align:center;font-size:30rpx;color:#666;padding:120rpx 20rpx 80rpx;" v-if="noDataIsShow">暂无数据</p>
+      <p class="ovedMsg" v-if="isOved && page>1" style="text-align:center;padding:20rpx;font-size:26rpx;color:#666;">我也是有底线的</p>
+      <div class="ftBtn" style="height:154rpx;">
+        <div class="inner fixed bm0 border-box" style="background:#fff;">
+          <div class="btn btn-active fill" @click="gotoAddCard">
+            <img src="/static/images/icons/add.png" class="addImg">添加银行卡
+          </div>
+        </div>
+      </div>
+    </scroll-view>
   </div>
 </template>
 <script>
@@ -46,11 +51,12 @@ export default {
       userId: "",
       token: "",
       page: 1,
-      pageSize:4,
-      count:0,
-      allPage:0,
-      isLoad:false,
-      isOved:false,
+      pageSize: 10,
+      count: 0,
+      allPage: 0,
+      isLoad: false,
+      isOved: false,
+      noDataIsShow:false,
       cardList: []
     };
   },
@@ -60,16 +66,17 @@ export default {
         title: "我的银行卡"
       });
     },
-    initData(){
+    initData() {
       this.curPage = "";
-     this.userId = "";
+      this.userId = "";
       this.token = "";
       this.page = 1;
-      this.pageSize =4;
-      this.count =0;
-      this.allPage =0;
-      this.isLoad =false;
-      this.isOved =false;
+      this.pageSize = 4;
+      this.count = 0;
+      this.allPage = 0;
+      this.noDataIsShow = false;
+      this.isLoad = false;
+      this.isOved = false;
       this.cardList = [];
     },
     gotoAddCard() {
@@ -91,19 +98,19 @@ export default {
       ).then(result => {
         if (result.code === 0) {
           that.count = result.count;
-					if (that.count == 0) {
-						that.noDataIsShow = true;
-					}
-					if (parseInt(that.count) % that.pageSize === 0) {
-						that.allPage = that.count / that.pageSize;
-					} else {
-						that.allPage = parseInt(that.count / that.pageSize) + 1;
-					}
-					if (that.allPage > that.page) {
-						that.isLoad = true;
-					} else {
-						that.isLoad = false;
-					}
+          if (that.count == 0) {
+            that.noDataIsShow = true;
+          }
+          if (parseInt(that.count) % that.pageSize === 0) {
+            that.allPage = that.count / that.pageSize;
+          } else {
+            that.allPage = parseInt(that.count / that.pageSize) + 1;
+          }
+          if (that.allPage > that.page) {
+            that.isLoad = true;
+          } else {
+            that.isLoad = false;
+          }
           if (result.data.length > 0) {
             if (that.page === 1) {
               that.cardList = [];
@@ -121,7 +128,7 @@ export default {
         }
       });
     },
-    DeleteBank(index,cardId) {
+    DeleteBank(index, cardId) {
       let that = this;
       post(
         "Bank/DeleteBank",
@@ -137,14 +144,28 @@ export default {
             title: "解绑成功!",
             icon: "none",
             duration: 1500,
-            success:function(){
-              setTimeout(function(){
-                that.cardList.splice(index,1);
-              },1500)
+            success: function() {
+              setTimeout(function() {
+                that.cardList.splice(index, 1);
+              }, 1500);
             }
           });
         }
       });
+    },
+    loadMore() {
+      console.log("ddddd");
+      //加载更多
+      if (this.isLoad) {
+        this.page++;
+        this.getBankList();
+      } else {
+        if (this.page > 1) {
+          this.isOved = true;
+        } else {
+          this.isOved = false;
+        }
+      }
     }
   }
 };

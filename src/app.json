@@ -22,7 +22,7 @@
 
     ],
     "subpackages": [{
-            "root": "pages/master",
+            "root": "pages/master/",
             "pages": [
                 "addCradSuccess/main",
                 "addCard2/main",
@@ -39,7 +39,7 @@
             ]
         },
         {
-            "root": "pages/custom",
+            "root": "pages/custom/",
             "pages": [
                 "order/main",
                 "schedule/main",
@@ -50,7 +50,7 @@
             ]
         },
         {
-            "root": "pages/servicemenu",
+            "root": "pages/servicemenu/",
             "pages": [
                 "installOrder/main",
                 "bindCustomInfo/main",
@@ -59,15 +59,15 @@
         }
     ],
     "usingComponents": {
-        "van-datetime-picker": "../static/vant/datetime-picker/index",
-        "van-action-sheet": "../static/vant/action-sheet/index",
-        "van-button": "/static/vant/button/index",
-        "van-dialog": "/static/vant/dialog/index",
-        "van-field": "/static/vant/field/index",
-        "van-cell-group": "/static/vant/cell-group/index",
-        "van-area": "/static/vant/area/index",
-        "van-popup": "/static/vant/popup/index",
-        "van-switch": "/static/vant/switch/index"
+        "van-datetime-picker": "./static/vant/datetime-picker/index",
+        "van-action-sheet": "./static/vant/action-sheet/index",
+        "van-button": "./static/vant/button/index",
+        "van-dialog": "./static/vant/dialog/index",
+        "van-field": "./static/vant/field/index",
+        "van-cell-group": "./static/vant/cell-group/index",
+        "van-area": "./static/vant/area/index",
+        "van-popup": "./static/vant/popup/index",
+        "van-switch": "./static/vant/switch/index"
     },
     "window": {
         "backgroundTextStyle": "light",

@@ -16,16 +16,19 @@
         <div class="reduceColor" v-if="item.BudgetType===1">￥{{item.Change}}</div>
       </div>
     </div>
-    <!-- <p style="text-align:center;font-size:30rpx;color:#666;padding:120rpx 20rpx 80rpx;">暂无数据</p>
-    <p class="ovedMsg" v-if="isOved" style="text-align:center;padding:20rpx;font-size:26rpx;color:#666;">我也是有底线的</p>-->
+    <p style="text-align:center;font-size:30rpx;color:#666;padding:120rpx 20rpx 80rpx;" v-if="hasScoreData">暂无数据</p>
+    <p class="ovedMsg" v-if="isOved && page>1" style="text-align:center;padding:20rpx;font-size:26rpx;color:#666;">我也是有底线的</p>
     <!--时间选择 不需要弹框-->
     <!-- <picker mode="time" /> -->
-    <!-- <van-action-sheet :show="showDate" @close="showDate=false" @select="showDate=false"> -->
-      <van-button>按钮</van-button>
-    <van-datetime-picker type="time" :value="currentDate" :min-date="minDate" title="请选择时间"/>
-
-    <!-- :formatter="formatter" -->
-    <!-- </van-action-sheet> -->
+    <van-action-sheet :show="showDate" @close="showDate=false" @select="showDate=false">
+      <van-datetime-picker
+        type="year-month"
+        :value="currentDate"
+        @confirm="onInput($event,lindex)"
+        @cancel="showDate=false"
+        title="请选择时间"
+      />
+    </van-action-sheet>
   </div>
 </template>
 <script>
@@ -36,6 +39,9 @@ export default {
     this.setBarTitle();
   },
   onShow() {
+    this.beginTime = ""; //开始时间
+      this.endTime = "";
+      this.monthTime = "";
     this.initData();
     this.curPage = getCurrentPageUrlWithArgs();
     this.userId = wx.getStorageSync("userId");
@@ -49,22 +55,10 @@ export default {
     if (toLogin(this.curPage)) {
       this.getDrawMoneyApplyList();
     }
-    console.log(this.currentDate,this.minDate)
   },
   data() {
     return {
       currentDate: new Date().getTime(),
-      // currentDate: '12:00',
-      minDate: new Date().getTime(),
-      // minDate: 9,
-      formatter(type, value) {
-        if (type === "year") {
-          return `${value}年`;
-        } else if (type === "month") {
-          return `${value}月`;
-        }
-        return value;
-      },
       curPage: "",
       userId: "",
       token: "",
@@ -78,8 +72,9 @@ export default {
       scoreList: [],
       beginTime: "", //开始时间
       endTime: "", //结束时间
+      monthTime:"",  //选择月份
       timeMsg: "选择年月",
-      showDate: true //日期 组件 不需要遮罩层
+      showDate: false //日期 组件
     };
   },
 
@@ -98,14 +93,25 @@ export default {
       this.isLoad = false;
       this.isOved = false;
       this.hasScoreData = false;
-      this.scoreList = [];
-      this.beginTime = ""; //开始时间
-      this.endTime = "";
+      this.scoreList = []; 
     },
     selectTime() {
       //选择时间
       this.showDate = true;
       console.log("gggggggg");
+    },
+    onInput(e, i) {
+      console.log(e, "时间");
+      const date = new Date(e.mp.detail);
+      let year = date.getFullYear();
+      let month = date.getMonth()+1;
+      this.beginTime = `${year}-01-01`;
+      this.endTime = `${year+1}-01-01`;
+      this.monthTime = month;
+      this.showDate = false;
+      this.timeMsg = `${year}年${month}月`;
+      this.initData();
+      this.getDrawMoneyApplyList();
     },
     getDrawMoneyApplyList() {
       let that = this;
@@ -117,7 +123,8 @@ export default {
           page: that.page,
           pagesize: that.pageSize,
           BeginTime: that.beginTime,
-          EndTime: that.endTime
+          EndTime: that.endTime,
+          MonthTime:that.monthTime
         },
         that.curPage
       ).then(result => {
@@ -176,7 +183,7 @@ export default {
   onReachBottom() {
     if (this.isLoad) {
       this.page++;
-      this.getScoreList();
+      this.getDrawMoneyApplyList();
     } else {
       if (this.page > 1) {
         this.isOved = true;

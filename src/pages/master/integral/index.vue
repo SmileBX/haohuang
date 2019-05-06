@@ -51,7 +51,7 @@ export default {
       userId: "",
       token: "",
       page: 1,
-      pageSize: 4,
+      pageSize: 12,
       count: 0,
       allPage: 0,
       isLoad: false,
@@ -71,9 +71,6 @@ export default {
       });
     },
     initData() {
-      this.curPage = "";
-      this.userId = "";
-      this.token = "";
       this.page = 1;
       this.pageSize = 15;
       this.count = 0;
