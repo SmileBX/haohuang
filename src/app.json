@@ -5,6 +5,7 @@
         "pages/my/main",
         "pages/myInfo/main",
         "pages/orderDetail/main",
+        "pages/myOrder/main",
         "pages/feedback/main",
         "pages/newsList/main",
         "pages/newsDetail/main",
@@ -51,9 +52,7 @@
             "root": "pages/servicemenu",
             "pages": [
                 "installOrder/main",
-                "myOrder/main",
                 "bindCustomInfo/main",
-                "orderDetail/main",
                 "customeOrder/main"
             ]
         }

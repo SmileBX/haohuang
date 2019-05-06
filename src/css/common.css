@@ -1030,6 +1030,24 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     border-color: #ff6666;
 }
 
+.button{
+    line-height: 60rpx;
+    padding:0 20rpx;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 28rpx;
+    color: #666666;
+    margin-left: 20rpx;
+    border-radius: 50rpx;
+    background: none;
+    border: 1px solid #e5e5e5;
+    text-align: center;
+}
+.button.active {
+    color: #f0370b!important;
+    border-color: #ff6666!important;
+}
+
 .bg__levelPanel .item .box {
     background: #f6f6f6;
 }
