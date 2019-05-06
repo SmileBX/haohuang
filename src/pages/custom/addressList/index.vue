@@ -62,7 +62,7 @@ export default {
       this.userid=wx.getStorageSync("userId")
       this.token=wx.getStorageSync("token")
       this.geSiteList()
-     
+      
 
      
   },
@@ -108,6 +108,7 @@ export default {
               id: list.id,
               name: list.name,
               phone: list.tel,
+              shopname:list.shopname,
               site: list.addressinfo,
               checked: list.is_def
             });
@@ -165,7 +166,9 @@ export default {
     choseAddress(e){
         console.log(e,this.sitelist[e])
         wx.setStorageSync("addressinfo",this.sitelist[e])
-        wx.navigateBack()
+        // wx.navigateBack()
+        wx.redirectTo({url:'/pages/custom/smOrder/main?url=addresslist'})
+
     }
 
   },
