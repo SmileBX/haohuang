@@ -94,7 +94,7 @@
         <!-- 师傅的时候 -->
         <ul class="navList li_25 center" v-if="identity==3">
           <li>
-            <div class="outside">
+            <div class="outside" @click="masterOrder(1)">
               <div class="icon-img">
                 <img src="/static/images/icons/shigongzhong.png" alt>
                 <span class="circleNum" v-if="info.constructionNum>0">{{info.constructionNum}}</span>
@@ -103,7 +103,7 @@
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="masterOrder(2)">
               <div class="icon-img">
                 <img src="/static/images/icons/daishenhe.png" alt>
                 <span class="circleNum" v-if="info.notauditNum>0">{{info.notauditNum}}</span>
@@ -112,16 +112,16 @@
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="masterOrder(3)">
               <div class="icon-img">
                 <img src="/static/images/icons/yianzhuang.png" alt>
                 <span class="circleNum" v-if="info.auditOKNum>0">{{info.auditOKNum}}</span>
               </div>
-              <p class="title">已安装</p>
+              <p class="title">已通过</p>
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="masterOrder(4)">
               <div class="icon-img">
                 <img src="/static/images/icons/weitongguo.png" alt>
                 <span class="circleNum" v-if="info.auditNoNum>0">{{info.auditNoNum}}</span>
@@ -356,6 +356,25 @@ export default {
       //跳转到师傅的对账明细
       wx.navigateTo({
         url: "/pages/master/account/main"
+      });
+    },
+    masterOrder(index){
+      let typeNo = -1;
+      //师傅的---订单状态：-1全部，0-已接单(施工中),1-待审核(已安装) ,2-审核通过, 3-审核拒绝, 4-订单完成
+      if(index==1){
+        typeNo=0;
+      }
+      if(index==2){
+        typeNo=1;
+      }
+      if(index==3){
+        typeNo=2;
+      }
+      if(index==4){
+        typeNo=3;
+      }
+      wx.navigateTo({
+        url: "/pages/master/myOrder/main?typeNo="+typeNo
       });
     },
     gotoFeedback() {

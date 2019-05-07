@@ -33,7 +33,9 @@
                 "integral/main",
                 "depositmoney/main",
                 "account/main",
-                "withdrawRecord/main"
+                "withdrawRecord/main",
+                "myOrder/main",
+                "orderDetail/main"
             ]
         },
         {

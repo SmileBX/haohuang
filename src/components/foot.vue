@@ -71,12 +71,12 @@ export default {
         {
           //订单
           index: 1,
-          url: ["/pages/custom/order/main"]
+          url: ["/pages/servicemenu/myOrder/main","/pages/custom/order/main","/pages/master/myOrder/main"]
         },
         {
           //下单
           index: 2,
-          url: ["/pages/custom/smOrder/main"]
+          url: ["/pages/servicemenu/makeOrder/main","/pages/custom/smOrder/main"]
         },
         {
           //消息
@@ -104,7 +104,7 @@ export default {
         console.log(index)
         if (index === 1 || index === 2) {
           //gotoUrl = that.page[index].url[1];
-          gotoUrl = that.page[index].url[0];
+          gotoUrl = that.page[index].url[1];
           console.log(that.page[index],"客户身份")
         } else {
           gotoUrl = that.page[index].url[0];
