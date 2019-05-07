@@ -4,8 +4,6 @@
         "pages/news/main",
         "pages/my/main",
         "pages/myInfo/main",
-        "pages/orderDetail/main",
-        "pages/myOrder/main",
         "pages/feedback/main",
         "pages/newsList/main",
         "pages/newsDetail/main",
@@ -54,7 +52,9 @@
             "pages": [
                 "installOrder/main",
                 "bindCustomInfo/main",
-                "customeOrder/main"
+                "customeOrder/main",
+                "orderDetail/main",
+                "myOrder/main"
             ]
         }
     ],
