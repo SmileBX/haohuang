@@ -34,7 +34,7 @@
                   <div class="weui-cells__title">选择类型</div>
                   <div class="ipt flex flexAlignCenter">
                     <div class="flex1">
-                      <input type="text" disabled class="weui-input" placeholder="请选择（必填）" v-model="item.orderType">
+                      <input type="text" disabled class="weui-input" placeholder="请选择（必填）" v-model="item.orderTypeName">
                     </div>
                     <span class="icon-arrow arrow-right"></span>
                   </div>
@@ -45,7 +45,7 @@
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">宽</span>
                       <div class="ipt flex">
-                        <input type="text" class="flex1 weui-input" v-model="item.specwidth">
+                        <input type="text" class="flex1 weui-input" v-model="item.specwide">
                         <span class="txt">mm</span>
                       </div>
                     </div>
@@ -74,7 +74,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="select__weui-cells" v-show="item.orderType!='设计' && item.orderType!='安装'">
+                <div class="select__weui-cells" v-show="item.orderTypeName!='设计' && item.orderTypeName!='安装'">
                   <div class="weui-cells__title">制作材料</div>
                   <div class="ipt flex flexAlignCenter" @click="choseMartic(1,lindex)">
                     <div class="flex1">
@@ -83,7 +83,7 @@
                     <span class="icon-arrow arrow-right"></span>
                   </div>
                 </div>
-                <div class="select__weui-cells" v-show="item.orderType!='设计' && item.orderType!='制作' && item.orderType!='设计_制作'">
+                <div class="select__weui-cells" v-show="item.orderTypeName!='设计' && item.orderTypeName!='制作' && item.orderTypeName!='设计_制作'">
                   <div class="weui-cells__title">安装材料</div>
                   <div class="ipt flex flexAlignCenter" @click="choseMartic(2,lindex)">
                     <div class="flex1">
@@ -123,7 +123,7 @@
                 <div class="weui-item">
                   <div class="weui-cells__title">备注说明</div>
                   <div class="eaditArea">
-                    <textarea name class="weui-area" placeholder="请输入备注内容" v-model="item.remark"></textarea>
+                    <textarea  class="weui-area" placeholder="请输入备注内容" v-model="item.remark"></textarea>
                   </div>
                 </div>
                 <div class="priceBox flex">
@@ -201,7 +201,7 @@
         <div class="weui-cells smDetail__weui-cells">
             <div class="weui-cells__title">选择地址</div>
             <div class="addressList" @click="toAddress">
-                <div class="item flex flexAlignCenter" v-if="addressinfo.length>=0">
+                <div class="item flex flexAlignCenter" v-if="addressinfo.length>0">
                     <img src="/static/images/icons/address.png" class="addrIcon" alt>
                     <div class="item__bd flex1">
                         <p class="remarks">
@@ -237,7 +237,7 @@
     <div class="mask" v-if="isShow" catchtouchmove='true'></div>
     <!--支付成功弹框-->
     <div class="paySuccess border-box column" v-if="showPaymask">
-        <div class="title">{{orderType}}订单</div>
+        <div class="title">{{orderTypeName}}订单</div>
         <img src="/static/images/icons/task.png" alt="" class="task">
         <div class="paymaskinfo">
             <p>订单提交成功，<span style="color:#ff6325">未付款</span></p>
@@ -271,7 +271,7 @@ export default {
         this.specwide = ""
         this.spechign = ""
         this.specnum = ""
-        this.orderType = ""
+        this.orderTypeName = ""
         this.referencePicList = ""
         this.estimateTime = ""
         this.remark = ""
@@ -297,7 +297,7 @@ export default {
         }else{
             this.getDefaultAddress()
         }
-        
+        // wx.setStorageSync("addressinfo",' ')
         
   },
   computed:{
@@ -369,7 +369,7 @@ export default {
         // specwide:"",//宽
         // spechign:"",//高
         // specnum:"",//数量
-        // orderType:"",//订单类型 --0:设计,1:制作,2:安装,3:设计-制作,4:制作-安装,5:设计-制作-安装
+        // orderTypeName:"",//订单类型 --0:设计,1:制作,2:安装,3:设计-制作,4:制作-安装,5:设计-制作-安装
         // referencePicList:"",//参考图片
         // estimateTime:"",//交付时间
         // makestatic:"",//制作材料
@@ -382,17 +382,17 @@ export default {
         masktitle:'设计',
         tip:0,//点击增加明细增加子订单的次数标识
         proitem:{
-          orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],imgBase:[],
+          orderType:'',orderTypeName:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],imgBase:[],
           estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:""
         },
         prolist:[
           {
-          orderType:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],imgBase:[],
+         orderType:'',orderTypeName:"",spechign:"",speclong:"",specwide:"",specnum:"",referencePicList:[],imgBase:[],
           estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:""
           },
         ],
         list:[],
-        typelist:[],//orderType类型...
+        typelist:[],//orderTypeName类型...
         kuaidiList:[],//快递种类
         addressinfo:[],//默认的收货地址
         pageSize:10,//制作材料 安装材料
@@ -404,7 +404,7 @@ export default {
         // imgPathArr: [],
         // imgBase: [],
         imgLenght:10,
-        adressId:0, //地址编号
+        adressId:'', //地址编号
         // proLists:[],//材料--制作材料 安装材料
         // proMastic:[],//制作材料集合
         // proIns:[],  //安装材料集合
@@ -435,7 +435,8 @@ export default {
              }
             }
             if(this.masktitle=="请选择订单类型"){
-              this.prolist[n].orderType=this.list[i].name
+              this.prolist[n].orderTypeName=this.list[i].name
+              this.prolist[n].orderType=this.list[i].Id
             }
             
           }
@@ -560,7 +561,7 @@ export default {
         this.masktitle="请选择订单类型"
         //console.log(n,"type")
         if(toLogin(this.curPage)){
-            get('/Order/GetOrderType',this.curPage).then(res=>{
+            get('/Order/GetorderType',this.curPage).then(res=>{
               console.log(res,"订单类型")
               this.typelist=res.data
               let info={}
@@ -688,65 +689,105 @@ export default {
       }
       this.updateImg(n)
     },
-      //获取用户默认的收货地址
-      getDefaultAddress(){
-         this.addressinfo={}
-         if(toLogin(this.curPage)){
-           const res = post('Address/defaultaddress_New',{
-             UserId:this.userId,
-             Token:this.token,
-             IsDefault:1
-           },this.curPage).then(res=>{
-              console.log(res.data,"获取默认")
-              //this.addressinfo=res.data
-               this.addressinfo.push({
-                  name:res.data.name,
-                  tel:res.data.tel,
-                  address:res.data.shopname,
-                  addressinfo:res.data.addressinfo
+    //获取用户默认的收货地址
+    getDefaultAddress(){
+        this.addressinfo=[]
+        if(toLogin(this.curPage)){
+          const res = post('Address/defaultaddress_New',{
+            UserId:this.userId,
+            Token:this.token,
+            IsDefault:1
+          },this.curPage).then(res=>{
+            this.addressinfo.push({
+              name:res.data.name,
+              tel:res.data.tel,
+              address:res.data.shopname,
+              addressinfo:res.data.addressinfo
+            })
+            this.adressId=res.data.id
+            console.log(this.addressinfo,"默认收货地址")
+          })
+        } 
+    },
+    //去往我的地址页面
+    toAddress(){
+        wx.navigateTo({url:'/pages/custom/addressList/main?url=smOrder'})
+    },
+    //返回首页
+    backIndex(){
+      wx.redirectTo({url:'/pages/index/main'})
+    },
+    loadMore(){
+      if (this.isLoad) {
+          this.page++;
+          this.choseMartic();
+        }
+    },
+    submit(){
+        let aa= ['{a:3}','{a:3}','{a:3}'];
+        console.log("["+aa.join(",")+"]");
+        if(this.adressId.toString().length<1){
+          wx.showToast({
+              title:"请选择地址！"
+            })
+          return false
+        }
+        if(this.logisticsType.toString().length<1){
+          wx.showToast({
+              title:"请选择快递！"
+            })
+          return false
+        }
 
-              })
-              this.adressId=res.data.id
-              console.log(this.addressinfo,"默认收货地址")
-           })
-         } 
-      },
-      //去往我的地址页面
-      toAddress(){
-          wx.navigateTo({url:'/pages/custom/addressList/main?url=smOrder'})
-      },
-      //返回首页
-      backIndex(){
-        wx.redirectTo({url:'/pages/index/main'})
-      },
-      loadMore(){
-        if (this.isLoad) {
-            this.page++;
-            this.choseMartic();
+        //console.log(this.prolist,"this.prolist")
+        let _OrderInsertList=[]
+        for(let i=0;i<this.prolist.length;i++){
+          let _proLists=this.prolist[i].proMastic.concat(this.prolist[i].proIns)
+          //console.log(JSON.stringify(_proLists),"材料集合提交")
+           //_proLists=JSON.stringify(_proLists)
+          let info={
+              "\"adressId\"":this.adressId,  //地址编号
+              '\orderName\"':this.prolist[i].orderName,//项目名称
+              'orderType\"':this.prolist[i].orderType,  //订单类型
+              'speclong\"':this.prolist[i].speclong,    //厚
+              'specwide\"':this.prolist[i].specwide,  //宽 
+              'spechign\"':this.prolist[i].spechign,      //高
+              'specnum\"':this.prolist[i].specnum,        //数量   
+              'remark\"':this.prolist[i].remark,      //备注
+              'referencePicList':this.prolist[i].referencePicList,    //图片集合 
+              'estimateTime':this.prolist[i].estimateTime,    //完成时间
+              'offerTotal':this.prolist[i].offerTotal,     //总金额
+              'proLists':_proLists, //材料集合
+              'logisticsType':this.logisticsType,//快递类型
           }
-      },
-      submit(){
-         console.log(this.prolist,"this.prolist")
-         for(let i=0;i<this.prolist.length;i++){
-            let _proLists=this.prolist[i].proMastic.concat(this.prolist[i].proIns)
-            console.log(_proLists,"材料集合提交")
-            let info={
-                adressId:this.adressId,  //地址编号
-                orderType:this.prolist[i].orderType,  //项目名称
-                speclong:this.prolist[i].speclong,    //厚
-                specwide:this.prolist[i].specwide,  //宽 
-                spechign:this.prolist[i].spechign,      //高
-                specnum:this.prolist[i].specnum,        //数量   
-                remark:this.prolist[i].remark,      //备注
-                referencePicList:this.prolist[i].referencePicList,    //图片集合 
-                estimateTime:this.prolist[i].estimateTime,    //完成时间
-                offerTotal:this.prolist[i].offerTotal,     //总金额
-                proLists:_proLists, //材料集合
-            }
-         }
-         
 
-      }
+          //console.log(typeof this.prolist[i].estimateTime,"提交时间")
+          if(this.prolist[i].estimateTime.length==0　|| this.prolist[i].offerTotal.toString().length==0 ){
+            wx.showToast({
+              title:"必选项不能为空！",
+              icon:'none'
+            })
+            return false
+          }else{
+              _OrderInsertList.push(info);//JSON.stringify(info)
+          }
+          
+        }
+       let _OrderInsertList2="["+_OrderInsertList.join(",")+"]";
+        // console.log( _OrderInsertList.replace(/\"/,/\\"/)," _OrderInsertList")
+        // console.log( _OrderInsertList.replace('"','\"')," _OrderInsertList")
+        if(toLogin(this.curPage)){
+          post('/Order/PlaceAnOrder',{
+              UserId:this.userId,
+              Token:this.token,
+              OrderInsertList:_OrderInsertList2
+          },this.curPage).then(res=>{
+            console.log(res,'提交订单')
+          })
+        }
+        
+
+    }
   }
 };
 </script>
