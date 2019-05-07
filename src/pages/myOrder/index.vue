@@ -15,13 +15,18 @@
 
     <!-- 搜索 -->
     <div class="searchBox">
-      <div class="search flex flexAlignCenter fixed border-box" style="top:80rpx;">
-        <div class="ipt flex1">
-          <input type="text" class="weui-input" disabled placeholder="请选择区域">
+      <div class="search flex AlignCenter border-box" style="margin-top:10rpx;">
+        <div class="ipt flex1" @click="areaListStatus = true">
+          <input type="text" class="weui-input" :value="searchRegion" disabled placeholder="请选择区域">
+          
         </div>
-        <div class="btn">搜索</div>
+        <div class="remove" @click="removeSelect" v-show="searchRegion">×</div>
+        <div class="btn" @click="init">搜索</div>
       </div>
     </div>
+    <van-popup :show="areaListStatus" position="bottom">
+    <van-area :area-list="areaList" @cancel="areaListStatus = false" @confirm="areaConfirm"></van-area>
+    </van-popup>
     <!-- 订单列表-->
     <div class="tabContent">
       <!-- 订单 -->
@@ -33,11 +38,11 @@
             </div>
             <span class="status">{{list.StatuName}}</span>
           </div>
-          <div class="item__bd">
+          <div class="item__bd" @click="gotoDetail(list.Id)">
             <div class="box">
               <div class="outside">
                 <div class="pictrueAll">
-                  <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
+                  <div class="pictrue img" :style="'background-image:url('+list.MemberHead+')'"></div>
                 </div>
                 <div class="txtBox">
                   <p class="title text-line2">{{list.OrderName}}</p>
@@ -65,14 +70,16 @@
             <div class="button active" v-if="list.OrderStatus===8">去评价</div>
           </div>
         </div>
+        <!-- 数据状态提示节点 -->
         <div v-if="orderList.length<1" style="text-align:center;margin-top:300rpx;font-size:24rpx;color:#999;">暂时没有数据哦!</div>
-        <div v-if="orderListEnd&&page!==1" style="text-align:center;font-size:24rpx;color:#999;">已经到底了哦!</div>
+        <div v-if="orderListEnd&&page!==1" style="text-align:center;font-size:24rpx;line-height:40rpx;padding-bottom:10rpx;color:#999;">已经到底了哦!</div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import "@/css/common.css";
+import areaList from '@/utils/areaList'
 import { post } from "@/utils/index";
 export default {
   data() {
@@ -80,9 +87,12 @@ export default {
       UserId: "",
       Token: "",
       page: 1,
-      pageSize: 8,
+      pageSize: 12,
       typeNo: -1, //订单状态
       searchRegion: "", //搜索地区字段
+      searchRegionCode: "", //搜索地区字段
+      areaListStatus: false, //选择地区状态
+      areaList,
       menu: [
         {
           name: "全部",
@@ -118,8 +128,11 @@ export default {
     // typeNo--进入订单列表展示的状态
     // 客服--订单状态：-1全部，0-待确认，1-待付款 7-已执行(安装中) 8-待评论9-已完成
     // 客户--订单状态：-1全部，0-待确认，1-待付款，2-处理中，10-待评论
-    console.log(this.$root.$mp.query.typeNo, "订单状态");
-    this.getData();
+    if(this.$root.$mp.query.typeNo){
+      this.typeNo=this.$root.$mp.query.typeNo*1
+    }
+    console.log(this.typeNo, "订单状态");
+    this.init();
   },
   methods: {
     setBarTitle() {
@@ -128,21 +141,72 @@ export default {
       });
     },
     async getData() {
+      if(this.orderListEnd){
+        return false;
+      }
+      if(this.page===1){
+        this.orderList=[];
+      }
       const res = await post("CustomerService/GetKfOrderList", {
         CsdId: this.UserId,
         Token: this.Token,
         page: this.page,
         pageSize: this.pageSize,
-        Region: this.searchRegion,
+        Region: this.searchRegionCode,
         orderStatus: this.typeNo
       });
-      this.orderList = res.data;
+      if(res.data.length!==this.pageSize){
+        this.orderListEnd = true;
+      }
+      this.orderList = this.orderList.concat(res.data);
     },
     // 切换订单状态
     tabMenu(typeNo) {
       this.typeNo = typeNo;
+      this.init()
+    },
+    // 初始化数据
+    init(){
+        this.orderListEnd = false;
+        this.page =1;
+        this.getData()
+    },
+    // 删除选中的城市
+    removeSelect(){
+      this.searchRegionCode = ''
+      this.searchRegion = ''
+      this.init()
+    },
+    // 选择地区
+    areaConfirm(e){
+      let val=''
+      e.mp.detail.values.map(item=>{
+        val+=item.name+' '
+      })
+      this.searchRegion = val
+      this.searchRegionCode = e.mp.detail.values[e.mp.detail.values.length-1].code
+      this.areaListStatus = false;
+      this.init()
+    },
+    // 跳转到订单详情
+    gotoDetail(orderId){
+      wx.navigateTo({
+        url:`/pages/orderDetail/main?orderId=${orderId}`
+      })
     }
-  }
+  },
+    // 上拉加载
+    onReachBottom(){
+      this.page+=1;
+      this.getData()
+    },
+    // 下拉刷新
+    onPullDownRefresh(){
+      this.searchRegionCode = ''
+      this.searchRegion = ''
+      this.init()
+    wx.stopPullDownRefresh();
+    }
 };
 </script>
 <style lang='scss' scoped>

@@ -670,6 +670,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     padding: 14rpx 30rpx;
     background: #fff;
     left: 0;
+    align-items:center;
 }
 
 .search .weui-input {
