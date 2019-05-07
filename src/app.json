@@ -54,7 +54,8 @@
             "pages": [
                 "installOrder/main",
                 "bindCustomInfo/main",
-                "customeOrder/main"
+                "customeOrder/main",
+                "makeOrder/main"
             ]
         }
     ],

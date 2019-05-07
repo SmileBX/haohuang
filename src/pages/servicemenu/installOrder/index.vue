@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="weui-cells">
+        <!-- <div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
                     绑定客户信息
@@ -55,7 +55,7 @@
                    <span class="icon-arrow arrow-right"></span>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="weui-cells"  style="padding-top:10rpx;">
             <div class="weui-cells__title bl__weui-cells__title" style="color:#000;">安装明细</div>
             <div class="select__weui-cells">
@@ -195,7 +195,7 @@ export default {
     methods:{
         setBarTitle() {
             wx.setNavigationBarTitle({
-                title: "安装下单"
+                title: "安装下单-----暂时不用啦"
             });
         },
     },

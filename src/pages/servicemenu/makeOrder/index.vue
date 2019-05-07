@@ -1,25 +1,61 @@
 <template>
-  <div class="page">
-    <movable-area class="movearea">
-      <div class="main">
-        <!--步骤提示-->
-        <div class="tipsList flex" style="margin-top:1px;">
-          <div class="item">
-            <span class="num">1</span>客户下单
-          </div>
-          <div class="item">
-            <span class="num">2</span>选择类型
-          </div>
-          <div class="item">
-            <span class="num">3</span>客服确认信息及价格
-          </div>
-          <div class="item">
-            <span class="num">4</span>完成支付
-          </div>
-          <div class="item">
-            <span class="num">5</span>好评售后
-          </div>
+    <div class="page">
+        <div class="weui-cells" style="margin-top:1px;">
+            <div class="select__weui-cells">
+                <div class="weui-cells__title">客户名称</div>
+                <div class="ipt flex flexAlignCenter">
+                    <div class="flex1">
+                        <input type="text" class="weui-input" disabled="true">
+                    </div>
+                   <span class="icon-arrow arrow-down"></span>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">联系人</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input type="text" class="weui-input text_r" placeholder="请输入联系人姓名">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">联系电话</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input type="text" class="weui-input text_r" placeholder="请输入联系人电话">
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">所在地区</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input type="text" disabled="true" class="weui-input text_r">
+                </div>
+                <div class="weui-cell__ft">
+                    <span class="icon-arrow arrow-right"></span>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">详细地址</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input type="text"  class="weui-input text_r" placeholder="请输入详细地址">
+                </div>
+            </div>
         </div>
+        <!-- <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    绑定客户信息
+                </div>
+                <div class="weui-cell__ft">
+                   <span class="icon-arrow arrow-right"></span>
+                </div>
+            </div>
+        </div> -->
         <!--订单-->
         <div v-for="(item,lindex) in prolist" :key="lindex">
               <!--子no1-->
@@ -197,154 +233,23 @@
             </div>
           </div>
         </div>
-        <!-- 地址选择 -->
-        <div class="weui-cells smDetail__weui-cells">
-            <div class="weui-cells__title">选择地址</div>
-            <div class="addressList" @click="toAddress">
-                <div class="item flex flexAlignCenter" v-if="addressinfo.length>0">
-                    <img src="/static/images/icons/address.png" class="addrIcon" alt>
-                    <div class="item__bd flex1">
-                        <p class="remarks">
-                        <span class="name">{{addressinfo[0].name}}</span>
-                        <span class="tel">{{addressinfo[0].tel}}</span>
-                        </p>
-                        <p class="address">店铺地址：{{addressinfo[0].address}}</p>
-                        <p class="address">详细地址：{{addressinfo[0].addressinfo}}</p>
-                    </div>
-                    <span class="icon-arrow arrow-right"></span>
-                </div>
-                <div class="item flex flexAlignCenter nosite" v-else >
-                      <img src="/static/images/icons/addsite.png" class="site" alt>
-                      <div class="item__bd flex1" style="padding-left:20rpx;">新增收货地址</div>
-                      <span class="icon-arrow arrow-right"></span> 
-                </div>
-            </div>
-        </div>
+        <!--确认支付-->
         <div class="ftBtn" style="height:156rpx;z-index:9999999">
           <div class="inner fixed bm0 border-box bg_f4f7fc">
             <div class="btn btn-active fill" @click="submit">确认下单</div>
           </div>
         </div>
-        <!-- 客服 -->
-        <movable-view style="z-index:11;" x="300" y="460" direction="all" out-of-bounds="false">
-          <div class="fixed__kf">
-            <img src="/static/images/icons/fixed__kf.png" alt>
-          </div>
-        </movable-view>
-      </div>
-    </movable-area>
-    <!--弹层-->
+        <!--弹层-->
     <div class="mask" v-if="isShow" catchtouchmove='true'></div>
-    <!--支付成功弹框-->
-    <div class="paySuccess border-box column" v-if="showPaymask">
-        <div class="title">{{orderTypeName}}订单</div>
-        <img src="/static/images/icons/task.png" alt="" class="task">
-        <div class="paymaskinfo">
-            <p>订单提交成功，<span style="color:#ff6325">未付款</span></p>
-            <p class="replay">稍后客服确认订单回复您</p>
-        </div>
-        <div class="flex btn">
-            <p class="backindex" @click="backIndex">返回首页</p>
-            <p class="sure" @click="closeMask">确认</p>
-        </div>
     </div>
-    
-  </div>
 </template>
 <script>
 import { get,post, toLogin, getCurrentPageUrlWithArgs, valPhone } from "@/utils";
 import "@/css/dd_style.css";
 export default {
-  onLoad(){
-    this.setBarTitle();
-    this.imgBase= []
-    this.imgPathArr= []
-    this.isShowBtnUpload= true
-  },
-  onShow(){
-        this.curPage = getCurrentPageUrlWithArgs();
-        this.identity = wx.getStorageSync("identity");
-        this.userId = wx.getStorageSync("userId");
-        this.token = wx.getStorageSync("token");
-        this.page=1
-        this.speclong = ""
-        this.specwide = ""
-        this.spechign = ""
-        this.specnum = ""
-        this.orderTypeName = ""
-        this.referencePicList = ""
-        this.estimateTime = ""
-        this.remark = ""
-        this.offerTotal = ""
-        this.tip=0
-        this.active = 0
-        this.addressinfo=[]
-        // this.postMsg = '选择快递'
-
-        //获取收货地址
-        if(this.$root.$mp.query.url){
-            console.log(wx.getStorageSync('addressinfo'))
-            const _address=wx.getStorageSync('addressinfo')
-            this.addressinfo.push({
-                  name:_address.name,
-                  tel:_address.phone,
-                  address:_address.shopname,
-                  addressinfo:_address.site
-
-            })
-            this.adressId=_address.id
-           // console.log( this.addressinfo.length)
-        }else{
-            this.getDefaultAddress()
-        }
-        // wx.setStorageSync("addressinfo",' ')
-        
-  },
-  computed:{
-      Total(){  //总计
-        console.log(this.prolist,"this.prolist[i]")
-        let count=0
-        for(let i=0;i<this.prolist.length;i++){
-           count+=this.prolist[i].offerTotal
-        }
-        return count
-      },
-  },
-  watch:{
-    //小计
-    prolist: {
-    handler(offerTotal) {
-      for(let i=0;i<this.prolist.length;i++){
-        if(this.prolist[i].makestatic.length>0 || this.prolist[i].installstatic.length>0){
-          let subtotal1=0
-          let subtotal2=0
-          for(let m of this.prolist[i].makestatic){
-              // console.log(m,"item")
-              // console.log(m.split('￥')[1]*1)
-              subtotal1+=m.split('￥')[1]*1
-              //console.log(subtotal1,"小计111111111")
-          }
-          for(let k of this.prolist[i].installstatic){
-              // console.log(m,"item")
-              // console.log(m.split('￥')[1]*1)
-              subtotal2+=k.split('￥')[1]*1
-
-          }
-            this.prolist[i].offerTotal=subtotal1+subtotal2
-            //console.log(this.prolist[i].offerTotal,"小计")
-          }else{
-            this.prolist[i].offerTotal=0
-          }
-        }
-    },
-    immediate: true,
-    deep: true
-  }
-
-  },
-  data(){
-    return {
-        currentDate: new Date().getTime(),
+    data(){
+        return {
+            currentDate: new Date().getTime(),
         minDate: new Date().getTime(),
         formatter(type, value) {
           if (type === 'year') {
@@ -409,15 +314,104 @@ export default {
         // proMastic:[],//制作材料集合
         // proIns:[],  //安装材料集合
         logisticsType:3    //物流类型 0-快递 1-物流 2-自提
-    }
-  },
-  methods:{
-      setBarTitle() {
-        wx.setNavigationBarTitle({
-          title: "客户下单"
-        });
+        }
+    },
+    onLoad(){
+        this.setBarTitle()
+        this.imgBase= []
+        this.imgPathArr= []
+        this.isShowBtnUpload= true
+    },
+    onShow(){
+        this.curPage = getCurrentPageUrlWithArgs();
+        this.identity = wx.getStorageSync("identity");
+        this.userId = wx.getStorageSync("userId");
+        this.token = wx.getStorageSync("token");
+        this.page=1
+        this.speclong = ""
+        this.specwide = ""
+        this.spechign = ""
+        this.specnum = ""
+        this.orderTypeName = ""
+        this.referencePicList = ""
+        this.estimateTime = ""
+        this.remark = ""
+        this.offerTotal = ""
+        this.tip=0
+        this.active = 0
+        this.addressinfo=[]
+        // this.postMsg = '选择快递'
+
+        //获取收货地址
+        if(this.$root.$mp.query.url){
+            console.log(wx.getStorageSync('addressinfo'))
+            const _address=wx.getStorageSync('addressinfo')
+            this.addressinfo.push({
+                  name:_address.name,
+                  tel:_address.phone,
+                  address:_address.shopname,
+                  addressinfo:_address.site
+
+            })
+            this.adressId=_address.id
+           // console.log( this.addressinfo.length)
+        }else{
+            this.getDefaultAddress()
+        }
+        // wx.setStorageSync("addressinfo",' ')
+    },
+    components: {
+    
+    },
+    computed:{
+      Total(){  //总计
+        console.log(this.prolist,"this.prolist[i]")
+        let count=0
+        for(let i=0;i<this.prolist.length;i++){
+           count+=this.prolist[i].offerTotal
+        }
+        return count
       },
-      cancle(){
+  },
+  watch:{
+    //小计
+    prolist: {
+    handler(offerTotal) {
+      for(let i=0;i<this.prolist.length;i++){
+        if(this.prolist[i].makestatic.length>0 || this.prolist[i].installstatic.length>0){
+          let subtotal1=0
+          let subtotal2=0
+          for(let m of this.prolist[i].makestatic){
+              // console.log(m,"item")
+              // console.log(m.split('￥')[1]*1)
+              subtotal1+=m.split('￥')[1]*1
+              //console.log(subtotal1,"小计111111111")
+          }
+          for(let k of this.prolist[i].installstatic){
+              // console.log(m,"item")
+              // console.log(m.split('￥')[1]*1)
+              subtotal2+=k.split('￥')[1]*1
+
+          }
+            this.prolist[i].offerTotal=subtotal1+subtotal2
+            //console.log(this.prolist[i].offerTotal,"小计")
+          }else{
+            this.prolist[i].offerTotal=0
+          }
+        }
+    },
+    immediate: true,
+    deep: true
+  }
+
+  },
+    methods:{
+        setBarTitle() {
+            wx.setNavigationBarTitle({
+                title: "师傅下单"
+            });
+        },
+         cancle(){
         this.isShow=false
         this.showType=false
       },
@@ -777,7 +771,7 @@ export default {
          let _OrderInsertList2=JSON.stringify(_OrderInsertList)
          console.log(JSON.parse(_OrderInsertList2),"JSON.parse(_OrderInsertList2),")
         if(toLogin(this.curPage)){
-          post('/Order/PlaceAnOrder',{
+          post('/CustomerService/PlaceAnOrder',{
               UserId:this.userId,
               Token:this.token,
               OrderInsertList:_OrderInsertList2
@@ -795,9 +789,10 @@ export default {
     closeMask(){
       wx.redirectTo({url:"/pages/custom/order/main"})
     }
-  }
-};
+    },
+}
 </script>
 <style lang="scss" scoped>
 @import "./style";
 </style>
+
