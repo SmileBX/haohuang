@@ -297,7 +297,7 @@ export default {
         (this.area = text);
     },
     selectCardName() {
-      //选择银行卡
+      //选择银行名称
       this.$store.commit("setSelectCard", {
         url: "/pages/FillInfp/main",
         status: true

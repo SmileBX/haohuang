@@ -12,8 +12,8 @@
           <p class="title">{{item.Remark}}</p>
           <p class="time">时间:{{item.CreateTime}}</p>
         </div>
-        <div class="itemcolor" v-if="item.BudgetType===0">￥{{item.Change}}</div>
-        <div class="reduceColor" v-if="item.BudgetType===1">￥{{item.Change}}</div>
+        <div class="itemcolor" v-if="item.BudgetType===0">+￥{{item.Change}}</div>
+        <div class="reduceColor" v-if="item.BudgetType===1">-￥{{item.Change}}</div>
       </div>
     </div>
     <p style="text-align:center;font-size:30rpx;color:#666;padding:120rpx 20rpx 80rpx;" v-if="hasScoreData">暂无数据</p>
@@ -162,10 +162,10 @@ export default {
                   " " +
                   item.UpdateTime.split("T")[1].split(".")[0]
               );
-              if (item.Change.toString().substr(0, 1) == "-") {
+              if (item.Change.toString().substr(0, 1) == "+") {
                 that.$set(item, "BudgetType", 0);
                 that.$set(item, "Change", item.Change.toString().substring(1));
-              } else if (item.Change.toString().substr(0, 1) == "+") {
+              } else if (item.Change.toString().substr(0, 1) == "-") {
                 that.$set(item, "BudgetType", 1);
                 that.$set(item, "Change", item.Change.toString().substring(1));
               } else {

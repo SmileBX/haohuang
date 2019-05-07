@@ -11,10 +11,20 @@ const store = new Vuex.Store({
             url: '',
             status: false
         },
-        cardInfo: { //选择的银行卡id
+        cardInfo: { //选择的银行名称id
             id: "",
             bankLogo: "",
             bankName: ""
+        },
+        selectMyCard: {
+            url: '',
+            status: false
+        },
+        myCardInfo: { //选择我的银行卡
+            id: "",
+            bankLogo: "",
+            bankCardName: "",
+            bankCardNo: ""
         }
     },
     mutations: {
@@ -40,10 +50,14 @@ const store = new Vuex.Store({
                 state[item] = config[item]
             })
         },
-        // 设置提交订单商城数据
+        // 设置选择银行名称
         setSelectCard(state, params) {
             state.selectCard = params;
         },
+        // 设置选择我的银行卡
+        setSelectMyCard(state, params) {
+            state.selectMyCard = params;
+        }
 
     }
 })

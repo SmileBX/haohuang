@@ -1,22 +1,28 @@
 <template>
   <div class="account">
-    <div class="tips bg_fff" style="padding:16rpx 30rpx;">
+    <div class="tips bg_fff" style="padding:16rpx 30rpx;display:none;">
       <p>已出账单</p>
     </div>
     <div class="scorelist">
-      <div class="month">3月</div>
-      <div class="scoreitem column flexAlignStart">
+      <div class="month">
+        <span class="selectTime" @click="selectTime">
+          {{timeMsg}}
+          <span class="icon-arrow arrow-down"></span>
+        </span>
+      </div>
+      <div class="scoreitem column flexAlignStart" v-for="(item,index) in scoreList" :key="index">
         <div class="column iteminfo">
-          <p class="title">灯箱安装</p>
+          <p class="title">{{item.Remark}}</p>
           <div class="orderInfo">
-            <p class="time">订单编号：1316546798797964</p>
-            <p class="time">下单时间：04/01 15：39：21</p>
-            <p class="time">完成时间：04/01 15：39：21</p>
+            <p class="time">订单编号：{{item.AssociatedNo}}</p>
+            <p class="time">下单时间：{{item.OrderCreateTime}}</p>
+            <p class="time">完成时间：{{item.addTime}}</p>
           </div>
         </div>
         <div class="column flexDirection flexAlignEnd">
-          <p class="itemcolor">+￥4800</p>
-          <p class="time">在线支付</p>
+          <p class="itemcolor" v-if="item.BudgetType===0">+￥{{item.Change}}</p>
+          <p class="reduceColor" v-if="item.BudgetType===1">-￥{{item.Change}}</p>
+          <p class="time"><span v-if="item.PayType===0">线下支付</span><span v-if="item.PayType===1">在线支付</span></p>
         </div>
       </div>
     </div>
@@ -37,6 +43,7 @@
 </template>
 
 <script>
+import { post, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
 import "@/css/common.css";
 export default {
   onLoad() {
@@ -77,7 +84,7 @@ export default {
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
-        title: "对账明细"
+        title: "结账明细"
       });
     },
     initData() {
@@ -90,6 +97,23 @@ export default {
       this.hasScoreData = false;
       this.scoreList = []; 
     },
+    selectTime() {
+      //选择时间
+      this.showDate = true;
+      console.log("gggggggg");
+    },
+    onInput(e, i) {
+      const date = new Date(e.mp.detail);
+      let year = date.getFullYear();
+      let month = date.getMonth()+1;
+      this.beginTime = `${year}-01-01`;
+      this.endTime = `${year+1}-01-01`;
+      this.monthTime = month;
+      this.showDate = false;
+      this.timeMsg = `${year}年${month}月`;
+      this.initData();
+      this.getWalletList();
+    },
     getWalletList() {
       let that = this;
       post(
@@ -100,6 +124,7 @@ export default {
           page: that.page,
           pagesize: that.pageSize,
           WalletType:1,
+          Status:1,
           BeginTime: that.beginTime,
           EndTime: that.endTime,
           MonthTime:that.monthTime
@@ -126,30 +151,20 @@ export default {
               that.scoreList = [];
             }
             result.data.forEach(item => {
-              that.$set(
+             that.$set(
                 item,
-                "CreateTime",
-                item.CreateTime.split("T")[0] +
+                "OrderCreateTime",
+                item.OrderCreateTime.split("T")[0] +
                   " " +
-                  item.CreateTime.split("T")[1].split(".")[0]
+                  item.OrderCreateTime.split("T")[1].split(".")[0]
               );
               that.$set(
                 item,
-                "UpdateTime",
-                item.UpdateTime.split("T")[0] +
+                "AddTime",
+                item.AddTime.split("T")[0] +
                   " " +
-                  item.UpdateTime.split("T")[1].split(".")[0]
+                  item.AddTime.split("T")[1].split(".")[0]
               );
-              if (item.Change.toString().substr(0, 1) == "-") {
-                that.$set(item, "BudgetType", 0);
-                that.$set(item, "Change", item.Change.toString().substring(1));
-              } else if (item.Change.toString().substr(0, 1) == "+") {
-                that.$set(item, "BudgetType", 1);
-                that.$set(item, "Change", item.Change.toString().substring(1));
-              } else {
-                that.$set(item, "BudgetType", "");
-                that.$set(item, "Change", item.Change.toString().substring(1));
-              }
             });
             that.scoreList = that.scoreList.concat(result.data);
           }
