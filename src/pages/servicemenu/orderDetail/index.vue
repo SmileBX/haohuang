@@ -74,14 +74,14 @@
       <div class="orderInfo__bd">
         <div class="item">订单编号：{{detail.orderNo }}<span class="btnCopy" @click="copy(detail.orderNo)">复制</span></div>
         <div class="item">创建时间：{{detail.CreateTime}}</div>
-        <div class="item">支付时间：{{detail.PayTime}}</div>
-        <div class="item">发货时间：{{detail.Fahuodate}}</div>
-        <div class="item">分配师傅{{detail.InstallTime}}</div>
-        <div class="item">完成时间：{{detail.EndTime}}</div>
+        <div class="item" v-if="detail.PayTime">支付时间：{{detail.PayTime}}</div>
+        <div class="item" v-if="detail.Fahuodate">发货时间：{{detail.Fahuodate}}</div>
+        <div class="item" v-if="detail.InstallTime">分配师傅：{{detail.InstallTime}}</div>
+        <div class="item" v-if="detail.EndTime">完成时间：{{detail.EndTime}}</div>
       </div>
     </div>
 
-    <!-- 底部 -->
+    <!-- 操作按钮 -->
     <div class="ftBtn ftBtns">
       <div class="inner flex fixed bm0 bg_fff border-box justifyContentEnd">
         <!-- IsPay是否支付 -->
@@ -159,6 +159,7 @@ export default {
       this.detail.ProductMoney = res.data.ProductMoney.toFixed(2)
       // 订单总价totalPrice
       this.totalPrice = (res.data.ProductMoney*1+res.data.Freight*1).toFixed(2)
+      console.log(Boolean(detail.InstallTime))
   },
   copy(orderNo){
     wx.setClipboardData({
