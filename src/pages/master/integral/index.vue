@@ -122,6 +122,13 @@ export default {
                   " " +
                   item.OperatorTime.split("T")[1].split(".")[0]
               );
+              that.$set(
+                item,
+                "AddTime",
+                item.AddTime.split("T")[0] +
+                  " " +
+                  item.AddTime.split("T")[1].split(".")[0]
+              );
             });
             that.scoreList = that.scoreList.concat(result.data);
           }

@@ -11,7 +11,11 @@
             <p class="name">{{info.NickName}}</p>
             <p class="perId" v-if="identity==2 || identity==3">
               {{info.Mobile}}
-              <span class="editPhone" @click="updateMobile" v-if="identity==2 || identity==3">修改手机号</span>
+              <span
+                class="editPhone"
+                @click="updateMobile"
+                v-if="identity==2 || identity==3"
+              >修改手机号</span>
             </p>
             <p class="perId" v-if="identity==1">{{info.MobileStr}}</p>
           </div>
@@ -132,7 +136,7 @@
             <div class="outside" @click="gotoUrl(0)">
               <div class="icon-img">
                 <img src="/static/images/icons/daiqueren.png" alt>
-                <span class="circleNum" v-if="info.notconfirmNum>0" >{{info.notconfirmNum}}</span>
+                <span class="circleNum" v-if="info.notconfirmNum>0">{{info.notconfirmNum}}</span>
               </div>
               <p class="title">待确认</p>
             </div>
@@ -221,11 +225,11 @@
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoAccount">
               <div class="icon-img">
                 <img src="/static/images/icons/mingxi.png" alt>
               </div>
-              <p class="title">对账明细</p>
+              <p class="title">结账明细</p>
             </div>
           </li>
           <li>
@@ -330,7 +334,7 @@ export default {
         title: "个人中心"
       });
     },
-     gotoSun() {
+    gotoSun() {
       //跳转到余额
       wx.navigateTo({
         url: "/pages/master/sum/main"
@@ -346,6 +350,12 @@ export default {
       //跳转到安装明细
       wx.navigateTo({
         url: "/pages/master/census/main"
+      });
+    },
+    gotoAccount() {
+      //跳转到师傅的对账明细
+      wx.navigateTo({
+        url: "/pages/master/account/main"
       });
     },
     gotoFeedback() {
@@ -460,16 +470,16 @@ export default {
       });
     },
     // 跳转到订单列表identity=1--客服；2--客户
-    gotoUrl(typeNo){
+    gotoUrl(typeNo) {
       // typeNo--进入订单列表展示的状态
       // 客服--订单状态：-1全部，0-待确认，1-待付款 7-已执行(安装中) 8-待评论9-已完成
       // 客户--订单状态：-1全部，0-待确认，1-待付款，2-处理中，10-待评论
-      console.log('跳转类型',typeNo)
-      wx.navigateTo({url:`/pages/myOrder/main?typeNo=${typeNo}`})
-      if(this.identity===1){
-      }else if(this.identity===2){
+      console.log("跳转类型", typeNo);
+      wx.navigateTo({ url: `/pages/myOrder/main?typeNo=${typeNo}` });
+      if (this.identity === 1) {
+      } else if (this.identity === 2) {
       }
-    },
+    }
   }
 };
 </script>
