@@ -10,7 +10,7 @@
     </div>
     <div class="allPadd">
       <div class="botbtn deposit" @click="gotoDepositmoney">提现</div>
-      <div class="tips watch">查看资金明细></div>
+      <div class="tips watch" @click="gotoWithdrawRecord">查看资金明细></div>
     </div>
   </div>
 </template>
@@ -44,6 +44,12 @@ export default {
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "余额"
+      });
+    },
+    gotoWithdrawRecord() {
+      //跳转到提现明细
+      wx.navigateTo({
+        url: "/pages/master/withdrawRecord/main"
       });
     },
     gotoDepositmoney() {

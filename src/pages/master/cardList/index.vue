@@ -2,7 +2,12 @@
   <div class="page">
     <scroll-view scroll-y @scrolltolower="loadMore" style="height:100%;">
       <div class="cardList" v-if="cardList.length>0">
-        <div class="item flex" v-for="(item,index) in cardList" :key="index">
+        <div
+          class="item flex"
+          v-for="(item,index) in cardList"
+          :key="index"
+          @click="selectCard(index)"
+        >
           <img src="/static/images/card/cardBg.png" class="bg" alt>
           <div class="cardImg">
             <img :src="item.BankLogo" alt>
@@ -10,7 +15,7 @@
           <div class="txtBox">
             <p class="title">{{item.BankName}}</p>
             <p class="type">
-              <span @click="DeleteBank(index,item.Id)">[解绑银行卡]</span>
+              <span @click.stop="DeleteBank(index,item.Id)">[解绑银行卡]</span>
             </p>
             <p class="number">
               <span class="xing" v-for="(item2,index2) in item.cardNoArr" :key="index2">{{item2}}</span>
@@ -18,8 +23,15 @@
           </div>
         </div>
       </div>
-      <p style="text-align:center;font-size:30rpx;color:#666;padding:120rpx 20rpx 80rpx;" v-if="noDataIsShow">暂无数据</p>
-      <p class="ovedMsg" v-if="isOved && page>1" style="text-align:center;padding:20rpx;font-size:26rpx;color:#666;">我也是有底线的</p>
+      <p
+        style="text-align:center;font-size:30rpx;color:#666;padding:120rpx 20rpx 80rpx;"
+        v-if="noDataIsShow"
+      >暂无数据</p>
+      <p
+        class="ovedMsg"
+        v-if="isOved && page>1"
+        style="text-align:center;padding:20rpx;font-size:26rpx;color:#666;"
+      >我也是有底线的</p>
       <div class="ftBtn" style="height:154rpx;">
         <div class="inner fixed bm0 border-box" style="background:#fff;">
           <div class="btn btn-active fill" @click="gotoAddCard">
@@ -56,7 +68,7 @@ export default {
       allPage: 0,
       isLoad: false,
       isOved: false,
-      noDataIsShow:false,
+      noDataIsShow: false,
       cardList: []
     };
   },
@@ -78,6 +90,21 @@ export default {
       this.isLoad = false;
       this.isOved = false;
       this.cardList = [];
+    },
+    selectCard(index) {
+      //选择银行卡后跳转
+      const selectMyCard = this.$store.state.selectMyCard;
+      if (!selectMyCard.status) {
+        return false;
+      }
+      let myCardInfo = {
+        id: this.cardList[index].Id,
+        bankLogo: this.cardList[index].BankLogo,
+        bankCardName: this.cardList[index].BankName,
+        bankCardNo: this.cardList[index].BankCardNo
+      };
+      this.$store.commit("update", { myCardInfo });
+      wx.redirectTo({ url: selectMyCard.url });
     },
     gotoAddCard() {
       wx.navigateTo({
@@ -112,6 +139,7 @@ export default {
             that.isLoad = false;
           }
           if (result.data.length > 0) {
+            
             if (that.page === 1) {
               that.cardList = [];
             }

@@ -54,7 +54,8 @@
                 "bindCustomInfo/main",
                 "customeOrder/main",
                 "orderDetail/main",
-                "myOrder/main"
+                "myOrder/main",
+                "makeOrder/main"
             ]
         }
     ],
