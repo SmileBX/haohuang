@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="orderStatus">
-      <span>等待买家付款</span>
+      <span>{{detail.OrderStatusStr }}</span>
     </div>
     <div class="orderAddr bg_fff">
       <div class="newsLogistics flex flexAlignCenter">
@@ -17,10 +17,10 @@
           <img src="/static/images/icons/address.png" class="addrIcon" alt>
           <div class="item__bd flex1">
             <p class="remarks">
-              <span class="name">张三</span>
-              <span class="tel">0755-23105899</span>
+              <span class="name">{{detail.ContactName }}</span>
+              <span class="tel">{{detail.Tel}}</span>
             </p>
-            <p class="address">广东省深圳市龙岗区坂田街道艳玲淡淡的</p>
+            <p class="address">{{detail.AddressInfo }}</p>
           </div>
         </div>
       </div>
@@ -35,10 +35,10 @@
                 <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
               </div>
               <div class="txtBox">
-                <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
+                <p class="title text-line2">{{detail.orderType}}</p>
                 <div class="flex">
                   <div class="flex1">
-                    <p class="price">￥1888.00</p>
+                    <p class="price">￥{{detail.ProductMoney}}</p>
                   </div>
                   <span class="buyNum">x1</span>
                 </div>
@@ -50,15 +50,19 @@
       <div class="priceDetail">
         <div class="flex">
            <div class="flexItem">运费(快递)</div>
-           <div class="flex1 text_r">￥0.00</div>
+           <div class="flex1 text_r">￥{{detail.Freight}}</div>
         </div>
         <div class="flex">
            <div class="flexItem">订单总价</div>
-           <div class="flex1 text_r">￥1288.00</div>
+           <div class="flex1 text_r">￥{{detail.OfferTotal}}</div>
         </div>
         <div class="flex">
            <div class="flexItem">需付款</div>
            <div class="flex1 text_r"><span class="allPrice">￥1288.00</span></div>
+        </div>
+        <div class="flex">
+           <div class="flexItem">付款金额</div>
+           <div class="flex1 text_r"><span class="allPrice">￥{{detail.PayMoney}}</span></div>
         </div>
       </div>
     </div>
@@ -66,11 +70,12 @@
     <div class="orderInfo bg_fff mb10">
       <div class="orderInfo__hd weui-cells__title bl__weui-cells__title"><span class="title">订单信息</span></div>
       <div class="orderInfo__bd">
-        <div class="item">订单编号：2012554122554112 <span class="btnCopy">复制</span></div>
-        <div class="item">创建时间：2018-04-20 09：30：05</div>
-        <div class="item">支付时间：2018-04-20 09：30：05</div>
-        <div class="item">分配师傅：2018-04-20 09：30：05</div>
-        <div class="item">完成时间：2018-04-20 09：30：05</div>
+        <div class="item">订单编号：{{detail.orderNo }}<span class="btnCopy" @click="copy">复制</span></div>
+        <div class="item">创建时间：{{detail.CreateTime}}</div>
+        <div class="item">支付时间：{{detail.PayTime}}</div>
+        <div class="item">发货时间：{{detail.Fahuodate}}</div>
+        <div class="item">分配师傅{{detail.InstallTime}}</div>
+        <div class="item">完成时间：{{detail.EndTime}}</div>
       </div>
     </div>
     <!-- 订单已取消的时候 -->
@@ -111,19 +116,44 @@
   </div>
 </template>
 <script>
+import {post} from '@/utils/index'
 export default {
   onLoad() {
     this.setBarTitle();
   },
-  onShow() {},
+  onShow() {
+    this.UserId = wx.getStorageSync('userId')
+    this.Token = wx.getStorageSync('token')
+    console.log(this.$root.$mp.query.orderId)
+    if(this.$root.$mp.query.orderId){
+    this.orderId = this.$root.$mp.query.orderId
+    }
+    this.getData()
+  },
   data() {
-    return {};
+    return {
+      UserId:'',
+      Token:'',
+      orderId:'',
+      detail:'',
+
+    };
   },
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "订单详情"
       });
+    },
+    async getData(){
+      const res = await post('CustomerService/OrderInfo',{
+        CsdId:this.UserId,
+        Token:this.Token,
+        // OrderNo:this.orderId
+        OrderNo:1025
+      })
+      console.log(res)
+      this.detail = res.data
     }
   }
 };

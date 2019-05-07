@@ -670,6 +670,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     padding: 14rpx 30rpx;
     background: #fff;
     left: 0;
+    align-items:center;
 }
 
 .search .weui-input {
@@ -1030,6 +1031,25 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     border-color: #ff6666;
 }
 
+.button {
+    line-height: 60rpx;
+    padding: 0 20rpx;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 28rpx;
+    color: #666666;
+    margin-left: 20rpx;
+    border-radius: 50rpx;
+    background: none;
+    border: 1px solid #e5e5e5;
+    text-align: center;
+}
+
+.button.active {
+    color: #f0370b!important;
+    border-color: #ff6666!important;
+}
+
 .bg__levelPanel .item .box {
     background: #f6f6f6;
 }
@@ -1258,4 +1278,54 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 
 .sex__weui-cell .weui-cell__bd {
     overflow: visible;
+}
+
+
+/* 冬冬新增的积分拿过来的公共样式 */
+
+.scorelist .month {
+    padding: 0 30rpx;
+    line-height: 60rpx;
+}
+
+.scorelist .scoreitem {
+    justify-content: space-between;
+    background: #fff;
+    margin-bottom: 20rpx;
+    padding: 20rpx 30rpx;
+}
+
+.scorelist .iteminfo {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.scorelist .iteminfo .title {
+    font-size: 30rpx;
+}
+
+.scorelist .iteminfo .time {
+    font-size: 24rpx;
+    color: #aaa;
+    margin-top: 5rpx;
+}
+
+.scorelist .flexDirection {
+    line-height: 1.3;
+}
+
+.scorelist .flexDirection .time {
+    font-size: 24rpx;
+    color: #aaa;
+    margin-top: 10rpx;
+}
+
+.itemcolor {
+    color: #ff6325;
+    font-size: 32rpx;
+}
+
+.reduceColor {
+    font-size: 32rpx;
+    color: #5694fc;
 }

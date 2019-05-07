@@ -9,21 +9,22 @@
           </div>
           <div class="info flex1">
             <p class="name">{{info.NickName}}</p>
-            <p class="perId" v-if="identity==2 || identity==3">{{info.Mobile}}        <span class="editPhone" @click="updateMobile" v-if="identity==2 || identity==3">修改手机号</span>
+            <p class="perId" v-if="identity==2 || identity==3">
+              {{info.Mobile}}
+              <span class="editPhone" @click="updateMobile" v-if="identity==2 || identity==3">修改手机号</span>
             </p>
-            <p class="perId" v-if="identity==1">{{info.MobileStr}}
-            </p>
+            <p class="perId" v-if="identity==1">{{info.MobileStr}}</p>
           </div>
         </div>
       </div>
     </div>
     <!-- 这个是师傅的时候才有的 -->
     <ul class="numberList flex li_50" v-if="hasData && identity==3">
-      <li>
+      <li @click="gotoIntegral">
         <p class="num">{{info.Score}}</p>
         <p class="title">积分</p>
       </li>
-      <li>
+      <li @click="gotoSun">
         <p class="num">{{info.Wallet}}</p>
         <p class="title">余额</p>
       </li>
@@ -33,7 +34,7 @@
         <div class="weui-cell__bd">
           <p class="title">我的订单</p>
         </div>
-        <div class="weui-cell__ft">
+        <div class="weui-cell__ft" @click="gotoUrl(-1)">
           <span class="more">查看全部</span>
           <span class="icon-arrow arrow-right"></span>
         </div>
@@ -42,7 +43,7 @@
         <!-- 客户的时候 -->
         <ul class="navList li_25 center" v-if="identity==2">
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoUrl(0)">
               <div class="icon-img">
                 <img src="/static/images/icons/daiqueren.png" alt>
                 <span class="circleNum" v-if="info.notconfirmNum>0">{{info.notconfirmNum}}</span>
@@ -51,7 +52,7 @@
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoUrl(1)">
               <div class="icon-img">
                 <img src="/static/images/icons/daifukuan.png" alt>
                 <span class="circleNum" v-if="info.notpayNum>0">{{info.notpayNum}}</span>
@@ -60,7 +61,7 @@
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoUrl(2)">
               <div class="icon-img">
                 <img src="/static/images/icons/chulizhong.png" alt>
                 <span class="circleNum" v-if="info.handleNum>0">{{info.handleNum}}</span>
@@ -69,7 +70,7 @@
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoUrl(10)">
               <div class="icon-img">
                 <img src="/static/images/icons/daipinjia.png" alt>
                 <span class="circleNum" v-if="info.notcommentNum>0">{{info.notcommentNum}}</span>
@@ -84,7 +85,7 @@
               </div>
               <p class="title">售后</p>
             </div>
-          </li> -->
+          </li>-->
         </ul>
         <!-- 师傅的时候 -->
         <ul class="navList li_25 center" v-if="identity==3">
@@ -128,40 +129,40 @@
         <!-- 客服的时候 -->
         <ul class="navList li_25 center" v-if="identity==1">
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoUrl(0)">
               <div class="icon-img">
                 <img src="/static/images/icons/daiqueren.png" alt>
-                <span class="circleNum" v-if="info.notconfirmNum>0">{{info.notconfirmNum}}</span>
+                <span class="circleNum" v-if="info.notconfirmNum>0" >{{info.notconfirmNum}}</span>
               </div>
               <p class="title">待确认</p>
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoUrl(1)">
               <div class="icon-img">
                 <img src="/static/images/icons/serve_point.png" alt>
                 <span class="circleNum" v-if="info.notpayNum>0">{{info.notpayNum}}</span>
               </div>
-              <p class="title">已确认</p>
+              <p class="title">待付款</p>
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoUrl(7)">
               <div class="icon-img">
                 <img src="/static/images/icons/shigongzhong.png" alt>
                 <span class="circleNum" v-if="info.handleNum>0">{{info.handleNum}}</span>
               </div>
               <!-- 处理中 -->
-              <p class="title">安装中</p>  
+              <p class="title">安装中</p>
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoUrl(8)">
               <div class="icon-img">
                 <img src="/static/images/icons/serve_com.png" alt>
                 <span class="circleNum" v-if="info.overNum>0">{{info.overNum}}</span>
               </div>
-              <p class="title">已完成</p>
+              <p class="title">待评论</p>
             </div>
           </li>
         </ul>
@@ -212,7 +213,7 @@
         <!-- 师傅的时候 -->
         <ul class="navList li_25 center navList2" v-if="identity==3">
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoCensus">
               <div class="icon-img">
                 <img src="/static/images/icons/tongji.png" alt>
               </div>
@@ -329,6 +330,24 @@ export default {
         title: "个人中心"
       });
     },
+     gotoSun() {
+      //跳转到余额
+      wx.navigateTo({
+        url: "/pages/master/sum/main"
+      });
+    },
+    gotoIntegral() {
+      //跳转积分
+      wx.navigateTo({
+        url: "/pages/master/integral/main"
+      });
+    },
+    gotoCensus() {
+      //跳转到安装明细
+      wx.navigateTo({
+        url: "/pages/master/census/main"
+      });
+    },
     gotoFeedback() {
       //跳转到反馈页面
       let that = this;
@@ -342,13 +361,13 @@ export default {
         url: "/pages/master/cardList/main"
       });
     },
-    gotoMyInfo() {  //客服跟师傅暂时不能修改个人信息
-      if(this.identity==2){
-          wx.navigateTo({
-            url: "/pages/myInfo/main"
-          });
+    gotoMyInfo() {
+      //客服跟师傅暂时不能修改个人信息
+      if (this.identity == 2) {
+        wx.navigateTo({
+          url: "/pages/myInfo/main"
+        });
       }
-      
     },
     GetCustomerServiceInfo() {
       let that = this;
@@ -421,24 +440,36 @@ export default {
         }
       });
     },
-    outLogin(){  //退出登录
-      wx.setStorageSync('userId',"");
-      wx.setStorageSync('token',"");
-      wx.setStorageSync('identity',"");
-      wx.setStorageSync('openId',"");
-      wx.setStorageSync('unionid',"");
-       wx.setStorageSync('mobile',"");
-      wx.setStorageSync('userInfo',"");
+    outLogin() {
+      //退出登录
+      wx.setStorageSync("userId", "");
+      wx.setStorageSync("token", "");
+      wx.setStorageSync("identity", "");
+      wx.setStorageSync("openId", "");
+      wx.setStorageSync("unionid", "");
+      wx.setStorageSync("mobile", "");
+      wx.setStorageSync("userInfo", "");
       wx.redirectTo({
-        url:"/pages/login2/main"
-      })
+        url: "/pages/login2/main"
+      });
     },
     //更改用户手机号码
     updateMobile() {
       wx.navigateTo({
         url: "/pages/setPhone/main"
       });
-    }
+    },
+    // 跳转到订单列表identity=1--客服；2--客户
+    gotoUrl(typeNo){
+      // typeNo--进入订单列表展示的状态
+      // 客服--订单状态：-1全部，0-待确认，1-待付款 7-已执行(安装中) 8-待评论9-已完成
+      // 客户--订单状态：-1全部，0-待确认，1-待付款，2-处理中，10-待评论
+      console.log('跳转类型',typeNo)
+      wx.navigateTo({url:`/pages/myOrder/main?typeNo=${typeNo}`})
+      if(this.identity===1){
+      }else if(this.identity===2){
+      }
+    },
   }
 };
 </script>
