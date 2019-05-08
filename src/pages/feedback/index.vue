@@ -34,8 +34,9 @@
           class="button-upload"
           v-if="isShowBtnUpload"
           @click="upLoadImg"
-          style="background-image:url(/static/images/icons/upload_1.png);"
-        ></div>
+        >
+        <img src="/static/images/icons/upload_1.png" alt="">
+        </div>
       </div>
     </div>
     <div class="ftBtn pt20 pb20">
