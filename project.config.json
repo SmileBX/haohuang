@@ -34,13 +34,13 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 27,
+			"current": 0,
 			"list": [
 				{
 					"id": 0,
 					"name": "师傅的提交审核",
 					"pathName": "pages/master/smVerify/main",
-					"query": "",
+					"query": "orderId=1023",
 					"scene": null
 				},
 				{
@@ -230,6 +230,13 @@
 					"name": "师傅的订单列表",
 					"pathName": "pages/master/myOrder/main",
 					"query": "typeNo=0",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "师傅的订单详情",
+					"pathName": "pages/master/orderDetail/main",
+					"query": "orderId=1023",
 					"scene": null
 				}
 			]

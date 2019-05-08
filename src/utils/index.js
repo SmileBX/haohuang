@@ -145,6 +145,19 @@ export function valPhone(tel) {
     return true;
 }
 
+// 预览图片
+/**
+ * 
+ * @param {String} index 当前索引
+ * @param {Array} picArr 图片的http链接的数组
+ */
+export function previewImage(index, picArr) {
+    wx.previewImage({
+        current: picArr[index], // 当前显示图片的http链接
+        urls: picArr
+    })
+}
+
 //用户直接微信登录
 function wxMemberLogin(code, iv, encryptedData) {
     post("Login/MemberLogin", {
@@ -324,5 +337,6 @@ export default {
     formatNumber,
     formatTime,
     getCurrentPageUrlWithArgs,
-    valPhone: valPhone
+    valPhone: valPhone,
+    previewImage: previewImage
 }
