@@ -34,7 +34,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 10,
+			"current": 27,
 			"list": [
 				{
 					"id": 0,
@@ -222,6 +222,13 @@
 					"id": -1,
 					"name": "师傅的提现记录",
 					"pathName": "pages/master/withdrawRecord/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "客服下单",
+					"pathName": "pages/servicemenu/makeOrder/main",
 					"query": "",
 					"scene": null
 				}

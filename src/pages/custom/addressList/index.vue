@@ -3,8 +3,8 @@
     <div class="addressList">
       <radio-group class="radio-group" @change="radioChange">
           <div v-for="(item,index) in sitelist" :key="item.id">
-            <div class="item" @click="choseAddress(index)">
-              <div class="item__bd">
+            <div class="item">
+              <div class="item__bd"  @click="choseAddress(index)">
                 <div class="remarks">
                   <span class="name">{{item.name}}</span>
                   <span class="tel">{{item.phone}}</span>

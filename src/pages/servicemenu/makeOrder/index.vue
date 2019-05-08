@@ -1,16 +1,45 @@
 <template>
     <div class="page">
         <div class="weui-cells" style="margin-top:1px;">
-            <div class="select__weui-cells">
+            <div class="select__weui-cells" @click="getCustomerList">
                 <div class="weui-cells__title">客户名称</div>
                 <div class="ipt flex flexAlignCenter">
                     <div class="flex1">
-                        <input type="text" class="weui-input" disabled="true">
+                        <input type="text" class="weui-input" disabled="true" placeholder="请选择" v-model="bindName">
                     </div>
                    <span class="icon-arrow arrow-down"></span>
                 </div>
             </div>
-            <div class="weui-cell">
+              <van-cell-group>
+                    <van-field clearable label="联系人" :value="name" @change="onName" placeholder="请输入联系人姓名" title-width="70px"/>
+                    <van-field clearable label="联系电话" :value="phone" @change="onPhone"  placeholder="请输入联系电话" title-width="70px"/>
+                    <!-- <van-field clearable label="店铺地址" :value="site" @change="onSite"  placeholder="请输入店铺地址" title-width="70px"/> -->
+                    <van-field
+                    clearable
+                    label="所在地区"
+                    placeholder="请输入所在地区"
+                    title-width="70px"
+                    icon="arrow"
+                    disabled
+                    :input-class="area?'color333':''"
+                    @click="showArea = true"
+                    :value="area"
+                    />
+
+                    <van-field
+                    label="详细地址"
+                    type="textarea"
+                    style="height:38rpx;"
+                    placeholder="道路、门牌号、小区、楼栋号、单元、 室等"
+                    placeholder-style="height:38rpx!important"
+                    :border="false"
+                    title-width="70px"
+                    input-class="van-textarea-min-height"
+                    :value="address"
+                    @change="onAddress" 
+                    />
+                </van-cell-group>
+            <!-- <div class="weui-cell">
                 <div class="weui-cell__hd">
                     <label class="weui-label">联系人</label>
                 </div>
@@ -44,7 +73,7 @@
                 <div class="weui-cell__bd">
                     <input type="text"  class="weui-input text_r" placeholder="请输入详细地址">
                 </div>
-            </div>
+            </div> -->
         </div>
         <!-- <div class="weui-cells">
             <div class="weui-cell">
@@ -60,10 +89,12 @@
         <div v-for="(item,lindex) in prolist" :key="lindex">
               <!--子no1-->
               <div class="weui-cells smDetail__weui-cells" style="padding-top:10rpx;">
-                <div class="select__weui-cells flex  flexAlignCenter">
-                  <div class="weui-cells__title">项目名称:</div>
-                  <div class="flex1">
-                    <input type="text" class="weui-input" placeholder="请输入（必填）" style="margin-left:20rpx;" v-model="item.orderName">
+                <div class="select__weui-cells" >
+                  <div class="weui-cells__title">项目名称</div>
+                  <div class="ipt flex flexAlignCenter">
+                    <div class="flex1">
+                      <input type="text"  class="weui-input" placeholder="请输入（必填）" v-model="item.orderName">
+                    </div>
                   </div>
                 </div>
                 <div class="select__weui-cells" @click="choseType(lindex) ">
@@ -240,16 +271,21 @@
           </div>
         </div>
         <!--弹层-->
-    <div class="mask" v-if="isShow" catchtouchmove='true'></div>
+        <div class="mask" v-if="isShow" catchtouchmove='true'></div>
+        <!--选择地址省市遮罩层-->
+        <van-popup :show="showArea" position="bottom" :overlay="true" @close="showArea = false">
+            <van-area :area-list="areaList" @cancel="showArea = false" @confirm="confirmArea"/>
+        </van-popup>
     </div>
 </template>
 <script>
 import { get,post, toLogin, getCurrentPageUrlWithArgs, valPhone } from "@/utils";
+import areaList from "@/utils/areaList";
 import "@/css/dd_style.css";
 export default {
     data(){
         return {
-            currentDate: new Date().getTime(),
+        currentDate: new Date().getTime(),
         minDate: new Date().getTime(),
         formatter(type, value) {
           if (type === 'year') {
@@ -262,6 +298,17 @@ export default {
         userId: "",
         token: "",
         curPage: "",
+        bindName:'',//绑定的客户名称
+        areaList,  ///地址参数--开始
+        showArea: false,  
+        name: "",
+        phone:'',
+        site:'',//店铺地址
+        area:'',
+        provinceCode:'',
+        cityCode:'',
+        districtCode:'',
+        address:'',    ///地址参数-结束
         identity: "",
         active:0,//选中的标记
         postMsg:'选择快递',//快递选择
@@ -269,18 +316,6 @@ export default {
         isShow:false, //遮罩层
         showType:false,  //普通选择的弹框
         showPaymask:false,//支付确认弹框
-        // orderName:"",//项目名称
-        // speclong:"",//厚
-        // specwide:"",//宽
-        // spechign:"",//高
-        // specnum:"",//数量
-        // orderTypeName:"",//订单类型 --0:设计,1:制作,2:安装,3:设计-制作,4:制作-安装,5:设计-制作-安装
-        // referencePicList:"",//参考图片
-        // estimateTime:"",//交付时间
-        // makestatic:"",//制作材料
-        // installstatic:"",//安装材料
-        // remark:"",//备注说明
-        // offerTotal:"",//总金额
         ContactName:"",//联系人
         Tel:"",//电话
         Addr:"",//地址
@@ -327,6 +362,7 @@ export default {
         this.identity = wx.getStorageSync("identity");
         this.userId = wx.getStorageSync("userId");
         this.token = wx.getStorageSync("token");
+        this.bindName=''
         this.page=1
         this.speclong = ""
         this.specwide = ""
@@ -340,24 +376,31 @@ export default {
         this.tip=0
         this.active = 0
         this.addressinfo=[]
+        this.name=''
+        this.phone=''
+        this.area=''
+        this.address=''
+        this.provinceCode=''
+        this.cityCode=''
+        this.districtCode =''
         // this.postMsg = '选择快递'
 
-        //获取收货地址
-        if(this.$root.$mp.query.url){
-            console.log(wx.getStorageSync('addressinfo'))
-            const _address=wx.getStorageSync('addressinfo')
-            this.addressinfo.push({
-                  name:_address.name,
-                  tel:_address.phone,
-                  address:_address.shopname,
-                  addressinfo:_address.site
+        // //获取收货地址
+        // if(this.$root.$mp.query.url){
+        //     console.log(wx.getStorageSync('addressinfo'))
+        //     const _address=wx.getStorageSync('addressinfo')
+        //     this.addressinfo.push({
+        //           name:_address.name,
+        //           tel:_address.phone,
+        //           address:_address.shopname,
+        //           addressinfo:_address.site
 
-            })
-            this.adressId=_address.id
-           // console.log( this.addressinfo.length)
-        }else{
-            this.getDefaultAddress()
-        }
+        //     })
+        //     this.adressId=_address.id
+        //    // console.log( this.addressinfo.length)
+        // }else{
+        //     this.getDefaultAddress()
+        // }
         // wx.setStorageSync("addressinfo",' ')
     },
     components: {
@@ -411,384 +454,462 @@ export default {
                 title: "师傅下单"
             });
         },
-         cancle(){
-        this.isShow=false
-        this.showType=false
-      },
-      subConfirm(n){
-       // console.log(this.masktitle,"3333333")
-        for(let i in this.list){
-          if(i*1==this.active){
-            // console.log(i)
-            if(this.masktitle=="请选择快递类型"){
-              this.postMsg = this.list[i].name
-             if( this.postMsg.indexOf('物流')!=-1){
-                this.logisticsType=1
-             }else{
-                this.logisticsType=0
-             }
-            }
-            if(this.masktitle=="请选择订单类型"){
-              this.prolist[n].orderTypeName=this.list[i].name
-              this.prolist[n].orderType=this.list[i].Id
-            }
-            
-          }
-         // console.log(typeof this.list[i].statu,"背景")
-          if(this.list[i].statu){
-              if(this.masktitle=="请选择制作材料"){
-                  this.prolist[n].makestatic.push(this.list[i].name+"  "+"￥"+this.list[i].Price +"   ")
-                  //this.prolist[n].makestatic+=this.list[i].name+"  "+"￥"+this.list[i].Price +"   "
-                  //选中的材料--制作材料 安装材料
-                  let item1={
-                      Id:this.list[i].Id,
-                      Num:1,
-                      pType:0
+        cancle(){
+            this.isShow=false
+            this.showType=false
+        },
+        subConfirm(n){
+        // console.log(this.masktitle,"3333333")
+            for(let i in this.list){
+            if(i*1==this.active){
+                // console.log(i)
+                if(this.masktitle=="请选择快递类型"){
+                        this.postMsg = this.list[i].name
+                    if( this.postMsg.indexOf('物流')!=-1){
+                        this.logisticsType=1
+                    }else{
+                        this.logisticsType=0
                     }
-                    console.log(item1)
-                   this.prolist[n].proMastic.push(item1)
-                  // this.proLists=this.proLists.concat(this.proMastic)
-                  console.log(this.prolist[n].proMastic,"zhizuo材料集合")
-                  //console.log(this.prolist[n].makestatic,"arr制作材料list")
-              }
-              if(this.masktitle=="请选择安装材料"){
-                  this.prolist[n].installstatic.push(this.list[i].name +"  "+"￥"+ this.list[i].Price+"   ")
-                   //选中的材料--制作材料 安装材料
-                  let  item2={
-                      Id:this.list[i].Id,
-                      Num:1,
-                      pType:0
-                    }
-                     this.prolist[n].proIns.push(item2)
-                  //  this.proLists=this.proLists.concat(this.proIns)
-                  console.log(this.prolist[n].proIns,"anzhuang材料集合")
-              } 
-              
-           console.log(this.list[i].statu,"材料选择p标识选择背景")
+                }
+                if(this.masktitle=="请选择订单类型"){
+                    this.prolist[n].orderTypeName=this.list[i].name
+                    this.prolist[n].orderType=this.list[i].Id
+                }
+                if(this.masktitle=="请选择客户名称"){
+                    this.bindName=this.list[i].name
+                }
+            }
+            // console.log(typeof this.list[i].statu,"背景")
+            if(this.list[i].statu){
+                if(this.masktitle=="请选择制作材料"){
+                    this.prolist[n].makestatic.push(this.list[i].name+"  "+"￥"+this.list[i].Price +"   ")
+                    //this.prolist[n].makestatic+=this.list[i].name+"  "+"￥"+this.list[i].Price +"   "
+                    //选中的材料--制作材料 安装材料
+                    let item1={
+                        Id:this.list[i].Id,
+                        Num:1,
+                        pType:0
+                        }
+                        console.log(item1)
+                    this.prolist[n].proMastic.push(item1)
+                    // this.proLists=this.proLists.concat(this.proMastic)
+                    console.log(this.prolist[n].proMastic,"zhizuo材料集合")
+                    //console.log(this.prolist[n].makestatic,"arr制作材料list")
+                }
+                if(this.masktitle=="请选择安装材料"){
+                    this.prolist[n].installstatic.push(this.list[i].name +"  "+"￥"+ this.list[i].Price+"   ")
+                    //选中的材料--制作材料 安装材料
+                    let  item2={
+                        Id:this.list[i].Id,
+                        Num:1,
+                        pType:0
+                        }
+                        this.prolist[n].proIns.push(item2)
+                    //  this.proLists=this.proLists.concat(this.proIns)
+                    console.log(this.prolist[n].proIns,"anzhuang材料集合")
+                } 
+                
+            console.log(this.list[i].statu,"材料选择p标识选择背景")
 
-          }
-        }
-      
-        //  this.masktitle=0
-        this.showType=false
-        this.isShow=false
-      },
-      onInput(e,i){
-          console.log(e,"时间")
-          const  date= new Date(e.mp.detail)
-          const year = date.getFullYear()
-          let month = date.getMonth()+1
-          let dd = date.getDate()
-          month.toString().length<2 ? (month= "0"+month) : month
-          dd.toString().length<2 ? (dd="0"+dd) : dd
-          this.prolist[i].estimateTime = `${year}-${month}-${dd}`
-          this.showDate = false
-          console.log(this.estimateTime,"交付时间")
-      },
-      //增加明细（增加子订单）
-      addOrder(){
-          this.tip++
-          if(this.tip>2){
-            wx.showToast({
-              title:"已超过订单添加的数量啦...",
-              icon:"none",
-              duration:2000,
-              complete:function(){
-
-              }
-            })
-            return false;
-          }else{
-          //console.log(this.proitem)
-            const proitem = JSON.stringify(this.proitem)
-            this.prolist.push(JSON.parse(proitem))
-            console.log(this.prolist,"1111111111111")
-          }
-      },
-      //选择快递
-      chosePost(){
-        this.active=0
-        this.list=[]
-        this.isShow=true;
-        this.showType=true;
-        this.masktitle="请选择快递类型"
-        if(toLogin(this.curPage)){
-            const res = get('Address/KuaiDiList',this.curPage).then(res=>{
-              console.log(res)
-              this.kuaidiList = res.data
-               let info={}
-              for(let i=0;i<this.kuaidiList.length;i++){
-                info={
-                  name:this.kuaidiList[i].Company,
-                  Id:this.kuaidiList[i].Id,
-                  Code:this.kuaidiList[i].Code,
-                  IsDel:this.kuaidiList[i].IsDel,
-                  Price:this.kuaidiList[i].Price
-              }
-              this.list.push(info)
-              }
-            
-            console.log(this.list,"快递")
-              
-            })
-            
-        }
+            }
+            }
         
-      },
-      chose(e){
-        this.active=e
-        if(this.list[e].statu){
-          this.$set(this.list[e],'statu',false);
-        }else{
-          this.$set(this.list[e],'statu',true);
-        }
+            //  this.masktitle=0
+            this.showType=false
+            this.isShow=false
+        },
+        onInput(e,i){
+            console.log(e,"时间")
+            const  date= new Date(e.mp.detail)
+            const year = date.getFullYear()
+            let month = date.getMonth()+1
+            let dd = date.getDate()
+            month.toString().length<2 ? (month= "0"+month) : month
+            dd.toString().length<2 ? (dd="0"+dd) : dd
+            this.prolist[i].estimateTime = `${year}-${month}-${dd}`
+            this.showDate = false
+            console.log(this.estimateTime,"交付时间")
+        },
+        //增加明细（增加子订单）
+        addOrder(){
+            this.tip++
+            if(this.tip>2){
+                wx.showToast({
+                title:"已超过订单添加的数量啦...",
+                icon:"none",
+                duration:2000,
+                complete:function(){
 
-      },
-      //选择订单类型
-      choseType(n){
-        this.active=0
-        this.list=[]
-        this.isShow=true;
-        this.showType=true;
-        this.prolist[n].makestatic=[] 
-        this.prolist[n].proMastic=[]
-        this.prolist[n].proIns=[]
-        this.prolist[n].installstatic=[]
-        this.masktitle="请选择订单类型"
-        //console.log(n,"type")
-        if(toLogin(this.curPage)){
-            get('/Order/GetorderType',this.curPage).then(res=>{
-              console.log(res,"订单类型")
-              this.typelist=res.data
-              let info={}
-              for(let i=0;i<this.typelist.length;i++){
-                info={
-                  name:this.typelist[i].EnumText,
-                  Id:this.typelist[i].EnumId,
-              }
-              this.list.push(info)
-              }
-              
-              console.log(this.list,"订单类型")
-            })
-        }
-      },
-      //制作材料////安装材料
-      choseMartic(e,n){ 
-        this.page=1
-        this.list=[]
-        this.active=0
-        this.isShow=true;
-        this.showType=true;
-        if(e==1){
-             this.masktitle="请选择制作材料"
-            //  this.prolist[n].makestatic='' 
-              this.prolist[n].makestatic=[] 
-             this.prolist[n].proMastic=[]
-              //this.prolist[n].installstatic=''
-        }else{
-            this.masktitle="请选择安装材料"
-            //this.prolist[n].makestatic='' 
-            this.prolist[n].installstatic=[]
+                }
+                })
+                return false;
+            }else{
+            //console.log(this.proitem)
+                const proitem = JSON.stringify(this.proitem)
+                this.prolist.push(JSON.parse(proitem))
+                console.log(this.prolist,"1111111111111")
+            }
+        },
+        //选择快递
+        chosePost(){
+            this.active=0
+            this.list=[]
+            this.isShow=true;
+            this.showType=true;
+            this.masktitle="请选择快递类型"
+            if(toLogin(this.curPage)){
+                const res = get('Address/KuaiDiList',this.curPage).then(res=>{
+                console.log(res)
+                this.kuaidiList = res.data
+                let info={}
+                for(let i=0;i<this.kuaidiList.length;i++){
+                    info={
+                    name:this.kuaidiList[i].Company,
+                    Id:this.kuaidiList[i].Id,
+                    Code:this.kuaidiList[i].Code,
+                    IsDel:this.kuaidiList[i].IsDel,
+                    Price:this.kuaidiList[i].Price
+                }
+                this.list.push(info)
+                }
+                
+                console.log(this.list,"快递")
+                
+                })
+                
+            }
+            
+        },
+        chose(e){
+            this.active=e
+            if(this.list[e].statu){
+            this.$set(this.list[e],'statu',false);
+            }else{
+            this.$set(this.list[e],'statu',true);
+            }
+
+        },
+        //选择订单类型
+        choseType(n){
+            this.active=0
+            this.list=[]
+            this.isShow=true;
+            this.showType=true;
+            this.prolist[n].makestatic=[] 
+            this.prolist[n].proMastic=[]
             this.prolist[n].proIns=[]
-             // this.prolist[n].installstatic=''
-        }
-        if(toLogin(this.curPage)){
-          post('/Product/ProductList',{
-              UserId:this.userId,
-              Token:this.token,
-              page:this.page,
-              pageSize: this.pageSize
-          },this.curPage).then(res=>{
-            this.count=res.count
-            if (parseInt(this.count) % this.pageSize === 0) {
-                this.allPage = this.count / this.pageSize;
-            } else {
-              this.allPage = parseInt(this.count / this.pageSize) + 1;
+            this.prolist[n].installstatic=[]
+            this.masktitle="请选择订单类型"
+            //console.log(n,"type")
+            if(toLogin(this.curPage)){
+                get('/Order/GetorderType',this.curPage).then(res=>{
+                console.log(res,"订单类型")
+                this.typelist=res.data
+                let info={}
+                for(let i=0;i<this.typelist.length;i++){
+                    info={
+                    name:this.typelist[i].EnumText,
+                    Id:this.typelist[i].EnumId,
+                }
+                this.list.push(info)
+                }
+                
+                console.log(this.list,"订单类型")
+                })
             }
-           let _list=[]
-           _list=_list.concat(res.data)
-            console.log(res,"制作材料 安装材料")
-            let info={}
-            for(let i=0;i<_list.length;i++){
-              info={
-                name:_list[i].Name,
-                Id:_list[i].Id,
-                Price:_list[i].Price,
-                statu:false
-              }
-              this.list.push(info)
-              
+        },
+        //制作材料////安装材料
+        choseMartic(e,n){ 
+            this.page=1
+            this.list=[]
+            this.active=0
+            this.isShow=true;
+            this.showType=true;
+            if(e==1){
+                this.masktitle="请选择制作材料"
+                //  this.prolist[n].makestatic='' 
+                this.prolist[n].makestatic=[] 
+                this.prolist[n].proMastic=[]
+                //this.prolist[n].installstatic=''
+            }else{
+                this.masktitle="请选择安装材料"
+                //this.prolist[n].makestatic='' 
+                this.prolist[n].installstatic=[]
+                this.prolist[n].proIns=[]
+                // this.prolist[n].installstatic=''
             }
-             if (this.allPage > this.page) {
-                this.isLoad = true;
-              } else {
-                this.isLoad = false;
-              }
-            
-          })
-        }
-      },
-      //上传参考图片
-      chosseImg(n) {
-      const that = this;
-      console.log(n)
-      let num = 0;
-      if (that.prolist[n].referencePicList.length < that.imgLenght) {
-        num = that.imgLenght - that.prolist[n].referencePicList.length;
-        console.log(num,"最大图片数量")
-        wx.chooseImage({
-          count: num, //最大图片数量=最大数量-临时路径的数量
-          sizeType: ["compressed"], //图片尺寸 original--原图；compressed--压缩图
-          sourceType: ["album", "camera"], //选择图片的位置 album--相册选择, 'camera--使用相机
-          success: res => {
-            const imgPathArr = that.prolist[n].referencePicList
-            that.prolist[n].referencePicList = []
-            that.prolist[n].referencePicList = imgPathArr.concat(res.tempFilePaths);
-                    console.log(res.tempFilePaths,'base')
-                    console.log(that.prolist[n].referencePicList,'that.prolist[n].referencePicList')
-            that.updateImg(n)
-          }
-        });
-      }
-    },
-    // 更新图片数据
-    updateImg(n){
-      console.log(this.prolist[n].referencePicList.length,'that.prolist[n].referencePicList1111111111')
-        // 判断是否大于图片最大数量
-        if (this.prolist[n].referencePicList.length === this.imgLenght*1) {
-          this.isShowBtnUpload = false;
-        }else{
-          this.isShowBtnUpload = true;
-        }
-        // 根据临时路径数组imgPathArr获取base64图片
-        for (let i = 0; i < this.prolist[n].referencePicList.length; i++) {
-          wx.getFileSystemManager().readFile({
-            filePath: (this.prolist[n].referencePicList)[i], //选择图片返回的相对路径
-            encoding: "base64", //编码格式
-            success: res => {
-              //成功的回调
-              this.prolist[n].imgBase.push({
-                PicUrl: "data:image/png;base64," + res.data.toString()
-              });
-          
+            if(toLogin(this.curPage)){
+            post('/Product/ProductList',{
+                UserId:this.userId,
+                Token:this.token,
+                page:this.page,
+                pageSize: this.pageSize
+            },this.curPage).then(res=>{
+                this.count=res.count
+                if (parseInt(this.count) % this.pageSize === 0) {
+                    this.allPage = this.count / this.pageSize;
+                } else {
+                this.allPage = parseInt(this.count / this.pageSize) + 1;
+                }
+            let _list=[]
+            _list=_list.concat(res.data)
+                console.log(res,"制作材料 安装材料")
+                let info={}
+                for(let i=0;i<_list.length;i++){
+                info={
+                    name:_list[i].Name,
+                    Id:_list[i].Id,
+                    Price:_list[i].Price,
+                    statu:false
+                }
+                this.list.push(info)
+                
+                }
+                if (this.allPage > this.page) {
+                    this.isLoad = true;
+                } else {
+                    this.isLoad = false;
+                }
+                
+            })
             }
-          });
-        }
-    },
-    deleteImg(i,n) {
-      this.prolist[n].imgBase.splice(i, 1);
-      this.prolist[n].referencePicList.splice(i, 1);
-      if (this.prolist[n].referencePicList.length < this.imgLenght*1) {
-        this.isShowBtnUpload = null;
-        this.isShowBtnUpload = true;
-      }
-      this.updateImg(n)
-    },
-    //获取用户默认的收货地址
-    getDefaultAddress(){
-        this.addressinfo=[]
-        if(toLogin(this.curPage)){
-          const res = post('Address/defaultaddress_New',{
-            UserId:this.userId,
-            Token:this.token,
-            IsDefault:1
-          },this.curPage).then(res=>{
-            this.addressinfo.push({
-              name:res.data.name,
-              tel:res.data.tel,
-              address:res.data.shopname,
-              addressinfo:res.data.addressinfo
+        },
+        //上传参考图片
+        chosseImg(n) {
+            const that = this;
+            console.log(n)
+            let num = 0;
+            if (that.prolist[n].referencePicList.length < that.imgLenght) {
+                num = that.imgLenght - that.prolist[n].referencePicList.length;
+                console.log(num,"最大图片数量")
+                wx.chooseImage({
+                    count: num, //最大图片数量=最大数量-临时路径的数量
+                    sizeType: ["compressed"], //图片尺寸 original--原图；compressed--压缩图
+                    sourceType: ["album", "camera"], //选择图片的位置 album--相册选择, 'camera--使用相机
+                    success: res => {
+                        const imgPathArr = that.prolist[n].referencePicList
+                        that.prolist[n].referencePicList = []
+                        that.prolist[n].referencePicList = imgPathArr.concat(res.tempFilePaths);
+                                console.log(res.tempFilePaths,'base')
+                                console.log(that.prolist[n].referencePicList,'that.prolist[n].referencePicList')
+                        that.updateImg(n)
+                    }
+                });
+            }
+        },
+        // 更新图片数据
+        updateImg(n){
+            console.log(this.prolist[n].referencePicList.length,'that.prolist[n].referencePicList1111111111')
+                // 判断是否大于图片最大数量
+                if (this.prolist[n].referencePicList.length === this.imgLenght*1) {
+                    this.isShowBtnUpload = false;
+                    }else{
+                    this.isShowBtnUpload = true;
+                    }
+                    // 根据临时路径数组imgPathArr获取base64图片
+                    for (let i = 0; i < this.prolist[n].referencePicList.length; i++) {
+                    wx.getFileSystemManager().readFile({
+                        filePath: (this.prolist[n].referencePicList)[i], //选择图片返回的相对路径
+                        encoding: "base64", //编码格式
+                        success: res => {
+                        //成功的回调
+                        this.prolist[n].imgBase.push({
+                            PicUrl: "data:image/png;base64," + res.data.toString()
+                        });
+                    
+                        }
+                    });
+                }
+        },
+        deleteImg(i,n) {
+            this.prolist[n].imgBase.splice(i, 1);
+            this.prolist[n].referencePicList.splice(i, 1);
+            if (this.prolist[n].referencePicList.length < this.imgLenght*1) {
+                this.isShowBtnUpload = null;
+                this.isShowBtnUpload = true;
+            }
+            this.updateImg(n)
+        },
+        //获取用户默认的收货地址
+        getDefaultAddress(){
+            this.addressinfo=[]
+            if(toLogin(this.curPage)){
+            const res = post('Address/defaultaddress_New',{
+                UserId:this.userId,
+                Token:this.token,
+                IsDefault:1
+            },this.curPage).then(res=>{
+                this.addressinfo.push({
+                name:res.data.name,
+                tel:res.data.tel,
+                address:res.data.shopname,
+                addressinfo:res.data.addressinfo
+                })
+                this.adressId=res.data.id
+                console.log(this.addressinfo,"默认收货地址")
             })
-            this.adressId=res.data.id
-            console.log(this.addressinfo,"默认收货地址")
-          })
-        } 
-    },
-    //去往我的地址页面
-    toAddress(){
-        wx.navigateTo({url:'/pages/custom/addressList/main?url=smOrder'})
-    },
-    //返回首页
-    backIndex(){
-      wx.redirectTo({url:'/pages/index/main'})
-    },
-    loadMore(){
-      if (this.isLoad) {
-          this.page++;
-          this.choseMartic();
-        }
-    },
-    submit(){
-        if(this.adressId.toString().length<1){
-          wx.showToast({
-              title:"请选择地址！"
-            })
-          return false
-        }
-        if(this.logisticsType.toString().length<1){
-          wx.showToast({
-              title:"请选择快递！"
-            })
-          return false
-        }
-
-        //console.log(this.prolist,"this.prolist")
-        let _OrderInsertList=[]
-        for(let i=0;i<this.prolist.length;i++){
-          let _proLists=this.prolist[i].proMastic.concat(this.prolist[i].proIns)
-          //console.log(JSON.stringify(_proLists),"材料集合提交")
-          _proLists=JSON.stringify(_proLists)
-          let info={
-              adressId:this.adressId,  //地址编号
-              orderName:this.prolist[i].orderName,//项目名称
-              orderType:this.prolist[i].orderType,  //订单类型
-              speclong:this.prolist[i].speclong,    //厚
-              specwide:this.prolist[i].specwide,  //宽 
-              spechign:this.prolist[i].spechign,      //高
-              specnum:this.prolist[i].specnum,        //数量   
-              remark:this.prolist[i].remark,      //备注
-              referencePicList:JSON.stringify(this.prolist[i].imgBase),    //图片集合 
-              estimateTime:this.prolist[i].estimateTime,    //完成时间
-              offerTotal:this.prolist[i].offerTotal,     //总金额
-              proLists:_proLists, //材料集合
-              logisticsType:this.logisticsType,//快递类型
-          }
-
-          //console.log(typeof this.prolist[i].estimateTime,"提交时间")
-          if(this.prolist[i].estimateTime.length==0　|| this.prolist[i].offerTotal.toString().length==0 || this.prolist[i].orderName.length==0){
+            } 
+        },
+        //去往我的地址页面
+        toAddress(){
+            wx.navigateTo({url:'/pages/custom/addressList/main?url=smOrder'})
+        },
+        //返回首页
+        backIndex(){
+            wx.redirectTo({url:'/pages/index/main'})
+        },
+        loadMore(){
+            if (this.isLoad) {
+                this.page++;
+                this.choseMartic();
+                }
+        },
+        submit(){
+            // if(this.adressId.toString().length<1){
+            // wx.showToast({
+            //     title:"请选择地址！"
+            //     })
+            // return false
+            // }
+            if(this.logisticsType.toString().length<1){
             wx.showToast({
-              title:"必选项不能为空！",
-              icon:'none'
-            })
+                title:"请选择快递！"
+                })
             return false
-          }else{
-              _OrderInsertList.push(info);//JSON.stringify(info)
-          }
-          
-        }
-       
-         let _OrderInsertList2=JSON.stringify(_OrderInsertList)
-         console.log(JSON.parse(_OrderInsertList2),"JSON.parse(_OrderInsertList2),")
-        if(toLogin(this.curPage)){
-          post('/CustomerService/PlaceAnOrder',{
-              UserId:this.userId,
-              Token:this.token,
-              OrderInsertList:_OrderInsertList2
-          },this.curPage).then(res=>{
-            console.log(res,'提交订单')
-            if(res.code==0){
-                this.isShow=true
-                this.showPaymask=true
             }
-          })
-        }
-        
 
-    },
-    closeMask(){
-      wx.redirectTo({url:"/pages/custom/order/main"})
-    }
+            //console.log(this.prolist,"this.prolist")
+            let _OrderInsertList=[]
+            for(let i=0;i<this.prolist.length;i++){
+            let _proLists=this.prolist[i].proMastic.concat(this.prolist[i].proIns)
+            //console.log(JSON.stringify(_proLists),"材料集合提交")
+            _proLists=JSON.stringify(_proLists)
+            let info={
+                // adressId:this.adressId,  //地址编号
+                ContactName:this.name,   //收货人姓名
+                Tel:this.phone,  //买家联系电话!!!!!
+                Province:this.provinceCode,   //省份Code!!!!!
+                City:this.cityCode,    //城市Code!!!!!
+                Area:this.districtCode,    //地区Code!!!!!
+                Addr:this.address,     //详细地址!!!!!
+                //ZipCode:      //邮编----不用传
+                orderName:this.prolist[i].orderName,//项目名称
+                orderType:this.prolist[i].orderType,  //订单类型!!!!!
+                speclong:this.prolist[i].speclong,    //厚
+                specwide:this.prolist[i].specwide,  //宽 
+                spechign:this.prolist[i].spechign,      //高
+                specnum:this.prolist[i].specnum,        //数量   
+                remark:this.prolist[i].remark,      //备注
+                referencePicList:JSON.stringify(this.prolist[i].imgBase),    //图片集合 
+                estimateTime:this.prolist[i].estimateTime,    //完成时间!!!!!
+                offerTotal:this.prolist[i].offerTotal,     //总金额!!!!!
+                proLists:_proLists, //材料集合
+                logisticsType:this.logisticsType,//快递类型!!!!!
+            }
+
+            //console.log(typeof this.prolist[i].estimateTime,"提交时间")
+            if(this.prolist[i].estimateTime.length==0　|| this.prolist[i].offerTotal.toString().length==0 || this.prolist[i].orderName.length==0){
+                wx.showToast({
+                    title:"必选项不能为空！",
+                    icon:'none'
+                })
+                return false
+            }else{
+                _OrderInsertList.push(info);//JSON.stringify(info)
+            }
+            
+            }
+        
+            let _OrderInsertList2=JSON.stringify(_OrderInsertList)
+            console.log(JSON.parse(_OrderInsertList2),"JSON.parse(_OrderInsertList2),")
+            if(toLogin(this.curPage)){
+            post('/CustomerService/PlaceAnOrder',{
+                CsdId:this.userId,
+                Token:this.token,
+                OrderInsertList:_OrderInsertList2
+            },this.curPage).then(res=>{
+                console.log(res,'提交订单')
+                if(res.code==0){
+                    wx.showToast({
+                        title:"订单提交成功！"
+                    })
+                    setTimeout(() => {
+                        wx.redirectTo({
+                           url:"/pages/servicemenu/bindCustomInfo/main"//我的订单
+                        });
+                    }, 1000);
+                     
+
+                }
+            })
+            }
+            
+
+        },
+        closeMask(){
+            wx.redirectTo({url:"/pages/custom/order/main"})
+        },
+        //获取客户列表
+        getCustomerList(){
+            this.active=0
+            this.list=[]
+            this.isShow=true;
+            this.showType=true;
+            this.masktitle="请选择客户名称"
+            console.log(this.userId,this.token,this.curPage)
+            if(toLogin(this.curPage)){
+                post('/CustomerService/GetMemberInfo',{
+                    CsdId:this.userId,
+                    Token:this.token,
+                },this.curPage).then(res=>{
+                    console.log(res.data,"客服获取客户列表")
+                    let info={}
+                    if(res.data.length>0){
+                        for(let i=0;i<res.data.length;i++){
+                            info={
+                                name:res.data[i].NickName,
+                                Id:res.data[i].Id
+                            }
+                        }
+                        this.list.push(info)
+                    }
+                    console.log(this.list,"客户名称列表")
+                    
+                })
+            }
+        },
+        confirmArea(area){
+            this.showArea = false
+            let text = ''
+            const areas = area.mp.detail.values
+            for(let i=0;i<areas.length;i++){
+            text+=areas[i].name
+            }
+            this.provinceCode=areas[0].code||'',
+            this.cityCode=areas[1].code||'',
+            this.districtCode=areas[2].code||'',
+            this.area = text;
+
+        },
+        jiaoyan(){
+            if(!this.name){
+                return '请输入收货人'
+            }if(!(/^1[3|4|5|6|7|8][0-9]\d{4,8}$/.test(this.phone))){
+                return '请输入正确的手机号码'
+            }if(!this.area){
+                return '请选择省份'
+            }if(!this.address){
+                return '请输入收货地址'
+            }
+            return false;
+        },
+        onName(e){
+        this.name = e.mp.detail
+        },onPhone(e){
+        this.phone = e.mp.detail
+        },onAddress(e){
+        this.address = e.mp.detail
+        }
     },
 }
 </script>
