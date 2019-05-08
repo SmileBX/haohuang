@@ -1,7 +1,11 @@
 <template>
-  <div class="page">
+  <div class="page" v-if="hasData">
     <div class="orderStatus">
-      <span>{{detail.OrderStatusStr }}</span>
+      <span v-if="detail.Status==0">施工中</span>
+      <span v-if="detail.Status==1">待审核</span>
+      <span v-if="detail.Status==2">审核未通过</span>
+      <span v-if="detail.Status==3">审核已通过</span>
+      <span v-if="detail.Status==4">已完成</span>
     </div>
     <div class="orderAddr bg_fff">
       <div class="newsLogistics flex flexAlignCenter">
@@ -32,98 +36,140 @@
           <div class="box">
             <div class="outside">
               <div class="pictrueAll">
-                <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
+                <div class="pictrue img" :style="'background-image:url('+detail.OrderImg+')'"></div>
               </div>
               <div class="txtBox">
-                <p class="title text-line2">{{detail.orderType}}</p>
+                <p class="title text-line2">{{detail.OrderName}}</p>
+                <p class="type">订单类型：<span v-if="detail.OrderType===0">设计</span><span v-if="detail.OrderType===1">制作</span><span v-if="detail.OrderType===2">安装</span><span v-if="detail.OrderType===3">设计+制作</span><span v-if="detail.OrderType===4">制作+安装</span><span v-if="detail.OrderType===5">设计+制作+安装</span></p>
                 <div class="flex">
                   <div class="flex1">
-                    <p class="price">￥{{detail.ProductMoney}}</p>
+                    <p class="price"><span v-if="detail.MasterType==1">￥{{detail.Change}}</span><span v-if="detail.MasterType==0">无价格</span></p>
                   </div>
-                  <span class="buyNum">x1</span>
+                  <span class="buyNum">x{{detail.OrderNum}}</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="priceDetail">
-        <div class="flex">
-           <div class="flexItem">运费(快递)</div>
-           <div class="flex1 text_r">￥{{detail.Freight}}</div>
+    </div>
+    <div class="picList bg_fff" v-if="detail.Status==2 || detail.Status==3 || detail.Status==4">
+      <div class="item" v-if="detail.AfterPicList.length>0">
+        <h2 class="title">安装前照片</h2>
+        <div class="uploadImage clear">
+          <div
+            class="upload-img img"
+            @click="lookPic(index,detail.AfterPicList)"
+            v-for="(item,index) in detail.AfterPicList"
+            :key="index"
+            :style="'background-image:url('+item+')'"
+          ></div>
         </div>
-        <div class="flex">
-           <div class="flexItem">订单总价</div>
-           <div class="flex1 text_r">￥{{totalPrice}}</div>
+      </div>
+      <div class="item" v-if="detail.ScenePicList.length>0">
+        <h2 class="title">内部结构照片</h2>
+        <div class="uploadImage clear">
+          <div
+            class="upload-img img"
+            @click="lookPic(index,detail.ScenePicList)"
+            v-for="(item,index) in detail.ScenePicList"
+            :key="index"
+            :style="'background-image:url('+item+')'"
+          ></div>
         </div>
-        <!-- IsPay是否已付款，IsConfirm客服是否确认 -->
-        <div class="flex last-child" v-if="!detail.IsPay&&detail.IsConfirm">
-           <div class="flexItem">需付款</div>
-           <!-- OfferTotal为预计金额，客服确认后填写 -->
-           <div class="flex1 text_r"><span class="allPrice">￥{{detail.OfferTotal}}</span></div>
+      </div>
+      <div class="item" v-if="detail.FrontPicList.length>0">
+        <h2 class="title">安装后照片</h2>
+        <div class="uploadImage clear">
+          <div
+            class="upload-img img"
+            @click="lookPic(index,detail.FrontPicList)"
+            v-for="(item,index) in detail.FrontPicList"
+            :key="index"
+            :style="'background-image:url('+item+')'"
+          ></div>
         </div>
-        <div class="flex last-child" v-if="detail.IsPay">
-           <div class="flexItem">付款金额</div>
-           <div class="flex1 text_r"><span class="allPrice">￥{{detail.PayMoney}}</span></div>
+      </div>
+      <div class="item" v-if="detail.ReceiptPicList.length>0">
+        <h2 class="title">客户验收单</h2>
+        <div class="uploadImage clear">
+          <div
+            class="upload-img img"
+            @click="lookPic(index,detail.ReceiptPicList)"
+            v-for="(item,index) in detail.ReceiptPicList"
+            :key="index"
+            :style="'background-image:url('+item+')'"
+          ></div>
         </div>
       </div>
     </div>
     <!-- 订单信息 -->
     <div class="orderInfo bg_fff mb10">
-      <div class="orderInfo__hd weui-cells__title bl__weui-cells__title"><span class="title">订单信息</span></div>
+      <div class="orderInfo__hd weui-cells__title bl__weui-cells__title">
+        <span class="title">订单信息</span>
+      </div>
       <div class="orderInfo__bd">
-        <div class="item">订单编号：{{detail.orderNo }}<span class="btnCopy" @click="copy(detail.orderNo)">复制</span></div>
+        <div class="item">
+          订单编号：{{detail.OrderNo}}
+          <span class="btnCopy" @click="copy(detail.OrderNo)">复制</span>
+        </div>
         <div class="item">创建时间：{{detail.CreateTime}}</div>
         <div class="item">支付时间：{{detail.PayTime}}</div>
-        <div class="item">发货时间：{{detail.Fahuodate}}</div>
-        <div class="item">分配师傅{{detail.InstallTime}}</div>
-        <div class="item">完成时间：{{detail.EndTime}}</div>
+        <div class="item">接单时间：{{detail.ReceiptTime}}</div>
+        <div class="item" v-if="detail.Status==0">预计完成：{{detail.EstimateTime}}</div>
+        <div class="item" v-if="detail.Status==4">完成时间：{{detail.EndTime}}</div>
       </div>
     </div>
 
     <!-- 底部 -->
     <div class="ftBtn ftBtns">
       <div class="inner flex fixed bm0 bg_fff border-box justifyContentEnd">
-        <!-- IsPay是否支付 -->
-        <div class="btn btn-active" v-if="detail.IsPay==0">取消订单</div>
-        <!-- 客服是否确认IsConfirm -->
-        <div class="btn btn-active"  v-if="detail.IsConfirm==0">修改价格</div>
-        <div class="btn linear" v-if="detail.IsConfirm==0">确认订单</div>
-        <div class="btn linear" v-if="detail.IsConfirm==1&&detail.IsPay==0">已付款</div>
-        <!-- <div class="btn btn-active" v-if="detail.OrderStatus===0">设计确认</div> -->
-        <div class="btn btn-active" v-if="detail.OrderStatus==4">确认收货</div>
-        <div class="btn linear" v-if="detail.OrderStatus==8">评论</div>
-        <div class="btn btn-active" v-if="detail.OrderStatus==9">删除订单</div>
+        <!-- 施工中 -->
+
+        <div class="btn linear" v-if="detail.Status==0" @click="gotoSmVerify">提交审核</div>
+        <div class="btn linear" v-if="detail.Status==3">重新提交</div>
+        <div
+          class="btn btn-active"
+          v-if="detail.Status==0 || detail.Status==1 || detail.Status==2 || detail.Status==3"
+        >联系客户</div>
+        <div class="btn btn-active">联系客服</div>
       </div>
     </div>
   </div>
 </template>
 <script>
-//"AuditStatus": 0,  //状态 0-已接单(施工中),1-待审核(已安装) ,2-审核通过, 3-审核拒绝, 4-订单完成
-import { post, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
+//"Status": "0",--状态 0-已接单(施工中),1-待审核(已安装) ,2-审核通过(结算薪资和积分), 3-审核拒绝, 4-订单完成
+//订单类型 --0:设计,1:制作,2:安装,3:设计-制作,4:制作-安装,5:设计-制作-安装
+//"MasterType": 0,--安装师傅所属类型 0-公司内部 1-公司外部
+import {
+  post,
+  toLogin,
+  getCurrentPageUrlWithArgs,
+  previewImage
+} from "@/utils";
 export default {
   data() {
     return {
-      UserId:'',
-      Token:'',
+      UserId: "",
+      Token: "",
       curPage: "",
-      orderId:'',
-      detail:'',
-      totalPrice:0,
+      orderId: "",
+      detail: {},
+      hasData: false
     };
   },
   onLoad() {
     this.setBarTitle();
   },
   onShow() {
-    this.UserId = wx.getStorageSync('userId');
-    this.Token = wx.getStorageSync('token');
+    this.UserId = wx.getStorageSync("userId");
+    this.Token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
     console.log(this.$root.$mp.query.orderId);
-    if(this.$root.$mp.query.orderId){
-    this.orderId = this.$root.$mp.query.orderId;
+    if (this.$root.$mp.query.orderId) {
+      this.orderId = this.$root.$mp.query.orderId;
+      this.getData();
     }
-    this.getData();
   },
   methods: {
     setBarTitle() {
@@ -131,41 +177,95 @@ export default {
         title: "订单详情"
       });
     },
-    getData(){
+    lookPic(index, picArr) {
+      //预览图片
+      previewImage(index, picArr);
+    },
+    gotoSmVerify() {
       let that = this;
-      post('InstalMaster/GetInstallOrderInfo',{
-        MasterId:that.UserId,
-        Token:that.Token,
-        ProgressId:that.orderId
-      }).then(res => {
-        console.log(res)
-      that.detail = res.data;
-      // 邮费
-      that.detail.Freight = res.data.Freight.toFixed(2);
-      // 预计价格
-      that.detail.OfferTotal = res.data.OfferTotal.toFixed(2);
-      // 支付金额
-      that.detail.PayMoney = res.data.PayMoney.toFixed(2);
-      // 材料金额
-      that.detail.ProductMoney = res.data.ProductMoney.toFixed(2);
-      // 订单总价totalPrice
-      that.totalPrice = (res.data.ProductMoney*1+res.data.Freight*1).toFixed(2);
-      })
-      
-  },
-  copy(orderNo){
-    wx.setClipboardData({
-      data:orderNo,
-      success(){
-        wx.showToast({
-          title:'复制成功！'
-        })
-      },
-      fail(err){
-        console.log(err)
-      }
-    })
-  }
+      //跳转到提交审核
+      wx.navigateTo({
+        url: "/pages/master/smVerify/main?orderId="+that.orderId
+      });
+    },
+    getData() {
+      let that = this;
+      post(
+        "InstalMaster/GetInstallOrderInfo",
+        {
+          MasterId: that.UserId,
+          Token: that.Token,
+          ProgressId: that.orderId
+        },
+        that.curPage
+      ).then(res => {
+        if (res.code === 0) {
+          if (res.data.AfterPicList !== "") {
+            //安装前图片列表
+            that.$set(
+              res.data,
+              "AfterPicList",
+              res.data.AfterPicList.split(",")
+            );
+          }
+          if (res.data.FrontPicList !== "") {
+            //安装后图片
+            that.$set(
+              res.data,
+              "FrontPicList",
+              res.data.FrontPicList.split(",")
+            );
+          }
+          if (res.data.ReceiptPicList !== "") {
+            //验收图片
+            that.$set(
+              res.data,
+              "ReceiptPicList",
+              res.data.ReceiptPicList.split(",")
+            );
+          }
+          if (res.data.ReferencePicList !== "") {
+            //参考图片列表
+            that.$set(
+              res.data,
+              "ReferencePicList",
+              res.data.ReferencePicList.split(",")
+            );
+          }
+          if (res.data.GuidancePicList !== "") {
+            //指导图片列表
+            that.$set(
+              res.data,
+              "GuidancePicList",
+              res.data.GuidancePicList.split(",")
+            );
+          }
+          if (res.data.ScenePicList !== "") {
+            //现场图片列表
+            that.$set(
+              res.data,
+              "ScenePicList",
+              res.data.ScenePicList.split(",")
+            );
+          }
+          that.detail = res.data;
+          that.hasData = true;
+        }
+      });
+    },
+    copy(orderNo) {
+      wx.setClipboardData({
+        data: orderNo,
+        success() {
+          wx.showToast({
+            title: "复制成功！"
+          });
+        },
+        fail(err) {
+          console.log(err);
+        }
+      });
+    }
   }
 };
 </script>

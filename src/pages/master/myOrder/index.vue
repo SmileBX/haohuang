@@ -67,9 +67,10 @@
           </div>
           <div class="item__ft">
             <div class="button active" v-if="list.AuditStatus===0">联系客户</div>
-            <div class="button active" v-if="list.AuditStatus===1">联系客服</div>
-            <div class="button active" v-if="list.AuditStatus===2 || list.AuditStatus===4">删除订单</div>
+            <div class="button active" v-if="list.AuditStatus===0">提交审核</div>
+            <div class="button active" v-if="list.AuditStatus===4">删除订单</div>
             <div class="button active" v-if="list.AuditStatus===3">重新提交</div>
+            <div class="button active">联系客服</div>
           </div>
         </div>
         <!-- 数据状态提示节点 -->
@@ -139,6 +140,7 @@ export default {
     // 客服--订单状态：-1全部，0-待确认，1-待付款 7-已执行(安装中) 8-待评论9-已完成
     // 客户--订单状态：-1全部，0-待确认，1-待付款，2-处理中，10-待评论
     //师傅的---订单状态：-1全部，0-已接单(施工中),1-待审核(已安装) ,2-审核通过, 3-审核拒绝, 4-订单完成
+    //订单类型 --0:设计,1:制作,2:安装,3:设计-制作,4:制作-安装,5:设计-制作-安装
     if (this.$root.$mp.query.typeNo) {
       this.typeNo = this.$root.$mp.query.typeNo * 1;
     }

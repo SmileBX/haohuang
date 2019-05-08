@@ -70,7 +70,6 @@
 //     padding-top: 18rpx;
 //     border-top: 1px solid #e5e5e5;
 // }
-
 // .priceDetail .flex:last-child:after {
 //     width: 24rpx;
 //     height: 24rpx;
@@ -83,7 +82,6 @@
 //     z-index: 2;
 //     background: #fff;
 // }
-
 // .priceDetail .flex:last-child:before {
 //     position: absolute;
 //     width: 60rpx;
@@ -173,4 +171,13 @@
     border-radius: 8rpx;
     height: 170rpx;
     margin-top: 20rpx;
+}
+
+.picList {
+    padding: 14rpx 0;
+}
+
+.picList .item .title {
+    padding: 20rpx 30rpx 0;
+    font-size: 30rpx;
 }

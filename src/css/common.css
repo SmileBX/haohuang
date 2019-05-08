@@ -895,7 +895,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 }
 
 .levelPanel .item .outside .pictrueAll {
-    width: 25%;
+    width: 22%;
     margin-bottom: 0;
     margin-right: 20rpx;
 }
@@ -953,6 +953,12 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 .levelPanel .item .outside .txtBox .progressLine .right .btn.btn-disable {
     border: 1px solid #ccc !important;
     background: #ccc;
+}
+
+.levelPanel .item .outside .txtBox .type {
+    font-size: 26rpx;
+    color: #999;
+    margin-bottom: 8rpx;
 }
 
 .levelPanel .item .outside .txtBox .skuBox {
@@ -1155,20 +1161,20 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 }
 
 .ftBtns {
-    height: 116rpx;
+    height: 106rpx;
 }
 
 .ftBtns .btn {
-    width: 170rpx;
+    width: 160rpx;
     text-align: center;
-    line-height: 68rpx;
+    line-height: 60rpx;
     border-radius: 200rpx;
     margin-left: 30rpx;
 }
 
 .ftBtns .inner {
-    padding-top: 20rpx;
-    padding-bottom: 20rpx;
+    padding-top: 16rpx;
+    padding-bottom: 16rpx;
     border-top: 1px solid #ececec;
 }
 

@@ -2,17 +2,22 @@
   <div class="page">
     <!-- 订单的 -->
     <div class="column levelPanel">
-      <div class="item">
+      <div class="item" v-if="hasData">
         <div class="item__bd">
           <div class="box">
             <div class="outside">
               <div class="pictrueAll">
-                <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
+                <div class="pictrue img" :style="'background-image:url('+detail.OrderImg+')'"></div>
               </div>
               <div class="txtBox">
-                <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
-                <p class="price">￥1888.00</p>
-                <p class="time">完成时间：2018-04-28 18:30:15</p>
+                <p class="title text-line2">{{detail.OrderName}}</p>
+                <p class="type">订单类型：<span v-if="detail.OrderType===0">设计</span><span v-if="detail.OrderType===1">制作</span><span v-if="detail.OrderType===2">安装</span><span v-if="detail.OrderType===3">设计+制作</span><span v-if="detail.OrderType===4">制作+安装</span><span v-if="detail.OrderType===5">设计+制作+安装</span></p>
+                <div class="flex">
+                  <div class="flex1">
+                    <p class="price"><span v-if="detail.MasterType==1">￥{{detail.Change}}</span><span v-if="detail.MasterType==0">无价格</span></p>
+                  </div>
+                  <span class="buyNum">x{{detail.OrderNum}}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -77,6 +82,7 @@
           <div class="upload-img img" style="background-image:url(/static/images/of/a1.png)"></div>
         </div>
       </div>
+      <!-- 内部师傅才有的 -->
       <div class="eaditFrom weui-cells noBorder__weui-cells mt0 pb20">
         <div class="weui-cell">
           <div class="weui-cell__hd">
@@ -120,19 +126,131 @@
   </div>
 </template>
 <script>
+//订单类型 --0:设计,1:制作,2:安装,3:设计-制作,4:制作-安装,5:设计-制作-安装 
+import { post, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
 import "@/css/dd_style.css";
 export default {
   onLoad() {
     this.setBarTitle();
   },
-  onShow() {},
+  onShow() {
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
+    this.curPage = getCurrentPageUrlWithArgs();
+    if (this.$root.$mp.query.orderId) {
+      this.orderId = this.$root.$mp.query.orderId;
+      this.getData();
+    }
+  },
   data() {
-    return {};
+    return {
+      userId: "",
+      token: "",
+      curPage: "",
+      orderId: "",
+      detail: {},
+      hasData: false,
+      frontPicList: "", //安装前图片
+      afterPicList: "", //安装后图片
+      receiptPicList: "", //验收单据图片
+      insidePicList: "", //内部结构图片
+      progressInfoList: "" //明细
+    };
   },
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "提交审核"
+      });
+    },
+    getData() {  //获取订单信息
+      let that = this;
+      post(
+        "InstalMaster/GetInstallOrderInfo",
+        {
+          MasterId: that.userId,
+          Token: that.token,
+          ProgressId: that.orderId
+        },
+        that.curPage
+      ).then(res => {
+        if (res.code === 0) {
+          if (res.data.AfterPicList !== "") {
+            //安装前图片列表
+            that.$set(
+              res.data,
+              "AfterPicList",
+              res.data.AfterPicList.split(",")
+            );
+          }
+          if (res.data.FrontPicList !== "") {
+            //安装后图片
+            that.$set(
+              res.data,
+              "FrontPicList",
+              res.data.FrontPicList.split(",")
+            );
+          }
+          if (res.data.ReceiptPicList !== "") {
+            //验收图片
+            that.$set(
+              res.data,
+              "ReceiptPicList",
+              res.data.ReceiptPicList.split(",")
+            );
+          }
+          if (res.data.ReferencePicList !== "") {
+            //参考图片列表
+            that.$set(
+              res.data,
+              "ReferencePicList",
+              res.data.ReferencePicList.split(",")
+            );
+          }
+          if (res.data.GuidancePicList !== "") {
+            //指导图片列表
+            that.$set(
+              res.data,
+              "GuidancePicList",
+              res.data.GuidancePicList.split(",")
+            );
+          }
+          if (res.data.ScenePicList !== "") {
+            //现场图片列表
+            that.$set(
+              res.data,
+              "ScenePicList",
+              res.data.ScenePicList.split(",")
+            );
+          }
+          that.detail = res.data;
+          that.hasData = true;
+        }
+      });
+    },
+    AddInstallOrder() {
+      let that = this;
+      post(
+        "InstalMaster/AddInstallOrder",
+        {
+          UserId: that.userId,
+          Token: that.token,
+          ProgressId: that.orderId,
+          FrontPicList: that.frontPicList,
+          AfterPicList: that.afterPicList,
+          ReceiptPicList: that.receiptPicList,
+          InsidePicList: that.insidePicList,
+          ProgressInfoList: that.progressInfoList
+        },
+        that.curPage
+      ).then(result => {
+        if (result.code === 0) {
+          wx.showToast({
+            title: "提交审核成功!",
+            icon: "success",
+            duration: 1500
+          });
+        }
       });
     }
   }
