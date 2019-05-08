@@ -267,7 +267,17 @@ export default {
     this.setBarTitle();
     this.imgBase= []
     this.imgPathArr= []
-    this.isShowBtnUpload= true
+    this.proitem={
+      orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],isShowBtnUpload:true,
+      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:""
+    },
+    this.prolist=[
+      {
+      orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],
+      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,
+      },
+    ]
+    
   },
   onShow(){
         this.curPage = getCurrentPageUrlWithArgs();
@@ -275,16 +285,7 @@ export default {
         this.userId = wx.getStorageSync("userId");
         this.token = wx.getStorageSync("token");
         this.page=1
-        this.proitem={
-          orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:""
-        },
-        this.prolist=[
-          {
-         orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:""
-          },
-        ],
+        
         this.list=[],
         this.typelist=[],//orderTypeName类型...
         this.kuaidiList=[],//快递种类
@@ -293,7 +294,7 @@ export default {
         this.allPage=0,//总页数
         this.count=0,//总数
         this.isLoad=false,
-        this.isShowBtnUpload= true,//显示上传按钮的状态
+        // this.isShowBtnUpload= true,//显示上传按钮的状态
         this.imgLenght=10,
         this.adressId='', //地址编号
         this.logisticsType=3    //物流类型 0-快递 1-物流 2-自提
@@ -407,12 +408,13 @@ export default {
         tip:0,//点击增加明细增加子订单的次数标识
         proitem:{
           orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:""
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true
         },
         prolist:[
           {
          orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:""
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",
+          isShowBtnUpload:true
           },
         ],
         list:[],
@@ -424,7 +426,7 @@ export default {
         allPage:0,//总页数
         count:0,//总数
         isLoad:false,
-        isShowBtnUpload: true,//显示上传按钮的状态
+        // isShowBtnUpload: true,//显示上传按钮的状态
         // imgPathArr: [],
         // imgBase: [],
         imgLenght:10,
@@ -687,9 +689,9 @@ export default {
       console.log(this.prolist[n].referencePicList.length,'that.prolist[n].referencePicList1111111111')
         // 判断是否大于图片最大数量
         if (this.prolist[n].referencePicList.length === this.imgLenght*1) {
-          this.isShowBtnUpload = false;
+          this.prolist[n].isShowBtnUpload = false;
         }else{
-          this.isShowBtnUpload = true;
+          this.prolist[n].isShowBtnUpload = true;
         }
         // 根据临时路径数组imgPathArr获取base64图片
         for (let i = 0; i < this.prolist[n].referencePicList.length; i++) {
@@ -710,8 +712,8 @@ export default {
       this.prolist[n].imgBase.splice(i, 1);
       this.prolist[n].referencePicList.splice(i, 1);
       if (this.prolist[n].referencePicList.length < this.imgLenght*1) {
-        this.isShowBtnUpload = null;
-        this.isShowBtnUpload = true;
+        this.prolist[n].isShowBtnUpload = null;
+        this.prolist[n].isShowBtnUpload = true;
       }
       this.updateImg(n)
     },
