@@ -65,13 +65,42 @@
     position: relative;
 }
 
-.priceDetail .flex:last-child {
+// .priceDetail .flex:last-child {
+//     margin-top: 18rpx;
+//     padding-top: 18rpx;
+//     border-top: 1px solid #e5e5e5;
+// }
+
+// .priceDetail .flex:last-child:after {
+//     width: 24rpx;
+//     height: 24rpx;
+//     border: 1px solid #e5e5e5;
+//     transform: rotate(-45deg);
+//     top: -12rpx;
+//     content: "";
+//     right: 60rpx;
+//     position: absolute;
+//     z-index: 2;
+//     background: #fff;
+// }
+
+// .priceDetail .flex:last-child:before {
+//     position: absolute;
+//     width: 60rpx;
+//     height: 20rpx;
+//     content: "";
+//     background: #fff;
+//     top: 0;
+//     right: 50rpx;
+//     z-index: 3;
+// }
+.priceDetail .flex.last-child {
     margin-top: 18rpx;
     padding-top: 18rpx;
     border-top: 1px solid #e5e5e5;
 }
 
-.priceDetail .flex:last-child:after {
+.priceDetail .flex.last-child:after {
     width: 24rpx;
     height: 24rpx;
     border: 1px solid #e5e5e5;
@@ -84,7 +113,7 @@
     background: #fff;
 }
 
-.priceDetail .flex:last-child:before {
+.priceDetail .flex.last-child:before {
     position: absolute;
     width: 60rpx;
     height: 20rpx;

@@ -4,8 +4,6 @@
         "pages/news/main",
         "pages/my/main",
         "pages/myInfo/main",
-        "pages/orderDetail/main",
-        "pages/myOrder/main",
         "pages/feedback/main",
         "pages/newsList/main",
         "pages/newsDetail/main",
@@ -35,7 +33,9 @@
                 "integral/main",
                 "depositmoney/main",
                 "account/main",
-                "withdrawRecord/main"
+                "withdrawRecord/main",
+                "myOrder/main",
+                "orderDetail/main"
             ]
         },
         {
@@ -55,6 +55,8 @@
                 "installOrder/main",
                 "bindCustomInfo/main",
                 "customeOrder/main",
+                "orderDetail/main",
+                "myOrder/main",
                 "makeOrder/main"
             ]
         }

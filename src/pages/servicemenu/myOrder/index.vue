@@ -64,24 +64,43 @@
             </div>-->
           </div>
           <div class="item__ft">
-            <div class="button" v-if="list.OrderStatus===0">取消订单</div>
+            <!-- <div class="button" v-if="list.OrderStatus===0">取消订单</div>
             <div class="button active" v-if="list.OrderStatus===1">付款</div>
             <div class="button active" v-if="list.OrderStatus===0">联系客服</div>
-            <div class="button active" v-if="list.OrderStatus===8">去评价</div>
+            <div class="button active" v-if="list.OrderStatus===8">去评价</div> -->
+
+            <!-- IsPay是否支付 -->
+            <div class="button active" v-if="list.OrderStatus==0||list.OrderStatus==1" @click="cancelOrderWindowStatus = true;editOrderId=list.Id">取消订单</div>
+            <!-- 客服是否确认IsConfirm -->
+            <!-- <div class="button active"  v-if="list.IsConfirm==0">修改价格</div> -->
+            <!-- <div class="button linear" v-if="list.IsConfirm==0">确认订单</div> -->
+            <!-- <div class="button linear" v-if="list.IsConfirm==1&&list.IsPay==0">已付款</div> -->
+            <!-- <div class="button active" v-if="list.OrderStatus===0">设计确认</div> -->
+             <div class="button active" v-if="list.OrderStatus==4">确认收货</div>
+            <!--<div class="button linear" v-if="list.OrderStatus==8">评论</div> -->
+            <div class="button active" v-if="list.OrderStatus==9">删除订单</div>
           </div>
         </div>
+        
         <!-- 数据状态提示节点 -->
         <div v-if="orderList.length<1" style="text-align:center;margin-top:300rpx;font-size:24rpx;color:#999;">暂时没有数据哦!</div>
         <div v-if="orderListEnd&&page!==1" style="text-align:center;font-size:24rpx;line-height:40rpx;padding-bottom:10rpx;color:#999;">已经到底了哦!</div>
       </div>
     </div>
+    
+        <!-- 取消订单弹窗 -->
+        <CancelOrderWindow :cancelOrderWindowStatus.sync="cancelOrderWindowStatus"
+        @success="closeContent" :refuseContent.sync="refuseContent"
+        ></CancelOrderWindow>
   </div>
 </template>
 <script>
 import "@/css/common.css";
 import areaList from '@/utils/areaList'
+import CancelOrderWindow from '@/components/cancelOrderWindow.vue'
 import { post } from "@/utils/index";
 export default {
+  components:{CancelOrderWindow},
   data() {
     return {
       UserId: "",
@@ -117,6 +136,10 @@ export default {
       ],
       orderList:[],
       orderListEnd:false, //提示数据到底了
+      // 取消订单
+      cancelOrderWindowStatus:false,
+      refuseContent:'',
+      editOrderId:''
     };
   },
   onLoad() {
@@ -153,7 +176,8 @@ export default {
         page: this.page,
         pageSize: this.pageSize,
         Region: this.searchRegionCode,
-        orderStatus: this.typeNo
+        orderStatus: this.typeNo,
+        IsService:1 //查询订单分类，0--用户的下单；1--客服的下单
       });
       if(res.data.length!==this.pageSize){
         this.orderListEnd = true;
@@ -191,9 +215,22 @@ export default {
     // 跳转到订单详情
     gotoDetail(orderId){
       wx.navigateTo({
-        url:`/pages/orderDetail/main?orderId=${orderId}`
+        url:`/pages/servicemenu/orderDetail/main?orderId=${orderId}`
       })
-    }
+    },
+    // 取消订单的内容
+    async closeContent(){
+      console.log(this.refuseContent,'取消内容')
+      const res = post('CustomerService/KfOrderCancel',{
+        CsdId:this.UserId,
+        Token:this.Token,
+        OrderNo:this.editOrderId,
+        RefuseContent:this.refuseContent
+      })
+      this.cancelOrderWindowStatus = false;
+      this.refuseContent=''
+      console.log(res.data,'取消成功')
+    },
   },
     // 上拉加载
     onReachBottom(){
@@ -211,4 +248,5 @@ export default {
 </script>
 <style lang='scss' scoped>
 @import "./style";
+
 </style>

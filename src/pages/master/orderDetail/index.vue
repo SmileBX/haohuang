@@ -54,13 +54,15 @@
         </div>
         <div class="flex">
            <div class="flexItem">订单总价</div>
-           <div class="flex1 text_r">￥{{detail.OfferTotal}}</div>
+           <div class="flex1 text_r">￥{{totalPrice}}</div>
         </div>
-        <div class="flex">
+        <!-- IsPay是否已付款，IsConfirm客服是否确认 -->
+        <div class="flex last-child" v-if="!detail.IsPay&&detail.IsConfirm">
            <div class="flexItem">需付款</div>
-           <div class="flex1 text_r"><span class="allPrice">￥1288.00</span></div>
+           <!-- OfferTotal为预计金额，客服确认后填写 -->
+           <div class="flex1 text_r"><span class="allPrice">￥{{detail.OfferTotal}}</span></div>
         </div>
-        <div class="flex">
+        <div class="flex last-child" v-if="detail.IsPay">
            <div class="flexItem">付款金额</div>
            <div class="flex1 text_r"><span class="allPrice">￥{{detail.PayMoney}}</span></div>
         </div>
@@ -70,7 +72,7 @@
     <div class="orderInfo bg_fff mb10">
       <div class="orderInfo__hd weui-cells__title bl__weui-cells__title"><span class="title">订单信息</span></div>
       <div class="orderInfo__bd">
-        <div class="item">订单编号：{{detail.orderNo }}<span class="btnCopy" @click="copy">复制</span></div>
+        <div class="item">订单编号：{{detail.orderNo }}<span class="btnCopy" @click="copy(detail.orderNo)">复制</span></div>
         <div class="item">创建时间：{{detail.CreateTime}}</div>
         <div class="item">支付时间：{{detail.PayTime}}</div>
         <div class="item">发货时间：{{detail.Fahuodate}}</div>
@@ -78,66 +80,50 @@
         <div class="item">完成时间：{{detail.EndTime}}</div>
       </div>
     </div>
-    <!-- 订单已取消的时候 -->
-    <div class="weui-cell bg_fff mb10" style="line-height:1.8;">
-      <div class="weui-cell__bd">
-        <span>同意退款</span>
-      </div>
-      <div class="weui-cell__ft">
-        <span class="msg" style="color:#999;">待财务退款</span>
-      </div>
-    </div>
-    <!-- 不同意取消的时候 -->
-    <div class="disagree bg_fff">
-      <h2 class="title">不同意取消</h2>
-      <div class="area">已生成制作完成，不可取消</div>
-      <h2 class="title">图片上传</h2>
-      <div class="uploadImage clear">
-        <div class="upload-img img" style="background-image:url(/static/images/of/a1.png)"></div>
-        <div class="upload-img img" style="background-image:url(/static/images/of/a1.png)"></div>
-        <div class="upload-img img" style="background-image:url(/static/images/of/a1.png)"></div>
-        <div class="upload-img img" style="background-image:url(/static/images/of/a1.png)"></div>
-      </div>
-    </div>
-    <!-- 在线客服 -->
-    <div class="weui-cell bg_fff mb10" style="line-height:1.8;">
-      <div class="weui-cell__bd">
-        <img src="/static/images/icons/kf.png" class="kfIcon" alt="">
-        <span>在线客服</span>
-      </div>
-    </div>
+
     <!-- 底部 -->
     <div class="ftBtn ftBtns">
       <div class="inner flex fixed bm0 bg_fff border-box justifyContentEnd">
-        <div class="btn btn-active">取消订单</div>
-        <div class="btn linear">付款</div>
+        <!-- IsPay是否支付 -->
+        <div class="btn btn-active" v-if="detail.IsPay==0">取消订单</div>
+        <!-- 客服是否确认IsConfirm -->
+        <div class="btn btn-active"  v-if="detail.IsConfirm==0">修改价格</div>
+        <div class="btn linear" v-if="detail.IsConfirm==0">确认订单</div>
+        <div class="btn linear" v-if="detail.IsConfirm==1&&detail.IsPay==0">已付款</div>
+        <!-- <div class="btn btn-active" v-if="detail.OrderStatus===0">设计确认</div> -->
+        <div class="btn btn-active" v-if="detail.OrderStatus==4">确认收货</div>
+        <div class="btn linear" v-if="detail.OrderStatus==8">评论</div>
+        <div class="btn btn-active" v-if="detail.OrderStatus==9">删除订单</div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import {post} from '@/utils/index'
+//"AuditStatus": 0,  //状态 0-已接单(施工中),1-待审核(已安装) ,2-审核通过, 3-审核拒绝, 4-订单完成
+import { post, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
 export default {
-  onLoad() {
-    this.setBarTitle();
-  },
-  onShow() {
-    this.UserId = wx.getStorageSync('userId')
-    this.Token = wx.getStorageSync('token')
-    console.log(this.$root.$mp.query.orderId)
-    if(this.$root.$mp.query.orderId){
-    this.orderId = this.$root.$mp.query.orderId
-    }
-    this.getData()
-  },
   data() {
     return {
       UserId:'',
       Token:'',
+      curPage: "",
       orderId:'',
       detail:'',
-
+      totalPrice:0,
     };
+  },
+  onLoad() {
+    this.setBarTitle();
+  },
+  onShow() {
+    this.UserId = wx.getStorageSync('userId');
+    this.Token = wx.getStorageSync('token');
+    this.curPage = getCurrentPageUrlWithArgs();
+    console.log(this.$root.$mp.query.orderId);
+    if(this.$root.$mp.query.orderId){
+    this.orderId = this.$root.$mp.query.orderId;
+    }
+    this.getData();
   },
   methods: {
     setBarTitle() {
@@ -145,16 +131,41 @@ export default {
         title: "订单详情"
       });
     },
-    async getData(){
-      const res = await post('CustomerService/OrderInfo',{
-        CsdId:this.UserId,
-        Token:this.Token,
-        // OrderNo:this.orderId
-        OrderNo:1025
+    getData(){
+      let that = this;
+      post('InstalMaster/GetInstallOrderInfo',{
+        MasterId:that.UserId,
+        Token:that.Token,
+        ProgressId:that.orderId
+      }).then(res => {
+        console.log(res)
+      that.detail = res.data;
+      // 邮费
+      that.detail.Freight = res.data.Freight.toFixed(2);
+      // 预计价格
+      that.detail.OfferTotal = res.data.OfferTotal.toFixed(2);
+      // 支付金额
+      that.detail.PayMoney = res.data.PayMoney.toFixed(2);
+      // 材料金额
+      that.detail.ProductMoney = res.data.ProductMoney.toFixed(2);
+      // 订单总价totalPrice
+      that.totalPrice = (res.data.ProductMoney*1+res.data.Freight*1).toFixed(2);
       })
-      console.log(res)
-      this.detail = res.data
-    }
+      
+  },
+  copy(orderNo){
+    wx.setClipboardData({
+      data:orderNo,
+      success(){
+        wx.showToast({
+          title:'复制成功！'
+        })
+      },
+      fail(err){
+        console.log(err)
+      }
+    })
+  }
   }
 };
 </script>

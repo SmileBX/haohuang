@@ -566,7 +566,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 /* tab */
 
 .tabBarBox {
-    height: 68rpx;
+    height: 88rpx;
 }
 
 .tabBar {
@@ -670,7 +670,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     padding: 14rpx 30rpx;
     background: #fff;
     left: 0;
-    align-items:center;
+    align-items: center;
 }
 
 .search .weui-input {
@@ -1139,8 +1139,9 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     border: 1px solid #f2f2f2;
     font-size: 32rpx;
     text-align: center;
-    border-radius: 8rpx;
-    line-height: 90rpx;
+    border-radius: 16rpx;
+    line-height: 80rpx;
+    padding: 0 5rpx;
 }
 
 .ftBtn .btn.btn-active {
