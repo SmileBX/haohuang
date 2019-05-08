@@ -24,10 +24,18 @@
         <div v-for="(item,lindex) in prolist" :key="lindex">
               <!--子no1-->
               <div class="weui-cells smDetail__weui-cells" style="padding-top:10rpx;">
-                <div class="select__weui-cells flex  flexAlignCenter">
+                <!-- <div class="select__weui-cells flex  flexAlignCenter">
                   <div class="weui-cells__title">项目名称:</div>
                   <div class="flex1">
                     <input type="text" class="weui-input" placeholder="请输入（必填）" style="margin-left:20rpx;" v-model="item.orderName">
+                  </div>
+                </div> -->
+                <div class="select__weui-cells" >
+                  <div class="weui-cells__title">项目名称</div>
+                  <div class="ipt flex flexAlignCenter">
+                    <div class="flex1">
+                      <input type="text"  class="weui-input" placeholder="请输入（必填）" v-model="item.orderName">
+                    </div>
                   </div>
                 </div>
                 <div class="select__weui-cells" @click="choseType(lindex) ">
@@ -267,19 +275,34 @@ export default {
         this.userId = wx.getStorageSync("userId");
         this.token = wx.getStorageSync("token");
         this.page=1
-        this.speclong = ""
-        this.specwide = ""
-        this.spechign = ""
-        this.specnum = ""
-        this.orderTypeName = ""
-        this.referencePicList = ""
-        this.estimateTime = ""
-        this.remark = ""
-        this.offerTotal = ""
+        this.proitem={
+          orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:""
+        },
+        this.prolist=[
+          {
+         orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:""
+          },
+        ],
+        this.list=[],
+        this.typelist=[],//orderTypeName类型...
+        this.kuaidiList=[],//快递种类
+        this.addressinfo=[],//默认的收货地址
+        this.pageSize=10,//制作材料 安装材料
+        this.allPage=0,//总页数
+        this.count=0,//总数
+        this.isLoad=false,
+        this.isShowBtnUpload= true,//显示上传按钮的状态
+        this.imgLenght=10,
+        this.adressId='', //地址编号
+        this.logisticsType=3    //物流类型 0-快递 1-物流 2-自提
         this.tip=0
         this.active = 0
         this.addressinfo=[]
-        // this.postMsg = '选择快递'
+        this.showPaymask=false
+        this.isShow=false
+        this.postMsg = '选择快递'
 
         //获取收货地址
         if(this.$root.$mp.query.url){
@@ -293,12 +316,13 @@ export default {
 
             })
             this.adressId=_address.id
-           // console.log( this.addressinfo.length)
+            console.log( this.addressinfo.length,"收货地址长度--选择")
         }else{
             this.getDefaultAddress()
+            
         }
         // wx.setStorageSync("addressinfo",' ')
-        
+       console.log( this.addressinfo.length,"默认收货地址长度")
   },
   computed:{
       Total(){  //总计
@@ -700,14 +724,21 @@ export default {
             Token:this.token,
             IsDefault:1
           },this.curPage).then(res=>{
-            this.addressinfo.push({
-              name:res.data.name,
-              tel:res.data.tel,
-              address:res.data.shopname,
-              addressinfo:res.data.addressinfo
-            })
-            this.adressId=res.data.id
-            console.log(this.addressinfo,"默认收货地址")
+            console.log(res.data.length,"地址相关")
+            if(res.data.length>0){
+                this.addressinfo.push({
+                    name:res.data.name,
+                    tel:res.data.tel,
+                    address:res.data.shopname,
+                    addressinfo:res.data.addressinfo
+                })
+                this.adressId=res.data.id
+                console.log(this.addressinfo,"默认收货地址")
+                console.log( this.addressinfo.length,"默认收货地址长度")
+            }else{
+                this.addressinfo=[]
+            }
+            
           })
         } 
     },
