@@ -70,7 +70,7 @@
             <div class="button active" v-if="list.OrderStatus===8">去评价</div> -->
 
             <!-- IsPay是否支付 -->
-            <div class="button active" v-if="list.OrderStatus==0||list.OrderStatus==1" @click="cancelOrderWindowStatus = true;editOrderId=list.Id">取消订单</div>
+            <div class="button" v-if="list.OrderStatus==0||list.OrderStatus==1" @click="showCancelOrder(list.Id)">取消订单</div>
             <!-- 客服是否确认IsConfirm -->
             <!-- <div class="button active"  v-if="list.IsConfirm==0">修改价格</div> -->
             <!-- <div class="button linear" v-if="list.IsConfirm==0">确认订单</div> -->
@@ -78,7 +78,7 @@
             <!-- <div class="button active" v-if="list.OrderStatus===0">设计确认</div> -->
              <div class="button active" v-if="list.OrderStatus==4">确认收货</div>
             <!--<div class="button linear" v-if="list.OrderStatus==8">评论</div> -->
-            <div class="button active" v-if="list.OrderStatus==9">删除订单</div>
+            <!-- <div class="button active" v-if="list.OrderStatus==9">删除订单</div> -->
           </div>
         </div>
         
@@ -126,7 +126,7 @@ export default {
           typeNo: 1
         },
         {
-          name: "安装中",
+          name: "处理中",
           typeNo: 7
         },
         {
@@ -218,6 +218,21 @@ export default {
         url:`/pages/servicemenu/orderDetail/main?orderId=${orderId}`
       })
     },
+    
+    // 展示取消订单窗口
+    showCancelOrder(id){
+      const that =this;
+      wx.showModal({
+        content:'您的订单尚未付款成功，确认要取消本订单吗？',
+        confirmColor:'#ff662a',
+        success(res){
+          if(res.confirm){
+            that.cancelOrderWindowStatus = true;
+            that.editOrderId=id
+          }
+        }
+      })
+    },
     // 取消订单的内容
     async closeContent(){
       console.log(this.refuseContent,'取消内容')
@@ -229,6 +244,7 @@ export default {
       })
       this.cancelOrderWindowStatus = false;
       this.refuseContent=''
+      this.init()
       console.log(res.data,'取消成功')
     },
   },

@@ -121,7 +121,7 @@
           <input
             type="number"
             class="weui-input"
-            v-model="item.jiaotong"
+            v-model="item.TrafficMoney"
             placeholder="请输入安装所需的交通费用"
           >
         </div>
@@ -131,7 +131,7 @@
           <label class="weui-label">餐费</label>
         </div>
         <div class="weui-cell__bd">
-          <input type="number" class="weui-input" v-model="item.canfei" placeholder="请输入安装所需的餐费">
+          <input type="number" class="weui-input" v-model="item.Meals" placeholder="请输入安装所需的餐费">
         </div>
       </div>
       <div class="weui-cell">
@@ -139,7 +139,12 @@
           <label class="weui-label">材料费</label>
         </div>
         <div class="weui-cell__bd">
-          <input type="number" class="weui-input" v-model="item.cailiao" placeholder="请输入安装所需的材料费">
+          <input
+            type="number"
+            class="weui-input"
+            v-model="item.MasterialFee"
+            placeholder="请输入安装所需的材料费"
+          >
         </div>
       </div>
       <div class="weui-cell">
@@ -147,7 +152,12 @@
           <label class="weui-label">住宿费</label>
         </div>
         <div class="weui-cell__bd">
-          <input type="number" class="weui-input" v-model="item.zhusu" placeholder="请输入安装所需的费用">
+          <input
+            type="number"
+            class="weui-input"
+            v-model="item.HotelExpense"
+            placeholder="请输入安装所需的费用"
+          >
         </div>
       </div>
     </div>
@@ -197,10 +207,10 @@ export default {
       receiptPicList: [], //验收单据图片
       progressInfoList: [
         {
-          jiaotong: "",
-          canfei: "",
-          cailiao: "",
-          zhusu: ""
+          TrafficMoney: "", //交通费
+          Meals: "", //餐费
+          HotelExpense: "", //住宿费
+          MasterialFee: "" //材料费
         }
       ], //明细
       infoLength: 10,
@@ -236,42 +246,38 @@ export default {
         sizeType: ["compressed"], //图片尺寸 original--原图；compressed--压缩图
         sourceType: ["album", "camera"], //选择图片的位置 album--相册选择, 'camera--使用相机
         success: res => {
-          // const imgPathArr = that.prolist[n].referencePicList;
-          // that.prolist[n].referencePicList = [];
-          // that.prolist[n].referencePicList = imgPathArr.concat(
-          //   res.tempFilePaths
-          // );
-
           res.tempFilePaths.forEach(item => {
-            pathToBase64(item).then(result => {
-              if (index === 1) {
-                that.frontPicList.push({
-                  picUrl: item,
-                  base64: result
-                });
-              }
-              if (index === 2) {
-                that.insidePicList.push({
-                  picUrl: item,
-                  base64: result
-                });
-              }
-              if (index === 3) {
-                that.afterPicList.push({
-                  picUrl: item,
-                  base64: result
-                });
-              }
-              if (index === 4) {
-                that.receiptPicList.push({
-                  picUrl: item,
-                  base64: result
-                });
-              }
-            });
+            if (index === 1) {
+              that.frontPicList.push({
+                picUrl: item
+              });
+            }
+            if (index === 2) {
+              that.insidePicList.push({
+                picUrl: item
+              });
+            }
+            if (index === 3) {
+              that.afterPicList.push({
+                picUrl: item
+              });
+            }
+            if (index === 4) {
+              that.receiptPicList.push({
+                picUrl: item
+              });
+            }
           });
         }
       });
+    },
+    async base64Img(arr) {
+      let base64Arr = [];
+      for(let i=0;i<arr.length;i+=1){
+        const res = await pathToBase64(arr[i].picUrl)
+          base64Arr.push(res);
+      }
+      return base64Arr;
     },
     delImg(type, index) {
       if (type === 1) {
@@ -287,52 +293,26 @@ export default {
         this.receiptPicList.splice(index, 1);
       }
     },
-    getImgBase64(index) {
-      let arr = [];
-      if (index === 1) {
-        this.frontPicList.forEach(res => {
-          arr.push({
-            PicUrl: res.base64
-          });
-        });
-      }
-      if (index === 2) {
-        this.insidePicList.forEach(res => {
-          arr.push({
-            PicUrl: res.base64
-          });
-        });
-      }
-      if (index === 3) {
-        this.afterPicList.forEach(res => {
-          arr.push({
-            PicUrl: res.base64
-          });
-        });
-      }
-      if (index === 4) {
-        this.receiptPicList.forEach(res => {
-          arr.push({
-            PicUrl: res.base64
-          });
-        });
-      }
-      return arr;
-    },
-    submitApply() {
-      this.AddInstallOrder();
+    async submitApply() {
+      let that = this;
+      let frontPicList = await that.base64Img(that.frontPicList);
+      let insidePicList = await that.base64Img(that.insidePicList);
+      let afterPicList = await that.base64Img(that.afterPicList);
+      let receiptPicList = await that.base64Img(that.receiptPicList);
+      
+      that.AddInstallOrder(frontPicList,insidePicList,afterPicList,receiptPicList);
     },
     addOrder() {
       //添加明细
       if (this.curInfo < this.infoLength) {
         this.curInfo++;
         this.progressInfoList.push({
-          jiaotong: "",
-          canfei: "",
-          cailiao: "",
-          zhusu: ""
+          TrafficMoney: "", //交通费
+          Meals: "", //餐费
+          HotelExpense: "", //住宿费
+          MasterialFee: "" //材料费
         });
-      }else{
+      } else {
         //提示最多只能加10次明细
       }
     },
@@ -402,7 +382,10 @@ export default {
         }
       });
     },
-    AddInstallOrder() {
+    AddInstallOrder(frontPicList,insidePicList,afterPicList,receiptPicList) {
+      //this.base64Img(this.frontPicList);
+      //console.log("arr", arr);
+      //return false;
       let that = this;
       post(
         "InstalMaster/AddInstallOrder",
@@ -410,10 +393,10 @@ export default {
           UserId: that.userId,
           Token: that.token,
           ProgressId: that.orderId,
-          FrontPicList: that.getImgBase64(1),
-          AfterPicList: that.getImgBase64(2),
-          ReceiptPicList: that.getImgBase64(3),
-          InsidePicList: that.getImgBase64(4),
+          FrontPicList: frontPicList,
+          InsidePicList: insidePicList,
+          AfterPicList: afterPicList,
+          ReceiptPicList: receiptPicList,
           ProgressInfoList: that.progressInfoList
         },
         that.curPage
