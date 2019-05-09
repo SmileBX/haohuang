@@ -32,7 +32,7 @@
           <div class="box">
             <div class="outside">
               <div class="pictrueAll">
-                <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
+                <div class="pictrue img" :style="'background-image:url('+detail.OrderImg+')'"></div>
               </div>
               <div class="txtBox">
                 <p class="title text-line2">{{detail.orderType}}</p>
