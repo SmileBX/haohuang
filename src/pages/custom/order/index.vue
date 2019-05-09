@@ -2,378 +2,180 @@
   <div class="page">
     <div class="tabBarBox">
       <ul class="tabBar flex li_20 fixed">
-        <li class="active">
-          <span class="title">全部</span>
-        </li>
-        <li>
-          <span class="title">待确认</span>
-        </li>
-        <li>
-          <span class="title">待付款</span>
-        </li>
-        <li>
-          <span class="title">处理中</span>
-        </li>
-        <li>
-          <span class="title">待评价</span>
+        <li
+          :class="{'active':typeNo===menus.typeNo}"
+          v-for="menus in menu"
+          :key="menus.typeNo"
+          @click="tabMenu(menus.typeNo)"
+        >
+          <span class="title">{{menus.name}}</span>
         </li>
       </ul>
     </div>
+
     <!-- 搜索 -->
     <div class="searchBox">
-      <div class="search flex flexAlignCenter fixed border-box" style="top:80rpx;">
-        <div class="ipt flex1">
-          <input type="text" class="weui-input"  disabled placeholder="请选择区域">
+      <div class="search flex AlignCenter border-box" style="margin-top:10rpx;">
+        <div class="ipt flex1" @click="areaListStatus = true">
+          <input type="text" class="weui-input" :value="searchRegion" disabled placeholder="请选择区域">
         </div>
-        <div class="btn">搜索</div>
+        <div class="remove" @click="removeSelect" v-show="searchRegion">×</div>
+        <div class="btn" @click="init">搜索</div>
       </div>
     </div>
+    <van-popup :show="areaListStatus" position="bottom">
+      <van-area :area-list="areaList" @cancel="areaListStatus = false" @confirm="areaConfirm"></van-area>
+    </van-popup>
+    <!-- 订单列表-->
     <div class="tabContent">
       <!-- 订单 -->
-      <div class="column levelPanel bg__levelPanel order__levelPanel">
-        <div class="item">
+      <div class="column levelPanel bg__levelPanel order__levelPanel" style="margin-top:20rpx;">
+        <div class="item" v-for="list in orderList" :key="list.Id">
           <div class="item__hd flex">
             <div class="flex1">
-              <p class="orderNo ellipsis">订单编号：TH53316886</p>
+              <p class="orderNo ellipsis">订单编号：{{list.OrderNo}}</p>
             </div>
-            <span class="status">待付款</span>
+            <span class="status">{{list.StatuName}}</span>
           </div>
-          <div class="item__bd">
+          <div class="item__bd" @click="gotoDetail(list.Id)">
             <div class="box">
               <div class="outside">
                 <div class="pictrueAll">
-                  <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
+                  <div class="pictrue img" :style="'background-image:url('+list.MemberHead+')'"></div>
                 </div>
                 <div class="txtBox">
-                  <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
+                  <p class="title text-line2">{{list.OrderName}}</p>
                   <div class="flex">
                     <div class="flex1">
-                      <p class="new-price">￥1888.00</p>
+                      <p class="new-price">￥{{list.OfferTotal}}</p>
                     </div>
-                    <span class="buyNum">x1</span>
-                  </div>
-                </div>
-              </div>
-              <div class="outside">
-                <div class="pictrueAll">
-                  <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
-                </div>
-                <div class="txtBox">
-                  <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
-                  <div class="flex">
-                    <div class="flex1">
-                      <p class="new-price">￥1888.00</p>
-                    </div>
-                    <span class="buyNum">x1</span>
-                  </div>
-                </div>
-              </div>
-              <div class="outside">
-                <div class="pictrueAll">
-                  <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
-                </div>
-                <div class="txtBox">
-                  <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
-                  <div class="flex">
-                    <div class="flex1">
-                      <p class="new-price">￥1888.00</p>
-                    </div>
-                    <span class="buyNum">x1</span>
+                    <!-- <span class="buyNum">x1</span> -->
                   </div>
                 </div>
               </div>
             </div>
-            <div class="priceAllBox flex">
+            <!-- <div class="priceAllBox flex">
               <div class="flexItem"></div>
               <div class="flexItem flex1 text_r">
                 共3件商品（含配送费）合计
                 <span class="hj_price">￥3300.00</span>
               </div>
-            </div>
+            </div>-->
           </div>
           <div class="item__ft">
-            <div class="weui-btn">取消订单</div>
-            <div class="weui-btn active">付款</div>
+            <!-- <div class="button" v-if="list.OrderStatus===0">取消订单</div>
+            <div class="button active" v-if="list.OrderStatus===1">付款</div>
+            <div class="button active" v-if="list.OrderStatus===8">去评价</div>-->
+
+            <!-- IsPay是否支付 -->
+            <div
+              class="button"
+              v-if="list.OrderStatus==0||list.OrderStatus==1"
+              @click="showCancelOrder(list.Id)"
+            >取消订单</div>
+
+            <div class="button active" @click="callService(list.ServiceTel)">联系客服</div>
+            <!-- 客服是否确认IsConfirm -->
+            <!-- <div class="button active"  v-if="list.IsConfirm==0">修改价格</div> -->
+            <!-- <div class="button linear" v-if="list.IsConfirm==0">确认订单</div> -->
+            <!-- <div class="button linear" v-if="list.IsConfirm==1&&list.IsPay==0">已付款</div> -->
+            <!-- <div class="button active" v-if="list.OrderStatus===0">设计确认</div> -->
+            <div class="button active" v-if="list.OrderStatus==4">确认收货</div>
+            <!--<div class="button linear" v-if="list.OrderStatus==8">评论</div> -->
+            <!-- <div class="button active" v-if="list.OrderStatus==9">删除订单</div> -->
           </div>
         </div>
-        <div class="item">
-          <div class="item__hd flex">
-            <div class="flex1">
-              <p class="orderNo ellipsis">订单编号：TH53316886</p>
-            </div>
-            <span class="status">待确认</span>
-          </div>
-          <div class="item__bd">
-            <div class="box">
-              <div class="outside">
-                <div class="pictrueAll">
-                  <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
-                </div>
-                <div class="txtBox">
-                  <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
-                  <div class="flex">
-                    <div class="flex1">
-                      <p class="new-price">￥1888.00</p>
-                    </div>
-                    <span class="buyNum">x1</span>
-                  </div>
-                </div>
-              </div>
-              <div class="outside">
-                <div class="pictrueAll">
-                  <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
-                </div>
-                <div class="txtBox">
-                  <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
-                  <div class="flex">
-                    <div class="flex1">
-                      <p class="new-price">￥1888.00</p>
-                    </div>
-                    <span class="buyNum">x1</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="priceAllBox flex">
-              <div class="flexItem"></div>
-              <div class="flexItem flex1 text_r">
-                共1件商品（含配送费）合计
-                <span class="hj_price">￥3300.00</span>
-              </div>
-            </div>
-          </div>
-          <div class="item__ft">
-            <div class="weui-btn active">联系客服</div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="item__hd flex">
-            <div class="flex1">
-              <p class="orderNo ellipsis">订单编号：TH53316886</p>
-            </div>
-            <span class="status">处理中</span>
-          </div>
-          <div class="item__bd">
-            <div class="box">
-              <div class="outside">
-                <div class="pictrueAll">
-                  <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
-                </div>
-                <div class="txtBox">
-                  <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
-                  <div class="flex">
-                    <div class="flex1">
-                      <p class="new-price">￥1888.00</p>
-                    </div>
-                    <span class="buyNum">x1</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="priceAllBox flex flexAlignCenter">
-              <div class="flexItem worker">
-                  <img src="/static/of/tx2.png" alt="" class="tx">
-                  <span class="name">安装师傅：张**</span>
-              </div>
-              <div class="flexItem flex1 text_r">
-                共1件商品（含配送费）合计
-                <span class="hj_price">￥3300.00</span>
-              </div>
-            </div>
-          </div>
-          <div class="item__ft">
-            <div class="weui-btn active">联系客服</div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="item__hd flex">
-            <div class="flex1">
-              <p class="orderNo ellipsis">订单编号：TH53316886</p>
-            </div>
-            <span class="status">待评价</span>
-          </div>
-          <div class="item__bd">
-            <div class="box">
-              <div class="outside">
-                <div class="pictrueAll">
-                  <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
-                </div>
-                <div class="txtBox">
-                  <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
-                  <div class="flex">
-                    <div class="flex1">
-                      <p class="new-price">￥1888.00</p>
-                    </div>
-                    <span class="buyNum">x1</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="priceAllBox flex flexAlignCenter">
-              <!-- <div class="flexItem worker">
-                  <img src="/static/of/tx2.png" alt="" class="tx">
-                  <span class="name">安装师傅：张**</span>
-              </div> -->
-              <div class="flexItem flex1 text_r">
-                共1件商品（含配送费）合计
-                <span class="hj_price">￥3300.00</span>
-              </div>
-            </div>
-          </div>
-          <div class="item__ft">
-            <div class="weui-btn active">去评价</div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="item__hd flex">
-            <div class="flex1">
-              <p class="orderNo ellipsis">订单编号：TH53316886</p>
-            </div>
-            <span class="status">已完成</span>
-          </div>
-          <div class="item__bd">
-            <div class="box">
-              <div class="outside">
-                <div class="pictrueAll">
-                  <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
-                </div>
-                <div class="txtBox">
-                  <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
-                  <div class="flex">
-                    <div class="flex1">
-                      <p class="new-price">￥1888.00</p>
-                    </div>
-                    <span class="buyNum">x1</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="priceAllBox flex flexAlignCenter">
-              <!-- <div class="flexItem worker">
-                  <img src="/static/of/tx2.png" alt="" class="tx">
-                  <span class="name">安装师傅：张**</span>
-              </div> -->
-              <div class="flexItem flex1 text_r">
-                共1件商品（含配送费）合计
-                <span class="hj_price">￥3300.00</span>
-              </div>
-            </div>
-          </div>
-          <!-- <div class="item__ft">
-            <div class="weui-btn active">去评价</div>
-          </div> -->
-        </div>
-        <div class="item">
-          <div class="item__hd flex">
-            <div class="flex1">
-              <p class="orderNo ellipsis">订单编号：TH53316886</p>
-            </div>
-            <span class="status">已取消</span>
-          </div>
-          <div class="item__bd">
-            <div class="box">
-              <div class="outside">
-                <div class="pictrueAll">
-                  <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
-                </div>
-                <div class="txtBox">
-                  <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
-                  <div class="flex">
-                    <div class="flex1">
-                      <p class="new-price">￥1888.00</p>
-                    </div>
-                    <span class="buyNum">x1</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="priceAllBox flex flexAlignCenter">
-              <!-- <div class="flexItem worker">
-                  <img src="/static/of/tx2.png" alt="" class="tx">
-                  <span class="name">安装师傅：张**</span>
-              </div> -->
-              <div class="flexItem flex1 text_r">
-                共1件商品（含配送费）合计
-                <span class="hj_price">￥3300.00</span>
-              </div>
-            </div>
-          </div>
-          <!-- <div class="item__ft">
-            <div class="weui-btn active">去评价</div>
-          </div> -->
-        </div>
-        <div class="item">
-          <div class="item__hd flex">
-            <div class="flex1">
-              <p class="orderNo ellipsis">订单编号：TH53316886</p>
-            </div>
-            <span class="status">不同意取消</span>
-          </div>
-          <div class="item__bd">
-            <div class="box">
-              <div class="outside">
-                <div class="pictrueAll">
-                  <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
-                </div>
-                <div class="txtBox">
-                  <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
-                  <div class="flex">
-                    <div class="flex1">
-                      <p class="new-price">￥1888.00</p>
-                    </div>
-                    <span class="buyNum">x1</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="priceAllBox flex flexAlignCenter">
-              <!-- <div class="flexItem worker">
-                  <img src="/static/of/tx2.png" alt="" class="tx">
-                  <span class="name">安装师傅：张**</span>
-              </div> -->
-              <div class="flexItem flex1 text_r">
-                共1件商品（含配送费）合计
-                <span class="hj_price">￥3300.00</span>
-              </div>
-            </div>
-          </div>
-          <!-- <div class="item__ft">
-            <div class="weui-btn active">去评价</div>
-          </div> -->
-        </div>
+
+        <!-- 数据状态提示节点 -->
+        <div
+          v-if="orderList.length<1"
+          style="text-align:center;margin-top:300rpx;font-size:24rpx;color:#999;"
+        >暂时没有数据哦!</div>
+        <div
+          v-if="orderListEnd&&page!==1"
+          style="text-align:center;font-size:24rpx;line-height:40rpx;padding-bottom:10rpx;color:#999;"
+        >已经到底了哦!</div>
       </div>
     </div>
+    <!-- 联系客服 -->
+    <serviceTypeSelect
+      :selectServiceTypeStatus.sync="selectServiceTypeStatus"
+      :servicePhone="servicePhone"
+    ></serviceTypeSelect>
     <!-- 取消订单弹窗 -->
-    <div class="modal" style="display:none;">
-        <div class="mask"></div>
-        <div class="modal-content bottom__modal-content" style="height:680rpx;">
-            <div class="modal__hd bb__modal__hd">
-                <span class="close"><img src="/static/images/icons/close.png"   alt=""></span>
-                <h2 class="title">取消原因</h2>
-            </div>
-            <div class="modal__bd">
-                <div class="eaditArea">
-                    <textarea name="" placeholder="请备注说明原因" id="" class="weui-area"></textarea>
-                </div>
-            </div>
-            <div class="modal__ft flex ftBtn" style="height:100rpx;">
-                <div class="inner fixed bm0 border-box" style="padding:0;">
-                    <div class="btn btn-active fill" style="border-radius:0;">确定</div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <CancelOrderWindow
+      :cancelOrderWindowStatus.sync="cancelOrderWindowStatus"
+      @success="closeContent"
+      :refuseContent.sync="refuseContent"
+    ></CancelOrderWindow>
   </div>
 </template>
 <script>
+import "@/css/common.css";
+import areaList from "@/utils/areaList";
+import CancelOrderWindow from "@/components/cancelOrderWindow.vue";
+import serviceTypeSelect from "@/components/serviceTypeSelect.vue";
+import { post } from "@/utils/index";
 export default {
-    onLoad() {
-      this.setBarTitle();
-      
-  },
-  onShow() {},
+  components: { CancelOrderWindow, serviceTypeSelect },
   data() {
-    return {};
+    return {
+      UserId: "",
+      Token: "",
+      page: 1,
+      pageSize: 12,
+      typeNo: -1, //订单状态
+      searchRegion: "", //搜索地区字段
+      searchRegionCode: "", //搜索地区字段
+      areaListStatus: false, //选择地区状态
+      areaList,
+      menu: [
+        {
+          name: "全部",
+          typeNo: -1
+        },
+        {
+          name: "待确认",
+          typeNo: 0
+        },
+        {
+          name: "待付款",
+          typeNo: 1
+        },
+        {
+          name: "处理中",
+          typeNo: 7
+        },
+        {
+          name: "待评论",
+          typeNo: 8
+        }
+      ],
+      orderList: [],
+      orderListEnd: false, //提示数据到底了
+      // 取消订单
+      cancelOrderWindowStatus: false,
+      refuseContent: "",
+      editOrderId: "",
+      // 联系客服
+      selectServiceTypeStatus: false, //联系客服类型弹窗状态
+      servicePhone: "" //客服的服务电话
+    };
+  },
+  onLoad() {
+    this.setBarTitle();
+  },
+  onShow() {
+    this.Token = wx.getStorageSync("token");
+    this.UserId = wx.getStorageSync("userId");
+    // typeNo--进入订单列表展示的状态
+    // 客服--订单状态：-1全部，0-待确认，1-待付款 7-已执行(安装中) 8-待评论9-已完成
+    // 客户--订单状态：-1全部，0-待确认，1-待付款，2-处理中，10-待评论
+    if (this.$root.$mp.query.typeNo) {
+      this.typeNo = this.$root.$mp.query.typeNo * 1;
+    }
+    console.log(this.typeNo, "订单状态");
+    this.init();
   },
   methods: {
     setBarTitle() {
@@ -381,9 +183,111 @@ export default {
         title: "我的订单"
       });
     },
-    
+    // 初始化数据
+    init() {
+      this.orderListEnd = false; //提示数据到底了
+      this.selectServiceTypeStatus = false; //联系客服类型弹窗状态
+      this.page = 1;
+      this.getData();
+    },
+    async getData() {
+      if (this.orderListEnd) {
+        return false;
+      }
+      if (this.page === 1) {
+        this.orderList = [];
+      }
+      const res = await post("Order/GetOrderList", {
+        UserId: this.UserId,
+        Token: this.Token,
+        page: this.page,
+        pageSize: this.pageSize,
+        Region: this.searchRegionCode,
+        orderStatus: this.typeNo
+      });
+      if (res.data.length !== this.pageSize) {
+        this.orderListEnd = true;
+      }
+      this.orderList = this.orderList.concat(res.data);
+    },
+    // 切换订单状态
+    tabMenu(typeNo) {
+      this.typeNo = typeNo;
+      this.init();
+    },
+    // 删除选中的城市
+    removeSelect() {
+      this.searchRegionCode = "";
+      this.searchRegion = "";
+      this.init();
+    },
+    // 选择地区
+    areaConfirm(e) {
+      let val = "";
+      e.mp.detail.values.map(item => {
+        val += item.name + " ";
+      });
+      this.searchRegion = val;
+      this.searchRegionCode =
+        e.mp.detail.values[e.mp.detail.values.length - 1].code;
+      this.areaListStatus = false;
+      this.init();
+    },
+    // 跳转到订单详情
+    gotoDetail(orderId) {
+      wx.navigateTo({
+        url: `/pages/custom/orderDetail/main?orderId=${orderId}`
+      });
+    },
+
+    // 展示取消订单窗口
+    showCancelOrder(id) {
+      const that = this;
+      wx.showModal({
+        content: "您的订单尚未付款成功，确认要取消本订单吗？",
+        confirmColor: "#ff662a",
+        success(res) {
+          if (res.confirm) {
+            that.cancelOrderWindowStatus = true;
+            that.editOrderId = id;
+          }
+        }
+      });
+    },
+    // 取消订单的内容
+    async closeContent() {
+      console.log(this.refuseContent, "取消内容");
+      const res = post("Order/OrderCancel", {
+        UserId: this.UserId,
+        Token: this.Token,
+        OrderNo: this.editOrderId,
+        RefuseContent: this.refuseContent
+      });
+      this.cancelOrderWindowStatus = false;
+      this.refuseContent = "";
+      this.init();
+      console.log(res.data, "取消成功");
+    },
+    // 联系客服
+    callService(phone) {
+      console.log(phone);
+      this.servicePhone = phone;
+      this.selectServiceTypeStatus = true;
+    }
+  },
+  // 上拉加载
+  onReachBottom() {
+    this.page += 1;
+    this.getData();
+  },
+  // 下拉刷新
+  onPullDownRefresh() {
+    this.searchRegionCode = "";
+    this.searchRegion = "";
+    this.init();
+    wx.stopPullDownRefresh();
   }
-}
+};
 </script>
 <style lang='scss' scoped>
 @import "./style";

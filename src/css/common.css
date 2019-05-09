@@ -1150,9 +1150,10 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 
 .ftBtn .btn {
     display: block;
-    border: 1px solid #f2f2f2;
+    border: 1px solid #ccc;
     font-size: 32rpx;
     text-align: center;
+    color:#999;
     border-radius: 16rpx;
     line-height: 80rpx;
     padding: 0 5rpx;

@@ -693,6 +693,7 @@ export default {
         }else{
           this.prolist[n].isShowBtnUpload = true;
         }
+        let imgBase =[]
         // 根据临时路径数组imgPathArr获取base64图片
         for (let i = 0; i < this.prolist[n].referencePicList.length; i++) {
           wx.getFileSystemManager().readFile({
@@ -700,13 +701,14 @@ export default {
             encoding: "base64", //编码格式
             success: res => {
               //成功的回调
-              this.prolist[n].imgBase.push({
+              imgBase.push({
                 PicUrl: "data:image/png;base64," + res.data.toString()
               });
           
             }
           });
         }
+        this.prolist[n].imgBase = imgBase
     },
     deleteImg(i,n) {
       this.prolist[n].imgBase.splice(i, 1);
