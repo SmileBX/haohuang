@@ -163,6 +163,12 @@ export default {
         title: "我的订单"
       });
     },
+    // 初始化数据
+    init(){
+        this.orderListEnd = false;
+        this.page =1;
+        this.getData()
+    },
     async getData() {
       if(this.orderListEnd){
         return false;
@@ -188,12 +194,6 @@ export default {
     tabMenu(typeNo) {
       this.typeNo = typeNo;
       this.init()
-    },
-    // 初始化数据
-    init(){
-        this.orderListEnd = false;
-        this.page =1;
-        this.getData()
     },
     // 删除选中的城市
     removeSelect(){

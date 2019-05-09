@@ -127,102 +127,107 @@
     line-height: 1.2;
     color: #838383;
 }
-.maskType{
+
+.maskType {
     background: #fff;
-    width:100%;
-    height:600rpx;
-    padding:30rpx 0;
-    bottom:0!important;
-    position:fixed;
-    z-index:999;
-    p{
-        padding:15rpx 30rpx;
+    width: 100%;
+    height: 600rpx;
+    padding: 30rpx 0;
+    bottom: 0!important;
+    position: fixed;
+    z-index: 999;
+    p {
+        padding: 15rpx 30rpx;
     }
-    .flex{
+    .flex {
         justify-content: space-between;
-        border-bottom:1rpx solid #ccc;
-        padding:20rpx;
+        border-bottom: 1rpx solid #ccc;
+        padding: 20rpx;
         font-weight: 400;
-        font-size:30rpx;
-        .color{
-            color:#ff6325
+        font-size: 30rpx;
+        .color {
+            color: #ff6325
         }
-        .size{
-            font-size:26rpx;
+        .size {
+            font-size: 26rpx;
         }
-        span{
-            border:1p solid blue
+        span {
+            border: 1p solid blue
         }
-        .title{
-            font-weight:bold;
+        .title {
+            font-weight: bold;
         }
     }
-    .itemactive{
-        background:#ff6325;
-        color:#fff
+    .itemactive {
+        background: #ff6325;
+        color: #fff
     }
 }
-.paySuccess{
-    background:#fff;
-    width:540rpx;
-    height:720rpx;
-    top:175rpx;
-    left:105rpx;
-    position:fixed;
-    z-index:999;
-    padding:52rpx 65rpx;
+
+.paySuccess {
+    background: #fff;
+    width: 540rpx;
+    height: 720rpx;
+    top: 175rpx;
+    left: 105rpx;
+    position: fixed;
+    z-index: 999;
+    padding: 52rpx 65rpx;
     flex-direction: column;
-    .task{
-        width:98rpx;
-        height:98rpx;
-        margin:58rpx 0;
+    .task {
+        width: 98rpx;
+        height: 98rpx;
+        margin: 58rpx 0;
     }
-    .title{
-        border-bottom:1rpx solid #ccc;
-        padding:20rpx;
-        width:100%;
-        font-size:32rpx;
-        text-align:center;
+    .title {
+        border-bottom: 1rpx solid #ccc;
+        padding: 20rpx;
+        width: 100%;
+        font-size: 32rpx;
+        text-align: center;
     }
-    .paymaskinfo{
-        padding:20rpx 0;
-        .replay{
-            font-size:25rpx;
-            margin-top:5rpx;
+    .paymaskinfo {
+        padding: 20rpx 0;
+        .replay {
+            font-size: 25rpx;
+            margin-top: 5rpx;
         }
     }
-    .btn{
-        width:100%;
+    .btn {
+        width: 100%;
         justify-content: space-between;
-        margin-top:110rpx;
-        p{
-            width:45%;
-            text-align:center;
-            border-radius:50rpx;
-            padding:10rpx 20rpx;
-            box-sizing:border-box;
+        margin-top: 110rpx;
+        p {
+            width: 45%;
+            text-align: center;
+            border-radius: 50rpx;
+            padding: 10rpx 20rpx;
+            box-sizing: border-box;
         }
-        .backindex{
-            border:1rpx solid #ff6325
+        .backindex {
+            border: 1rpx solid #ff6325
         }
-        .sure{
-            background:#ff6325;
-            color:#fff;
+        .sure {
+            background: #ff6325;
+            color: #fff;
         }
     }
 }
+
 .select__weui-cells.ipt {
     border: 1px solid #e5e5e5;
     border-radius: 8rpx;
     padding: 10rpx 10rpx 10rpx 20rpx;
 }
-.nosite{
-    padding:0 30rpx;
-    .site{
-        width:64rpx;
-        height:64rpx;
+
+.nosite {
+    padding: 0 30rpx;
+    .site {
+        width: 64rpx;
+        height: 64rpx;
     }
 }
+
 .delete {
     width: 36rpx;
     height: 36rpx;
@@ -280,7 +285,7 @@
     display: block;
     margin: 0 auto;
     width: 400rpx;
-    line-height: 78rpx;
+    line-height: 70rpx;
     font-size: 32rpx;
     text-align: center;
     color: #ff5c29;
@@ -290,8 +295,8 @@
 
 .btn-add img {
     display: inline-block;
-    height: 30rpx;
-    width: 30rpx;
+    height: 26rpx;
+    width: 26rpx;
     vertical-align: middle;
     margin-right: 10rpx;
 }
@@ -299,4 +304,3 @@
 .weui-cells {
     color: #666;
 }
-

@@ -6,6 +6,15 @@
     margin-top: 70rpx;
     .itemname {
         color: #1a1a1a;
+        font-size:37rpx;
+    }
+    .active{
+
+    }
+    .item{
+        &>p{
+            font-size:25rpx;    
+        }
     }
 }
 
@@ -27,6 +36,7 @@
 
  .item {
     margin-bottom: 20rpx;
+    background: #fff;
 }
 
 .item p {
@@ -70,4 +80,9 @@
             padding:30rpx 0;
         }
     }
+}
+.plr20{
+    padding:0 20rpx;
+}.p30{
+    padding:30rpx;
 }

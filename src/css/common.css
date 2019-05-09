@@ -1131,9 +1131,17 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    background-position: center center !important;
+    /* background-position: center center !important;
     background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
+    background-repeat: no-repeat !important; */
+}
+
+.uploadImage .button-upload img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .ftBtn .inner {

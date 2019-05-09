@@ -41,7 +41,7 @@ export default {
   props: {
     cancelOrderWindowStatus: {
       type: Boolean,
-      default: true
+      default: false
     },
     refuseContent:{
       type:String,
@@ -51,6 +51,8 @@ export default {
   data() {
     return {
     };
+  },
+  watch:{
   },
   onShow() {
   },
