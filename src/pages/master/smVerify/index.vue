@@ -271,25 +271,13 @@ export default {
         }
       });
     },
-    base64Img(arr) {
+    async base64Img(arr) {
       let base64Arr = [];
-      // let that = this;
-     let status = false;
-      arr.map(item => { 
-        (async()=>{
-          const res =await pathToBase64(item.picUrl)
+      for(let i=0;i<arr.length;i+=1){
+        const res = await pathToBase64(arr[i].picUrl)
           base64Arr.push(res);
-          console.log(res,'res');
-        })()
-          // if (base64Arr.length === arr.length) {
-          //   status = true;
-          // }
-      });
-      console.log(base64Arr,"hhhhhhhhhh");
-      
-      // if (status) {
-      //   return base64Arr;
-      // }
+      }
+      return base64Arr;
     },
     delImg(type, index) {
       if (type === 1) {
@@ -305,50 +293,24 @@ export default {
         this.receiptPicList.splice(index, 1);
       }
     },
-    // getImgBase64(index) {
-    //   let arr = [];
-    //   if (index === 1) {
-    //     this.frontPicList.forEach(res => {
-    //       arr.push({
-    //         PicUrl: res.base64
-    //       });
-    //     });
-    //   }
-    //   if (index === 2) {
-    //     this.insidePicList.forEach(res => {
-    //       arr.push({
-    //         PicUrl: res.base64
-    //       });
-    //     });
-    //   }
-    //   if (index === 3) {
-    //     this.afterPicList.forEach(res => {
-    //       arr.push({
-    //         PicUrl: res.base64
-    //       });
-    //     });
-    //   }
-    //   if (index === 4) {
-    //     this.receiptPicList.forEach(res => {
-    //       arr.push({
-    //         PicUrl: res.base64
-    //       });
-    //     });
-    //   }
-    //   return arr;
-    // },
-    submitApply() {
-      this.AddInstallOrder();
+    async submitApply() {
+      let that = this;
+      let frontPicList = await that.base64Img(that.frontPicList);
+      let insidePicList = await that.base64Img(that.insidePicList);
+      let afterPicList = await that.base64Img(that.afterPicList);
+      let receiptPicList = await that.base64Img(that.receiptPicList);
+      
+      that.AddInstallOrder(frontPicList,insidePicList,afterPicList,receiptPicList);
     },
     addOrder() {
       //添加明细
       if (this.curInfo < this.infoLength) {
         this.curInfo++;
         this.progressInfoList.push({
-          jiaotong: "",
-          canfei: "",
-          cailiao: "",
-          zhusu: ""
+          TrafficMoney: "", //交通费
+          Meals: "", //餐费
+          HotelExpense: "", //住宿费
+          MasterialFee: "" //材料费
         });
       } else {
         //提示最多只能加10次明细
@@ -420,10 +382,10 @@ export default {
         }
       });
     },
-    AddInstallOrder() {
-      let arr = this.base64Img(this.frontPicList);
-      console.log("arr", arr);
-      return false;
+    AddInstallOrder(frontPicList,insidePicList,afterPicList,receiptPicList) {
+      //this.base64Img(this.frontPicList);
+      //console.log("arr", arr);
+      //return false;
       let that = this;
       post(
         "InstalMaster/AddInstallOrder",
@@ -431,10 +393,10 @@ export default {
           UserId: that.userId,
           Token: that.token,
           ProgressId: that.orderId,
-          FrontPicList: that.base64Img(that.frontPicList),
-          AfterPicList: that.base64Img(that.afterPicList),
-          ReceiptPicList: that.base64Img(that.receiptPicList),
-          InsidePicList: that.base64Img(that.insidePicList),
+          FrontPicList: frontPicList,
+          InsidePicList: insidePicList,
+          AfterPicList: afterPicList,
+          ReceiptPicList: receiptPicList,
           ProgressInfoList: that.progressInfoList
         },
         that.curPage
