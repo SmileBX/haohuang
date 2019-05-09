@@ -121,7 +121,7 @@
                 </div>
                 <div class="select__weui-cells">
                   <div class="weui-cells__title">交付时间</div>
-                  <div class="ipt flex flexAlignCenter"  @click="showDate=true">
+                  <div class="ipt flex flexAlignCenter"  @click="choseDate(lindex)">
                     <div class="flex1" >
                       <input type="text" disabled="true" class="weui-input" placeholder="请选择日期" v-model="item.estimateTime">
                     </div>
@@ -131,7 +131,8 @@
                 <div class="weui-item">
                   <div class="weui-cells__title">备注说明</div>
                   <div class="eaditArea">
-                    <textarea  class="weui-area" placeholder="请输入备注内容" v-model="item.remark"></textarea>
+                    <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
+                    <textarea  class="weui-area" placeholder="请输入备注内容" v-model="item.remark" v-else></textarea>
                   </div>
                 </div>
                 <div class="priceBox flex">
@@ -146,12 +147,12 @@
               <!--子no3-->
 
               <!--时间选择 不需要弹框-->
-              <van-action-sheet :show="showDate" @close="showDate=false" @select="showDate=false">
+              <van-action-sheet :show="item.showDate" @close="item.showDate=false" @select="item.showDate=false">
                   <van-datetime-picker
                   type="date"
                   :value="currentDate"
                   @confirm="onInput($event,lindex)"
-                  @cancel="showDate=false"
+                  @cancel="item.showDate=false"
                   :min-date="minDate"
                   :formatter="formatter"
                   title="请选择时间"
@@ -269,12 +270,12 @@ export default {
     this.imgPathArr= []
     this.proitem={
       orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],isShowBtnUpload:true,
-      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:""
+      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,  //日期 组件 不需要遮罩层
     },
     this.prolist=[
       {
       orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],
-      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,
+      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false,  //日期 组件 不需要遮罩层
       },
     ]
     
@@ -385,7 +386,7 @@ export default {
         identity: "",
         active:0,//选中的标记
         postMsg:'选择快递',//快递选择
-        showDate:false,  //日期 组件 不需要遮罩层
+        // showDate:false,  //日期 组件 不需要遮罩层
         isShow:false, //遮罩层
         showType:false,  //普通选择的弹框
         showPaymask:false,//支付确认弹框
@@ -514,7 +515,7 @@ export default {
           month.toString().length<2 ? (month= "0"+month) : month
           dd.toString().length<2 ? (dd="0"+dd) : dd
           this.prolist[i].estimateTime = `${year}-${month}-${dd}`
-          this.showDate = false
+          this.prolist[i].showDate = false
           console.log(this.estimateTime,"交付时间")
       },
       //增加明细（增加子订单）
