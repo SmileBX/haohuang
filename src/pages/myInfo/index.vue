@@ -40,6 +40,18 @@
                     </radio-group>
                 </div>
             </div>
+            <van-field
+                clearable
+                label="所在地区"
+                placeholder="请选择所在地区"
+                title-width="70px"
+                icon="arrow"
+                disabled
+                :input-class="area?'color333':''"
+                @click="showArea = true"
+                :value="area"
+                v-if="identity==3"
+            />
             <div class="weui-cell">
                 <div class="weui-cell__hd">
                     <label class="weui-label">手机号</label>
@@ -57,11 +69,16 @@
                 <div class="btn btn-active fill" @click="saveInfo">保存</div>
             </div>
         </div>
+         <!--选择地址省市遮罩层-->
+        <van-popup :show="showArea" position="bottom" :overlay="true" @close="showArea = false">
+            <van-area :area-list="areaList" @cancel="showArea = false" @confirm="confirmArea"/>
+        </van-popup>
     </div>
 </template>
 <script>
 import "@/css/dd_style.css";
 import { post, toLogin, getCurrentPageUrlWithArgs, valPhone } from "@/utils";
+import areaList from "@/utils/areaList";
 export default {
   onLoad() {
     this.setBarTitle();
@@ -100,7 +117,13 @@ export default {
       Sex: "",
       sextype: "",
       Birthday: "", //多余参数 后台去掉后更改
-      imgBase: "" //头像路径
+      imgBase: "", //头像路径，
+      showArea:false,
+      areaList,
+      area:'',
+      provinceCode:'',
+      cityCode:'',
+      districtCode:'',
     };
   },
   // watch: {
@@ -160,7 +183,7 @@ export default {
         },
         that.curPage
       ).then(result => {
-        console.log(result);
+        console.log(result,"师傅的信息");
         if (result.code === 0) {
           wx.setStorageSync("mobile", result.data.Mobile);
             wx.setStorageSync("mobile", result.data.Mobile);
@@ -168,12 +191,14 @@ export default {
             const info = result.data;
             this.NickName = info.NickName;
             this.Mobile = info.Mobile;
+            this.area = info.Address  ///获取到的地址为空
             if (info.Sex == "男") {
               this.Sex = 1;
             } else {
               this.Sex = 0;
             }
             console.log(this.Sex);
+            console.log(this.area,"this.area")
             this.Birthday = info.Birthday
             console.log(this.imgBase.length,"头像的长度")
             if ((this.imgBase.length == 0)) {
@@ -325,7 +350,19 @@ export default {
           duration: 1500
         });
       }
-    }
+    },
+    confirmArea(area) {
+      this.showArea = false;
+      let text = "";
+      const areas = area.mp.detail.values;
+      for (let i = 0; i < areas.length; i++) {
+        text += areas[i].name;
+      }
+      (this.provinceCode = areas[0].code || ""),
+        (this.cityCode = areas[1].code || ""),
+        (this.districtCode = areas[2].code || ""),
+        (this.area = text);
+    },
   }
 };
 </script>
