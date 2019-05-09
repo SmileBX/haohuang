@@ -422,7 +422,7 @@ export default {
         typelist:[],//orderTypeName类型...
         kuaidiList:[],//快递种类
         addressinfo:[],//默认的收货地址
-        pageSize:10,//制作材料 安装材料
+        pageSize:8,//制作材料 安装材料
         page:1,
         allPage:0,//总页数
         count:0,//总数
@@ -576,6 +576,10 @@ export default {
           this.$set(this.list[e],'statu',true);
         }
 
+      },
+      //日期
+      choseDate(n){
+        this.prolist[n].showDate=true
       },
       //选择订单类型
       choseType(n){
