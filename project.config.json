@@ -34,13 +34,13 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 10,
+			"current": 0,
 			"list": [
 				{
 					"id": 0,
 					"name": "师傅的提交审核",
 					"pathName": "pages/master/smVerify/main",
-					"query": "",
+					"query": "orderId=1023",
 					"scene": null
 				},
 				{
@@ -223,6 +223,20 @@
 					"name": "师傅的提现记录",
 					"pathName": "pages/master/withdrawRecord/main",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "客服下单",
+					"pathName": "pages/servicemenu/makeOrder/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "师傅的订单详情",
+					"pathName": "pages/master/orderDetail/main",
+					"query": "orderId=1023",
 					"scene": null
 				}
 			]

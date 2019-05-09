@@ -566,7 +566,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 /* tab */
 
 .tabBarBox {
-    height: 68rpx;
+    height: 88rpx;
 }
 
 .tabBar {
@@ -670,7 +670,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     padding: 14rpx 30rpx;
     background: #fff;
     left: 0;
-    align-items:center;
+    align-items: center;
 }
 
 .search .weui-input {
@@ -895,7 +895,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 }
 
 .levelPanel .item .outside .pictrueAll {
-    width: 25%;
+    width: 22%;
     margin-bottom: 0;
     margin-right: 20rpx;
 }
@@ -953,6 +953,12 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 .levelPanel .item .outside .txtBox .progressLine .right .btn.btn-disable {
     border: 1px solid #ccc !important;
     background: #ccc;
+}
+
+.levelPanel .item .outside .txtBox .type {
+    font-size: 26rpx;
+    color: #999;
+    margin-bottom: 8rpx;
 }
 
 .levelPanel .item .outside .txtBox .skuBox {
@@ -1125,9 +1131,17 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    background-position: center center !important;
+    /* background-position: center center !important;
     background-size: 100% 100% !important;
-    background-repeat: no-repeat !important;
+    background-repeat: no-repeat !important; */
+}
+
+.uploadImage .button-upload img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .ftBtn .inner {
@@ -1139,9 +1153,9 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     border: 1px solid #f2f2f2;
     font-size: 32rpx;
     text-align: center;
-    border-radius: 20rpx;
+    border-radius: 16rpx;
     line-height: 80rpx;
-    padding:0 5rpx;
+    padding: 0 5rpx;
 }
 
 .ftBtn .btn.btn-active {
@@ -1155,20 +1169,20 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 }
 
 .ftBtns {
-    height: 116rpx;
+    height: 106rpx;
 }
 
 .ftBtns .btn {
-    width: 170rpx;
+    width: 160rpx;
     text-align: center;
-    line-height: 68rpx;
+    line-height: 60rpx;
     border-radius: 200rpx;
     margin-left: 30rpx;
 }
 
 .ftBtns .inner {
-    padding-top: 20rpx;
-    padding-bottom: 20rpx;
+    padding-top: 16rpx;
+    padding-bottom: 16rpx;
     border-top: 1px solid #ececec;
 }
 

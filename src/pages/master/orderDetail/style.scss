@@ -1,0 +1,183 @@
+/* 订单详情 */
+
+.orderAddr {
+    margin-bottom: 20rpx;
+}
+
+.orderStatus {
+    background: #ff662a;
+    font-size: 36rpx;
+    color: #fff;
+    padding: 50rpx 30rpx;
+    text-align: center;
+}
+
+.newsLogistics {
+    padding: 30rpx;
+}
+
+.newsLogistics .icon_xiaoche {
+    width: 54rpx;
+    height: 54rpx;
+    margin-right: 20rpx;
+}
+
+.newsLogistics .txt {
+    font-size: 30rpx;
+    color: #ff662a;
+}
+
+.newsLogistics .time {
+    font-size: 28rpx;
+    color: #999;
+}
+
+.addressList .item {
+    padding: 30rpx;
+    border-top: 1px solid #e5e5e5;
+    margin-top: 0;
+}
+
+.addressList .addrIcon {
+    width: 54rpx;
+    height: 54rpx;
+    margin-right: 20rpx;
+}
+
+.addressList .item__bd {
+    padding: 0;
+}
+
+.levelPanel .item {
+    padding: 10rpx 0;
+    margin-bottom: 0;
+}
+
+.priceDetail {
+    padding: 20rpx 0;
+    margin-bottom: 20rpx;
+    border-top: 1px solid #e5e5e5;
+}
+
+.priceDetail .flex {
+    padding: 8rpx 30rpx;
+    font-size: 30rpx;
+    position: relative;
+}
+
+// .priceDetail .flex:last-child {
+//     margin-top: 18rpx;
+//     padding-top: 18rpx;
+//     border-top: 1px solid #e5e5e5;
+// }
+// .priceDetail .flex:last-child:after {
+//     width: 24rpx;
+//     height: 24rpx;
+//     border: 1px solid #e5e5e5;
+//     transform: rotate(-45deg);
+//     top: -12rpx;
+//     content: "";
+//     right: 60rpx;
+//     position: absolute;
+//     z-index: 2;
+//     background: #fff;
+// }
+// .priceDetail .flex:last-child:before {
+//     position: absolute;
+//     width: 60rpx;
+//     height: 20rpx;
+//     content: "";
+//     background: #fff;
+//     top: 0;
+//     right: 50rpx;
+//     z-index: 3;
+// }
+.priceDetail .flex.last-child {
+    margin-top: 18rpx;
+    padding-top: 18rpx;
+    border-top: 1px solid #e5e5e5;
+}
+
+.priceDetail .flex.last-child:after {
+    width: 24rpx;
+    height: 24rpx;
+    border: 1px solid #e5e5e5;
+    transform: rotate(-45deg);
+    top: -12rpx;
+    content: "";
+    right: 60rpx;
+    position: absolute;
+    z-index: 2;
+    background: #fff;
+}
+
+.priceDetail .flex.last-child:before {
+    position: absolute;
+    width: 60rpx;
+    height: 20rpx;
+    content: "";
+    background: #fff;
+    top: 0;
+    right: 50rpx;
+    z-index: 3;
+}
+
+.allPrice {
+    color: #ff662a;
+}
+
+.goodsContent {
+    margin-bottom: 20rpx;
+}
+
+.orderInfo {
+    padding: 20rpx 0 20rpx 0;
+}
+
+.orderInfo .orderInfo__hd {
+    margin-bottom: 10rpx;
+}
+
+.orderInfo__bd {
+    padding: 0 30rpx;
+    line-height: 1.5;
+}
+
+.orderInfo__bd .item {
+    margin-bottom: 10rpx;
+    color: #999999;
+}
+
+.kfIcon {
+    width: 40rpx;
+    height: 40rpx;
+    vertical-align: middle;
+    margin-right: 16rpx;
+}
+
+.disagree {
+    padding-top: 10rpx;
+}
+
+.disagree .title {
+    padding: 20rpx 30rpx 0 30rpx;
+    font-size: 30rpx;
+}
+
+.disagree .area {
+    margin: 0 30rpx;
+    padding: 26rpx 20rpx;
+    border: 1px solid #e5e5e5;
+    border-radius: 8rpx;
+    height: 170rpx;
+    margin-top: 20rpx;
+}
+
+.picList {
+    padding: 14rpx 0;
+}
+
+.picList .item .title {
+    padding: 20rpx 30rpx 0;
+    font-size: 30rpx;
+}
