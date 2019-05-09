@@ -47,4 +47,23 @@ export default {
   -webkit-transition: width 2s;
   -o-transition: width 2s;
 }
+._van-cell-group,.van-cell,.van-field__input{
+    z-index:10!important
+}
+/* .van-datetime-picker{
+  z-index:888!important
+}
+.van-transition.van-overlay{
+  z-index:6666!important;
+  background:#f00!important;
+
+} */
+textarea{
+  outline: none;
+ appearance: none;
+-ms-appearance: none;
+-moz-appearance: none;
+-webkit-appearance: none;
+
+}
 </style>
