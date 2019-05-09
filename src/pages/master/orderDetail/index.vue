@@ -130,11 +130,16 @@
         <div class="btn linear" v-if="detail.Status==3">重新提交</div>
         <div
           class="btn btn-active"
-          v-if="detail.Status==0 || detail.Status==1 || detail.Status==2 || detail.Status==3"
+          v-if="detail.Status==0" @click="callCustom(detail.Tel)"
         >联系客户</div>
-        <div class="btn btn-active">联系客服</div>
+        <div class="btn btn-active" @click="callService(detail.ServiceTel)">联系客服</div>
       </div>
     </div>
+    <!-- 联系客服 -->
+    <serviceTypeSelect
+      :selectServiceTypeStatus.sync="selectServiceTypeStatus"
+      :servicePhone="servicePhone"
+    ></serviceTypeSelect>
   </div>
 </template>
 <script>
@@ -147,6 +152,8 @@ import {
   getCurrentPageUrlWithArgs,
   previewImage
 } from "@/utils";
+import serviceTypeSelect from "@/components/serviceTypeSelect.vue";
+
 export default {
   data() {
     return {
@@ -155,7 +162,9 @@ export default {
       curPage: "",
       orderId: "",
       detail: {},
-      hasData: false
+      hasData: false,
+      servicePhone:"", //客服电话
+      selectServiceTypeStatus: false, //联系客服类型弹窗状态
     };
   },
   onLoad() {
@@ -171,10 +180,26 @@ export default {
       this.getData();
     }
   },
+  components:{
+   serviceTypeSelect
+  },
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "订单详情"
+      });
+    },
+    // 联系客服
+    callService(phone) {
+      console.log("___________");
+      console.log("tel:"+phone);
+      this.servicePhone = phone;
+      this.selectServiceTypeStatus = true;
+    },
+    callCustom(tel) {
+      //拨打电话(联系客户)
+      wx.makePhoneCall({
+        phoneNumber: tel // 仅为示例，并非真实的电话号码
       });
     },
     lookPic(index, picArr) {

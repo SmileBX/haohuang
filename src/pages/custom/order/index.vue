@@ -170,7 +170,7 @@ export default {
     this.UserId = wx.getStorageSync("userId");
     // typeNo--进入订单列表展示的状态
     // 客服--订单状态：-1全部，0-待确认，1-待付款 7-已执行(安装中) 8-待评论9-已完成
-    // 客户--订单状态：-1全部，0-待确认，1-待付款，2-处理中，10-待评论
+    // 客户--订单状态：-1全部，0-待确认，1-待付款，2-处理中，8-待评论
     if (this.$root.$mp.query.typeNo) {
       this.typeNo = this.$root.$mp.query.typeNo * 1;
     }

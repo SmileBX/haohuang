@@ -107,64 +107,70 @@
       </div>
     </div>
     <!-- 内部师傅才有的 -->
-    <div
-      class="eaditFrom weui-cells noBorder__weui-cells"
-      style="margin-bottom:0;"
-      v-for="(item,index) in progressInfoList"
-      :key="index"
-    >
-      <div class="weui-cell">
-        <div class="weui-cell__hd">
-          <label class="weui-label">交通费</label>
+    <div v-if="masterType==0">
+      <div
+        class="eaditFrom weui-cells noBorder__weui-cells"
+        style="margin-bottom:0;"
+        v-for="(item,index) in progressInfoList"
+        :key="index"
+      >
+        <div class="weui-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label">交通费</label>
+          </div>
+          <div class="weui-cell__bd">
+            <input
+              type="number"
+              class="weui-input"
+              v-model="item.TrafficMoney"
+              placeholder="请输入安装所需的交通费用"
+            >
+          </div>
         </div>
-        <div class="weui-cell__bd">
-          <input
-            type="number"
-            class="weui-input"
-            v-model="item.TrafficMoney"
-            placeholder="请输入安装所需的交通费用"
-          >
+        <div class="weui-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label">餐费</label>
+          </div>
+          <div class="weui-cell__bd">
+            <input type="number" class="weui-input" v-model="item.Meals" placeholder="请输入安装所需的餐费">
+          </div>
+        </div>
+        <div class="weui-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label">材料费</label>
+          </div>
+          <div class="weui-cell__bd">
+            <input
+              type="number"
+              class="weui-input"
+              v-model="item.MasterialFee"
+              placeholder="请输入安装所需的材料费"
+            >
+          </div>
+        </div>
+        <div class="weui-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label">住宿费</label>
+          </div>
+          <div class="weui-cell__bd">
+            <input
+              type="number"
+              class="weui-input"
+              v-model="item.HotelExpense"
+              placeholder="请输入安装所需的费用"
+            >
+          </div>
         </div>
       </div>
-      <div class="weui-cell">
-        <div class="weui-cell__hd">
-          <label class="weui-label">餐费</label>
+      <!--按钮增加明细-->
+      <div
+        style="padding-bottom:40rpx;padding-top:40rpx;"
+        class="addDetail bg_fff"
+        @click="addOrder"
+      >
+        <div class="btn btn-add">
+          <img src="/static/images/icons/add_2.png" alt>增加明细
         </div>
-        <div class="weui-cell__bd">
-          <input type="number" class="weui-input" v-model="item.Meals" placeholder="请输入安装所需的餐费">
-        </div>
-      </div>
-      <div class="weui-cell">
-        <div class="weui-cell__hd">
-          <label class="weui-label">材料费</label>
-        </div>
-        <div class="weui-cell__bd">
-          <input
-            type="number"
-            class="weui-input"
-            v-model="item.MasterialFee"
-            placeholder="请输入安装所需的材料费"
-          >
-        </div>
-      </div>
-      <div class="weui-cell">
-        <div class="weui-cell__hd">
-          <label class="weui-label">住宿费</label>
-        </div>
-        <div class="weui-cell__bd">
-          <input
-            type="number"
-            class="weui-input"
-            v-model="item.HotelExpense"
-            placeholder="请输入安装所需的费用"
-          >
-        </div>
-      </div>
-    </div>
-    <!--按钮增加明细-->
-    <div style="padding-bottom:40rpx;padding-top:40rpx;" class="addDetail bg_fff" @click="addOrder">
-      <div class="btn btn-add">
-        <img src="/static/images/icons/add_2.png" alt>增加明细
       </div>
     </div>
     <div class="ftBtn" style="height:154rpx;">
@@ -191,6 +197,9 @@ export default {
       this.orderId = this.$root.$mp.query.orderId;
       this.getData();
     }
+    if (this.$root.$mp.query.masterType) {
+      this.masterType = this.$root.$mp.query.masterType;
+    }
   },
   data() {
     return {
@@ -214,7 +223,8 @@ export default {
         }
       ], //明细
       infoLength: 10,
-      curInfo: 1
+      curInfo: 1,
+      masterType:''  //是否显示明细MasterType:1==>外部师傅；0==>内部师傅
     };
   },
   methods: {
@@ -273,11 +283,11 @@ export default {
     },
     async base64Img(arr) {
       let base64Arr = [];
-      for(let i=0;i<arr.length;i+=1){
-        const res = await pathToBase64(arr[i].picUrl)
-          base64Arr.push({
-            PicUrl:res
-          });
+      for (let i = 0; i < arr.length; i += 1) {
+        const res = await pathToBase64(arr[i].picUrl);
+        base64Arr.push({
+          PicUrl: res
+        });
       }
       return base64Arr;
     },
@@ -294,15 +304,24 @@ export default {
       if (type === 4) {
         this.receiptPicList.splice(index, 1);
       }
-    }, 
+    },
     async submitApply() {
       let that = this;
       let frontPicList = await that.base64Img(that.frontPicList);
       let insidePicList = await that.base64Img(that.insidePicList);
       let afterPicList = await that.base64Img(that.afterPicList);
       let receiptPicList = await that.base64Img(that.receiptPicList);
-      
-      that.AddInstallOrder(JSON.stringify(frontPicList),JSON.stringify(insidePicList),JSON.stringify(afterPicList),JSON.stringify(receiptPicList));
+      let progressInfoList = '';
+      if(that.masterType==0){
+        progressInfoList = JSON.stringify(that.progressInfoList);
+      }
+      that.AddInstallOrder(
+        JSON.stringify(frontPicList),
+        JSON.stringify(insidePicList),
+        JSON.stringify(afterPicList),
+        JSON.stringify(receiptPicList),
+        progressInfoList
+      );
     },
     addOrder() {
       //添加明细
@@ -331,6 +350,7 @@ export default {
         that.curPage
       ).then(res => {
         if (res.code === 0) {
+          that.masterType = res.data.MasterType;
           if (res.data.AfterPicList !== "") {
             //安装前图片列表
             that.$set(
@@ -384,7 +404,7 @@ export default {
         }
       });
     },
-    AddInstallOrder(frontPicList,insidePicList,afterPicList,receiptPicList) {
+    AddInstallOrder(frontPicList, insidePicList, afterPicList, receiptPicList,progressInfoList) {
       //this.base64Img(this.frontPicList);
       //console.log("arr", arr);
       //return false;
@@ -399,7 +419,7 @@ export default {
           InsidePicList: insidePicList,
           AfterPicList: afterPicList,
           ReceiptPicList: receiptPicList,
-          ProgressInfoList: JSON.stringify(that.progressInfoList) 
+          ProgressInfoList: progressInfoList
         },
         that.curPage
       ).then(result => {
