@@ -157,7 +157,7 @@
                 <span class="circleNum" v-if="info.handleNum>0">{{info.handleNum}}</span>
               </div>
               <!-- 处理中 -->
-              <p class="title">安装中</p>
+              <p class="title">处理中</p>
             </div>
           </li>
           <li>
@@ -260,7 +260,7 @@
         <!-- 客服的时候 -->
         <ul class="navList li_25 center navList2" v-if="identity==1">
           <li>
-            <div class="outside">
+            <div class="outside"  @click="gotoClientOrder">
               <div class="icon-img">
                 <img src="/static/images/icons/serve_order.png" alt>
               </div>
@@ -498,7 +498,11 @@ export default {
       if (this.identity === 1) {
       } else if (this.identity === 2) {
       }
-    }
+    },
+    // 跳转到客服
+    gotoClientOrder(){
+      wx.navigateTo({ url: `/pages/servicemenu/customeOrder/main` });
+    },
   }
 };
 </script>

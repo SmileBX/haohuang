@@ -26,7 +26,7 @@
                     :value="area"
                     />
 
-                    <van-field
+                    <!-- <van-field
                     label="详细地址"
                     type="textarea"
                     style="height:38rpx;"
@@ -37,8 +37,16 @@
                     input-class="van-textarea-min-height"
                     :value="address"
                     @change="onAddress" 
-                    />
+                    /> -->
                 </van-cell-group>
+                <div class="weui-cell" style="font-size:28rpx;">
+                  <div class="weui-cell__hd">
+                      <label class="weui-label" style="color:#333333">详细地址</label>
+                  </div>
+                  <div class="weui-cell__bd">
+                      <input type="text"  class="weui-input text_r" style="text-align:left;margin-left:25rpx;font-size:28rpx;" placeholder="请输入详细地址" v-model="address">
+                  </div>
+                </div>
             <!-- <div class="weui-cell">
                 <div class="weui-cell__hd">
                     <label class="weui-label">联系人</label>
@@ -171,10 +179,11 @@
                         <div class="delete" @click="deleteImg(sindex,lindex)">×</div>
                         <img :src="img"  style="width:160rpx;height:160rpx;" alt>
                     </div>
-                    <div
+                    <img
                       class="button-upload"
-                      style="background-image:url(/static/images/icons/upload_2.png);" v-show="item.isShowBtnUpload" @click="chosseImg(lindex)">
-                    </div>
+                      src="/static/images/icons/upload_2.png"
+                     v-show="item.isShowBtnUpload" @click="chosseImg(lindex)">
+                    
                   
                   </div>
                 </div>
@@ -189,24 +198,29 @@
                         <div class="delete" @click="deleteImg2(sindex,lindex)">×</div>
                         <img :src="img"  style="width:160rpx;height:160rpx;" alt>
                     </div>
-                    <div
-                      class="button-upload"
-                      style="background-image:url(/static/images/icons/upload_2.png);" v-show="item.isShowBtnUpload2" @click="chosseImg2(lindex)">
-                    </div>
-                    <!-- 上传视频 -->
-                    <div class="upload-img img" style="width:160rpx;height:160rpx;" v-if="!isShowBtnVedio">
-                        <div class="delete" @click="deleteVedio(lindex)">×</div>
-                        <vedio :src="item.vedio"  style="width:160rpx;height:160rpx;" alt> </vedio>
-                    </div>
-                    <div
+                   
+                    
+                    <!-- 上传视频按钮 -->
+                     <img
                         class="button-upload"
-                        style="background-image:url(/static/images/icons/upload_3.png);"  @click="chosseVedio(lindex)" v-else>
+                        src="/static/images/icons/upload_3.png"
+                          @click="chosseVedio(lindex)" v-if="item.isShowBtnVedio">
+                     <!-- 上传视频视频展示 -->
+                    <div class="upload-img img" style="width:160rpx;height:160rpx;" v-else>
+                        <div class="delete" @click="deleteVedio(lindex)" style="z-index:999">×</div>
+                        <video :src="item.vedio" :id="'video'+lindex" autoplay   style="width:160rpx;height:160rpx;display:block;z-index:10" @click="amplification(lindex)"></video>
                     </div>
+                     <!-- 上传图片按钮 -->
+                    <img
+                      class="button-upload" src="/static/images/icons/upload_2.png" v-show="item.isShowBtnUpload2" @click="chosseImg2(lindex)">
+                    
+                   
                   </div>
                 </div>
                 <div class="select__weui-cells">
                   <div class="weui-cells__title">交付时间</div>
-                  <div class="ipt flex flexAlignCenter"  @click="showDate=true">
+                  <!-- <div class="ipt flex flexAlignCenter"  @click="showDate=true"> -->
+                  <div class="ipt flex flexAlignCenter"  @click="choseDate(lindex)">
                     <div class="flex1" >
                       <input type="text" disabled="true" class="weui-input" placeholder="请选择日期" v-model="item.estimateTime">
                     </div>
@@ -216,7 +230,8 @@
                 <div class="weui-item">
                   <div class="weui-cells__title">备注说明</div>
                   <div class="eaditArea">
-                    <textarea  class="weui-area" placeholder="请输入备注内容" v-model="item.remark"></textarea>
+                    <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
+                    <textarea  class="weui-area" placeholder="请输入备注内容" v-model="item.remark" v-else></textarea>
                   </div>
                 </div>
                 <div class="priceBox flex">
@@ -231,17 +246,18 @@
               <!--子no3-->
 
               <!--时间选择 不需要弹框-->
-              <van-action-sheet :show="showDate" @close="showDate=false" @select="showDate=false">
-                  <van-datetime-picker
-                  type="date"
-                  :value="currentDate"
-                  @confirm="onInput($event,lindex)"
-                  @cancel="showDate=false"
-                  :min-date="minDate"
-                  :formatter="formatter"
-                  title="请选择时间"
-                  />
-              </van-action-sheet>  
+                <van-action-sheet :show="item.showDate" @close="item.showDate=false" @select="item.showDate=false">
+                    <van-datetime-picker
+                    type="date"
+                    :value="currentDate"
+                    @confirm="onInput($event,lindex)"
+                    @cancel="item.showDate=false"
+                    :min-date="minDate"
+                    :formatter="formatter"
+                    title="请选择时间"
+                    style="z-index:888!important"
+                    />
+                </van-action-sheet> 
                <!--选择类型--> 
                 <div class="maskType border-box" v-if="showType">
                     <div class="flex">
@@ -291,8 +307,8 @@
           </div>
         </div>
         <!--确认支付-->
-        <div class="ftBtn" style="height:156rpx;z-index:9999999">
-          <div class="inner fixed bm0 border-box bg_f4f7fc">
+        <div class="ftBtn" style="height:156rpx;z-index:9999999;">
+          <div class="inner fixed bm0 border-box" style="background:#ffffff!important">
             <div class="btn btn-active fill" @click="submit">确认下单</div>
           </div>
         </div>
@@ -345,7 +361,7 @@ export default {
       identity: "",
       active: 0, //选中的标记
       postMsg: "选择快递", //快递选择
-      showDate: false, //日期 组件 不需要遮罩层
+      // showDate: false, //日期 组件 不需要遮罩层
       isShow: false, //遮罩层
       showType: false, //普通选择的弹框
       showPaymask: false, //支付确认弹框
@@ -363,14 +379,15 @@ export default {
         spechign: 0,
         speclong: 0,
         specwide: 0,
-        specnum: 0,
+        specnum: 1,
         referencePicList: [],
         imgBase: [],
         referencePicList2: [],
         imgBase2: [],
-        // isShowBtnUpload: true, //显示上传图片按钮的状态
-        // isShowBtnUpload2: true, //显示上传图片按钮的状态
-        // isShowBtnVedio: true, //显示上传视频按钮的状态
+        isShowBtnUpload: true, //显示上传图片按钮的状态
+        isShowBtnUpload2: true, //显示上传图片按钮的状态
+        isShowBtnVedio: true, //显示上传视频按钮的状态
+        showDate: false, //日期 组件 不需要遮罩层
         vedio:"",
         estimateTime: "",
         remark: "",
@@ -388,14 +405,15 @@ export default {
           spechign: 0,
           speclong: 0,
           specwide: 0,
-          specnum: 0,
+          specnum: 1,
           referencePicList: [],
           imgBase: [],
           referencePicList2: [],
           imgBase2: [],
-          // isShowBtnUpload: true, //显示上传图片按钮的状态
-          // isShowBtnUpload2: true, //显示上传图片按钮的状态
-          // isShowBtnVedio: true, //显示上传视频按钮的状态
+          isShowBtnUpload: true, //显示上传图片按钮的状态
+          isShowBtnUpload2: true, //显示上传图片按钮的状态
+          isShowBtnVedio: true, //显示上传视频按钮的状态
+          showDate: false, //日期 组件 不需要遮罩层
           vedio:"",
           estimateTime: "",
           remark: "",
@@ -428,15 +446,13 @@ export default {
   },
   onLoad() {
     this.setBarTitle();
-    // this.imgBase = [];
-    // this.imgPathArr = [];
     this.proitem= {
         orderType: "",
         orderTypeName: "",
         spechign: 0,
         speclong: 0,
         specwide: 0,
-        specnum: 0,
+        specnum: 1,
         referencePicList: [],
         imgBase: [],
         referencePicList2: [],
@@ -444,6 +460,7 @@ export default {
         isShowBtnUpload: true, //显示上传图片按钮的状态
         isShowBtnUpload2: true, //显示上传图片按钮的状态
         isShowBtnVedio: true, //显示上传视频按钮的状态
+        showDate: false, //日期 组件 不需要遮罩层
         vedio:"",
         estimateTime: "",
         remark: "",
@@ -461,14 +478,15 @@ export default {
           spechign: 0,
           speclong: 0,
           specwide: 0,
-          specnum: 0,
-          referencePicList: [],
-          imgBase: [],
-          referencePicList2: [],
-          imgBase2: [],
+          specnum: 1,
+          referencePicList: [],//现场图视图循环
+          imgBase: [],//现场图上传临时路径
+          referencePicList2: [], //指导图视图循环
+          imgBase2: [],  //指导图上传临时路径
           isShowBtnUpload: true, //显示上传图片按钮的状态
           isShowBtnUpload2: true, //显示上传图片按钮的状态
           isShowBtnVedio: true, //显示上传视频按钮的状态
+          showDate: false, //日期 组件 不需要遮罩层
           vedio:"",
           estimateTime: "",
           remark: "",
@@ -480,6 +498,18 @@ export default {
           orderName: ""
         }
       ]
+      this.bindName = "";
+      this.page = 1;
+      this.tip = 0;
+      this.active = 0;
+      this.addressinfo = [];
+      this.name = "";
+      this.phone = "";
+      this.area = "";
+      this.address = "";
+      this.provinceCode = "";
+      this.cityCode = "";
+      this.districtCode = "";
     // this.isShowBtnUpload = true;
     // this.isShowBtnUpload2 = true;
     // this.isShowBtnVedio = true;
@@ -489,18 +519,18 @@ export default {
     this.identity = wx.getStorageSync("identity");
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    this.bindName = "";
-    this.page = 1;
-    this.tip = 0;
-    this.active = 0;
-    this.addressinfo = [];
-    this.name = "";
-    this.phone = "";
-    this.area = "";
-    this.address = "";
-    this.provinceCode = "";
-    this.cityCode = "";
-    this.districtCode = "";
+    // this.bindName = "";
+    // this.page = 1;
+    // this.tip = 0;
+    // this.active = 0;
+    // this.addressinfo = [];
+    // this.name = "";
+    // this.phone = "";
+    // this.area = "";
+    // this.address = "";
+    // this.provinceCode = "";
+    // this.cityCode = "";
+    // this.districtCode = "";
     this.isShow=false//遮罩层
     this.showType=false //普通选择的弹框
     this.showPaymask=false //支付确认弹框
@@ -652,7 +682,7 @@ export default {
       month.toString().length < 2 ? (month = "0" + month) : month;
       dd.toString().length < 2 ? (dd = "0" + dd) : dd;
       this.prolist[i].estimateTime = `${year}-${month}-${dd}`;
-      this.showDate = false;
+      this.prolist[i].showDate = false;
       console.log(this.estimateTime, "交付时间");
     },
     //增加明细（增加子订单）
@@ -836,6 +866,7 @@ export default {
         this.prolist[n].isShowBtnUpload = true;
       }
       let that = this;
+      that.prolist[n].imgBase=[]
       // 根据临时路径数组imgPathArr获取base64图片
       for (let i = 0; i < that.prolist[n].referencePicList.length; i++) {
         pathToBase64(that.prolist[n].referencePicList[i]).then(res => {
@@ -908,6 +939,8 @@ export default {
         this.prolist[n].isShowBtnUpload2 = true;
       }
       const that = this
+      
+      that.prolist[n].imgBase2=[]
       // 根据临时路径数组imgPathArr获取base64图片
       for (let i = 0; i < this.prolist[n].referencePicList2.length; i++) {
         pathToBase64(that.prolist[n].referencePicList2[i]).then(res=>{
@@ -946,9 +979,12 @@ export default {
              maxDuration:60,//拍摄视频最长拍摄时间，单位秒
              success:res=>{
                 console.log(res)
-                that.prolist[n].vedio=res.tempFilePath
+                that.prolist[n].vedio=res.tempFilePath;
+                this.prolist[n].isShowBtnVedio=false
+                console.log("ffffffffffffff");
+                console.log(that.prolist[n].vedio);
               //  that.prolist[n].size=res.size/(1024*1024).toFixed(2)
-                that.updateVedio(n)
+              // that.updateVedio(n)
              }
         })
 
@@ -958,7 +994,7 @@ export default {
       console.log(66666666)
         if(toLogin(this.curPage)){
             wx.uploadFile({
-              url:'http://hhapi.wtvxin.com/api/CustomerService/PostVideoFiles',
+              url:'https://hhapi.wtvxin.com/api/CustomerService/PostVideoFiles',
               method:'POST',
               filePath:this.prolist[n].vedio,
               name: 'file',
@@ -971,6 +1007,8 @@ export default {
               },
               success:res=>{
                 console.log(res,"上传视频")
+                // this.prolist[n].isShowBtnVedio=false
+                
               }
 
             })
@@ -980,9 +1018,21 @@ export default {
     },
     //删除视频
     deleteVedio(n){
+        console.log(n)
         this.prolist[n].vedio=''
-        this.isShowBtnVedio=true
-        this.updateVedio()
+        this.prolist[n].isShowBtnVedio=true
+        this.updateVedio(n)
+    },
+    amplification(n){
+      console.log(n,"9898989")
+      this.VideoContext =wx.createVideoContext("'video'+lindex")
+      console.log(this.VideoContext)
+      this.VideoContext.requestFullScreen({
+        direction:0
+      })
+      //  console.log(this.VideoContext.requestFullScreen({
+      //    direction:0
+      //  }))
     },
     //获取用户默认的收货地址
     getDefaultAddress() {
@@ -1038,7 +1088,9 @@ export default {
 
       //console.log(this.prolist,"this.prolist")
       let _OrderInsertList = [];
+      let n = []
       for (let i = 0; i < this.prolist.length; i++) {
+        n.push(i)
         let _proLists = this.prolist[i].proMastic.concat(
           this.prolist[i].proIns
         );
@@ -1060,7 +1112,8 @@ export default {
           spechign: this.prolist[i].spechign, //高
           specnum: this.prolist[i].specnum, //数量
           remark: this.prolist[i].remark, //备注
-          referencePicList: JSON.stringify(this.prolist[i].imgBase), //图片集合
+          scenePicList: JSON.stringify(this.prolist[i].imgBase), //现场图片集合
+          guidancePicList: JSON.stringify(this.prolist[i].imgBase2), //现场图片集合
           estimateTime: this.prolist[i].estimateTime, //完成时间!!!!!
           offerTotal: this.prolist[i].offerTotal, //总金额!!!!!
           proLists: _proLists, //材料集合
@@ -1078,7 +1131,13 @@ export default {
             icon: "none"
           });
           return false;
-        } else {
+        } else if( this.prolist[i].specnum<1){
+            wx.showToast({
+            title: "数量不能小于1",
+            icon: "none"
+          });
+          return false;
+        }else{
           _OrderInsertList.push(info); //JSON.stringify(info)
         }
       }
@@ -1100,6 +1159,15 @@ export default {
         ).then(res => {
           console.log(res, "提交订单");
           if (res.code == 0) {
+            console.log(this,"this")
+            console.log(n,"n")
+
+            //提交视频
+            for(let i of n ){
+               this.updateVedio(i) ///提交视频
+            }
+           
+
             wx.showToast({
               title: "订单提交成功！"
             });
@@ -1147,6 +1215,9 @@ export default {
         });
       }
     },
+    choseDate(n){
+        this.prolist[n].showDate=true
+    },
     confirmArea(area) {
       this.showArea = false;
       let text = "";
@@ -1179,10 +1250,10 @@ export default {
     },
     onPhone(e) {
       this.phone = e.mp.detail;
-    },
-    onAddress(e) {
-      this.address = e.mp.detail;
     }
+    // onAddress(e) {
+    //   this.address = e.mp.detail;
+    // }
   }
 };
 </script>
