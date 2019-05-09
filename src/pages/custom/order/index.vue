@@ -41,7 +41,7 @@
             <div class="box">
               <div class="outside">
                 <div class="pictrueAll">
-                  <div class="pictrue img" :style="'background-image:url('+list.MemberHead+')'"></div>
+                  <div class="pictrue img" :style="'background-image:url('+list.OrderImg+')'"></div>
                 </div>
                 <div class="txtBox">
                   <p class="title text-line2">{{list.OrderName}}</p>
