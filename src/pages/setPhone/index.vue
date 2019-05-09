@@ -87,7 +87,7 @@ export default {
             // Token: this.token,
             Mobile: this.phoneNumber,
             // UserId: this.userid,
-            CodeType:5
+            CodeType:4
           }
           );
           
