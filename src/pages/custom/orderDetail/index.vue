@@ -100,7 +100,8 @@
         <div class="btn" v-if="detail.OrderStatus==0||detail.OrderStatus==1" @click="showCancelOrder">取消订单</div>
             <div class="button active" @click="callService(detail.ServiceTel)">联系客服</div>
         <!-- 客服是否确认IsConfirm -->
-        <div class="btn linear" v-if="detail.OrderStatus==1" @click="confirmPay">付款</div>
+        <div class="btn linear" v-if="detail.OrderStatus==1" @click="orderPay">付款</div>
+        <div class="btn btn-active" v-if="detail.OrderStatus==4">查看物流</div>
         <div class="btn linear" v-if="detail.DesignStatus==1" @click="confirmButtonModal('design')">设计确认</div>
         <div class="btn linear" v-if="detail.OrderStatus==4" @click="confirmButtonModal('logistics')">确认收货</div>
         <div class="btn linear" v-if="detail.OrderStatus==8" @click="gotoComment">评论</div>
@@ -237,30 +238,9 @@ export default {
       this.getData();
       console.log(res.data,'取消成功')
     },
-    // 线下付款
-    confirmPay(){
-      console.log('123')
-      const that = this;
-      wx.showModal({
-        title:'支付确认',
-        content:'此操作将完成订单付款！',
-        confirmColor:'#ff662a',
-        success(res){
-            console.log(res,'用户点击')
-          if(res.confirm){
-            post('CustomerService/ConfirmPayOrder',{
-              UserId:that.UserId,
-              Token:that.Token,
-              OrderNo:that.orderId,
-              IsChange:0  //是否修改预计金额和运费0-否 1-是
-              }).then(res=>{
-                that.useSuccess(res,'线下付款成功!');
-              })
-          } else if (res.cancel) {
-            console.log('用户点击取消')
-          }
-        }
-      })
+    // 付款
+    orderPay(){
+      
     },
     // 确认收货/确认设计模态弹窗
     confirmButtonModal(types){
