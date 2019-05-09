@@ -32,7 +32,7 @@
           <div class="box">
             <div class="outside">
               <div class="pictrueAll">
-                <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
+                <div class="pictrue img" :style="'background-image:url('+detail.OrderImg+')'"></div>
               </div>
               <div class="txtBox">
                 <p class="title text-line2">{{detail.orderType}}</p>
@@ -93,6 +93,13 @@
         <div class="item" v-if="detail.EndTime">完成时间：{{detail.EndTime}}</div>
       </div>
     </div>
+    <!-- 在线客服 -->
+    <!-- <div class="weui-cell bg_fff mb10" style="line-height:1.8;">
+      <div class="weui-cell__bd">
+        <img src="/static/images/icons/kf.png" class="kfIcon" alt="">
+        <span>在线客服</span>
+      </div>
+    </div> -->
     <!-- 操作按钮 -->
     <div class="ftBtn ftBtns">
       <div class="inner flex fixed bm0 bg_fff border-box justifyContentEnd">

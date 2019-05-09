@@ -22,8 +22,13 @@ import "../../css/common.css";
 export default {
   onLoad() {
     this.setBarTitle();
+    
+  },
+  onShow(){
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
+    this.phoneNumber=""
+    this.verifyCode=""
   },
   data() {
     return {
@@ -58,7 +63,7 @@ export default {
             UserId: this.userid,
             VerifyCode: this.verifyCode,
             Token: this.token,
-            Type:0
+            Type:1  //类型 0-绑定手机号,1-手机号修改
           });
          
           wx.showToast({
@@ -68,7 +73,7 @@ export default {
           });
           wx.setStorageSync("Mobile",this.phoneNumber),
           setTimeout(()=> {
-              wx.navigateBack();;
+             // wx.navigateBack();;
           },1500)
       }
     },
@@ -87,7 +92,7 @@ export default {
             // Token: this.token,
             Mobile: this.phoneNumber,
             // UserId: this.userid,
-            CodeType:5
+            CodeType:4  //4,会员重新绑定手机号  10,师傅修改手机号
           }
           );
           

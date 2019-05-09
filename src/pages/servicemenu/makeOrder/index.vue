@@ -438,7 +438,7 @@ export default {
       isLoad: false,
       // imgPathArr: [],
       // imgBase: [],
-      imgLenght: 10,
+      imgLenght: 8,
       adressId: "", //地址编号
       // proLists:[],//材料--制作材料 安装材料
       // proMastic:[],//制作材料集合
@@ -1226,6 +1226,7 @@ export default {
         });
       }
     },
+    //日期
     choseDate(n){
         this.prolist[n].showDate=true
     },
