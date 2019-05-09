@@ -275,7 +275,9 @@ export default {
       let base64Arr = [];
       for(let i=0;i<arr.length;i+=1){
         const res = await pathToBase64(arr[i].picUrl)
-          base64Arr.push(res);
+          base64Arr.push({
+            PicUrl:res
+          });
       }
       return base64Arr;
     },
@@ -292,7 +294,7 @@ export default {
       if (type === 4) {
         this.receiptPicList.splice(index, 1);
       }
-    },
+    }, 
     async submitApply() {
       let that = this;
       let frontPicList = await that.base64Img(that.frontPicList);
@@ -300,7 +302,7 @@ export default {
       let afterPicList = await that.base64Img(that.afterPicList);
       let receiptPicList = await that.base64Img(that.receiptPicList);
       
-      that.AddInstallOrder(frontPicList,insidePicList,afterPicList,receiptPicList);
+      that.AddInstallOrder(JSON.stringify(frontPicList),JSON.stringify(insidePicList),JSON.stringify(afterPicList),JSON.stringify(receiptPicList));
     },
     addOrder() {
       //添加明细
@@ -390,14 +392,14 @@ export default {
       post(
         "InstalMaster/AddInstallOrder",
         {
-          UserId: that.userId,
+          MasterId: that.userId,
           Token: that.token,
           ProgressId: that.orderId,
           FrontPicList: frontPicList,
           InsidePicList: insidePicList,
           AfterPicList: afterPicList,
           ReceiptPicList: receiptPicList,
-          ProgressInfoList: that.progressInfoList
+          ProgressInfoList: JSON.stringify(that.progressInfoList) 
         },
         that.curPage
       ).then(result => {
