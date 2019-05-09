@@ -43,6 +43,7 @@
             "root": "pages/custom/",
             "pages": [
                 "order/main",
+                "orderDetail/main",
                 "schedule/main",
                 "addressList/main",
                 "addAddress/main",

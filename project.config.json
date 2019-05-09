@@ -45,8 +45,22 @@
 				},
 				{
 					"id": -1,
+					"name": "客户下单",
+					"pathName": "pages/custom/smOrder/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
 					"name": "客户的我的订单",
 					"pathName": "pages/custom/order/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 3,
+					"name": "客户的我的详情",
+					"pathName": "pages/custom/orderDetail/main",
 					"query": "",
 					"scene": null
 				},
@@ -180,13 +194,6 @@
 					"id": -1,
 					"name": "h5的注册",
 					"pathName": "pages/register/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "客户下单",
-					"pathName": "pages/custom/smOrder/main",
 					"query": "",
 					"scene": null
 				},

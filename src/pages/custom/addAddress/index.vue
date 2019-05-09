@@ -249,6 +249,8 @@ export default {
          return '请选择省份'
       }if(!this.address){
         return '请输入收货地址'
+      }if(!/^[\u4e00-\u9fa5\u3001\A-\Z\d]+$/ .test(this.address)){
+         return "请输入正确的地址"
       }
       return false;
     },
