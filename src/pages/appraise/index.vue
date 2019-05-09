@@ -10,7 +10,7 @@
                 <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
               </div>
               <div class="txtBox">
-                <p class="title text-line2">龙华展涛科技大厦灯箱安装</p>
+                <p class="title text-line2">{{detail.orderType}}</p>
               </div>
             </div>
           </div>
@@ -102,19 +102,41 @@
 </template>
 <script>
 //根据订单的类型 获取评论要显示的评论种类
+import {post} from '@/utils/index'
 export default {
+  data() {
+    return {
+      UserId: "",
+      Token: "",
+      orderId:'',
+      detail:{}
+    };
+  },
     onLoad() {
       this.setBarTitle();
   },
-  onShow() {},
-  data() {
-    return {};
+  onShow() {
+      this.orderId=this.$root.$mp.query.orderId
+    this.UserId = wx.getStorageSync("userId");
+    this.Token = wx.getStorageSync("token");
+      console.log(this.orderId)
+      this.getData()
   },
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "发表评价"
       });
+    },
+    async getData() {
+      const res = await post("CustomerService/OrderInfo", {
+        CsdId: this.UserId,
+        Token: this.Token,
+        OrderNo: this.orderId,
+        IsService: 1
+      });
+      console.log(res);
+      this.detail = res.data;
     }
   }
 }

@@ -16,7 +16,8 @@
         "pages/forgetPassword/main",
         "pages/wxBindTel/main",
         "pages/chooseBank/main",
-        "pages/setPhone/main"
+        "pages/setPhone/main",
+        "pages/appraise/main"
 
     ],
     "subpackages": [{
@@ -43,7 +44,6 @@
                 "schedule/main",
                 "addressList/main",
                 "addAddress/main",
-                "appraise/main",
                 "smOrder/main"
             ]
         },
