@@ -53,21 +53,21 @@
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">宽</span>
                       <div class="ipt flex">
-                        <input type="number" class="flex1 weui-input" v-model="item.specwide">
+                        <input type="number" class="flex1 weui-input" v-model="item.specwide" @focus="trimWide(lindex,11)" @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">高</span>
                       <div class="ipt flex">
-                        <input type="number" class="flex1 weui-input" v-model="item.spechign">
+                        <input type="number" class="flex1 weui-input" v-model="item.spechign" @focus="trimWide(lindex,22)" @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">厚</span>
                       <div class="ipt flex">
-                        <input type="number" class="flex1 weui-input" v-model="item.speclong">
+                        <input type="number" class="flex1 weui-input" v-model="item.speclong" @focus="trimWide(lindex,33)" @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
@@ -229,8 +229,8 @@
                 </div>
             </div>
         </div>
-        <div class="ftBtn" style="height:156rpx;z-index:9999999">
-          <div class="inner fixed bm0 border-box bg_f4f7fc">
+        <div class="ftBtn" style="height:156rpx;position:relative">
+          <div class="inner fixed bm0 border-box bg_f4f7fc" style="background:#ffffff!important;position:relative">
             <div class="btn btn-active fill" @click="submit">确认下单</div>
           </div>
         </div>
@@ -269,12 +269,12 @@ export default {
     this.imgBase= []
     this.imgPathArr= []
     this.proitem={
-      orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],isShowBtnUpload:true,
+      orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],isShowBtnUpload:true,
       estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,  //日期 组件 不需要遮罩层
     },
     this.prolist=[
       {
-      orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],
+      orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
       estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false,  //日期 组件 不需要遮罩层
       },
     ]
@@ -408,12 +408,12 @@ export default {
         masktitle:'设计',
         tip:0,//点击增加明细增加子订单的次数标识
         proitem:{
-          orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],
+          orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
           estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true
         },
         prolist:[
           {
-         orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:0,referencePicList:[],imgBase:[],
+         orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
           estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",
           isShowBtnUpload:true
           },
@@ -804,9 +804,15 @@ export default {
               icon:'none'
             })
             return false
+          } else if( this.prolist[i].specnum<1){
+            wx.showToast({
+                title: "数量不能小于1",
+                icon: "none"
+            });
+              return false;
           }else{
-              _OrderInsertList.push(info);//JSON.stringify(info)
-          }
+                _OrderInsertList.push(info);//JSON.stringify(info)
+            }
           
         }
        
@@ -830,6 +836,36 @@ export default {
     },
     closeMask(){
       wx.redirectTo({url:"/pages/custom/order/main"})
+    },
+    trimWide(n,m){
+        if(m==11){
+          this.prolist[n].specwide=''
+        }else if(m==22){
+            this.prolist[n].spechign=''
+        }else if(m==33){
+            this.prolist[n].speclong=''
+        }
+        
+    },
+    getWide(n){
+      console.log(this.prolist[n].specwide.length)
+      if(this.prolist[n].specwide.length==0){
+          this.prolist[n].specwide=0
+      }else if(this.prolist[n].specwide.length>4){
+          this.showTips()
+          this.prolist[n].specwide=0
+      }else if(this.prolist[n].spechign.length==0){
+          this.prolist[n].spechign=0
+      }else if(this.prolist[n].spechign.length>4){
+          this.showTips()
+          this.prolist[n].spechign=0
+      }else if(this.prolist[n].speclong.length==0){
+          this.prolist[n].speclong=0
+      }else if(this.prolist[n].speclong.length>4){
+          this.showTips()
+          this.prolist[n].speclong=0
+      }
+    
     }
   }
 };

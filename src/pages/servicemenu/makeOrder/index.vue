@@ -120,21 +120,21 @@
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">宽</span>
                       <div class="ipt flex">
-                        <input type="number" class="flex1 weui-input" v-model="item.specwide">
+                        <input type="number" class="flex1 weui-input" v-model="item.specwide" @focus="trimWide(lindex,11)" @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">高</span>
                       <div class="ipt flex">
-                        <input type="number" class="flex1 weui-input" v-model="item.spechign">
+                        <input type="number" class="flex1 weui-input" v-model="item.spechign" @focus="trimWide(lindex,22)" @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">厚</span>
                       <div class="ipt flex">
-                        <input type="number" class="flex1 weui-input" v-model="item.speclong">
+                        <input type="number" class="flex1 weui-input" v-model="item.speclong" @focus="trimWide(lindex,33)" @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
@@ -206,9 +206,9 @@
                         src="/static/images/icons/upload_3.png"
                           @click="chosseVedio(lindex)" v-if="item.isShowBtnVedio">
                      <!-- 上传视频视频展示 -->
-                    <div class="upload-img img" style="width:160rpx;height:160rpx;" v-else>
-                        <div class="delete" @click="deleteVedio(lindex)" style="z-index:999">×</div>
-                        <video :src="item.vedio" :id="'video'+lindex" autoplay   style="width:160rpx;height:160rpx;display:block;z-index:10" @click="amplification(lindex)"></video>
+                    <div class="upload-img img" style="width:160rpx;height:160rpx;z-index:20" v-else>
+                        <div class="delete" @click="deleteVedio(lindex)" style="z-index:40">×</div>
+                        <video :src="item.vedio" :id="'video'+lindex" autoplay   style="width:160rpx;height:160rpx;display:block" @click="amplification(lindex)"></video>
                     </div>
                      <!-- 上传图片按钮 -->
                     <img
@@ -229,9 +229,9 @@
                 </div>
                 <div class="weui-item">
                   <div class="weui-cells__title">备注说明</div>
-                  <div class="eaditArea">
+                  <div class="eaditArea" style="z-index:20" >
                     <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
-                    <textarea  class="weui-area" placeholder="请输入备注内容" v-model="item.remark" v-else></textarea>
+                    <textarea  class="weui-area"  placeholder="请输入" v-model="item.remark" v-else></textarea>
                   </div>
                 </div>
                 <div class="priceBox flex">
@@ -307,8 +307,8 @@
           </div>
         </div>
         <!--确认支付-->
-        <div class="ftBtn" style="height:156rpx;z-index:9999999;">
-          <div class="inner fixed bm0 border-box" style="background:#ffffff!important">
+        <div class="ftBtn" style="height:156rpx;position:relative">
+          <div class="inner fixed bm0 border-box" style="background:#ffffff!important;position:relative">
             <div class="btn btn-active fill" @click="submit">确认下单</div>
           </div>
         </div>
@@ -384,6 +384,7 @@ export default {
         imgBase: [],
         referencePicList2: [],
         imgBase2: [],
+        guidanceVideo:'',
         isShowBtnUpload: true, //显示上传图片按钮的状态
         isShowBtnUpload2: true, //显示上传图片按钮的状态
         isShowBtnVedio: true, //显示上传视频按钮的状态
@@ -410,6 +411,7 @@ export default {
           imgBase: [],
           referencePicList2: [],
           imgBase2: [],
+          guidanceVideo:'',
           isShowBtnUpload: true, //显示上传图片按钮的状态
           isShowBtnUpload2: true, //显示上传图片按钮的状态
           isShowBtnVedio: true, //显示上传视频按钮的状态
@@ -457,6 +459,7 @@ export default {
         imgBase: [],
         referencePicList2: [],
         imgBase2: [],
+        guidanceVideo:'',
         isShowBtnUpload: true, //显示上传图片按钮的状态
         isShowBtnUpload2: true, //显示上传图片按钮的状态
         isShowBtnVedio: true, //显示上传视频按钮的状态
@@ -483,6 +486,7 @@ export default {
           imgBase: [],//现场图上传临时路径
           referencePicList2: [], //指导图视图循环
           imgBase2: [],  //指导图上传临时路径
+          guidanceVideo:'',
           isShowBtnUpload: true, //显示上传图片按钮的状态
           isShowBtnUpload2: true, //显示上传图片按钮的状态
           isShowBtnVedio: true, //显示上传视频按钮的状态
@@ -510,6 +514,7 @@ export default {
       this.provinceCode = "";
       this.cityCode = "";
       this.districtCode = "";
+      this.postMsg = '选择快递'
     // this.isShowBtnUpload = true;
     // this.isShowBtnUpload2 = true;
     // this.isShowBtnVedio = true;
@@ -984,7 +989,7 @@ export default {
                 console.log("ffffffffffffff");
                 console.log(that.prolist[n].vedio);
               //  that.prolist[n].size=res.size/(1024*1024).toFixed(2)
-              // that.updateVedio(n)
+              that.updateVedio(n)
              }
         })
 
@@ -1007,8 +1012,8 @@ export default {
               },
               success:res=>{
                 console.log(res,"上传视频")
-                // this.prolist[n].isShowBtnVedio=false
-                
+                this.prolist[n].guidanceVideo=JSON.parse(res.data).data
+                console.log(JSON.parse(res.data).data,"res.data.data")
               }
 
             })
@@ -1030,6 +1035,7 @@ export default {
       this.VideoContext.requestFullScreen({
         direction:0
       })
+      this.VideoContext.play()
       //  console.log(this.VideoContext.requestFullScreen({
       //    direction:0
       //  }))
@@ -1073,12 +1079,16 @@ export default {
       }
     },
     submit() {
-      // if(this.adressId.toString().length<1){
-      // wx.showToast({
-      //     title:"请选择地址！"
-      //     })
-      // return false
-      // }
+      const toast = this.jiaoyan()
+      console.log(toast)
+      if(toast){
+          wx.showToast({
+            title:toast,
+            icon: "none",
+            duration: 2000
+          });
+          return false;
+      }
       if (this.logisticsType.toString().length < 1) {
         wx.showToast({
           title: "请选择快递！"
@@ -1114,6 +1124,7 @@ export default {
           remark: this.prolist[i].remark, //备注
           scenePicList: JSON.stringify(this.prolist[i].imgBase), //现场图片集合
           guidancePicList: JSON.stringify(this.prolist[i].imgBase2), //现场图片集合
+          guidanceVideo:this.prolist[i].guidanceVideo,//视频
           estimateTime: this.prolist[i].estimateTime, //完成时间!!!!!
           offerTotal: this.prolist[i].offerTotal, //总金额!!!!!
           proLists: _proLists, //材料集合
@@ -1232,7 +1243,7 @@ export default {
     },
     jiaoyan() {
       if (!this.name) {
-        return "请输入收货人";
+        return "请输入联系人";
       }
       if (!/^1[3|4|5|6|7|8][0-9]\d{4,8}$/.test(this.phone)) {
         return "请输入正确的手机号码";
@@ -1241,7 +1252,10 @@ export default {
         return "请选择省份";
       }
       if (!this.address) {
-        return "请输入收货地址";
+        return "请输入地址";
+      }
+      if(!/^[\u4e00-\u9fa5\u3001\A-\Z\d]+$/ .test(this.address)){
+         return "请输入正确的地址"
       }
       return false;
     },
@@ -1250,10 +1264,45 @@ export default {
     },
     onPhone(e) {
       this.phone = e.mp.detail;
-    }
+    },
     // onAddress(e) {
     //   this.address = e.mp.detail;
     // }
+    showTips(){
+      wx.showToast({
+        title:'长度超过尺寸！'
+      })
+      return false
+    },
+    trimWide(n,m){
+        if(m==11){
+          this.prolist[n].specwide=''
+        }else if(m==22){
+            this.prolist[n].spechign=''
+        }else if(m==33){
+            this.prolist[n].speclong=''
+        }
+        
+    },
+    getWide(n){
+      console.log(this.prolist[n].specwide.length)
+      if(this.prolist[n].specwide.length==0){
+          this.prolist[n].specwide=0
+      }else if(this.prolist[n].specwide.length>4){
+          this.showTips()
+          this.prolist[n].specwide=0
+      }else if(this.prolist[n].spechign.length==0){
+          this.prolist[n].spechign=0
+      }else if(this.prolist[n].spechign.length>4){
+          this.showTips()
+          this.prolist[n].spechign=0
+      }else if(this.prolist[n].speclong.length==0){
+          this.prolist[n].speclong=0
+      }else if(this.prolist[n].speclong.length>4){
+          this.showTips()
+          this.prolist[n].speclong=0
+      }
+    }
   }
 };
 </script>

@@ -391,8 +391,7 @@ export default {
       });
     },
     gotoMyInfo() {
-      //客服跟师傅暂时不能修改个人信息
-      if (this.identity == 2) {
+      if (this.identity == 2 || this.identity == 3) {
         wx.navigateTo({
           url: "/pages/myInfo/main"
         });
