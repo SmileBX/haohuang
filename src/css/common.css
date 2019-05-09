@@ -1153,7 +1153,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     border: 1px solid #ccc;
     font-size: 32rpx;
     text-align: center;
-    color:#999;
+    color: #999;
     border-radius: 16rpx;
     line-height: 80rpx;
     padding: 0 5rpx;
@@ -1193,6 +1193,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     background: -o-linear-gradient(to right, #fc8556, #ff6666);
     background: linear-gradient(to right, #fc8556, #ff6666);
     color: #fff;
+    border: none;
 }
 
 .worker .tx {

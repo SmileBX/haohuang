@@ -3,19 +3,19 @@
     <div class="orderStatus">
       <span v-if="detail.Status==0">施工中</span>
       <span v-if="detail.Status==1">待审核</span>
-      <span v-if="detail.Status==2">审核未通过</span>
-      <span v-if="detail.Status==3">审核已通过</span>
+      <span v-if="detail.Status==2">审核已通过</span>
+      <span v-if="detail.Status==3">审核未通过</span>
       <span v-if="detail.Status==4">已完成</span>
     </div>
     <div class="orderAddr bg_fff">
-      <div class="newsLogistics flex flexAlignCenter">
+      <!-- <div class="newsLogistics flex flexAlignCenter">
         <img src="/static/images/icons/logistics.png" class="icon_xiaoche" alt>
         <div class="flexItem flex1">
           <p class="txt">分配师傅：张**师傅为你服务</p>
           <p class="time">2018-11-15 18:02:25</p>
         </div>
         <span class="icon-arrow arrow-right" style="margin-right:-20rpx;"></span>
-      </div>
+      </div> -->
       <div class="addressList">
         <div class="item flex flexAlignEnd">
           <img src="/static/images/icons/address.png" class="addrIcon" alt>
@@ -53,7 +53,7 @@
         </div>
       </div>
     </div>
-    <div class="picList bg_fff" v-if="detail.Status==2 || detail.Status==3 || detail.Status==4">
+    <div class="picList bg_fff" v-if="detail.Status!==0">
       <div class="item" v-if="detail.AfterPicList.length>0">
         <h2 class="title">安装前照片</h2>
         <div class="uploadImage clear">
@@ -66,13 +66,13 @@
           ></div>
         </div>
       </div>
-      <div class="item" v-if="detail.ScenePicList.length>0">
+      <div class="item" v-if="detail.InsidePicList.length>0">
         <h2 class="title">内部结构照片</h2>
         <div class="uploadImage clear">
           <div
             class="upload-img img"
-            @click="lookPic(index,detail.ScenePicList)"
-            v-for="(item,index) in detail.ScenePicList"
+            @click="lookPic(index,detail.InsidePicList)"
+            v-for="(item,index) in detail.InsidePicList"
             :key="index"
             :style="'background-image:url('+item+')'"
           ></div>
@@ -206,6 +206,14 @@ export default {
               res.data,
               "AfterPicList",
               res.data.AfterPicList.split(",")
+            );
+          }
+          if (res.data.InsidePicList !== "") {
+            //内部结构图片列表
+            that.$set(
+              res.data,
+              "InsidePicList",
+              res.data.InsidePicList.split(",")
             );
           }
           if (res.data.FrontPicList !== "") {

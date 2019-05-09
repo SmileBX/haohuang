@@ -200,7 +200,7 @@ export default {
       orderId: "",
       detail: {},
       hasData: false,
-      picLength: 10, //最多上传10张
+      picLength: 8, //最多上传10张
       frontPicList: [], //安装前图片
       insidePicList: [], //内部结构图片
       afterPicList: [], //安装后图片
@@ -405,7 +405,7 @@ export default {
       ).then(result => {
         if (result.code === 0) {
           wx.showToast({
-            title: "提交审核成功!",
+            title: "提交成功!",
             icon: "success",
             duration: 1500
           });

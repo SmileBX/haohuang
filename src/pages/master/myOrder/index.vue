@@ -178,6 +178,7 @@ export default {
     // 切换订单状态
     tabMenu(typeNo) {
       this.typeNo = typeNo;
+      this.orderList = [];
       this.init();
     },
     // 初始化数据
