@@ -276,11 +276,11 @@ export default {
         confirmText,
         success(res){
           if(res.confirm){
-            that.confirmDesign(1)
+            that.confirmButton(1)
           }else if(res.cancel){
             // 等于设计的时候才有不通过
             if(types==='design'){
-              that.confirmDesign(0)
+              that.confirmButton(0)
             }
           }
         }
