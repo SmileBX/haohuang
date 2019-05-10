@@ -26,32 +26,7 @@
       </div>
     </div>
     <!--弹框-->
-    <div class="mask" style="top:100rpx;" v-if="isShow"></div>
-    <!--弹框订单状态-->
-    <div class="modal orderStatu" v-if="showStatu">
-      <p>全部状态</p>
-      <p>已指派</p>
-      <p>未指派</p>
-      <p>已完成</p>
-    </div>
-    <!--选择城市区域-->
-    <div class="modal orderCity allPadd" v-if="showCity">
-      <div class="flex flexAlignCenter menu">
-        <p>河北省</p>
-        <p>唐山市</p>
-        <p class="menuActive">请选择</p>
-      </div>
-      <!--城市列表-->
-      <div class="city">
-        <p>北京市</p>
-        <p>天津市</p>
-        <p>河北市</p>
-        <p>陕西省</p>
-        <p>内蒙古</p>
-        <p>呼和浩特市</p>
-      </div>
-    </div>
-    <!-- 数据状态提示节点 -->
+
     <div
       v-if="orderList.length<1"
       style="text-align:center;margin-top:300rpx;font-size:24rpx;color:#999;"
@@ -69,9 +44,6 @@ import { post, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
 export default {
   data() {
     return {
-      showStatu: false,
-      isShow: false,
-      showCity: false,
       curPage: "",
       userId: "",
       token: "",
