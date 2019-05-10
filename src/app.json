@@ -47,7 +47,8 @@
                 "schedule/main",
                 "addressList/main",
                 "addAddress/main",
-                "smOrder/main"
+                "smOrder/main",
+                "areaOrder/main"
             ]
         },
         {

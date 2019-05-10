@@ -182,7 +182,7 @@
         <!-- 客户的时候 -->
         <ul class="navList li_25 center navList2" v-if="identity==2">
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoAreaOrder">
               <div class="icon-img">
                 <img src="/static/images/icons/quyuguanli.png" alt>
               </div>
@@ -332,6 +332,11 @@ export default {
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "个人中心"
+      });
+    },
+    gotoAreaOrder(){  //跳转到客户的区域管理
+      wx.navigateTo({
+        url: "/pages/custom/areaOrder/main"
       });
     },
     gotoSun() {
