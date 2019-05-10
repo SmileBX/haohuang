@@ -3,19 +3,19 @@
     <div class="orderStatus">
       <span v-if="detail.Status==0">施工中</span>
       <span v-if="detail.Status==1">待审核</span>
-      <span v-if="detail.Status==2">审核未通过</span>
-      <span v-if="detail.Status==3">审核已通过</span>
+      <span v-if="detail.Status==2">审核已通过</span>
+      <span v-if="detail.Status==3">审核未通过</span>
       <span v-if="detail.Status==4">已完成</span>
     </div>
     <div class="orderAddr bg_fff">
-      <div class="newsLogistics flex flexAlignCenter">
+      <!-- <div class="newsLogistics flex flexAlignCenter">
         <img src="/static/images/icons/logistics.png" class="icon_xiaoche" alt>
         <div class="flexItem flex1">
           <p class="txt">分配师傅：张**师傅为你服务</p>
           <p class="time">2018-11-15 18:02:25</p>
         </div>
         <span class="icon-arrow arrow-right" style="margin-right:-20rpx;"></span>
-      </div>
+      </div> -->
       <div class="addressList">
         <div class="item flex flexAlignEnd">
           <img src="/static/images/icons/address.png" class="addrIcon" alt>
@@ -53,7 +53,7 @@
         </div>
       </div>
     </div>
-    <div class="picList bg_fff" v-if="detail.Status==2 || detail.Status==3 || detail.Status==4">
+    <div class="picList bg_fff" v-if="detail.Status!==0">
       <div class="item" v-if="detail.AfterPicList.length>0">
         <h2 class="title">安装前照片</h2>
         <div class="uploadImage clear">
@@ -66,13 +66,13 @@
           ></div>
         </div>
       </div>
-      <div class="item" v-if="detail.ScenePicList.length>0">
+      <div class="item" v-if="detail.InsidePicList.length>0">
         <h2 class="title">内部结构照片</h2>
         <div class="uploadImage clear">
           <div
             class="upload-img img"
-            @click="lookPic(index,detail.ScenePicList)"
-            v-for="(item,index) in detail.ScenePicList"
+            @click="lookPic(index,detail.InsidePicList)"
+            v-for="(item,index) in detail.InsidePicList"
             :key="index"
             :style="'background-image:url('+item+')'"
           ></div>
@@ -130,11 +130,16 @@
         <div class="btn linear" v-if="detail.Status==3">重新提交</div>
         <div
           class="btn btn-active"
-          v-if="detail.Status==0 || detail.Status==1 || detail.Status==2 || detail.Status==3"
+          v-if="detail.Status==0" @click="callCustom(detail.Tel)"
         >联系客户</div>
-        <div class="btn btn-active">联系客服</div>
+        <div class="btn btn-active" @click="callService(detail.ServiceTel)">联系客服</div>
       </div>
     </div>
+    <!-- 联系客服 -->
+    <serviceTypeSelect
+      :selectServiceTypeStatus.sync="selectServiceTypeStatus"
+      :servicePhone="servicePhone"
+    ></serviceTypeSelect>
   </div>
 </template>
 <script>
@@ -147,6 +152,8 @@ import {
   getCurrentPageUrlWithArgs,
   previewImage
 } from "@/utils";
+import serviceTypeSelect from "@/components/serviceTypeSelect.vue";
+
 export default {
   data() {
     return {
@@ -155,7 +162,9 @@ export default {
       curPage: "",
       orderId: "",
       detail: {},
-      hasData: false
+      hasData: false,
+      servicePhone:"", //客服电话
+      selectServiceTypeStatus: false, //联系客服类型弹窗状态
     };
   },
   onLoad() {
@@ -171,10 +180,26 @@ export default {
       this.getData();
     }
   },
+  components:{
+   serviceTypeSelect
+  },
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "订单详情"
+      });
+    },
+    // 联系客服
+    callService(phone) {
+      console.log("___________");
+      console.log("tel:"+phone);
+      this.servicePhone = phone;
+      this.selectServiceTypeStatus = true;
+    },
+    callCustom(tel) {
+      //拨打电话(联系客户)
+      wx.makePhoneCall({
+        phoneNumber: tel // 仅为示例，并非真实的电话号码
       });
     },
     lookPic(index, picArr) {
@@ -206,6 +231,14 @@ export default {
               res.data,
               "AfterPicList",
               res.data.AfterPicList.split(",")
+            );
+          }
+          if (res.data.InsidePicList !== "") {
+            //内部结构图片列表
+            that.$set(
+              res.data,
+              "InsidePicList",
+              res.data.InsidePicList.split(",")
             );
           }
           if (res.data.FrontPicList !== "") {

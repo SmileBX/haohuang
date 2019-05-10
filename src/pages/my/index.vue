@@ -79,7 +79,7 @@
             </div>
           </li>
           <li>
-            <div class="outside" @click="gotoUrl(10)">
+            <div class="outside" @click="gotoUrl(8)">
               <div class="icon-img">
                 <img src="/static/images/icons/daipinjia.png" alt>
                 <span class="circleNum" v-if="info.notcommentNum>0">{{info.notcommentNum}}</span>

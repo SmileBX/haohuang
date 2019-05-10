@@ -52,7 +52,9 @@
                   <p class="title text-line2">{{list.orderName}}</p>
                   <div class="flex">
                     <div class="flex1">
-                      <p class="new-price"><span v-if="list.MasterType===1">￥{{list.InstallMoney}}</span></p>
+                      <p class="new-price">
+                        <span v-if="list.MasterType===1">￥{{list.InstallMoney}}</span>
+                      </p>
                     </div>
                     <span class="buyNum">x{{list.num}}</span>
                   </div>
@@ -66,11 +68,15 @@
             </div>
           </div>
           <div class="item__ft">
-            <div class="button active" v-if="list.AuditStatus===0">联系客户</div>
-            <div class="button active" v-if="list.AuditStatus===0">提交审核</div>
-            <div class="button active" v-if="list.AuditStatus===4">删除订单</div>
+            <div
+              class="button active"
+              v-if="list.AuditStatus===0"
+              @click="callCustom(list.Tel)"
+            >联系客户</div>
+            <div class="button active" v-if="list.AuditStatus===0" @click="gotoSmVerify(list.Id,list.MasterType)">提交审核</div>
+            <!-- <div class="button active" v-if="list.AuditStatus===4">删除订单</div> -->
             <div class="button active" v-if="list.AuditStatus===3">重新提交</div>
-            <div class="button active">联系客服</div>
+            <div class="button active" @click="callService(list.ServiceTel)">联系客服</div>
           </div>
         </div>
         <!-- 数据状态提示节点 -->
@@ -84,12 +90,18 @@
         >已经到底了哦!</div>
       </div>
     </div>
+    <!-- 联系客服 -->
+    <serviceTypeSelect
+      :selectServiceTypeStatus.sync="selectServiceTypeStatus"
+      :servicePhone="servicePhone"
+    ></serviceTypeSelect>
   </div>
 </template>
 <script>
 import "@/css/common.css";
 // import areaList from '@/utils/areaList'
 import { post, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
+import serviceTypeSelect from "@/components/serviceTypeSelect.vue";
 export default {
   data() {
     return {
@@ -126,7 +138,9 @@ export default {
         }
       ],
       orderList: [],
-      orderListEnd: false //提示数据到底了
+      orderListEnd: false, //提示数据到底了
+      selectServiceTypeStatus: false, //联系客服类型弹窗状态
+      servicePhone: "" //客服的服务电话
     };
   },
   onLoad() {
@@ -147,10 +161,31 @@ export default {
     console.log(this.typeNo, "订单状态");
     this.init();
   },
+  components:{
+   serviceTypeSelect
+  },
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "我的订单"
+      });
+    },
+    callCustom(tel) {
+      //拨打电话
+      wx.makePhoneCall({
+        phoneNumber: tel // 仅为示例，并非真实的电话号码
+      });
+    },
+    // 联系客服
+    callService(phone) {
+      this.servicePhone = phone;
+      this.selectServiceTypeStatus = true;
+    },
+    gotoSmVerify(orderId,masterType) {
+      let that = this;
+      //跳转到提交审核
+      wx.navigateTo({
+        url: "/pages/master/smVerify/main?orderId="+orderId+"&masterType="+masterType
       });
     },
     getData() {
@@ -162,13 +197,17 @@ export default {
         that.orderList = [];
       }
       //MasterType安装师傅所属类型 0-公司内部 1-公司外部
-      post("InstalMaster/GetInstallOrderList", {
-        MasterId: that.UserId,
-        Token: that.Token,
-        page: that.page,
-        pageSize: that.pageSize,
-        orderStatus: that.typeNo
-      },that.curPage).then(res => {
+      post(
+        "InstalMaster/GetInstallOrderList",
+        {
+          MasterId: that.UserId,
+          Token: that.Token,
+          page: that.page,
+          pageSize: that.pageSize,
+          orderStatus: that.typeNo
+        },
+        that.curPage
+      ).then(res => {
         if (res.data.length !== that.pageSize) {
           that.orderListEnd = true;
         }
@@ -178,6 +217,7 @@ export default {
     // 切换订单状态
     tabMenu(typeNo) {
       this.typeNo = typeNo;
+      this.orderList = [];
       this.init();
     },
     // 初始化数据
@@ -204,7 +244,7 @@ export default {
     //   this.init()
     // },
     // 跳转到订单详情
-    gotoDetail(orderId) {
+    gotoDetail(orderId,masterType) {
       wx.navigateTo({
         url: `/pages/master/orderDetail/main?orderId=${orderId}`
       });
