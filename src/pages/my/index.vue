@@ -17,7 +17,12 @@
                 v-if="identity==2 || identity==3"
               >修改手机号</span>
             </p>
-            <p class="perId" v-if="identity==1">{{info.MobileStr}}</p>
+            <p class="perId" v-if="identity==1">{{info.MobileStr}}
+                <span
+                  class="editPhone"
+                  @click="updateMobile"
+                >修改手机号</span>
+            </p>
           </div>
         </div>
       </div>
@@ -396,11 +401,11 @@ export default {
       });
     },
     gotoMyInfo() {
-      if (this.identity == 2 || this.identity == 3) {
+      //if (this.identity == 2 || this.identity == 3) {
         wx.navigateTo({
           url: "/pages/myInfo/main"
         });
-      }
+     // }
     },
     GetCustomerServiceInfo() {
       let that = this;
