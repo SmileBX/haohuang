@@ -195,7 +195,7 @@
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="customService">
               <div class="icon-img">
                 <img src="/static/images/icons/zhuanshukefu.png" alt>
               </div>
@@ -203,7 +203,7 @@
             </div>
           </li>
           <li>
-            <div class="outside">
+            <div class="outside" @click="gotoAddressList">
               <div class="icon-img">
                 <img src="/static/images/icons/dizhibo.png" alt>
               </div>
@@ -244,6 +244,7 @@
               </div>
               <p class="title">专属客服</p>
             </div>
+            <button class="noShow" open-type="contact"></button>
           </li>
           <li>
             <div class="outside" @click="gotoFeedback">
@@ -288,11 +289,17 @@
         <div class="btn btn-active fill" @click="outLogin">退出登录</div>
       </div>
     </div>
+    <!-- 客户的联系客服 -->
+    <serviceTypeSelect
+      :selectServiceTypeStatus.sync="selectServiceTypeStatus"
+      :servicePhone="servicePhone"
+    ></serviceTypeSelect>
     <foot :identity="identity"></foot>
   </div>
 </template>
 <script>
 import { post, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
+import serviceTypeSelect from "@/components/serviceTypeSelect.vue";
 import foot from "@/components/foot.vue";
 import "@/css/dd_style.css";
 export default {
@@ -327,11 +334,14 @@ export default {
       token: "",
       identity: "",
       hasData: false,
-      info: {}
+      info: {},
+      selectServiceTypeStatus: false, //联系客服类型弹窗状态
+      servicePhone: "" //客服的服务电话
     };
   },
   components: {
-    foot
+    foot,
+    serviceTypeSelect
   },
   methods: {
     setBarTitle() {
@@ -339,9 +349,19 @@ export default {
         title: "个人中心"
       });
     },
+    customService(){  //客户的点击专属客服
+    console.log("ffffffffff");
+      this.selectServiceTypeStatus = true;
+      console.log(this.selectServiceTypeStatus);
+    },
     gotoAreaOrder(){  //跳转到客户的区域管理
       wx.navigateTo({
         url: "/pages/custom/areaOrder/main"
+      });
+    },
+    gotoAddressList(){  //客户的跳转到地址列表
+      wx.navigateTo({
+        url: "/pages/custom/addressList/main"
       });
     },
     gotoSun() {
@@ -420,6 +440,7 @@ export default {
       ).then(result => {
         if (result.code === 0) {
           that.hasData = true;
+          
           that.info = result.data;
         }
       });
@@ -465,6 +486,7 @@ export default {
         that.curPage
       ).then(result => {
         if (result.code === 0) {
+          that.servicePhone = result.data.ServiceTel;
           wx.setStorageSync("mobile", result.data.Mobile);
           that.$set(
             result.data,

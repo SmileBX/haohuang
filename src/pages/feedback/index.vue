@@ -17,7 +17,7 @@
           <p class="txt">相关截图（选填）</p>
         </div>
         <div class="weui-cell__ft">
-          <span class="num_tips">0/4</span>
+          <!-- <span class="num_tips">0/4</span> -->
         </div>
       </div>
       <div class="uploadImage clear">
@@ -69,6 +69,7 @@ export default {
       inputTxtLength: 0,
       imgPathArr: [],
       imgPathArr2: [],
+      picLength:4,
       isShowBtnUpload: true
     };
   },
@@ -103,8 +104,8 @@ export default {
     upLoadImg() {
       let _this = this;
       let num = 0;
-      if (this.imgPathArr.length < 8) {
-        num = 8 - this.imgPathArr.length;
+      if (this.imgPathArr.length < this.picLength) {
+        num = this.picLength - this.imgPathArr.length;
         wx.chooseImage({
           //进入这里面的时候this发生了改变
           count: num,
