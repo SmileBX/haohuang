@@ -34,7 +34,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 29,
+			"current": 31,
 			"list": [
 				{
 					"id": 0,
@@ -54,6 +54,13 @@
 					"id": -1,
 					"name": "客户的我的订单",
 					"pathName": "pages/custom/order/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 3,
+					"name": "客户的我的详情",
+					"pathName": "pages/custom/orderDetail/main",
 					"query": "",
 					"scene": null
 				},
@@ -240,9 +247,16 @@
 					"scene": null
 				},
 				{
-					"id": 29,
-					"name": "客服的客户订单",
-					"pathName": "pages/servicemenu/customeOrder/main",
+					"id": -1,
+					"name": "消息",
+					"pathName": "pages/news/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "客户的区域管理",
+					"pathName": "pages/custom/areaOrder/main",
 					"query": "",
 					"scene": null
 				}
