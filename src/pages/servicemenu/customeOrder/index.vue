@@ -1,56 +1,55 @@
 <template>
   <div class="installbox">
-      <div class="flex flex-around " style="padding:20rpx 0;border:1px solid red">
-          <p class="flex flexAlignCenter">
-                <span class="titleActive">选择区域</span>
+      <div class="flex flex-around " style="line-height:80rpx;height:80rpx;background:#fff;">
+          <p class="flex flexAlignCenter" @click="ChoseArea">
+                <span :class="{titleActive:a==1}">{{text1}}</span>
                 <img src="/static/images/down.png" alt="" class="down">
           </p>
           <p class="flex flexAlignCenter">
-                <span>订单状态</span>
+                <span :class="{titleActive:a==2}"  @click="showOrderStatu">{{text2}}</span>
                 <img src="/static/images/down.png" alt="" class="down">
           </p>
       </div>
       <!--订单列表-->
-      <div class="orderlist">
+      <scroll-view scroll-y  class="orderlist">
           <div class="item p30" v-for="(item,index) in orderList" :key="index">
               <div class="flex ordertitle">
                   <p class="itemname flex1">{{item.TypeName}}</p>
-                  <p class="active">{{item.StatuName}}</p>
+                  <p class="blue" v-if="item.StatuName=='已完成'">{{item.StatuName}}</p>
+                  <p class="active" v-else>{{item.StatuName}}</p>
               </div>
               <p>订单编号：{{item.OrderNo}}</p>
               <p>下单时间：{{item.CreateTime}}</p>
               <p>完成时间：03/25-10:23</p>
           </div>
-      </div>
+      </scroll-view>
       <!--弹框-->
-      <div class="mask" style="top:100rpx;" v-if="isShow"></div>
+      <div class="mask" v-if="isShow" catchtouchmove='true'></div>
       <!--弹框订单状态-->
-      <div class="modal orderStatu" v-if="showStatu">
-          <p>全部状态</p>
-          <p>已指派</p>
-          <p>未指派</p>
-          <p>已完成</p>
+      <div  class="modalmask orderStatu"  v-if="showStatu">
+        <div class="flex masktip">
+            <span @click="closeMask">取消</span>
+            <span  style="color:#1a1a1a;font-size:30rpx;font-weight:bold">请选择订单状态</span>
+            <span @click="Confirm">确定</span>
+        </div>
+        <scroll-view scroll-y>
+          <p v-for="(menus,mindex) in menu"
+            :key="mindex"
+            @click="tabMenu(mindex)">
+              <span>{{menus.name}}</span>
+              <span :class="{'arrow_check':typeNo===menus.typeNo}" style="display: inline-block;"></span>
+            </p>
+        </scroll-view>
+
       </div>
-      <!--选择城市区域-->
-      <div class="modal orderCity allPadd" v-if="showCity">
-          <div class="flex flexAlignCenter menu">
-              <p>河北省</p>
-              <p>唐山市</p>
-              <p class="menuActive">请选择</p>
-          </div>
-          <!--城市列表-->
-          <div class="city">
-              <p>北京市</p>
-              <p>天津市</p>
-              <p>河北市</p>
-              <p>陕西省</p>
-              <p>内蒙古</p>
-              <p>呼和浩特市</p>
-          </div>
-      </div> 
       <!-- 数据状态提示节点 -->
         <div v-if="orderList.length<1" style="text-align:center;margin-top:300rpx;font-size:24rpx;color:#999;">暂时没有数据哦!</div>
         <div v-if="orderListEnd&&page!==1" style="text-align:center;font-size:24rpx;line-height:40rpx;padding-bottom:10rpx;color:#999;">已经到底了哦!</div>
+
+      <!--选择地址省市遮罩层-->
+    <van-popup :show="showArea" position="bottom" :overlay="true" @close="showArea = false">
+      <van-area :area-list="areaList" :columns-num="2" @cancel="showArea = false" @confirm="confirmArea"/>
+    </van-popup>
       
   </div>
 </template>
@@ -63,9 +62,11 @@ export default {
     return {
       showStatu:false,
       isShow:false,
-      showCity:false,
-
-      
+      a:1,
+      text1:'选择区域',
+      text2:'订单状态',
+      areaList,
+      showArea: false,//显示选择城市
       UserId: "",
       Token: "",
       page: 1,
@@ -129,6 +130,10 @@ export default {
     // 初始化数据
     init(){
         this.orderListEnd = false;
+        this.showStatu = false;
+        this.showArea = false;
+        this.isShow = false;
+        this.typeNo = -1
         this.page =1;
         this.getData()
     },
@@ -153,6 +158,61 @@ export default {
       }
       this.orderList = this.orderList.concat(res.data);
     },
+    confirmArea(e){
+      console.log(e,"confirmArea")
+      this.text1=e.mp.detail.values[1].name
+      // e.mp.detail.values.map(item=>{
+      //   val+=item.name+' '
+      // })
+      this.searchRegionCode = e.mp.detail.values[1].code
+      this.showArea = false
+      this.init()
+      // let text = ''
+      // const areas = area.mp.detail.values
+      // for(let i=0;i<areas.length;i++){
+      //   text+=areas[i].name
+      // }
+      // this.provinceCode=areas[0].code||'',
+      // this.cityCode=areas[1].code||'',
+      // this.districtCode=areas[2].code||'',
+      // this.area = text;
+
+    },
+    ChoseArea(){
+      console.log(1111)
+      this.showArea = true
+      this.isShow=false
+      this.showStatu=false
+      this.a=1
+    },
+    showOrderStatu(){
+      this.a=2
+      this.showStatu=true
+      this.isShow=true
+      this.showArea=false
+    },
+    // 切换订单状态
+    tabMenu(e) {
+      this.typeNo = this.menu[e].typeNo;
+      //this.text2 = this.menu[e].name
+      
+    },
+    closeMask(){
+      this.isShow = false
+      this.showStatu = false
+      this.typeNo = -1
+    },
+    Confirm(){
+      for(let i=0;i<this.menu.length;i++){
+          if(this.typeNo==this.menu[i].typeNo){
+              //console.log(i)
+              this.text2 = this.menu[i].name
+          }
+      }
+       this.init()
+     
+    }
+
   },
     // 上拉加载
     onReachBottom(){
@@ -163,6 +223,9 @@ export default {
     onPullDownRefresh(){
       this.searchRegionCode = ''
       this.searchRegion = ''
+      this.text1 = '选择区域'
+      this.text2 = '订单状态'
+      this.typeNo = -1
       this.init()
     wx.stopPullDownRefresh();
     }
@@ -170,4 +233,13 @@ export default {
 </script>
 <style lang='scss' scoped>
 @import "./style";
+.modalmask{
+    position: fixed;
+    height:528rpx;
+    z-index: 900;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    background:#fff;
+}
 </style>

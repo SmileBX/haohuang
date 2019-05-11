@@ -25,7 +25,7 @@
       </div>
     </div>
     <van-popup :show="areaListStatus" position="bottom">
-    <van-area :area-list="areaList" @cancel="areaListStatus = false" @confirm="areaConfirm"></van-area>
+    <van-area :area-list="areaList" :columns-num="2" @cancel="areaListStatus = false" @confirm="areaConfirm"></van-area>
     </van-popup>
     <!-- 订单列表-->
     <div class="tabContent">

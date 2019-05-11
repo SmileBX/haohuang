@@ -61,17 +61,18 @@ export default {
           duration: 2000
         });
       } else {
+        let result=null;
           if(this.identity == 2){  //客户
-              const result = await post("User/UpdateMobile", {
+              result = await post("User/UpdateMobile", {
                 Mobile: this.phoneNumber,
                 UserId: this.userid,
                 VerifyCode: this.verifyCode,
                 Token: this.token,
-                Type:1  //类型 0-绑定手机号,1-手机号修改
+                Type:0  //类型 0-绑定手机号,1-手机号修改 CodeType:5-Type:0,CodeType:4-Type:1
               });
           }
           if(this.identity == 1){  //客服
-              const result = await post("CustomerService/UpdateMobile", {
+              result = await post("CustomerService/UpdateMobile", {
                 Mobile: this.phoneNumber,
                 CsdId: this.userid,
                 VerifyCode: this.verifyCode,
@@ -79,12 +80,12 @@ export default {
               });
           }
           if(this.identity == 3){  //师傅
-              const result = await post("InstalMaster/UpdateMobile", {
+              result = await post("InstalMaster/UpdateMobile", {
                 Mobile: this.phoneNumber,
                 MasterId: this.userid,
                 VerifyCode: this.verifyCode,
                 Token: this.token,
-                Type:1  //类型 0-绑定手机号,1-手机号修改
+                // Type:1  //类型 0-绑定手机号,1-手机号修改
               });
           }
           
@@ -114,7 +115,7 @@ export default {
         // if (toLogin(this.curPage)) {
           let codetype;
           if(this.identity == 2){  //客户
-              codetype = 4
+              codetype = 5
           }
           if(this.identity == 1){  //客服
               codetype = 18  
@@ -126,10 +127,10 @@ export default {
             // Token: this.token,
               Mobile: this.phoneNumber,
               // UserId: this.userid,
-              CodeType:codetype  //4,会员重新绑定手机号  12,师傅修改手机号 客服18
+              CodeType:codetype  //5,会员重新绑定手机号  12,师傅修改手机号 客服18修改手机号     
             }
           );
-          if(code.msg=='该手机号已绑定客服啦，请换一个重试'){  //该手机号被注册了
+          if(code.msg.indexOf("已绑定")!=-1){  //该手机号被注册了
               wx.showToast({
                   title: code.msg,
                   icon: "none",

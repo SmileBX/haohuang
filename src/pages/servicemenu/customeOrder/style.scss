@@ -3,10 +3,11 @@
    height:11rpx; 
 }
 .orderlist {
-    margin-top: 70rpx;
+    margin-top: 30rpx;
+    height:calc(100vh - 80rpx);
     .itemname {
         color: #1a1a1a;
-        font-size:37rpx;
+        font-size:32rpx;
     }
     .active{
 
@@ -19,7 +20,7 @@
 }
 
 .ordertitle {
-    font-size: 32rpx;
+    font-size: 30rpx;
     margin-bottom: 15rpx;
 }
 
@@ -46,15 +47,12 @@
     color: #797979;
     font-size: 28rpx;
 }
-.orderStatu{
-    background:#fff;
-    height:300rpx;
-    top:100rpx;
-}
-.orderStatu p{
-    padding:20rpx;
-    color:#666666;
-}
+// .orderStatu{
+//     background:#fff;
+//     height:300rpx;
+//     top:100rpx;
+// }
+
 .menuActive{
     color:#3f8bfe;
     border-bottom: 4rpx solid #3f8bfe;
@@ -85,4 +83,31 @@
     padding:0 20rpx;
 }.p30{
     padding:30rpx;
+}
+// .active2{
+//     background:#f77f4f;
+//     color:#fff!important;
+// }
+.orderStatu p{
+    padding:20rpx 100rpx;
+    color:#666666;
+    display: flex;
+    justify-content: space-between;
+    border-top:1rpx solid #f5f5f5
+}
+// .orderStatu p:not(:last-child){
+//     border-bottom:1rpx solid #f5f5f5
+// }
+.arrow_check{
+    width:25rpx;
+    height:12rpx;
+    border:5rpx solid #ff6325;
+    border-top:3rpx solid transparent;
+    border-right:3rpx solid transparent;
+    transform: rotate(-45deg)
+}
+.masktip{
+    justify-content: space-between;
+    color:#ff6325;
+    padding:30rpx 20rpx;
 }

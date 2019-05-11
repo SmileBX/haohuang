@@ -34,11 +34,12 @@
               <div class="pictrueAll">
                 <div class="pictrue img" :style="'background-image:url('+detail.OrderImg+')'"></div>
               </div>
-              <div class="txtBox">
-                <p class="title text-line2">{{detail.orderType}}</p>
-                <div class="flex">
+              <div class="txtBox" >
+                <p class="title text-line2">{{detail.orderName}}</p>
+                <p class="title text-line2">{{detail.orderTypeStr}}</p>
+                <div class="flex" >
                   <div class="flex1">
-                    <p class="price">￥{{detail.ProductMoney}}</p>
+                    <p class="price" style="font-size:26rpx">￥{{detail.ProductMoney}}</p>
                   </div>
                   <span class="buyNum">x1</span>
                 </div>
@@ -88,9 +89,9 @@
         </div>
         <div class="item">创建时间：{{detail.CreateTime}}</div>
         <div class="item" v-if="detail.PayTime">支付时间：{{detail.PayTime}}</div>
-        <div class="item" v-if="detail.Fahuodate">发货时间：{{detail.Fahuodate}}</div>
         <div class="item" v-if="detail.InstallTime">分配师傅：{{detail.InstallTime}}</div>
-        <div class="item" v-if="detail.EndTime">完成时间：{{detail.EndTime}}</div>
+         <div class="item" v-if="detail.ConfirmTime">完工确认：{{detail.ConfirmTime}}</div>
+        <div class="item" v-if="detail.EstimateTime">完成时间：{{detail.EstimateTime}}</div>
       </div>
     </div>
     <!-- 在线客服 -->
@@ -109,6 +110,7 @@
         <!-- 客服是否确认IsConfirm -->
         <div class="btn linear" v-if="detail.OrderStatus==1" @click="orderPay">付款</div>
         <div class="btn btn-active" v-if="detail.OrderStatus==4">查看物流</div>
+        <!-- DesignStatus 0--为设计1--设计待确认 -->
         <div class="btn linear" v-if="detail.DesignStatus==1" @click="confirmButtonModal('design')">设计确认</div>
         <div class="btn linear" v-if="detail.OrderStatus==4" @click="confirmButtonModal('logistics')">确认收货</div>
         <div class="btn linear" v-if="detail.OrderStatus==8" @click="gotoComment">评论</div>
@@ -129,16 +131,22 @@
 </template>
 <script>
 // 待确认=0,
-// 待付款=1,
-// 待设计=2,
+// 待付款=1, 
+// 待设计=2,    
 // 待制作=3,
 // 已发货=4,
 // 已收货=5,
 // 待执行=6,
 // 已执行=7,
 // 待评论=8,
-// 已完成=9,
-// 交易关闭=99,
+// 已完成=9,  
+// 交易关闭=99,  
+// 待确认=0,---底部按钮---在线客服
+// 待付款=1,---去掉订单   付款
+//待确认=---底部按钮---在线客服
+//处理中=---底部按钮---在线客服
+//订单已取消--在线客服
+//交易成功---去评价
 import "@/css/common.css";
 import { post } from "@/utils/index";
 import CancelOrderWindow from '@/components/cancelOrderWindow.vue'
@@ -151,7 +159,8 @@ export default {
     return {
       UserId: "",
       Token: "",
-      orderId: "",
+      orderId: "",//订单id
+      OrderNo:'',//订单编号
       detail: {
         ProductMoney:0,
         Freight:0
@@ -176,6 +185,7 @@ export default {
   onShow() {
     this.UserId = wx.getStorageSync("userId");
     this.Token = wx.getStorageSync("token");
+    this.cancelOrderWindowStatus = false
     console.log(this.$root.$mp.query.orderId);
     if (this.$root.$mp.query.orderId) {
       this.orderId = this.$root.$mp.query.orderId;
@@ -195,6 +205,8 @@ export default {
         OrderNo: this.orderId,
       });
       console.log(res);
+       //订单编号
+      this.OrderNo = res.data.orderNo
       this.detail = res.data;
       // 邮费
       this.detail.Freight = res.data.Freight.toFixed(2);
@@ -204,6 +216,7 @@ export default {
       this.detail.PayMoney = res.data.PayMoney.toFixed(2);
       // 材料金额
       this.detail.ProductMoney = res.data.ProductMoney.toFixed(2);
+     
       
       console.log(Boolean(detail.InstallTime));
     },
@@ -247,7 +260,33 @@ export default {
     },
     // 付款
     orderPay(){
-      
+      console.log(this.OrderNo,"this.orderNo")
+      post('/Order/ConfirmWeiXinPay',{
+          UserId: this.UserId,
+          Token: this.Token,
+          OrderNo: this.OrderNo,
+      }).then(res=>{
+          console.log(res)
+          let payData=JSON.parse(res.data.JsParam);
+          wx.requestPayment({
+            timeStamp: payData.timeStamp,
+            nonceStr: payData.nonceStr,
+            package: payData.package,
+            signType: payData.signType,
+            paySign: payData.paySign,
+            success(res) {
+              this.getData();
+              // wx.navigateTo({
+              //   url:"/pages/custom/order/main"
+              // });
+            },
+            fail(res) {
+
+            }
+          })
+
+      })
+        
     },
     // 确认收货/确认设计模态弹窗
     confirmButtonModal(types){
