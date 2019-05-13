@@ -260,6 +260,7 @@
   </div>
 </template>
 <script>
+//orderType 0-设计 1-制作" 2-安装 3-设计_制作 4-制作_安装 5-设计_制作_安装
 import { get,post, toLogin, getCurrentPageUrlWithArgs, valPhone } from "@/utils";
 import "@/css/dd_style.css";
 import {pathToBase64} from "@/utils/image-tools";

@@ -34,7 +34,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 31,
+			"current": 33,
 			"list": [
 				{
 					"id": 0,
@@ -258,6 +258,19 @@
 					"name": "客户的区域管理",
 					"pathName": "pages/custom/areaOrder/main",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "客服的客户订单",
+					"pathName": "pages/servicemenu/customeOrder/main",
+					"query": "orderId=1023",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "查看物流",
+					"pathName": "pages/custom/schelogs/main",
 					"scene": null
 				}
 			]

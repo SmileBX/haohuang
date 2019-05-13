@@ -109,6 +109,8 @@
             <div class="button active" @click="callService(detail.ServiceTel)">联系客服</div>
         <!-- 客服是否确认IsConfirm -->
         <div class="btn linear" v-if="detail.OrderStatus==1" @click="orderPay">付款</div>
+        <!--查看进度-->
+        <div class="button active" v-if="detail.OrderStatus==2 || detail.OrderStatus==3 ||detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 || detail.OrderStatus==8" @click="seeSchdule(detail.orderId,detail.OrderStatus)">查看进度</div>
         <div class="btn btn-active" v-if="detail.OrderStatus==4">查看物流</div>
         <!-- DesignStatus 0--为设计1--设计待确认 -->
         <div class="btn linear" v-if="detail.DesignStatus==1" @click="confirmButtonModal('design')">设计确认</div>
@@ -362,7 +364,11 @@ export default {
         }
       });
     },
-
+    //查看订单进度
+    seeSchdule(orderId,OrderStatus){
+      //console.log(orderNo,OrderStatus)
+        wx.navigateTo({url:"/pages/custom/schedule/main?OrderNoId="+orderId+"&OrderStatus="+OrderStatus})
+    }
   }
 };
 </script>

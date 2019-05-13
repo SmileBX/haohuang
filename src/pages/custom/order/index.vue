@@ -74,6 +74,7 @@
               @click="showCancelOrder(list.Id)"
             >取消订单</div>
             <div class="button active" @click="callService(list.ServiceTel)">联系客服</div>
+            <div class="button active" v-if="list.OrderStatus==2 || list.OrderStatus==3 ||list.OrderStatus==4 || list.OrderStatus==5 || list.OrderStatus==6 || list.OrderStatus==7 || list.OrderStatus==8" @click="seeSchdule(list.Id,list.OrderStatus)">查看进度</div>
             <div class="button active" style="width:110rpx;color:#fff!important;background:linear-gradient(to right, #fc8556, #ff6666)" v-if="list.OrderStatus===1" @click="orderPay(list.OrderNo)">付款</div>
             <!-- 客服是否确认IsConfirm -->
             <!-- <div class="button active"  v-if="list.IsConfirm==0">修改价格</div> -->
@@ -303,6 +304,12 @@ export default {
           })
       })
     },
+    //查看订单进度
+    seeSchdule(orderId,OrderStatus){
+      //console.log(orderNo,OrderStatus)
+        wx.navigateTo({url:"/pages/custom/schedule/main?OrderNoId="+orderId+"&OrderStatus="+OrderStatus})
+    }
+
   },
   // 上拉加载
   onReachBottom() {
