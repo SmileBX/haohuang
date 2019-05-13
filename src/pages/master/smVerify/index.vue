@@ -45,7 +45,7 @@
             class="upload-img img"
             v-for="(item, index) in frontPicList"
             :key="index"
-            :style="'background-image:url('+item.picUrl+')'"
+            :style="'background-image:url('+item+')'"
           >
             <img src="/static/images/icons/cancle.png" class="close" @click="delImg(1,index)" alt>
           </div>
@@ -62,7 +62,7 @@
             class="upload-img img"
             v-for="(item, index) in insidePicList"
             :key="index"
-            :style="'background-image:url('+item.picUrl+')'"
+            :style="'background-image:url('+item+')'"
           >
             <img src="/static/images/icons/cancle.png" class="close" @click="delImg(2,index)" alt>
           </div>
@@ -79,7 +79,7 @@
             class="upload-img img"
             v-for="(item, index) in afterPicList"
             :key="index"
-            :style="'background-image:url('+item.picUrl+')'"
+            :style="'background-image:url('+item+')'"
           >
             <img src="/static/images/icons/cancle.png" class="close" @click="delImg(3,index)" alt>
           </div>
@@ -96,7 +96,7 @@
             class="upload-img img"
             v-for="(item, index) in receiptPicList"
             :key="index"
-            :style="'background-image:url('+item.picUrl+')'"
+            :style="'background-image:url('+item+')'"
           >
             <img src="/static/images/icons/cancle.png" class="close" @click="delImg(4,index)" alt>
           </div>
@@ -199,11 +199,7 @@ export default {
     }
     if (this.$root.$mp.query.masterType) {
       this.masterType = this.$root.$mp.query.masterType;
-    }
-    if(this.$root.$mp.query.isRepeat){
-      this.isRepeat = this.$root.$mp.query.isRepeat;
-    }else{
-      this.isRepeat = false;
+      console.log("this.masterType:" + this.masterType);
     }
   },
   data() {
@@ -229,8 +225,7 @@ export default {
       ], //明细
       infoLength: 10,
       curInfo: 1,
-      masterType:'',  //是否显示明细MasterType:1==>外部师傅；0==>内部师傅
-      isRepeat:''  //是否是重新提交的
+      masterType: "" //是否显示明细MasterType:1==>外部师傅；0==>内部师傅
     };
   },
   methods: {
@@ -264,24 +259,16 @@ export default {
         success: res => {
           res.tempFilePaths.forEach(item => {
             if (index === 1) {
-              that.frontPicList.push({
-                picUrl: item
-              });
+              that.frontPicList.push(item);
             }
             if (index === 2) {
-              that.insidePicList.push({
-                picUrl: item
-              });
+              that.insidePicList.push(item);
             }
             if (index === 3) {
-              that.afterPicList.push({
-                picUrl: item
-              });
+              that.afterPicList.push(item);
             }
             if (index === 4) {
-              that.receiptPicList.push({
-                picUrl: item
-              });
+              that.receiptPicList.push(item);
             }
           });
         }
@@ -290,7 +277,7 @@ export default {
     async base64Img(arr) {
       let base64Arr = [];
       for (let i = 0; i < arr.length; i += 1) {
-        const res = await pathToBase64(arr[i].picUrl);
+        const res = await pathToBase64(arr[i]);
         base64Arr.push({
           PicUrl: res
         });
@@ -317,8 +304,8 @@ export default {
       let insidePicList = await that.base64Img(that.insidePicList);
       let afterPicList = await that.base64Img(that.afterPicList);
       let receiptPicList = await that.base64Img(that.receiptPicList);
-      let progressInfoList = '';
-      if(that.masterType==0){
+      let progressInfoList = "";
+      if (that.masterType == 0) {
         progressInfoList = JSON.stringify(that.progressInfoList);
       }
       that.AddInstallOrder(
@@ -357,60 +344,54 @@ export default {
       ).then(res => {
         if (res.code === 0) {
           that.masterType = res.data.MasterType;
-          if (res.data.AfterPicList !== "") {
-            //安装前图片列表
-            that.$set(
-              res.data,
-              "AfterPicList",
-              res.data.AfterPicList.split(",")
-            );
-          }
           if (res.data.FrontPicList !== "") {
-            //安装后图片
-            that.$set(
-              res.data,
-              "FrontPicList",
+            //安装前
+            that.frontPicList = that.frontPicList.concat(
               res.data.FrontPicList.split(",")
             );
           }
+          if (res.data.AfterPicList !== "") {
+            //安装后
+            that.afterPicList = that.afterPicList.concat(
+              res.data.AfterPicList.split(",")
+            );
+          }
+          if (res.data.InsidePicList !== "") {
+            that.insidePicList = that.insidePicList.concat(
+              res.data.InsidePicList.split(",")
+            );
+          }
           if (res.data.ReceiptPicList !== "") {
-            //验收图片
-            that.$set(
-              res.data,
-              "ReceiptPicList",
+            //验收单图片
+            that.receiptPicList = that.receiptPicList.concat(
               res.data.ReceiptPicList.split(",")
-            );
-          }
-          if (res.data.ReferencePicList !== "") {
-            //参考图片列表
-            that.$set(
-              res.data,
-              "ReferencePicList",
-              res.data.ReferencePicList.split(",")
-            );
-          }
-          if (res.data.GuidancePicList !== "") {
-            //指导图片列表
-            that.$set(
-              res.data,
-              "GuidancePicList",
-              res.data.GuidancePicList.split(",")
-            );
-          }
-          if (res.data.ScenePicList !== "") {
-            //现场图片列表
-            that.$set(
-              res.data,
-              "ScenePicList",
-              res.data.ScenePicList.split(",")
             );
           }
           that.detail = res.data;
           that.hasData = true;
+          if (res.data.ProgressInfo.length > 0) {
+            //明细
+            let info = JSON.parse(res.data.ProgressInfo);
+            that.progressInfoList = [];
+            info.map(item => {
+              that.progressInfoList.push({
+                TrafficMoney: item.TrafficMoney, //交通费
+                Meals: item.Meals, //餐费
+                HotelExpense: item.HotelExpense, //住宿费
+                MasterialFee: item.MasterialFee //材料费
+              });
+            });
+          }
         }
       });
     },
-    AddInstallOrder(frontPicList, insidePicList, afterPicList, receiptPicList,progressInfoList) {
+    AddInstallOrder(
+      frontPicList,
+      insidePicList,
+      afterPicList,
+      receiptPicList,
+      progressInfoList
+    ) {
       //this.base64Img(this.frontPicList);
       //console.log("arr", arr);
       //return false;

@@ -76,7 +76,7 @@
             >联系客户</div>
             <div class="button active" v-if="list.AuditStatus===0" @click="gotoSmVerify(list.Id,list.MasterType)">提交审核</div>
             <!-- <div class="button active" v-if="list.AuditStatus===4">删除订单</div> -->
-            <div class="button active" v-if="list.AuditStatus===3" @click="gotoSmVerify(list.Id,list.MasterType,true)">重新提交</div>
+            <div class="button active" v-if="list.AuditStatus===3" @click="gotoSmVerify(list.Id,list.MasterType)">重新提交</div>
             <div class="button active" @click="callService(list.ServiceTel)">联系客服</div>
           </div>
         </div>
@@ -182,11 +182,11 @@ export default {
       this.servicePhone = phone;
       this.selectServiceTypeStatus = true;
     },
-    gotoSmVerify(orderId,masterType,isRepeat) {
+    gotoSmVerify(orderId,masterType) {
       let that = this;
       //跳转到提交审核
       wx.navigateTo({
-        url: "/pages/master/smVerify/main?orderId="+orderId+"&masterType="+masterType+"&isRepeat="+isRepeat
+        url: "/pages/master/smVerify/main?orderId="+orderId+"&masterType="+masterType
       });
     },
     getData() {
