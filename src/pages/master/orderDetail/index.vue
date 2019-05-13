@@ -127,7 +127,7 @@
         <!-- 施工中 -->
 
         <div class="btn linear" v-if="detail.Status==0" @click="gotoSmVerify">提交审核</div>
-        <div class="btn linear" v-if="detail.Status==3">重新提交</div>
+        <div class="btn linear" v-if="detail.Status==3" @click="gotoSmVerify">重新提交</div>
         <div
           class="btn btn-active"
           v-if="detail.Status==0" @click="callCustom(detail.Tel)"

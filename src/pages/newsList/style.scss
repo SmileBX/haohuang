@@ -31,8 +31,20 @@
     padding: 20rpx 0;
     border-bottom: 1px solid #e5e5e5;
     color: #000;
+    position: relative;
 }
 
 .contentBox .con {
     padding: 20rpx 0;
+}
+
+.redDot {
+    position: absolute;
+    width: 6rpx;
+    height: 6rpx;
+    border-radius: 50%;
+    background: #ff0000;
+    right: 0;
+    top: 50%;
+    margin-top: -3rpx;
 }
