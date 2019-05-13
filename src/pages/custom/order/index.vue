@@ -45,6 +45,7 @@
                 </div>
                 <div class="txtBox">
                   <p class="title text-line2">{{list.OrderName}}</p>
+                  <p class="title text-line2" style="font-size:26rpx;color:#1e1e1">{{list.TypeName}}</p>
                   <div class="flex">
                     <div class="flex1">
                       <p class="new-price">￥{{list.OfferTotal}}</p>
@@ -81,7 +82,7 @@
             <!-- <div class="button linear" v-if="list.IsConfirm==0">确认订单</div> -->
             <!-- <div class="button linear" v-if="list.IsConfirm==1&&list.IsPay==0">已付款</div> -->
             <!-- <div class="button active" v-if="list.OrderStatus===0">设计确认</div> -->
-            <div class="button active" v-if="list.OrderStatus==4">确认收货</div>
+            <div class="button active" v-if="list.OrderStatus==4" @click="getGoods(list.Id)">确认收货</div>
             <!--<div class="button linear" v-if="list.OrderStatus==8">评论</div> -->
             <!-- <div class="button active" v-if="list.OrderStatus==9">删除订单</div> -->
           </div>
@@ -174,6 +175,8 @@ export default {
     // 客户--订单状态：-1全部，0-待确认，1-待付款，2-处理中，8-待评论
     if (this.$root.$mp.query.typeNo) {
       this.typeNo = this.$root.$mp.query.typeNo * 1;
+    }else{
+      this.typeNo = -1
     }
     console.log(this.typeNo, "订单状态");
     this.init();
@@ -308,6 +311,40 @@ export default {
     seeSchdule(orderId,OrderStatus){
       //console.log(orderNo,OrderStatus)
         wx.navigateTo({url:"/pages/custom/schedule/main?OrderNoId="+orderId+"&OrderStatus="+OrderStatus})
+    },
+    //确认收货
+    getGoods(OrderNo){
+      const that =this;
+      wx.showModal({
+        title:"确认收货",
+        confirmColor:'#33cc33',
+        cancelText:'不通过',
+        confirmText:'通过',
+        success:(res)=>{
+            if(res.confirm){
+               post('Order/OrderCollection',{
+                  UserId:this.UserId,
+                  Token:this.Token,
+                  OrderNo:OrderNo
+                  }).then(res=>{
+                    console.log(res)
+                    wx.showToast({
+                      title:res.msg,
+                      duration:2000
+                    })
+                     that.getData();
+                    
+                  })
+            }else if(res.cancel){
+                return false
+            }
+            
+        }
+        
+
+      })
+     
+        
     }
 
   },

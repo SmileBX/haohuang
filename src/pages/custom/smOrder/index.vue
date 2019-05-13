@@ -774,16 +774,16 @@ export default {
         }
     },
     submit(){
-      const toast = this.jiaoyan()
-      console.log(toast)
-      if(toast){
-          wx.showToast({
-            title:toast,
-            icon: "none",
-            duration: 2000
-          });
-          return false;
-      }
+      // const toast = this.jiaoyan()
+      // console.log(toast)
+      // if(toast){
+      //     wx.showToast({
+      //       title:toast,
+      //       icon: "none",
+      //       duration: 2000
+      //     });
+      //     return false;
+      // }
         if(this.adressId.toString().length<1){
           wx.showToast({
               title:"请选择地址！"

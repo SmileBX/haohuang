@@ -12,7 +12,7 @@
       </div>
       <!--订单列表-->
       <scroll-view scroll-y  class="orderlist">
-          <div class="item p30" v-for="(item,index) in orderList" :key="index">
+          <div class="item p30" v-for="(item,index) in orderList" :key="index" @click="gotoDetail(item.Id)">
               <div class="flex ordertitle">
                   <p class="itemname flex1">{{item.TypeName}}</p>
                   <p class="blue" v-if="item.StatuName=='已完成'">{{item.StatuName}}</p>
@@ -211,7 +211,13 @@ export default {
       }
        this.init()
      
-    }
+    },
+    // 跳转到订单详情
+    gotoDetail(orderId){
+      wx.navigateTo({
+        url:`/pages/servicemenu/orderDetail/main?orderId=${orderId}`
+      })
+    },
 
   },
     // 上拉加载

@@ -4,7 +4,7 @@
       <span>{{detail.OrderStatusStr }}</span>
     </div>
     <div class="orderAddr bg_fff">
-      <div class="newsLogistics flex flexAlignCenter">
+      <div class="newsLogistics flex flexAlignCenter"  v-if="detail.OrderStatus==7" >
         <img src="/static/images/icons/logistics.png" class="icon_xiaoche" alt>
         <div class="flexItem flex1">
           <p class="txt">分配师傅：张**师傅为你服务</p>
@@ -111,7 +111,7 @@
         <div class="btn linear" v-if="detail.OrderStatus==1" @click="orderPay">付款</div>
         <!--查看进度-->
         <div class="button active" v-if="detail.OrderStatus==2 || detail.OrderStatus==3 ||detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 || detail.OrderStatus==8" @click="seeSchdule(detail.orderId,detail.OrderStatus)">查看进度</div>
-        <div class="btn btn-active" v-if="detail.OrderStatus==4">查看物流</div>
+        <!-- <div class="btn btn-active" v-if="detail.OrderStatus==4">查看物流</div> -->
         <!-- DesignStatus 0--为设计1--设计待确认 -->
         <div class="btn linear" v-if="detail.DesignStatus==1" @click="confirmButtonModal('design')">设计确认</div>
         <div class="btn linear" v-if="detail.OrderStatus==4" @click="confirmButtonModal('logistics')">确认收货</div>
@@ -134,7 +134,7 @@
 <script>
 // 待确认=0,
 // 待付款=1, 
-// 待设计=2,    
+// 待设计=2, -----设计中   
 // 待制作=3,
 // 已发货=4,
 // 已收货=5,
@@ -300,41 +300,50 @@ export default {
         let cancelColor=''
       if(types==='design'){ //设计确认
         title='设计确认'
-        content='设计完成图可在流程内查看，设计是否通过审核!'
+       // content='设计完成图可在流程内查看，设计是否通过审核!'
         cancelColor='red'
       }else if(types==='logistics'){ //物流计确认
         title='确认收货'
-        content='设计完成图可在流程内查看，设计是否通过审核!'
+       // content='设计完成图可在流程内查看，设计是否通过审核!'
         let cancelText='取消'
         let confirmText='确认收货'
       }
       wx.showModal({
-        title:'',
-        content:'',
+        title:title,
+        content:content,
         confirmColor:'#33cc33',
         cancelColor,
         cancelText,
         confirmText,
         success(res){
           if(res.confirm){
-            that.confirmButton(1)
+            that.confirmButton(0)
           }else if(res.cancel){
             // 等于设计的时候才有不通过
             if(types==='design'){
-              that.confirmButton(0)
+              that.confirmButton(1)
             }
           }
         }
       })
     },
     // 确认设计
-    async confirmButton(AuditType){
+    confirmButton(AuditType){
       console.log(AuditType,'设计确认状态')
-      const res = await post('Order/OrderCollection',{
+      post('Order/OrderCollection',{
             UserId:this.UserId,
             Token:this.Token,
             OrderNo:this.orderId,
             AuditType:AuditType
+            }).then(res=>{
+              console.log(res)
+              wx.showToast({
+                title:res.msg,
+                duration:2000
+              })
+              setTimeout(function(){
+                wx.redirectTo({url: '/pages/custom/order/main'});
+              },1000)
             })
 
     },
