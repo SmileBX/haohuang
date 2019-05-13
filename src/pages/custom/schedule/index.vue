@@ -43,7 +43,7 @@
         </div>
         <!--已执行、安装中-->
         <!-- <div class="item big flex" v-if="schduleInfo.OrderStatus==7 || schduleInfo.OrderStatus==9"> -->
-        <div class="item big flex" v-show="schduleInfo.orderTypeStr!='设计' && schduleInfo.orderTypeStr!='制作' && schduleInfo.orderTypeStr!='设计_制作' && schduleInfo.OrderStatus==7">
+        <div class="item big flex" v-show="schduleInfo.orderType!=0 && schduleInfo.orderType!=1 && schduleInfo.orderType!=3 && schduleInfo.OrderStatus==7">
           <div class="left time">
             <p class="date" v-if="Installdate.length>0">{{Installdate}}</p>
             <p class="hours" v-if="Installtime.length>0">{{Installtime}}</p>
@@ -70,7 +70,7 @@
           </div>
         </div> -->
         <!--发货-->
-        <div class="item small flex" v-show=" schduleInfo.orderTypeStr!='安装' &&  schduleInfo.orderTypeStr!='设计' ">
+        <div class="item small flex" v-show=" schduleInfo.orderType!=2 &&  schduleInfo.orderType!=0 ">
           <div class="left time">
             <p class="date" v-if="Fahuodate.length>0">{{Fahuodate}}</p>
             <p class="hours" v-if="Fahuotime.length>0">{{Fahuotime}}</p>
@@ -90,7 +90,7 @@
         </div>
         <!--制作 -->
         <!-- <div class="item big flex" v-if="schduleInfo.OrderStatus==4 || schduleInfo.OrderStatus==6 || schduleInfo.OrderStatus==7 || schduleInfo.OrderStatus==9"> -->
-        <div class="item big flex" v-show=" schduleInfo.orderTypeStr!='安装' &&  schduleInfo.orderTypeStr!='设计'">
+        <div class="item big flex" v-show="schduleInfo.orderType!=2 &&  schduleInfo.orderType!=0">
           <div class="left time">
             <p class="date" v-if="Confirmdate.length>0">{{Confirmdate}}</p>
             <p class="hours" v-if="Confirmtime.length>0">{{Confirmtime}}</p>
@@ -104,7 +104,7 @@
           </div>
         </div>
         <!--设计-->
-        <div class="item big flex" v-show="schduleInfo.orderTypeStr!='制作_安装' && schduleInfo.orderTypeStr!='制作' && schduleInfo.orderTypeStr!='安装'  && schduleInfo.DesignStatus == 2">
+        <div class="item big flex" v-show="schduleInfo.orderType!=4 && schduleInfo.orderType!=1 && schduleInfo.orderType!=2  && schduleInfo.DesignStatus == 2">
           <div class="left time">
             <p class="date" v-if="DesignCreatedate2.length>0">{{DesignCreatedate2}}</p>
             <p class="hours" v-if="DesignCreatetime2.length>0">{{DesignCreatetime2}}</p>
@@ -116,7 +116,7 @@
             </div>
           </div>
         </div>
-        <div class="item small flex" v-show="schduleInfo.orderTypeStr!='制作_安装' && schduleInfo.orderTypeStr!='制作' && schduleInfo.orderTypeStr!='安装' && schduleInfo.DesignStatus == 2">
+        <div class="item small flex" v-show="schduleInfo.orderType!=4 && schduleInfo.orderType!=1 && schduleInfo.orderType!=2 && schduleInfo.DesignStatus == 1">
           <div class="left time">
             <p class="date" v-if="DesignCreatedate2.length>0">{{DesignCreatedate2}}</p>
             <p class="hours" v-if="DesignCreatetime2.length>0">{{DesignCreatetime2}}</p>
@@ -130,7 +130,7 @@
           </div>
         </div>
         <!-- <div class="item big flex" v-if="schduleInfo.OrderStatus==2 || schduleInfo.OrderStatus==4 || schduleInfo.OrderStatus==6 || schduleInfo.OrderStatus==7 || schduleInfo.OrderStatus==9"> -->
-        <div class="item big flex" v-show="schduleInfo.orderTypeStr!='制作_安装' && schduleInfo.orderTypeStr!='制作' && schduleInfo.orderTypeStr!='安装'">
+        <div class="item big flex" v-show="schduleInfo.orderType!=4 && schduleInfo.orderType!=1 && schduleInfo.orderType!=2">
           <div class="left time">
             <p class="date" v-if="DesignCreatedate.length>0">{{DesignCreatedate}}</p>
             <p class="hours" v-if="DesignCreatetime.length>0">{{DesignCreatetime}}</p>
@@ -345,7 +345,7 @@ export default {
                 orderTypeStr:res.data.orderTypeStr,
                 orderNo:res.data.orderNo,
                 OrderStatus:res.data.OrderStatus,
-                OrderType:res.data.orderType
+                orderType:res.data.orderType
              }
             console.log(this.schduleInfo,"this.schduleInfo")   
 

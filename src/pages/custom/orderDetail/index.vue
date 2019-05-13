@@ -7,8 +7,16 @@
       <div class="newsLogistics flex flexAlignCenter"  v-if="detail.OrderStatus==7" >
         <img src="/static/images/icons/logistics.png" class="icon_xiaoche" alt>
         <div class="flexItem flex1">
-          <p class="txt">分配师傅：张**师傅为你服务</p>
-          <p class="time">2018-11-15 18:02:25</p>
+          <p class="txt">分配师傅：{{MasterName}}师傅为你服务</p>
+          <p class="time">{{InstallTime}}</p>
+        </div>
+        <span class="icon-arrow arrow-right" style="margin-right:-20rpx;"></span>
+      </div>
+      <div class="newsLogistics flex flexAlignCenter"  v-if="detail.OrderStatus==9" >
+        <img src="/static/images/icons/logistics.png" class="icon_xiaoche" alt>
+        <div class="flexItem flex1">
+          <p class="txt" style="color:#ff6325">安装完工确认</p>
+          <p class="time">{{detail.EndTime}}</p>
         </div>
         <span class="icon-arrow arrow-right" style="margin-right:-20rpx;"></span>
       </div>
@@ -36,7 +44,7 @@
               </div>
               <div class="txtBox" >
                 <p class="title text-line2">{{detail.orderName}}</p>
-                <p class="title text-line2">{{detail.orderTypeStr}}</p>
+                <p class="type">订单类型：<span v-if="detail.orderType===0">设计</span><span v-if="detail.orderType===1">制作</span><span v-if="detail.orderType===2">安装</span><span v-if="detail.orderType===3">设计+制作</span><span v-if="detail.orderType===4">制作+安装</span><span v-if="detail.orderType===5">设计+制作+安装</span></p>
                 <div class="flex" >
                   <div class="flex1">
                     <p class="price" style="font-size:26rpx">￥{{detail.ProductMoney}}</p>
@@ -163,6 +171,8 @@ export default {
       Token: "",
       orderId: "",//订单id
       OrderNo:'',//订单编号
+      InstallTime:'',
+      MasterName:'',
       detail: {
         ProductMoney:0,
         Freight:0
@@ -200,27 +210,36 @@ export default {
         title: "订单详情"
       });
     },
-    async getData() {
-      const res = await post("Order/OrderInfo", {
+    getData() {
+      post("Order/OrderInfo", {
         UserId: this.UserId,
         Token: this.Token,
         OrderNo: this.orderId,
-      });
-      console.log(res);
+      }).then(res=>{
+          console.log(res.data,"res.date.InstallList[0].MasterName");
        //订单编号
-      this.OrderNo = res.data.orderNo
-      this.detail = res.data;
-      // 邮费
-      this.detail.Freight = res.data.Freight.toFixed(2);
-      // 预计价格
-      this.detail.OfferTotal = res.data.OfferTotal.toFixed(2);
-      // 支付金额
-      this.detail.PayMoney = res.data.PayMoney.toFixed(2);
-      // 材料金额
-      this.detail.ProductMoney = res.data.ProductMoney.toFixed(2);
-     
-      
-      console.log(Boolean(detail.InstallTime));
+          this.OrderNo = res.data.orderNo
+          this.detail = res.data;
+          // 邮费
+          this.detail.Freight = res.data.Freight.toFixed(2);
+          // 预计价格
+          this.detail.OfferTotal = res.data.OfferTotal.toFixed(2);
+          // 支付金额
+          this.detail.PayMoney = res.data.PayMoney.toFixed(2);
+          // 材料金额
+          this.detail.ProductMoney = res.data.ProductMoney.toFixed(2);
+          if(res.data.InstallList.length>0){
+                this.MasterName = res.data.InstallList[0].MasterName
+                // let date = res.data.InstallList[0].InstallTime.split("T")[0]
+                // let time = res.data.InstallList[0].InstallTime.split("T")[1].split(":").slice(0,-1).join(":")
+                // this.InstallTime =date+"  "+time
+                this.InstallTime = res.data.InstallList[0].InstallTime.split("T").join(" ").split(".")[0]
+                  console.log(this.InstallTime,"this.InstallTime")
+            }
+          
+          //console.log(Boolean(detail.InstallTime));
+          });
+          
     },
     // 成功之后提示的状态
     useSuccess(res,content){

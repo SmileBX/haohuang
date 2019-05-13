@@ -3,14 +3,14 @@
   <div class="page indexPage">
       <movable-area class="movearea">
     <!-- 搜索 -->
-    <div class="searchBox">
+    <!-- <div class="searchBox">
       <div class="search flex flexAlignCenter">
         <img src="/static/images/icons/search.png" alt class="searchIcon">
         <div class="ipt flex1">
           <input type="text" class="weui-input" placeholder="搜索订单号/名称">
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="main">
       <!-- 轮播图 -->
       <div class="banner">
@@ -26,11 +26,11 @@
           style="height:294rpx;"
         >
           <block v-for="(item, index) in bannerList" :key="index">
-            <swiper-item class="swiper-item" @click="gotoProduct(item.Url)">
+            <swiper-item class="swiper-item" @click="gotoProduct(item)">
               <img
                 style="width:100%;height:294rpx;"
                 mode="scaleToFill"
-                :src="item.Pic"
+                :src="item"
                 class="slide-image"
               >
             </swiper-item>
@@ -129,6 +129,8 @@ export default {
       console.log(res,"res公司信息")
       if(res.code==0){
           this.companyInfo=res.data
+          //console.log(res.data.CompanyImg.split(","),'CompanyImg')
+          this.bannerList = res.data.CompanyImg.split(",")
       }
     },
     setBarTitle() {
