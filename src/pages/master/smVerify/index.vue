@@ -200,6 +200,11 @@ export default {
     if (this.$root.$mp.query.masterType) {
       this.masterType = this.$root.$mp.query.masterType;
     }
+    if(this.$root.$mp.query.isRepeat){
+      this.isRepeat = this.$root.$mp.query.isRepeat;
+    }else{
+      this.isRepeat = false;
+    }
   },
   data() {
     return {
@@ -224,7 +229,8 @@ export default {
       ], //明细
       infoLength: 10,
       curInfo: 1,
-      masterType:''  //是否显示明细MasterType:1==>外部师傅；0==>内部师傅
+      masterType:'',  //是否显示明细MasterType:1==>外部师傅；0==>内部师傅
+      isRepeat:''  //是否是重新提交的
     };
   },
   methods: {

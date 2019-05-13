@@ -1,28 +1,77 @@
 <template>
   <div class="page">
-    <div class="newsDetail">
+    <div class="newsDetail" v-if="isOk">
       <div class="newsDetail__hd center">
-        <h2 class="title">账号登录提醒</h2>
+        <h2 class="title">{{info.title}}</h2>
       </div>
-      <div class="newsDetail__bd">
-        <p>您的账号于04/28 10:19在广东省深圳市的一台设备（Le X620）进行了登录操作。如非本人操作，则账号安全可能出现危险，建议立即检查第三方登录账号（如微信QQ等）的安全性。</p>
-      </div>
+      <div class="newsDetail__bd" v-html="info.Memo"></div>
       <div class="newsDetail__ft text_r">
-        <span class="time">2019-04-28 10:19</span>
+        <span class="time">{{info.PubTime}}</span>
       </div>
     </div>
   </div>
 </template>
 <script>
 import foot from "@/components/foot.vue";
+import { post, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
 export default {
   onLoad() {
     this.setBarTitle();
+  },
+  onShow() {
+    this.isOk = false;
+    this.info = {};
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
+    this.curPage = getCurrentPageUrlWithArgs();
+    this.identity = wx.getStorageSync("identity");
+    this.id = this.$root.$mp.query.id;
+    if (this.identity == 1) {
+      //客服
+      this.memberType = 2;
+    }
+    if (this.identity == 2) {
+      //客户
+      this.memberType = 0;
+    }
+    if (this.identity == 3) {
+      //师傅
+      this.memberType = 1;
+    }
+    this.NoticeInfo();
+  },
+  data() {
+    return {
+      userId: "",
+      token: "",
+      curPage: "",
+      memberType: "",
+      identity: "",
+      id: "",
+      info: {},
+      isOk:false
+    };
   },
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
         title: "通知详情"
+      });
+    },
+    NoticeInfo() {
+      let that = this;
+      post(
+        "News/NoticeInfo",
+        {
+          UserId: that.userId,
+          Token: that.token,
+          MemberType: that.memberType,
+          newsid: that.id
+        },
+        that.curPage
+      ).then(res => {
+        that.info = res.data[0];
+        that.isOk = true;
       });
     }
   },
