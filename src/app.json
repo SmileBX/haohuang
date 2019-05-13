@@ -48,7 +48,8 @@
                 "addressList/main",
                 "addAddress/main",
                 "smOrder/main",
-                "areaOrder/main"
+                "areaOrder/main",
+                "schelogs/main"
             ]
         },
         {

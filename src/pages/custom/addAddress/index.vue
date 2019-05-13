@@ -112,6 +112,7 @@ export default {
   data() {
     return {
       curPage: "",
+      identity:'',
       areaList,
       showArea: false,
       name: "",

@@ -1258,6 +1258,9 @@ export default {
       if(!/^[\u4e00-\u9fa5\u3001\A-\Z\d]+$/ .test(this.address)){
          return "请输入正确的地址"
       }
+      if(!/^[\u4e00-\u9fa5\u3001\A-\Z\d]+$/ .test(this.name)){
+         return "包含非法字符"
+      }
       return false;
     },
     onName(e) {

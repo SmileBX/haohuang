@@ -112,10 +112,9 @@
                         <div class="delete" @click="deleteImg(sindex,lindex)">×</div>
                         <img :src="img"  style="width:160rpx;height:160rpx;" alt>
                     </div>
-                    <div
+                    <img
                       class="button-upload"
-                      style="background-image:url(/static/images/icons/upload_2.png);" v-show="isShowBtnUpload" @click="chosseImg(lindex)">
-                    </div>
+                       src="/static/images/icons/upload_2.png" v-show="item.isShowBtnUpload" @click="chosseImg(lindex)">
                   
                   </div>
                 </div>
@@ -261,8 +260,10 @@
   </div>
 </template>
 <script>
+//orderType 0-设计 1-制作" 2-安装 3-设计_制作 4-制作_安装 5-设计_制作_安装
 import { get,post, toLogin, getCurrentPageUrlWithArgs, valPhone } from "@/utils";
 import "@/css/dd_style.css";
+import {pathToBase64} from "@/utils/image-tools";
 export default {
   onLoad(){
     this.setBarTitle();
@@ -430,7 +431,7 @@ export default {
         // isShowBtnUpload: true,//显示上传按钮的状态
         // imgPathArr: [],
         // imgBase: [],
-        imgLenght:10,
+        imgLenght:8,
         adressId:'', //地址编号
         // proLists:[],//材料--制作材料 安装材料
         // proMastic:[],//制作材料集合
@@ -701,17 +702,24 @@ export default {
         let imgBase =[]
         // 根据临时路径数组imgPathArr获取base64图片
         for (let i = 0; i < this.prolist[n].referencePicList.length; i++) {
-          wx.getFileSystemManager().readFile({
-            filePath: (this.prolist[n].referencePicList)[i], //选择图片返回的相对路径
-            encoding: "base64", //编码格式
-            success: res => {
-              //成功的回调
-              imgBase.push({
-                PicUrl: "data:image/png;base64," + res.data.toString()
-              });
+          pathToBase64(that.prolist[n].referencePicList[i]).then(res => {
+           that.prolist[n].imgBase.push({
+              PicUrl: res
+            });
+            console.log("gffffffffff");
+            console.log(that.prolist[n].imgBase);
+        })
+          // wx.getFileSystemManager().readFile({
+          //   filePath: (this.prolist[n].referencePicList)[i], //选择图片返回的相对路径
+          //   encoding: "base64", //编码格式
+          //   success: res => {
+          //     //成功的回调
+          //     imgBase.push({
+          //       PicUrl: "data:image/png;base64," + res.data.toString()
+          //     });
           
-            }
-          });
+          //   }
+          // });
         }
         this.prolist[n].imgBase = imgBase
     },
@@ -733,8 +741,8 @@ export default {
             Token:this.token,
             IsDefault:1
           },this.curPage).then(res=>{
-            console.log(res.data.length,"地址相关")
-            if(res.data.length>0){
+            console.log(res.data,"地址相关")
+            if(res.data.name.length>0){
                 this.addressinfo.push({
                     name:res.data.name,
                     tel:res.data.tel,
@@ -766,6 +774,16 @@ export default {
         }
     },
     submit(){
+      // const toast = this.jiaoyan()
+      // console.log(toast)
+      // if(toast){
+      //     wx.showToast({
+      //       title:toast,
+      //       icon: "none",
+      //       duration: 2000
+      //     });
+      //     return false;
+      // }
         if(this.adressId.toString().length<1){
           wx.showToast({
               title:"请选择地址！"
@@ -837,6 +855,27 @@ export default {
         }
         
 
+    },
+    jiaoyan() {
+      if (!this.name) {
+        return "请输入联系人";
+      }
+      if (!/^1[3|4|5|6|7|8][0-9]\d{4,8}$/.test(this.phone)) {
+        return "请输入正确的手机号码";
+      }
+      if (!this.area) {
+        return "请选择省份";
+      }
+      if (!this.address) {
+        return "请输入地址";
+      }
+      if(!/^[\u4e00-\u9fa5\u3001\A-\Z\d]+$/ .test(this.address)){
+         return "请输入正确的地址"
+      }
+      if(!/^[\u4e00-\u9fa5\u3001\A-\Z\d]+$/ .test(this.name)){
+         return "包含非法字符"
+      }
+      return false;
     },
     closeMask(){
       wx.redirectTo({url:"/pages/custom/order/main"})

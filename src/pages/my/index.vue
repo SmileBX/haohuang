@@ -269,6 +269,7 @@
             <div class="outside"  @click="gotoClientOrder">
               <div class="icon-img">
                 <img src="/static/images/icons/serve_order.png" alt>
+                 <span class="circleNum" v-if="info.kehuNum>0">{{info.kehuNum}}</span>
               </div>
               <p class="title">客户订单</p>
             </div>

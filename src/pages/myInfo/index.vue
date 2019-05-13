@@ -390,7 +390,7 @@ export default {
           ).then(res => {
             if (res.code == 0) {
               wx.showToast({
-                title: res.msg,
+                title: '修改成功',
                 icon: "success",
                 duration: 1500
               });
