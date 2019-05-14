@@ -134,7 +134,7 @@
         >联系客户</div>
         <div class="btn btn-active" @click="callService(detail.ServiceTel)">联系客服</div>
       </div>
-    </div>
+    </div> 
     <!-- 联系客服 -->
     <serviceTypeSelect
       :selectServiceTypeStatus.sync="selectServiceTypeStatus"
@@ -177,7 +177,10 @@ export default {
     console.log(this.$root.$mp.query.orderId);
     if (this.$root.$mp.query.orderId) {
       this.orderId = this.$root.$mp.query.orderId;
-      this.getData();
+      if(toLogin(this.curPage)){
+         this.getData();
+      }
+      
     }
   },
   components:{

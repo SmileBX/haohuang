@@ -24,19 +24,40 @@ export function formatTime(date) {
 
 
 
-export function getCurrentPageUrlWithArgs() {
+export function getCurrentPageUrlWithArgs(changeJson) {
     const pages = getCurrentPages()
     const currentPage = pages[pages.length - 1]
     const url = currentPage.route
-    const options = currentPage.options;
+    let options = currentPage.options;
+    if (changeJson) {
+        options = Object.assign({}, options, changeJson);
+    }
     let urlWithArgs = `/${url}?`
     for (let key in options) {
         const value = options[key]
         urlWithArgs += `${key}=${value}&`
     }
-    urlWithArgs = urlWithArgs.substring(0, urlWithArgs.length - 1)
+    urlWithArgs = urlWithArgs.substring(0, urlWithArgs.length - 1);
+    console.log("改造过后的页面参数：" + urlWithArgs);
     return urlWithArgs
 }
+
+// export function tabChangePage(changeJson) {
+//     //改变路径
+//     const pages = getCurrentPages();
+//     const currentPage = pages[pages.length - 1];
+//     const url = currentPage.route;
+//     let json = currentPage.options;
+//     json = Object.assign({}, json, changeJson);
+//     let urlWithArgs = `/${url}?`;
+//     for (let key in json) {
+//         const value = json[key];
+//         urlWithArgs += `${key}=${value}&`;
+//     }
+//     urlWithArgs = urlWithArgs.substring(0, urlWithArgs.length - 1);
+//     console.log("改造过后的路由：" + urlWithArgs);
+//     return urlWithArgs;
+// }
 
 //请求封装
 function request(url, method, data, curPage, header = {}) {
@@ -177,11 +198,19 @@ function wxMemberLogin(code, iv, encryptedData) {
                 icon: 'success',
                 duration: 1500,
                 success: function() {
-                    setTimeout(function() {
-                        wx.reLaunch({
-                            url: '/pages/my/main'
-                        })
-                    }, 1500);
+                    if (wx.getStorageSync('askUrl')) {
+                        setTimeout(function() {
+                            wx.reLaunch({
+                                url: wx.getStorageSync('askUrl')
+                            })
+                        }, 1500);
+                    } else {
+                        setTimeout(function() {
+                            wx.reLaunch({
+                                url: '/pages/my/main'
+                            })
+                        }, 1500);
+                    }
                 }
             })
         }
@@ -223,11 +252,19 @@ function wxInstalMasterLogin(code, iv, encryptedData) {
                 icon: 'success',
                 duration: 1500,
                 success: function() {
-                    setTimeout(function() {
-                        wx.reLaunch({
-                            url: '/pages/my/main'
-                        })
-                    }, 1500);
+                    if (wx.getStorageSync('askUrl')) {
+                        setTimeout(function() {
+                            wx.reLaunch({
+                                url: wx.getStorageSync('askUrl')
+                            })
+                        }, 1500);
+                    } else {
+                        setTimeout(function() {
+                            wx.reLaunch({
+                                url: '/pages/my/main'
+                            })
+                        }, 1500);
+                    }
                 }
             })
         }
@@ -266,11 +303,20 @@ function wxCustomerServiceLogin(code, iv, encryptedData) {
                 icon: 'success',
                 duration: 1500,
                 success: function() {
-                    setTimeout(function() {
-                        wx.reLaunch({
-                            url: '/pages/my/main'
-                        })
-                    }, 1500);
+                    if (wx.getStorageSync('askUrl')) {
+                        setTimeout(function() {
+                            wx.reLaunch({
+                                url: wx.getStorageSync('askUrl')
+                            })
+                        }, 1500);
+                    } else {
+                        setTimeout(function() {
+                            wx.reLaunch({
+                                url: '/pages/my/main'
+                            })
+                        }, 1500);
+                    }
+
                 }
             })
         }

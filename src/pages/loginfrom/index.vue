@@ -122,7 +122,7 @@ export default {
     };
   },
   methods: {
-    initData(){
+    initData() {
       this.type = 0;
       this.Tel = "";
       this.Pwd = "";
@@ -279,11 +279,19 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-              setTimeout(function() {
-                wx.reLaunch({
-                  url: "/pages/my/main"
-                });
-              }, 1500);
+              if (wx.getStorageSync("askUrl")) {
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: wx.getStorageSync("askUrl")
+                  });
+                }, 1500);
+              } else {
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: "/pages/my/main"
+                  });
+                }, 1500);
+              }
             }
           });
         }
@@ -305,11 +313,19 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-              setTimeout(function() {
-                wx.reLaunch({
-                  url: "/pages/my/main"
-                });
-              }, 1500);
+              if (wx.getStorageSync("askUrl")) {
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: wx.getStorageSync("askUrl")
+                  });
+                }, 1500);
+              } else {
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: "/pages/my/main"
+                  });
+                }, 1500);
+              }
             }
           });
         }
@@ -331,11 +347,19 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-              setTimeout(function() {
-                wx.reLaunch({
-                  url: "/pages/my/main"
-                });
-              }, 1500);
+              if (wx.getStorageSync("askUrl")) {
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: wx.getStorageSync("askUrl")
+                  });
+                }, 1500);
+              } else {
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: "/pages/my/main"
+                  });
+                }, 1500);
+              }
             }
           });
         }
@@ -362,11 +386,19 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-              setTimeout(function() {
-                wx.reLaunch({
-                  url: "/pages/my/main"
-                });
-              }, 1500);
+              if (wx.getStorageSync("askUrl")) {
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: wx.getStorageSync("askUrl")
+                  });
+                }, 1500);
+              } else {
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: "/pages/my/main"
+                  });
+                }, 1500);
+              }
             }
           });
         }
@@ -394,11 +426,19 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-              setTimeout(function() {
-                wx.reLaunch({
-                  url: "/pages/my/main?identity=" + that.identity
-                });
-              }, 1500);
+              if (wx.getStorageSync("askUrl")) {
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: wx.getStorageSync("askUrl")
+                  });
+                }, 1500);
+              } else {
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: "/pages/my/main"
+                  });
+                }, 1500);
+              }
             }
           });
         }
@@ -419,11 +459,19 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-              setTimeout(function() {
-                wx.reLaunch({
-                  url: "/pages/my/main"
-                });
-              }, 1500);
+              if (wx.getStorageSync("askUrl")) {
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: wx.getStorageSync("askUrl")
+                  });
+                }, 1500);
+              } else {
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: "/pages/my/main"
+                  });
+                }, 1500);
+              }
             }
           });
         }

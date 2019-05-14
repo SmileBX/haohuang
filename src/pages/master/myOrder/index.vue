@@ -50,7 +50,15 @@
                 </div>
                 <div class="txtBox">
                   <p class="title text-line2">{{list.orderName}}</p>
-                  <p class="type">订单类型：<span v-if="list.OrderType===0">设计</span><span v-if="list.OrderType===1">制作</span><span v-if="list.OrderType===2">安装</span><span v-if="list.OrderType===3">设计+制作</span><span v-if="list.OrderType===4">制作+安装</span><span v-if="list.OrderType===5">设计+制作+安装</span></p>
+                  <p class="type">
+                    订单类型：
+                    <span v-if="list.OrderType===0">设计</span>
+                    <span v-if="list.OrderType===1">制作</span>
+                    <span v-if="list.OrderType===2">安装</span>
+                    <span v-if="list.OrderType===3">设计+制作</span>
+                    <span v-if="list.OrderType===4">制作+安装</span>
+                    <span v-if="list.OrderType===5">设计+制作+安装</span>
+                  </p>
                   <div class="flex">
                     <div class="flex1">
                       <p class="new-price">
@@ -74,9 +82,17 @@
               v-if="list.AuditStatus===0"
               @click="callCustom(list.Tel)"
             >联系客户</div>
-            <div class="button active" v-if="list.AuditStatus===0" @click="gotoSmVerify(list.Id,list.MasterType)">提交审核</div>
+            <div
+              class="button active"
+              v-if="list.AuditStatus===0"
+              @click="gotoSmVerify(list.Id,list.MasterType)"
+            >提交审核</div>
             <!-- <div class="button active" v-if="list.AuditStatus===4">删除订单</div> -->
-            <div class="button active" v-if="list.AuditStatus===3" @click="gotoSmVerify(list.Id,list.MasterType)">重新提交</div>
+            <div
+              class="button active"
+              v-if="list.AuditStatus===3"
+              @click="gotoSmVerify(list.Id,list.MasterType)"
+            >重新提交</div>
             <div class="button active" @click="callService(list.ServiceTel)">联系客服</div>
           </div>
         </div>
@@ -156,14 +172,19 @@ export default {
     // 客户--订单状态：-1全部，0-待确认，1-待付款，2-处理中，10-待评论
     //师傅的---订单状态：-1全部，0-已接单(施工中),1-待审核(已安装) ,2-审核通过, 3-审核拒绝, 4-订单完成
     //订单类型 --0:设计,1:制作,2:安装,3:设计-制作,4:制作-安装,5:设计-制作-安装
+    console.log("ddddddd");
+    console.log(this.$root.$mp.query);
     if (this.$root.$mp.query.typeNo) {
       this.typeNo = this.$root.$mp.query.typeNo * 1;
     }
     console.log(this.typeNo, "订单状态");
-    this.init();
+    console.log("当前页面：" + this.curPage);
+    if (toLogin(this.curPage)) {
+      this.init();
+    }
   },
-  components:{
-   serviceTypeSelect
+  components: {
+    serviceTypeSelect
   },
   methods: {
     setBarTitle() {
@@ -182,11 +203,15 @@ export default {
       this.servicePhone = phone;
       this.selectServiceTypeStatus = true;
     },
-    gotoSmVerify(orderId,masterType) {
+    gotoSmVerify(orderId, masterType) {
       let that = this;
       //跳转到提交审核
       wx.navigateTo({
-        url: "/pages/master/smVerify/main?orderId="+orderId+"&masterType="+masterType
+        url:
+          "/pages/master/smVerify/main?orderId=" +
+          orderId +
+          "&masterType=" +
+          masterType
       });
     },
     getData() {
@@ -218,9 +243,11 @@ export default {
     // 切换订单状态
     tabMenu(typeNo) {
       this.typeNo = typeNo;
+      this.curPage = getCurrentPageUrlWithArgs({ typeNo: this.typeNo });
       this.orderList = [];
       this.init();
     },
+    
     // 初始化数据
     init() {
       this.orderListEnd = false;
@@ -229,8 +256,8 @@ export default {
     },
     // 删除选中的城市
     removeSelect() {
-      this.searchRegionCode = "";
-      this.searchRegion = "";
+      //this.searchRegionCode = "";
+      //this.searchRegion = "";
       this.init();
     },
     // 选择地区
@@ -245,7 +272,7 @@ export default {
     //   this.init()
     // },
     // 跳转到订单详情
-    gotoDetail(orderId,masterType) {
+    gotoDetail(orderId, masterType) {
       wx.navigateTo({
         url: `/pages/master/orderDetail/main?orderId=${orderId}`
       });
@@ -258,6 +285,8 @@ export default {
   },
   // 下拉刷新
   onPullDownRefresh() {
+    this.Token = wx.getStorageSync("token");
+    //this.UserId = wx.getStorageSync("userId");
     // this.searchRegionCode = "";
     // this.searchRegion = "";
     this.init();
