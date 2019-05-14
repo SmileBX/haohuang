@@ -851,6 +851,8 @@ export default {
             if(res.code==0){
                 this.isShow=true
                 this.showPaymask=true
+                // wx.setStorageSync("address",this.addressinfo[0].addressinfo)
+                // console.log(wx.getStorageSync("address"))
             }
           })
         }

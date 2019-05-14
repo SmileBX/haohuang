@@ -220,6 +220,7 @@ export default {
        //订单编号
           this.OrderNo = res.data.orderNo
           this.detail = res.data;
+          
           // 邮费
           this.detail.Freight = res.data.Freight.toFixed(2);
           // 预计价格
@@ -394,6 +395,7 @@ export default {
     },
     //查看订单进度
     seeSchdule(orderId,OrderStatus){
+       wx.setStorageSync('address',this.detail.AddressInfo)
       //console.log(orderNo,OrderStatus)
         wx.navigateTo({url:"/pages/custom/schedule/main?OrderNoId="+orderId+"&OrderStatus="+OrderStatus})
     }

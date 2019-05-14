@@ -120,6 +120,7 @@ export default {
     this.token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
+    this.txt = ''
     console.log(this.orderId);
     if (this.identity == 1) {
       //客服

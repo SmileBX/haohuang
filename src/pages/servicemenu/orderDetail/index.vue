@@ -4,11 +4,11 @@
       <span>{{detail.OrderStatusStr }}</span>
     </div>
     <div class="orderAddr bg_fff">
-      <div class="newsLogistics flex flexAlignCenter">
+      <div class="newsLogistics flex flexAlignCenter" v-if="detail.OrderStatus==7" >
         <img src="/static/images/icons/logistics.png" class="icon_xiaoche" alt>
         <div class="flexItem flex1">
-          <p class="txt">分配师傅：张**师傅为你服务</p>
-          <p class="time">2018-11-15 18:02:25</p>
+          <p class="txt">分配师傅：{{MasterName}}师傅为你服务</p>
+          <p class="time">{{InstallTime}}</p>
         </div>
         <span class="icon-arrow arrow-right" style="margin-right:-20rpx;"></span>
       </div>
@@ -35,7 +35,8 @@
                 <div class="pictrue img" :style="'background-image:url('+detail.OrderImg+')'"></div>
               </div>
               <div class="txtBox">
-                <p class="title text-line2">{{detail.orderType}}</p>
+                <p class="title text-line2">{{detail.orderName}}</p>
+                <p class="type">订单类型：<span v-if="detail.orderType===0">设计</span><span v-if="detail.orderType===1">制作</span><span v-if="detail.orderType===2">安装</span><span v-if="detail.orderType===3">设计+制作</span><span v-if="detail.orderType===4">制作+安装</span><span v-if="detail.orderType===5">设计+制作+安装</span></p>
                 <div class="flex">
                   <div class="flex1">
                     <p class="price">￥{{detail.ProductMoney}}</p>
@@ -103,6 +104,8 @@
         <div class="btn linear" v-if="detail.IsConfirm==0" @click="showConfirmOrderWindow">确认订单</div>
         <!-- <div class="btn linear" v-if="detail.IsConfirm==1&&detail.IsPay==0" @click="confirmPay">线下付款</div> -->
         <div class="btn linear" v-if="detail.OrderStatus==1" @click="confirmPay">线下付款</div>
+        <!--查看进度-->
+        <div class="button active" v-if="detail.OrderStatus==2 || detail.OrderStatus==3 ||detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 || detail.OrderStatus==8" @click="seeSchdule(detail.orderId,detail.OrderStatus)">查看进度</div>
         <div class="btn linear" v-if="detail.DesignStatus==1" @click="confirmButtonModal('design')">设计确认</div>
         <div class="btn linear" v-if="detail.OrderStatus==4" @click="confirmButtonModal('logistics')">确认收货</div>
         <div class="btn linear" v-if="detail.OrderStatus" @click="gotoComment">评论</div>
@@ -145,6 +148,9 @@ export default {
       UserId: "",
       Token: "",
       orderId: "",
+      OrderNo:'',//订单编号
+      InstallTime:'',
+      MasterName:'',
       detail: {
         ProductMoney:0,
         Freight:0
@@ -198,6 +204,11 @@ export default {
       this.detail.PayMoney = res.data.PayMoney.toFixed(2);
       // 材料金额
       this.detail.ProductMoney = res.data.ProductMoney.toFixed(2);
+      if(res.data.InstallList.length>0){
+          this.MasterName = res.data.InstallList[0].MasterName
+          this.InstallTime = res.data.InstallList[0].InstallTime.split("T").join(" ").split(".")[0]
+            console.log(this.InstallTime,"this.InstallTime")
+        }
       
       console.log(Boolean(detail.InstallTime));
     },
@@ -349,7 +360,12 @@ export default {
         }
       });
     },
-
+     //查看订单进度
+    seeSchdule(orderId,OrderStatus){
+       wx.setStorageSync('address',this.detail.AddressInfo)
+      //console.log(orderNo,OrderStatus)
+        wx.navigateTo({url:"/pages/custom/schedule/main?OrderNoId="+orderId+"&OrderStatus="+OrderStatus})
+    }
   }
 };
 </script>
