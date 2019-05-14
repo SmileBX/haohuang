@@ -2,7 +2,7 @@
     <div class="page">
         <div class="userhead">
             <div class="tx" @click="changeAvatar">
-                <img :src="Avatar"  alt="" style="border:1px solid red">
+                <img :src="Avatar"  alt="">
                 <p class="txt">点击更换头像</p>
             </div>
         </div>
@@ -71,7 +71,7 @@
         </div>
          <!--选择地址省市遮罩层-->
         <van-popup :show="showArea" position="bottom" :overlay="true" @close="showArea = false">
-            <van-area :area-list="areaList" @cancel="showArea = false" @confirm="confirmArea"/>
+            <van-area :area-list="areaList" @cancel="showArea = false" :value="defaultcode" @confirm="confirmArea"/>
         </van-popup>
     </div>
 </template>
@@ -126,6 +126,7 @@ export default {
       provinceCode:'',
       cityCode:'',
       districtCode:'',
+      defaultcode:''//默认的code
     };
   },
   // watch: {
@@ -187,13 +188,13 @@ export default {
       ).then(result => {
         console.log(result,"师傅的信息");
         if (result.code === 0) {
-          wx.setStorageSync("mobile", result.data.Mobile);
             wx.setStorageSync("mobile", result.data.Mobile);
           console.log(result.data)
             const info = result.data;
             this.NickName = info.NickName;
             this.Mobile = info.Mobile;
             this.area = info.AddressInfo  //接受默认地址
+            this.defaultcode =info.AreaCode
             if (info.Sex == "男") {
               this.Sex = 1;
             } else {
@@ -370,7 +371,7 @@ export default {
           ).then(res => {
             if (res.code == 0) {
               wx.showToast({
-                title: res.msg,
+                title:'修改成功',
                 icon: "success",
                 duration: 1500
               });
@@ -427,7 +428,7 @@ export default {
           ).then(res => {
             if (res.code == 0) {
               wx.showToast({
-                title: res.msg,
+                title:'修改成功',
                 icon: "success",
                 duration: 1500
               });

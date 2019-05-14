@@ -149,6 +149,8 @@ export default {
       Token: "",
       orderId: "",
       OrderNo:'',//订单编号
+      curPage: "",
+      identity:'',
       InstallTime:'',
       MasterName:'',
       detail: {
@@ -175,6 +177,8 @@ export default {
   onShow() {
     this.UserId = wx.getStorageSync("userId");
     this.Token = wx.getStorageSync("token");
+    this.curPage = getCurrentPageUrlWithArgs();
+    this.identity = wx.getStorageSync("identity");
     console.log(this.$root.$mp.query.orderId);
     if (this.$root.$mp.query.orderId) {
       this.orderId = this.$root.$mp.query.orderId;
