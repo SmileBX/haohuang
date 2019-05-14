@@ -171,6 +171,8 @@ export default {
       Token: "",
       orderId: "",//订单id
       OrderNo:'',//订单编号
+      curPage: "",
+      identity:'',
       InstallTime:'',
       MasterName:'',
       detail: {
@@ -197,6 +199,8 @@ export default {
   onShow() {
     this.UserId = wx.getStorageSync("userId");
     this.Token = wx.getStorageSync("token");
+    this.curPage = getCurrentPageUrlWithArgs();
+    this.identity = wx.getStorageSync("identity");
     this.cancelOrderWindowStatus = false
     console.log(this.$root.$mp.query.orderId);
     if (this.$root.$mp.query.orderId) {

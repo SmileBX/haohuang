@@ -259,9 +259,9 @@
                     />
                 </van-action-sheet> 
                <!--选择类型--> 
-                <div class="maskType border-box" v-if="showType">
+                <div class="maskType border-box" v-if="item.showType || showKuaidiType">
                     <div class="flex">
-                          <span class="size" @click="cancle">取消</span>
+                          <span class="size" @click="cancle(lindex)">取消</span>
                           <span class="title">{{masktitle}}</span>
                           <span class="color size" @click="subConfirm(lindex)">确定</span>
                     </div>
@@ -363,16 +363,14 @@ export default {
       postMsg: "选择快递", //快递选择
       // showDate: false, //日期 组件 不需要遮罩层
       isShow: false, //遮罩层
-      showType: false, //普通选择的弹框
+      // showType: false, //普通选择的弹框
       showPaymask: false, //支付确认弹框
       ContactName: "", //联系人
       Tel: "", //电话
       Addr: "", //地址
       masktitle: "设计",
+      showKuaidiType:false,
       tip: 0, //点击增加明细增加子订单的次数标识
-      isShowBtnUpload: true, //显示上传图片按钮的状态
-      isShowBtnUpload2: true, //显示上传图片按钮的状态
-      isShowBtnVedio: true, //显示上传视频按钮的状态
       proitem: {
         orderType: "",
         orderTypeName: "",
@@ -381,9 +379,7 @@ export default {
         specwide: 0,
         specnum: 1,
         referencePicList: [],
-        imgBase: [],
         referencePicList2: [],
-        imgBase2: [],
         guidanceVideo:'',
         isShowBtnUpload: true, //显示上传图片按钮的状态
         isShowBtnUpload2: true, //显示上传图片按钮的状态
@@ -408,9 +404,7 @@ export default {
           specwide: 0,
           specnum: 1,
           referencePicList: [],
-          imgBase: [],
           referencePicList2: [],
-          imgBase2: [],
           guidanceVideo:'',
           isShowBtnUpload: true, //显示上传图片按钮的状态
           isShowBtnUpload2: true, //显示上传图片按钮的状态
@@ -456,9 +450,7 @@ export default {
         specwide: 0,
         specnum: 1,
         referencePicList: [],
-        imgBase: [],
         referencePicList2: [],
-        imgBase2: [],
         guidanceVideo:'',
         isShowBtnUpload: true, //显示上传图片按钮的状态
         isShowBtnUpload2: true, //显示上传图片按钮的状态
@@ -472,7 +464,8 @@ export default {
         installstatic: [],
         proMastic: [],
         proIns: [],
-        orderName: ""
+        orderName: "",
+        showType:false,
       },
       this.prolist= [
         {
@@ -483,9 +476,7 @@ export default {
           specwide: 0,
           specnum: 1,
           referencePicList: [],//现场图视图循环
-          imgBase: [],//现场图上传临时路径
           referencePicList2: [], //指导图视图循环
-          imgBase2: [],  //指导图上传临时路径
           guidanceVideo:'',
           isShowBtnUpload: true, //显示上传图片按钮的状态
           isShowBtnUpload2: true, //显示上传图片按钮的状态
@@ -499,7 +490,8 @@ export default {
           installstatic: [],
           proMastic: [],
           proIns: [],
-          orderName: ""
+          orderName: "",
+          showType:false,
         }
       ]
       this.bindName = "";
@@ -537,7 +529,7 @@ export default {
     // this.cityCode = "";
     // this.districtCode = "";
     this.isShow=false//遮罩层
-    this.showType=false //普通选择的弹框
+    // this.showType=false //普通选择的弹框
     this.showPaymask=false //支付确认弹框
 
     // this.postMsg = '选择快递'
@@ -611,10 +603,13 @@ export default {
         title: "师傅下单"
       });
     },
-    cancle() {
-      this.isShow = false;
-      this.showType = false;
+    //普通弹框取消
+    cancle(n) {
+      this.isShow=false
+        this.showKuaidiType=false
+        this.prolist[n].showType=false
     },
+    //普通弹框确定
     subConfirm(n) {
       // console.log(this.masktitle,"3333333")
       for (let i in this.list) {
@@ -675,8 +670,9 @@ export default {
       }
 
       //  this.masktitle=0
-      this.showType = false;
-      this.isShow = false;
+        this.showKuaidiType=false
+        this.prolist[n].showType=false
+        this.isShow=false
     },
     onInput(e, i) {
       console.log(e, "时间");
@@ -713,7 +709,7 @@ export default {
       this.active = 0;
       this.list = [];
       this.isShow = true;
-      this.showType = true;
+      this.showKuaidiType=true
       this.masktitle = "请选择快递类型";
       if (toLogin(this.curPage)) {
         const res = get("Address/KuaiDiList", this.curPage).then(res => {
@@ -748,7 +744,7 @@ export default {
       this.active = 0;
       this.list = [];
       this.isShow = true;
-      this.showType = true;
+      this.prolist[n].showType=true
       this.prolist[n].makestatic = [];
       this.prolist[n].proMastic = [];
       this.prolist[n].proIns = [];
@@ -778,7 +774,7 @@ export default {
       this.list = [];
       this.active = 0;
       this.isShow = true;
-      this.showType = true;
+      this.prolist[n].showType=true
       if (e == 1) {
         this.masktitle = "请选择制作材料";
         //  this.prolist[n].makestatic=''
@@ -871,27 +867,27 @@ export default {
       } else {
         that.prolist[n].isShowBtnUpload = true;
       }
-      that.prolist[n].imgBase=[]
-      // 根据临时路径数组imgPathArr获取base64图片
-      for (let i = 0; i < that.prolist[n].referencePicList.length; i++) {
-        pathToBase64(that.prolist[n].referencePicList[i]).then(res => {
-           that.prolist[n].imgBase.push({
-              PicUrl: res
-            });
-            console.log("gffffffffff");
-            console.log(that.prolist[n].imgBase);
-        })
-        // wx.getFileSystemManager().readFile({
-        //   filePath: this.prolist[n].referencePicList[i], //选择图片返回的相对路径
-        //   encoding: "base64", //编码格式
-        //   success: res => {
-        //     //成功的回调
-        //     this.prolist[n].imgBase.push({
-        //       PicUrl: "data:image/png;base64," + res.data.toString()
-        //     });
-        //   }
-        // });
-      }
+      // that.prolist[n].imgBase=[]
+      // // 根据临时路径数组imgPathArr获取base64图片
+      // for (let i = 0; i < that.prolist[n].referencePicList.length; i++) {
+      //   pathToBase64(that.prolist[n].referencePicList[i]).then(res => {
+      //      that.prolist[n].imgBase.push({
+      //         PicUrl: res
+      //       });
+      //       console.log("gffffffffff");
+      //       console.log(that.prolist[n].imgBase);
+      //   })
+      //   // wx.getFileSystemManager().readFile({
+      //   //   filePath: this.prolist[n].referencePicList[i], //选择图片返回的相对路径
+      //   //   encoding: "base64", //编码格式
+      //   //   success: res => {
+      //   //     //成功的回调
+      //   //     this.prolist[n].imgBase.push({
+      //   //       PicUrl: "data:image/png;base64," + res.data.toString()
+      //   //     });
+      //   //   }
+      //   // });
+      // }
     },
     deleteImg(i, n) {
       this.prolist[n].imgBase.splice(i, 1);
@@ -945,26 +941,26 @@ export default {
       }
       const that = this
       
-      that.prolist[n].imgBase2=[]
-      // 根据临时路径数组imgPathArr获取base64图片
-      for (let i = 0; i < this.prolist[n].referencePicList2.length; i++) {
-        pathToBase64(that.prolist[n].referencePicList2[i]).then(res=>{
-            that.prolist[n].imgBase2.push({
-              PicUrl: res
-            });
-            console.log(that.prolist[n].imgBase2,"指导图片");
-        })
-        // wx.getFileSystemManager().readFile({
-        //   filePath: this.prolist[n].referencePicList2[i], //选择图片返回的相对路径
-        //   encoding: "base64", //编码格式
-        //   success: res => {
-        //     //成功的回调
-        //     this.prolist[n].imgBase2.push({
-        //       PicUrl: "data:image/png;base64," + res.data.toString()
-        //     });
-        //   }
-        // });
-      }
+      // that.prolist[n].imgBase2=[]
+      // // 根据临时路径数组imgPathArr获取base64图片
+      // for (let i = 0; i < this.prolist[n].referencePicList2.length; i++) {
+      //   pathToBase64(that.prolist[n].referencePicList2[i]).then(res=>{
+      //       that.prolist[n].imgBase2.push({
+      //         PicUrl: res
+      //       });
+      //       console.log(that.prolist[n].imgBase2,"指导图片");
+      //   })
+      //   // wx.getFileSystemManager().readFile({
+      //   //   filePath: this.prolist[n].referencePicList2[i], //选择图片返回的相对路径
+      //   //   encoding: "base64", //编码格式
+      //   //   success: res => {
+      //   //     //成功的回调
+      //   //     this.prolist[n].imgBase2.push({
+      //   //       PicUrl: "data:image/png;base64," + res.data.toString()
+      //   //     });
+      //   //   }
+      //   // });
+      // }
     },
     deleteImg2(i, n) {
       this.prolist[n].imgBase2.splice(i, 1);
@@ -1098,7 +1094,9 @@ export default {
 
       //console.log(this.prolist,"this.prolist")
       let _OrderInsertList = [];
-      let n = []
+      let n = []  //视频集合
+      let _referencePicList1=[]  //现场图片
+      let _referencePicList2=[]  //指导图片
       for (let i = 0; i < this.prolist.length; i++) {
         n.push(i)
         let _proLists = this.prolist[i].proMastic.concat(
@@ -1106,6 +1104,27 @@ export default {
         );
         //console.log(JSON.stringify(_proLists),"材料集合提交")
         _proLists = JSON.stringify(_proLists);
+        //更新图片
+        for(let j=0;j<this.prolist[i].referencePicList.length;j++){
+            console.log(this.prolist[i].referencePicList[j],'this.prolist[i].referencePicList.length')
+              pathToBase64(this.prolist[i].referencePicList[j]).then(res=>{
+                // console.log("____________");
+                // console.log(info.referencePicList);
+                _referencePicList1.push({
+                  PicUrl:res
+                })
+              })
+          }
+          for(let j=0;j<this.prolist[i].referencePicList2.length;j++){
+            console.log(this.prolist[i].referencePicList2[j],'this.prolist[i].referencePicList.length')
+              pathToBase64(this.prolist[i].referencePicList2[j]).then(res=>{
+                // console.log("____________");
+                // console.log(info.referencePicList);
+                _referencePicList2.push({
+                  PicUrl:res
+                })
+              })
+          }
         let info = {
           // adressId:this.adressId,  //地址编号
           ContactName: this.name, //收货人姓名
@@ -1122,8 +1141,8 @@ export default {
           spechign: this.prolist[i].spechign, //高
           specnum: this.prolist[i].specnum, //数量
           remark: this.prolist[i].remark, //备注
-          scenePicList: JSON.stringify(this.prolist[i].imgBase), //现场图片集合
-          guidancePicList: JSON.stringify(this.prolist[i].imgBase2), //现场图片集合
+          scenePicList: JSON.stringify(_referencePicList1), //现场图片集合
+          guidancePicList: JSON.stringify(_referencePicList2), //现场图片集合
           guidanceVideo:this.prolist[i].guidanceVideo,//视频
           estimateTime: this.prolist[i].estimateTime, //完成时间!!!!!
           offerTotal: this.prolist[i].offerTotal, //总金额!!!!!
@@ -1184,7 +1203,7 @@ export default {
             });
             setTimeout(() => {
               wx.redirectTo({
-                url: "/pages/servicemenu/bindCustomInfo/main" //我的订单
+                url: "/pages/servicemenu/myOrder/main" //我的订单
               });
             }, 1000);
           }
@@ -1199,7 +1218,7 @@ export default {
       this.active = 0;
       this.list = [];
       this.isShow = true;
-      this.showType = true;
+      this.showKuaidiType = true;
       this.masktitle = "请选择客户名称";
       console.log(this.userId, this.token, this.curPage);
       if (toLogin(this.curPage)) {

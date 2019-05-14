@@ -158,9 +158,9 @@
                   />
               </van-action-sheet>  
                <!--选择类型--> 
-                <div class="maskType border-box" v-if="showType">
+                <div class="maskType border-box" v-if="item.showType || showKuaidiType">
                     <div class="flex">
-                          <span class="size" @click="cancle">取消</span>
+                          <span class="size" @click="cancle(lindex)">取消</span>
                           <span class="title">{{masktitle}}</span>
                           <span class="color size" @click="subConfirm(lindex)">确定</span>
                     </div>
@@ -269,14 +269,15 @@ export default {
     this.setBarTitle();
     this.imgBase= []
     this.imgPathArr= []
+    this.postMsg = '选择快递'
     this.proitem={
       orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],isShowBtnUpload:true,
-      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,  //日期 组件 不需要遮罩层
+      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,showType:false,  //日期 组件 不需要遮罩层
     },
     this.prolist=[
       {
       orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
-      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false,  //日期 组件 不需要遮罩层
+      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false, showType:false,  //日期 组件 不需要遮罩层
       },
     ]
     
@@ -297,7 +298,7 @@ export default {
         this.count=0,//总数
         this.isLoad=false,
         // this.isShowBtnUpload= true,//显示上传按钮的状态
-        this.imgLenght=10,
+        this.imgLenght=8,
         this.adressId='', //地址编号
         this.logisticsType=3    //物流类型 0-快递 1-物流 2-自提
         this.tip=0
@@ -305,7 +306,8 @@ export default {
         this.addressinfo=[]
         this.showPaymask=false
         this.isShow=false
-        this.postMsg = '选择快递'
+        this.showKuaidiType=false
+       
 
         //获取收货地址
         if(this.$root.$mp.query.url){
@@ -386,10 +388,11 @@ export default {
         curPage: "",
         identity: "",
         active:0,//选中的标记
+        showKuaidiType:false,
         postMsg:'选择快递',//快递选择
         // showDate:false,  //日期 组件 不需要遮罩层
         isShow:false, //遮罩层
-        showType:false,  //普通选择的弹框
+        // showType:false,  //普通选择的弹框
         showPaymask:false,//支付确认弹框
         // orderName:"",//项目名称
         // speclong:"",//厚
@@ -408,15 +411,25 @@ export default {
         Addr:"",//地址
         masktitle:'设计',
         tip:0,//点击增加明细增加子订单的次数标识
+        // proitem:{
+        //   orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
+        //   estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true
+        // },
+        // prolist:[
+        //   {
+        //  orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
+        //   estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",
+        //   isShowBtnUpload:true
+        //   },
         proitem:{
-          orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true
+          orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showType:false, 
         },
         prolist:[
           {
-         orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
+         orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],
           estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",
-          isShowBtnUpload:true
+          isShowBtnUpload:true,showType:false, 
           },
         ],
         list:[],
@@ -445,9 +458,10 @@ export default {
           title: "客户下单"
         });
       },
-      cancle(){
+      cancle(n){
         this.isShow=false
-        this.showType=false
+        this.showKuaidiType=false
+        this.prolist[n].showType=false
       },
       subConfirm(n){
        // console.log(this.masktitle,"3333333")
@@ -504,7 +518,8 @@ export default {
         }
       
         //  this.masktitle=0
-        this.showType=false
+        this.showKuaidiType=false
+        this.prolist[n].showType=false
         this.isShow=false
       },
       onInput(e,i){
@@ -544,7 +559,7 @@ export default {
         this.active=0
         this.list=[]
         this.isShow=true;
-        this.showType=true;
+        this.showKuaidiType=true;
         this.masktitle="请选择快递类型"
         if(toLogin(this.curPage)){
             const res = get('Address/KuaiDiList',this.curPage).then(res=>{
@@ -587,7 +602,7 @@ export default {
         this.active=0
         this.list=[]
         this.isShow=true;
-        this.showType=true;
+        this.prolist[n].showType=true;
         this.prolist[n].makestatic=[] 
         this.prolist[n].proMastic=[]
         this.prolist[n].proIns=[]
@@ -617,7 +632,7 @@ export default {
         this.list=[]
         this.active=0
         this.isShow=true;
-        this.showType=true;
+        this.prolist[n].showType=true;
         if(e==1){
              this.masktitle="请选择制作材料"
             //  this.prolist[n].makestatic='' 
@@ -700,29 +715,29 @@ export default {
         }else{
           that.prolist[n].isShowBtnUpload = true;
         }
-        let imgBase =[]
-        // 根据临时路径数组imgPathArr获取base64图片
-        for (let i = 0; i < that.prolist[n].referencePicList.length; i++) {
-          pathToBase64(that.prolist[n].referencePicList[i]).then(res => {
-           that.prolist[n].imgBase.push({
-              PicUrl: res
-            });
-            console.log("gffffffffff");
-            console.log(that.prolist[n].imgBase);
-        })
-          // wx.getFileSystemManager().readFile({
-          //   filePath: (this.prolist[n].referencePicList)[i], //选择图片返回的相对路径
-          //   encoding: "base64", //编码格式
-          //   success: res => {
-          //     //成功的回调
-          //     imgBase.push({
-          //       PicUrl: "data:image/png;base64," + res.data.toString()
-          //     });
+        // let imgBase =[]
+        // // 根据临时路径数组imgPathArr获取base64图片
+        // for (let i = 0; i < that.prolist[n].referencePicList.length; i++) {
+        //   pathToBase64(that.prolist[n].referencePicList[i]).then(res => {
+        //    that.prolist[n].imgBase.push({
+        //       PicUrl: res
+        //     });
+        //     console.log("gffffffffff");
+        //     console.log(that.prolist[n].imgBase);
+        // })
+        //   // wx.getFileSystemManager().readFile({
+        //   //   filePath: (this.prolist[n].referencePicList)[i], //选择图片返回的相对路径
+        //   //   encoding: "base64", //编码格式
+        //   //   success: res => {
+        //   //     //成功的回调
+        //   //     imgBase.push({
+        //   //       PicUrl: "data:image/png;base64," + res.data.toString()
+        //   //     });
           
-          //   }
-          // });
-        }
-        that.prolist[n].imgBase = imgBase
+        //   //   }
+        //   // });
+        // }
+        // that.prolist[n].imgBase = imgBase
     },
     deleteImg(i,n) {
       this.prolist[n].imgBase.splice(i, 1);
@@ -775,16 +790,6 @@ export default {
         }
     },
     submit(){
-      // const toast = this.jiaoyan()
-      // console.log(toast)
-      // if(toast){
-      //     wx.showToast({
-      //       title:toast,
-      //       icon: "none",
-      //       duration: 2000
-      //     });
-      //     return false;
-      // }
         if(this.adressId.toString().length<1){
           wx.showToast({
               title:"请选择地址！"
@@ -801,10 +806,24 @@ export default {
         //console.log(this.prolist,"this.prolist")
         let _OrderInsertList=[]
         for(let i=0;i<this.prolist.length;i++){
+          let info={}
+          let _referencePicList=[]
+          //材料集合
           let _proLists=this.prolist[i].proMastic.concat(this.prolist[i].proIns)
-          //console.log(JSON.stringify(_proLists),"材料集合提交")
           _proLists=JSON.stringify(_proLists)
-          let info={
+          //更新图片
+          for(let j=0;j<this.prolist[i].referencePicList.length;j++){
+            console.log(this.prolist[i].referencePicList[j],'this.prolist[i].referencePicList.length')
+              pathToBase64(this.prolist[i].referencePicList[j]).then(res=>{
+                // console.log("____________");
+                // console.log(info.referencePicList);
+                _referencePicList.push({
+                  PicUrl:res
+                })
+              })
+          }
+          //console.log(JSON.stringify(_proLists),"材料集合提交")
+          info={
               adressId:this.adressId,  //地址编号
               orderName:this.prolist[i].orderName,//项目名称
               orderType:this.prolist[i].orderType,  //订单类型
@@ -813,12 +832,14 @@ export default {
               spechign:this.prolist[i].spechign,      //高
               specnum:this.prolist[i].specnum,        //数量   
               remark:this.prolist[i].remark,      //备注
-              referencePicList:JSON.stringify(this.prolist[i].imgBase),    //图片集合 
+              referencePicList:JSON.stringify(_referencePicList),    //图片集合 
               estimateTime:this.prolist[i].estimateTime,    //完成时间
               offerTotal:this.prolist[i].offerTotal,     //总金额
               proLists:_proLists, //材料集合
               logisticsType:this.logisticsType,//快递类型
-          }
+          }                 
+          
+          console.log(info,"referencePicList999999999999++++++++++++++++++++++++++++++++++")
 
           //console.log(typeof this.prolist[i].estimateTime,"提交时间")
           if(this.prolist[i].estimateTime.length==0　|| this.prolist[i].offerTotal.toString().length==0 || this.prolist[i].orderName.length==0){

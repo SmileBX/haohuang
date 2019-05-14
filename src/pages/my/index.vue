@@ -4,7 +4,7 @@
       <img src="/static/images/icons/membertop_1.jpg" class="bg_img" mode="scaleToFill" alt>
       <div class="conBox">
         <div class="tx_info flex flexAlignCenter">
-          <div class="tx" @click="gotoMyInfo" style="border:1px solid red">
+          <div class="tx" @click="gotoMyInfo">
             <img :src="info.Avatar" alt>
           </div>
           <div class="info flex1">
