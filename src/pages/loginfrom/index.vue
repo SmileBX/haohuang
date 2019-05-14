@@ -279,8 +279,12 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-              if (wx.getStorageSync("askUrl")) {
+              if (
+                wx.getStorageSync("askUrl") !== "undefined" &&
+                wx.getStorageSync("askUrl")
+              ) {
                 setTimeout(function() {
+                  console.log(wx.getStorageSync("askUrl"));
                   wx.reLaunch({
                     url: wx.getStorageSync("askUrl")
                   });
@@ -313,8 +317,12 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-              if (wx.getStorageSync("askUrl")) {
+              if (
+                wx.getStorageSync("askUrl") !== "undefined" &&
+                wx.getStorageSync("askUrl")
+              ) {
                 setTimeout(function() {
+                  console.log(wx.getStorageSync("askUrl"));
                   wx.reLaunch({
                     url: wx.getStorageSync("askUrl")
                   });
@@ -347,8 +355,12 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-              if (wx.getStorageSync("askUrl")) {
+              if (
+                wx.getStorageSync("askUrl") !== "undefined" &&
+                wx.getStorageSync("askUrl")
+              ) {
                 setTimeout(function() {
+                  console.log(wx.getStorageSync("askUrl"));
                   wx.reLaunch({
                     url: wx.getStorageSync("askUrl")
                   });
@@ -386,8 +398,12 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-              if (wx.getStorageSync("askUrl")) {
+              if (
+                wx.getStorageSync("askUrl") !== "undefined" &&
+                wx.getStorageSync("askUrl")
+              ) {
                 setTimeout(function() {
+                  console.log(wx.getStorageSync("askUrl"));
                   wx.reLaunch({
                     url: wx.getStorageSync("askUrl")
                   });
@@ -426,8 +442,12 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-              if (wx.getStorageSync("askUrl")) {
+              if (
+                wx.getStorageSync("askUrl") !== "undefined" &&
+                wx.getStorageSync("askUrl")
+              ) {
                 setTimeout(function() {
+                  console.log(wx.getStorageSync("askUrl"));
                   wx.reLaunch({
                     url: wx.getStorageSync("askUrl")
                   });
@@ -459,8 +479,12 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-              if (wx.getStorageSync("askUrl")) {
+              if (
+                wx.getStorageSync("askUrl") !== "undefined" &&
+                wx.getStorageSync("askUrl")
+              ) {
                 setTimeout(function() {
+                  console.log(wx.getStorageSync("askUrl"));
                   wx.reLaunch({
                     url: wx.getStorageSync("askUrl")
                   });

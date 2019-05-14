@@ -25,14 +25,14 @@ export function formatTime(date) {
 
 
 export function getCurrentPageUrlWithArgs(changeJson) {
-    console.log(changeJson,"changeJson")
+    console.log(changeJson, "changeJson")
     const pages = getCurrentPages()
     const currentPage = pages[pages.length - 1]
     const url = currentPage.route
     let options = currentPage.options;
     if (changeJson) {
         options = Object.assign({}, options, changeJson);
-        console.log(options,"options")
+        console.log(options, "options")
     }
     let urlWithArgs = `/${url}?`
     for (let key in options) {
@@ -200,17 +200,18 @@ function wxMemberLogin(code, iv, encryptedData) {
                 icon: 'success',
                 duration: 1500,
                 success: function() {
-                    if (wx.getStorageSync('askUrl')) {
+                    if (wx.getStorageSync("askUrl") !== "undefined" && wx.getStorageSync("askUrl")) {
                         setTimeout(function() {
+                            console.log(wx.getStorageSync("askUrl"))
                             wx.reLaunch({
-                                url: wx.getStorageSync('askUrl')
-                            })
+                                url: wx.getStorageSync("askUrl")
+                            });
                         }, 1500);
                     } else {
                         setTimeout(function() {
                             wx.reLaunch({
-                                url: '/pages/my/main'
-                            })
+                                url: "/pages/my/main"
+                            });
                         }, 1500);
                     }
                 }
@@ -254,17 +255,18 @@ function wxInstalMasterLogin(code, iv, encryptedData) {
                 icon: 'success',
                 duration: 1500,
                 success: function() {
-                    if (wx.getStorageSync('askUrl')) {
+                    if (wx.getStorageSync("askUrl") !== "undefined" && wx.getStorageSync("askUrl")) {
                         setTimeout(function() {
+                            console.log(wx.getStorageSync("askUrl"))
                             wx.reLaunch({
-                                url: wx.getStorageSync('askUrl')
-                            })
+                                url: wx.getStorageSync("askUrl")
+                            });
                         }, 1500);
                     } else {
                         setTimeout(function() {
                             wx.reLaunch({
-                                url: '/pages/my/main'
-                            })
+                                url: "/pages/my/main"
+                            });
                         }, 1500);
                     }
                 }
@@ -305,17 +307,18 @@ function wxCustomerServiceLogin(code, iv, encryptedData) {
                 icon: 'success',
                 duration: 1500,
                 success: function() {
-                    if (wx.getStorageSync('askUrl')) {
+                    if (wx.getStorageSync("askUrl") !== "undefined" && wx.getStorageSync("askUrl")) {
                         setTimeout(function() {
+                            console.log(wx.getStorageSync("askUrl"))
                             wx.reLaunch({
-                                url: wx.getStorageSync('askUrl')
-                            })
+                                url: wx.getStorageSync("askUrl")
+                            });
                         }, 1500);
                     } else {
                         setTimeout(function() {
                             wx.reLaunch({
-                                url: '/pages/my/main'
-                            })
+                                url: "/pages/my/main"
+                            });
                         }, 1500);
                     }
 
