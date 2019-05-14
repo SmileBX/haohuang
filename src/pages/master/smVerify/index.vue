@@ -188,22 +188,20 @@ import "@/css/dd_style.css";
 export default {
   onLoad() {
     this.setBarTitle();
-  },
-  onShow() {
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
     if (this.$root.$mp.query.orderId) {
       this.orderId = this.$root.$mp.query.orderId;
-      if(toLogin(this.curPage)){
+      if (toLogin(this.curPage)) {
         this.getData();
       }
     }
     if (this.$root.$mp.query.masterType) {
       this.masterType = this.$root.$mp.query.masterType;
-      console.log("this.masterType:" + this.masterType);
     }
   },
+  onShow() {},
   data() {
     return {
       userId: "",
@@ -291,10 +289,9 @@ export default {
     },
     delImg(type, index) {
       if (type === 1) {
-        
         this.frontPicList.splice(index, 1);
         console.log("删除过后的图片");
-        console.log(this.frontPicList)
+        console.log(this.frontPicList);
       }
       if (type === 2) {
         this.insidePicList.splice(index, 1);
@@ -395,7 +392,7 @@ export default {
       //this.base64Img(this.frontPicList);
       //console.log("arr", arr);
       //return false;
-      console.log("重新提交")
+      console.log("重新提交");
       let that = this;
       post(
         "InstalMaster/AddInstallOrder",
@@ -415,7 +412,14 @@ export default {
           wx.showToast({
             title: "提交成功!",
             icon: "success",
-            duration: 1500
+            duration: 1500,
+            success: function() {
+              setTimeout(function() {
+                wx.reLaunch({
+                  url: "/pages/master/orderDetail/main?orderId="+that.orderId
+                });
+              }, 1500);
+            }
           });
         }
       });

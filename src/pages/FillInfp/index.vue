@@ -95,7 +95,7 @@
     <!--选择地址省市遮罩层-->
     <div style="z-index:20000;position:relative;">
       <van-popup :show="showArea" position="bottom" :overlay="true" @close="showArea = false">
-        <van-area :area-list="areaList" @cancel="showArea = false" @confirm="confirmArea"/>
+        <van-area :value="AreaCode" :area-list="areaList" @cancel="showArea = false" @confirm="confirmArea"/>
       </van-popup>
     </div>
     <!-- //选择省市区 -->
@@ -109,19 +109,17 @@ import { post, valPhone, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
 import { pathToBase64 } from "@/utils/image-tools";
 export default {
   onLoad() {
+    this.curPage = getCurrentPageUrlWithArgs();
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
     this.setBarTitle();
+    if (toLogin(this.curPage)) {
+      this.getMasterAuditInfo();
+    }
   },
   onShow() {
     this.BankId = this.$store.state.cardInfo.id;
     this.bankName = this.$store.state.cardInfo.bankName;
-    console.log("BankId:" + this.BankId);
-    console.log("bankName:" + this.bankName);
-    this.curPage = getCurrentPageUrlWithArgs();
-    this.userId = wx.getStorageSync("userId");
-    this.token = wx.getStorageSync("token");
-    if (toLogin(this.curPage)) {
-      this.getMasterAuditInfo();
-    }
   },
   components: {},
   data() {
@@ -148,29 +146,22 @@ export default {
       CityCode: "", //	所属市区
       AreaCode: "", //所属区县
       area: "",
-      bankName: ""
+      bankName: "",
     };
   },
   methods: {
     initData() {
-      this.curPage = "";
       this.areaList;
       this.showArea = false;
-      this.userId = "";
-      this.token = "";
       this.realName = ""; //师傅真实姓名
       this.IdentifyNumber = ""; //师傅的身份证号
       this.BankId = ""; //选择的银行
       this.BankAddress = ""; //开户行名称
       this.BankNo = ""; //银行卡卡号
-      this.ElectricianImg = ""; //电工证书
-      this.ElectricianImgSrc = "";
-      this.WelderImg = ""; //焊工证书
-      this.WelderImgSrc = "";
-      this.HighAltitudeImg = ""; //高空证书
-      this.HighAltitudeImgSrc = "";
-      this.OtherImg = ""; //其他证书图片非必填的
-      this.OtherImgSrc = "";
+      this.ElectricianImgSrc = "";//电工证书
+      this.WelderImgSrc = "";//焊工证书
+      this.HighAltitudeImgSrc = "";//高空证书
+      this.OtherImgSrc = "";//其他证书图片非必填的
       this.ProvinceCode = ""; //所属省份
       this.CityCode = ""; //	所属市区
       this.AreaCode = ""; //所属区县
@@ -395,7 +386,10 @@ export default {
     },
     async sumbitMasterApplication() {
       let that = this;
-      let ElectricianImg = await base64Img();
+      let ElectricianImg = await base64Img(that.ElectricianImgSrc);
+      let WelderImg = await base64Img(that.WelderImgSrc);
+      let HighAltitudeImg = await base64Img(that.HighAltitudeImgSrc);
+      let OtherImg = await base64Img(that.OtherImgSrc);
       post("InstalMaster/SumbitMasterApplication", {
         MasterId: that.userId,
         MasterToken: that.token,
@@ -407,10 +401,10 @@ export default {
         BankId: that.BankId,
         BankAddress: that.BankAddress,
         BankNo: that.BankNo,
-        ElectricianImg: that.ElectricianImg,
-        WelderImg: that.WelderImg,
-        HighAltitudeImg: that.HighAltitudeImg,
-        OtherImg: that.OtherImg
+        ElectricianImg: ElectricianImg,
+        WelderImg: WelderImg,
+        HighAltitudeImg: HighAltitudeImg,
+        OtherImg: OtherImg
       }).then(result => {
         if (result.code === 0) {
           this.$store.commit("setSelectCard", {
@@ -453,8 +447,8 @@ export default {
       ).then(res => {
         if (res.code === 0) {
           that.realName = res.data.RealName; //师傅真实姓名
-          that.IdentifyNumber = ""; //师傅的身份证号
-          //that.BankId =; //选择的银行
+          that.IdentifyNumber = res.data.IdentityNum; //师傅的身份证号
+          that.BankId = res.data.OwnBankId; //选择的银行
           that.BankAddress = res.data.BankAddress; //开户行名称
           that.BankNo = res.data.BankCardNo; //银行卡卡号
           that.ElectricianImgSrc = res.data.ElectricianCertificate;//电工证书
@@ -464,7 +458,7 @@ export default {
           that.ProvinceCode = res.data.ProvinceCode; //所属省份
           that.CityCode = res.data.CityCode; //	所属市区
           that.AreaCode = res.data.AreaCode; //所属区县
-          that.area = "";
+          that.area = res.data.AddressInfo;
           that.bankName = res.data.BankName;
         }
       });
