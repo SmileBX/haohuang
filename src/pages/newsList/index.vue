@@ -63,7 +63,9 @@ export default {
       this.barTitle = "服务通知";
     }
     this.setBarTitle();
-    this.perNoticeList();
+    if (toLogin()) {
+      this.perNoticeList();
+    }
   },
   data() {
     return {

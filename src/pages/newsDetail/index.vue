@@ -38,7 +38,10 @@ export default {
       //师傅
       this.memberType = 1;
     }
-    this.NoticeInfo();
+    if(toLogin(this.curPage)){
+     this.NoticeInfo();
+    }
+    
   },
   data() {
     return {

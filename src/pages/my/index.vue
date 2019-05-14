@@ -510,6 +510,7 @@ export default {
       wx.setStorageSync("unionid", "");
       wx.setStorageSync("mobile", "");
       wx.setStorageSync("userInfo", "");
+      wx.setStorageSync("askUrl", "");
       wx.redirectTo({
         url: "/pages/login2/main"
       });

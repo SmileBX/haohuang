@@ -65,8 +65,11 @@ export default {
       //师傅
       this.memberType = 1;
     }
-    this.noReadCount(0);
-    this.noReadCount(1);
+    if(toLogin(this.curPage)){
+      this.noReadCount(0);
+      this.noReadCount(1);
+    }
+    
   },
   data() {
     return {

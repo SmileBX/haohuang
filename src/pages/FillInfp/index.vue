@@ -105,13 +105,13 @@
 <script>
 import "@/css/dd_style.css";
 import areaList from "@/utils/areaList";
-import { post, valPhone, getCurrentPageUrlWithArgs } from "@/utils";
+import { post, valPhone, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
+import { pathToBase64 } from "@/utils/image-tools";
 export default {
   onLoad() {
     this.setBarTitle();
   },
   onShow() {
-    
     this.BankId = this.$store.state.cardInfo.id;
     this.bankName = this.$store.state.cardInfo.bankName;
     console.log("BankId:" + this.BankId);
@@ -119,6 +119,9 @@ export default {
     this.curPage = getCurrentPageUrlWithArgs();
     this.userId = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
+    if (toLogin(this.curPage)) {
+      this.getMasterAuditInfo();
+    }
   },
   components: {},
   data() {
@@ -149,30 +152,30 @@ export default {
     };
   },
   methods: {
-    initData(){
-      this.curPage="";
+    initData() {
+      this.curPage = "";
       this.areaList;
-      this.showArea=false;
-     this.userId="";
-     this.token="";
-     this.realName=""; //师傅真实姓名
-     this.IdentifyNumber=""; //师傅的身份证号
-      this.BankId=""; //选择的银行
-      this.BankAddress=""; //开户行名称
-      this.BankNo=""; //银行卡卡号
-      this.ElectricianImg=""; //电工证书
-      this.ElectricianImgSrc="";
-      this.WelderImg=""; //焊工证书
-      this.WelderImgSrc="";
-      this.HighAltitudeImg=""; //高空证书
-      this.HighAltitudeImgSrc="";
-      this.OtherImg=""; //其他证书图片非必填的
-      this.OtherImgSrc="";
-      this.ProvinceCode=""; //所属省份
-      this.CityCode=""; //	所属市区
-      this.AreaCode=""; //所属区县
-      this.area="";
-      this.bankName="";
+      this.showArea = false;
+      this.userId = "";
+      this.token = "";
+      this.realName = ""; //师傅真实姓名
+      this.IdentifyNumber = ""; //师傅的身份证号
+      this.BankId = ""; //选择的银行
+      this.BankAddress = ""; //开户行名称
+      this.BankNo = ""; //银行卡卡号
+      this.ElectricianImg = ""; //电工证书
+      this.ElectricianImgSrc = "";
+      this.WelderImg = ""; //焊工证书
+      this.WelderImgSrc = "";
+      this.HighAltitudeImg = ""; //高空证书
+      this.HighAltitudeImgSrc = "";
+      this.OtherImg = ""; //其他证书图片非必填的
+      this.OtherImgSrc = "";
+      this.ProvinceCode = ""; //所属省份
+      this.CityCode = ""; //	所属市区
+      this.AreaCode = ""; //所属区县
+      this.area = "";
+      this.bankName = "";
     },
     setBarTitle() {
       wx.setNavigationBarTitle({
@@ -328,43 +331,43 @@ export default {
             _this.OtherImgSrc = imgPathArr;
           }
           //   _this.imgPathArr = _this.imgPathArr.concat(res.tempFilePaths);
-          wx.getFileSystemManager().readFile({
-            filePath: imgPathArr, //选择图片返回的相对路径.
-            encoding: "base64", //编码格式
-            success: res => {
-              //成功的回调
-              let imgBase64Str = "data:image/jpg;base64," + res.data;
-              if (index === 1) {
-                // ElectricianImg: "", //电工证书
-                // WelderImg: "", //焊工证书
-                // HighAltitudeImg: "", //高空证书
-                // OtherImg: "", //其他证书图片,非必填的
-                _this.ElectricianImg = imgBase64Str;
-              }
-              if (index === 2) {
-                // ElectricianImg: "", //电工证书
-                // WelderImg: "", //焊工证书
-                // HighAltitudeImg: "", //高空证书
-                // OtherImg: "", //其他证书图片,非必填的
-                _this.WelderImg = imgBase64Str;
-              }
-              if (index === 3) {
-                // ElectricianImg: "", //电工证书
-                // WelderImg: "", //焊工证书
-                // HighAltitudeImg: "", //高空证书
-                // OtherImg: "", //其他证书图片,非必填的
-                _this.HighAltitudeImg = imgBase64Str;
-              }
-              if (index === 4) {
-                // ElectricianImg: "", //电工证书
-                // WelderImg: "", //焊工证书
-                // HighAltitudeImg: "", //高空证书
-                // OtherImg: "", //其他证书图片,非必填的
-                _this.OtherImg = imgBase64Str;
-              }
-              console.log("图片" + _this.ElectricianImg);
-            }
-          });
+          // wx.getFileSystemManager().readFile({
+          //   filePath: imgPathArr, //选择图片返回的相对路径.
+          //   encoding: "base64", //编码格式
+          //   success: res => {
+          //     //成功的回调
+          //     let imgBase64Str = "data:image/jpg;base64," + res.data;
+          //     if (index === 1) {
+          //       // ElectricianImg: "", //电工证书
+          //       // WelderImg: "", //焊工证书
+          //       // HighAltitudeImg: "", //高空证书
+          //       // OtherImg: "", //其他证书图片,非必填的
+          //       _this.ElectricianImg = imgBase64Str;
+          //     }
+          //     if (index === 2) {
+          //       // ElectricianImg: "", //电工证书
+          //       // WelderImg: "", //焊工证书
+          //       // HighAltitudeImg: "", //高空证书
+          //       // OtherImg: "", //其他证书图片,非必填的
+          //       _this.WelderImg = imgBase64Str;
+          //     }
+          //     if (index === 3) {
+          //       // ElectricianImg: "", //电工证书
+          //       // WelderImg: "", //焊工证书
+          //       // HighAltitudeImg: "", //高空证书
+          //       // OtherImg: "", //其他证书图片,非必填的
+          //       _this.HighAltitudeImg = imgBase64Str;
+          //     }
+          //     if (index === 4) {
+          //       // ElectricianImg: "", //电工证书
+          //       // WelderImg: "", //焊工证书
+          //       // HighAltitudeImg: "", //高空证书
+          //       // OtherImg: "", //其他证书图片,非必填的
+          //       _this.OtherImg = imgBase64Str;
+          //     }
+          //     console.log("图片" + _this.ElectricianImg);
+          //   }
+          // });
         }
       });
     },
@@ -386,8 +389,13 @@ export default {
         this.OtherImg = "";
       }
     },
-    sumbitMasterApplication() {
+    async base64Img(path) {
+      const base64Arr = await pathToBase64(path);
+      return base64Arr;
+    },
+    async sumbitMasterApplication() {
       let that = this;
+      let ElectricianImg = await base64Img();
       post("InstalMaster/SumbitMasterApplication", {
         MasterId: that.userId,
         MasterToken: that.token,
@@ -429,6 +437,35 @@ export default {
               }
             }
           });
+        }
+      });
+    },
+    getMasterAuditInfo() {
+      //审核不通过的时候，重新填写提交
+      let that = this;
+      post(
+        "InstalMaster/GetMasterAuditInfo",
+        {
+          MasterId: that.userId,
+          Token: that.token
+        },
+        that.curPage
+      ).then(res => {
+        if (res.code === 0) {
+          that.realName = res.data.RealName; //师傅真实姓名
+          that.IdentifyNumber = ""; //师傅的身份证号
+          //that.BankId =; //选择的银行
+          that.BankAddress = res.data.BankAddress; //开户行名称
+          that.BankNo = res.data.BankCardNo; //银行卡卡号
+          that.ElectricianImgSrc = res.data.ElectricianCertificate;//电工证书
+          that.WelderImgSrc = res.data.WelderCertificate;//焊工证书
+          that.HighAltitudeImgSrc = res.data.HighAltitudeCertificate;//高空证书
+          that.OtherImgSrc = res.data.OtherCertificate;//其他证书图片非必填的
+          that.ProvinceCode = res.data.ProvinceCode; //所属省份
+          that.CityCode = res.data.CityCode; //	所属市区
+          that.AreaCode = res.data.AreaCode; //所属区县
+          that.area = "";
+          that.bankName = res.data.BankName;
         }
       });
     }
