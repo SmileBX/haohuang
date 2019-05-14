@@ -46,6 +46,7 @@
                 </div>
                 <div class="txtBox">
                   <p class="title text-line2">{{list.OrderName}}</p>
+                  <p class="type">订单类型：<span v-if="list.OrderType===0">设计</span><span v-if="list.OrderType===1">制作</span><span v-if="list.OrderType===2">安装</span><span v-if="list.OrderType===3">设计+制作</span><span v-if="list.OrderType===4">制作+安装</span><span v-if="list.OrderType===5">设计+制作+安装</span></p>
                   <div class="flex">
                     <div class="flex1">
                       <p class="new-price">￥{{list.OfferTotal}}</p>
@@ -71,12 +72,13 @@
 
             <!-- IsPay是否支付 -->
             <div class="button" v-if="list.OrderStatus==0||list.OrderStatus==1" @click="showCancelOrder(list.Id)">取消订单</div>
+            <div class="button active" v-if="list.OrderStatus==2 || list.OrderStatus==3 ||list.OrderStatus==4 || list.OrderStatus==5 || list.OrderStatus==6 || list.OrderStatus==7 || list.OrderStatus==8" @click="seeSchdule(index)">查看进度</div>
             <!-- 客服是否确认IsConfirm -->
             <!-- <div class="button active"  v-if="list.IsConfirm==0">修改价格</div> -->
             <!-- <div class="button linear" v-if="list.IsConfirm==0">确认订单</div> -->
             <!-- <div class="button linear" v-if="list.IsConfirm==1&&list.IsPay==0">已付款</div> -->
             <!-- <div class="button active" v-if="list.OrderStatus===0">设计确认</div> -->
-             <div class="button active" v-if="list.OrderStatus==4">确认收货</div>
+             <div class="button active" v-if="list.OrderStatus==4" @click="getGoods(list.Id)">确认收货</div>
             <!--<div class="button linear" v-if="list.OrderStatus==8">评论</div> -->
             <!-- <div class="button active" v-if="list.OrderStatus==9">删除订单</div> -->
           </div>
@@ -247,6 +249,75 @@ export default {
       this.init()
       console.log(res.data,'取消成功')
     },
+     //付款
+    // orderPay(OrderNo){
+    //   console.log(OrderNo)
+    //   post('/Order/ConfirmWeiXinPay',{
+    //       UserId: this.UserId,
+    //       Token: this.Token,
+    //       OrderNo: OrderNo,
+    //   }).then(res=>{
+    //       console.log(res)
+    //       let payData=JSON.parse(res.data.JsParam);
+    //       wx.requestPayment({
+    //         timeStamp: payData.timeStamp,
+    //         nonceStr: payData.nonceStr,
+    //         package: payData.package,
+    //         signType: payData.signType,
+    //         paySign: payData.paySign,
+    //         success(res) {
+    //           this.init();
+    //           // wx.navigateTo({
+    //           //   url:"/pages/custom/order/main"
+    //           // });
+    //         },
+    //         fail(res) {
+
+    //         }
+    //       })
+    //   })
+    // },
+    //查看订单进度
+    seeSchdule(index){
+      wx.setStorageSync('address',this.orderList[index].AddressInfo)
+      let orderId = this.orderList[index].Id
+      let OrderStatus = this.orderList[index].OrderStatus
+        wx.navigateTo({url:"/pages/custom/schedule/main?OrderNoId="+orderId+"&OrderStatus="+OrderStatus})
+    },
+    //确认收货
+    getGoods(OrderNo){
+      const that =this;
+      wx.showModal({
+        title:"确认收货",
+        confirmColor:'#33cc33',
+        cancelText:'不通过',
+        confirmText:'通过',
+        success:(res)=>{
+            if(res.confirm){
+               post('Order/OrderCollection',{
+                  UserId:this.UserId,
+                  Token:this.Token,
+                  OrderNo:OrderNo
+                  }).then(res=>{
+                    console.log(res)
+                    wx.showToast({
+                      title:res.msg,
+                      duration:2000
+                    })
+                     that.getData();
+                    
+                  })
+            }else if(res.cancel){
+                return false
+            }
+            
+        }
+        
+
+      })
+     
+        
+    }
   },
     // 上拉加载
     onReachBottom(){

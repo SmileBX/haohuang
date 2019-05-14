@@ -76,7 +76,7 @@ export default {
       curPage: "",
       memberType: "", //接收类型   0：会员  1：师傅 2:客服
       ggNum: 0, //消息的公告的
-      xxNum: 0 //消息的未读           //type:""  //公告0，消息1
+      xxNum: 0, //消息的未读           //type:""  //公告0，消息1
     };
   },
   methods: {

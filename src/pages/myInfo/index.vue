@@ -82,8 +82,6 @@ import areaList from "@/utils/areaList";
 export default {
   onLoad() {
     this.setBarTitle();
-  },
-  onShow() {
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
     this.userId = wx.getStorageSync("userId");
@@ -103,7 +101,11 @@ export default {
         this.GetInstalMasterInfo();
       }
     }
-    console.log("当前的身份：" + this.identity);
+    // console.log("当前的身份：" + this.identity);
+  },
+  onShow() {
+    
+    
   },
   data() {
     return {
@@ -160,7 +162,7 @@ export default {
             } else {
               this.Sex = 0;
             }
-            console.log(this.Sex);
+            // console.log(this.Sex);
             this.Birthday = info.Birthday
             console.log(this.imgBase.length,"头像的长度")
             if ((this.imgBase.length == 0)) {
@@ -247,21 +249,26 @@ export default {
     
     //上传用户头像
     changeAvatar() {
+      
       wx.chooseImage({
         count: 1,
         sizeType: ["compressed"],
         sourceType: ["album"],
         success: result => {
-          this.Avatar = result.tempFilePaths[0];
-          wx.getFileSystemManager().readFile({
-            filePath: this.Avatar, //选择图片返回的相对路径
-            encoding: "base64", //编码格式
-            success: res => {
-              //成功的回调
-              this.imgBase = "data:image/png;base64," + res.data.toString();
-            //  console.log(this.imgBase, "选择图像的路径");
-            }
-          });
+          if(result.tempFilePaths[0].length>0){
+         console.log(result,"result99999999999999999999999999999999")
+            this.Avatar = result.tempFilePaths[0];
+            console.log(this.Avatar ,"this.Avatar ")
+            wx.getFileSystemManager().readFile({
+              filePath: this.Avatar, //选择图片返回的相对路径
+              encoding: "base64", //编码格式
+              success: res => {
+                //成功的回调
+                this.imgBase = "data:image/png;base64," + res.data.toString();
+              //  console.log(this.imgBase, "选择图像的路径");
+              }
+            });
+          }
         },
         fail: () => {},
         complete: () => {}
