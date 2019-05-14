@@ -100,7 +100,7 @@
 import "@/css/common.css";
 import areaList from '@/utils/areaList'
 import CancelOrderWindow from '@/components/cancelOrderWindow.vue'
-import { post } from "@/utils/index";
+import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 export default {
   components:{CancelOrderWindow},
   data() {
@@ -171,30 +171,36 @@ export default {
         this.page =1;
         this.getData()
     },
-    async getData() {
+   getData() {
       if(this.orderListEnd){
         return false;
       }
       if(this.page===1){
         this.orderList=[];
       }
-      const res = await post("CustomerService/GetKfOrderList", {
-        CsdId: this.UserId,
-        Token: this.Token,
-        page: this.page,
-        pageSize: this.pageSize,
-        Region: this.searchRegionCode,
-        orderStatus: this.typeNo,
-        IsService:1 //查询订单分类，0--用户的下单；1--客服的下单
-      });
-      if(res.data.length!==this.pageSize){
-        this.orderListEnd = true;
-      }
-      this.orderList = this.orderList.concat(res.data);
+        if(toLogin(this.curPage)){
+          post("CustomerService/GetKfOrderList", {
+            CsdId: this.UserId,
+            Token: this.Token,
+            page: this.page,
+            pageSize: this.pageSize,
+            Region: this.searchRegionCode,
+            orderStatus: this.typeNo,
+            IsService:1 //查询订单分类，0--用户的下单；1--客服的下单
+          },this.curPage).then(res=>{
+              if(res.data.length!==this.pageSize){
+                this.orderListEnd = true;
+              }
+              this.orderList = this.orderList.concat(res.data);
+          })
+        }
+      
     },
     // 切换订单状态
     tabMenu(typeNo) {
       this.typeNo = typeNo;
+      this.curPage = getCurrentPageUrlWithArgs({ typeNo: this.typeNo });
+      this.orderList = [];
       this.init()
     },
     // 删除选中的城市
@@ -238,16 +244,20 @@ export default {
     // 取消订单的内容
     async closeContent(){
       console.log(this.refuseContent,'取消内容')
-      const res = post('CustomerService/KfOrderCancel',{
-        CsdId:this.UserId,
-        Token:this.Token,
-        OrderNo:this.editOrderId,
-        RefuseContent:this.refuseContent
-      })
-      this.cancelOrderWindowStatus = false;
-      this.refuseContent=''
-      this.init()
-      console.log(res.data,'取消成功')
+        if(toLogin(this.curPage)){
+          post('CustomerService/KfOrderCancel',{
+            CsdId:this.UserId,
+            Token:this.Token,
+            OrderNo:this.editOrderId,
+            RefuseContent:this.refuseContent
+          },this.curPage).then(res=>{
+              this.cancelOrderWindowStatus = false;
+              this.refuseContent=''
+              this.init()
+              console.log(res.data,'取消成功')
+          })
+        }
+      
     },
      //付款
     // orderPay(OrderNo){
@@ -282,7 +292,7 @@ export default {
       wx.setStorageSync('address',this.orderList[index].AddressInfo)
       let orderId = this.orderList[index].Id
       let OrderStatus = this.orderList[index].OrderStatus
-        wx.navigateTo({url:"/pages/custom/schedule/main?OrderNoId="+orderId+"&OrderStatus="+OrderStatus})
+        wx.navigateTo({url:"/pages/servicemenu/schedule/main?OrderNoId="+orderId+"&OrderStatus="+OrderStatus})
     },
     //确认收货
     getGoods(OrderNo){
@@ -294,19 +304,21 @@ export default {
         confirmText:'通过',
         success:(res)=>{
             if(res.confirm){
-               post('Order/OrderCollection',{
-                  UserId:this.UserId,
-                  Token:this.Token,
-                  OrderNo:OrderNo
-                  }).then(res=>{
-                    console.log(res)
-                    wx.showToast({
-                      title:res.msg,
-                      duration:2000
-                    })
-                     that.getData();
-                    
-                  })
+                if(toLogin(this.curPage)){
+                  post('Order/OrderCollection',{
+                      UserId:this.UserId,
+                      Token:this.Token,
+                      OrderNo:OrderNo
+                      },this.curPage).then(res=>{
+                        console.log(res)
+                        wx.showToast({
+                          title:res.msg,
+                          duration:2000
+                        })
+                        that.getData();
+                        
+                      })
+                }
             }else if(res.cancel){
                 return false
             }

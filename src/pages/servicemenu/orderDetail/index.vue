@@ -108,7 +108,7 @@
         <div class="button active" v-if="detail.OrderStatus==2 || detail.OrderStatus==3 ||detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 || detail.OrderStatus==8" @click="seeSchdule(detail.orderId,detail.OrderStatus)">查看进度</div>
         <div class="btn linear" v-if="detail.DesignStatus==1" @click="confirmButtonModal('design')">设计确认</div>
         <div class="btn linear" v-if="detail.OrderStatus==4" @click="confirmButtonModal('logistics')">确认收货</div>
-        <div class="btn linear" v-if="detail.OrderStatus" @click="gotoComment">评论</div>
+        <div class="btn linear" v-if="detail.OrderStatus==8" @click="gotoComment">评论</div>
         <!-- <div class="btn btn-active" v-if="detail.OrderStatus==9">删除订单</div> -->
       </div>
     </div>
@@ -136,7 +136,7 @@
 // 已完成=9,
 // 交易关闭=99,
 import "@/css/common.css";
-import { post } from "@/utils/index";
+import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 import confirmOrder from '@/components/confirmOrder.vue'
 import CancelOrderWindow from '@/components/cancelOrderWindow.vue'
 export default {
@@ -187,30 +187,34 @@ export default {
         title: "订单详情"
       });
     },
-    async getData() {
-      const res = await post("CustomerService/OrderInfo", {
-        CsdId: this.UserId,
-        Token: this.Token,
-        OrderNo: this.orderId,
-        IsService: 1
-      });
-      console.log(res);
-      this.detail = res.data;
-      // 邮费
-      this.detail.Freight = res.data.Freight.toFixed(2);
-      // 预计价格
-      this.detail.OfferTotal = res.data.OfferTotal.toFixed(2);
-      // 支付金额
-      this.detail.PayMoney = res.data.PayMoney.toFixed(2);
-      // 材料金额
-      this.detail.ProductMoney = res.data.ProductMoney.toFixed(2);
-      if(res.data.InstallList.length>0){
-          this.MasterName = res.data.InstallList[0].MasterName
-          this.InstallTime = res.data.InstallList[0].InstallTime.split("T").join(" ").split(".")[0]
-            console.log(this.InstallTime,"this.InstallTime")
-        }
-      
-      console.log(Boolean(detail.InstallTime));
+    getData() {
+      if(toLogin(this.curPage)){
+          post("CustomerService/OrderInfo", {
+            CsdId: this.UserId,
+            Token: this.Token,
+            OrderNo: this.orderId,
+            IsService: 1
+          },this.curPage).then(res=>{
+              console.log(res);
+              this.detail = res.data;
+              // 邮费
+              this.detail.Freight = res.data.Freight.toFixed(2);
+              // 预计价格
+              this.detail.OfferTotal = res.data.OfferTotal.toFixed(2);
+              // 支付金额
+              this.detail.PayMoney = res.data.PayMoney.toFixed(2);
+              // 材料金额
+              this.detail.ProductMoney = res.data.ProductMoney.toFixed(2);
+              if(res.data.InstallList.length>0){
+                  this.MasterName = res.data.InstallList[0].MasterName
+                  this.InstallTime = res.data.InstallList[0].InstallTime.split("T").join(" ").split(".")[0]
+                    console.log(this.InstallTime,"this.InstallTime")
+                }
+              
+              console.log(Boolean(detail.InstallTime));
+          })
+      }
+     
     },
     // 展示确认订单窗口
     showConfirmOrderWindow(){
@@ -218,15 +222,19 @@ export default {
       this.confirmOrderStatus=!this.confirmOrderStatus
     },
     // 点击完成确认订单，修改金额
-    async onConfirmOrder(params){
-      const res = await post('CustomerService/ConfirmOrder',{
-        CsdId: wx.getStorageSync("userId"),
-        Token: wx.getStorageSync("token"),
-        OrderNo: this.orderId,
-        offerMoney:params.offerMoney*1,
-        freight: params.freight*1
-      })
-      this.useSuccess(res,'确认订单成功!');
+    onConfirmOrder(params){
+      if(toLogin(this.curPage)){
+        post('CustomerService/ConfirmOrder',{
+          CsdId: wx.getStorageSync("userId"),
+          Token: wx.getStorageSync("token"),
+          OrderNo: this.orderId,
+          offerMoney:params.offerMoney*1,
+          freight: params.freight*1
+        },this.curPage).then(res=>{
+            this.useSuccess(res,'确认订单成功!');
+        })
+      }
+      
     },
     // 成功之后提示的状态
     useSuccess(res,content){
@@ -254,18 +262,21 @@ export default {
       })
     },
     // 取消订单的内容
-    async closeContent(){
+    closeContent(){
       console.log(this.refuseContent,'取消内容')
-      const res = post('CustomerService/KfOrderCancel',{
-        CsdId:this.UserId,
-        Token:this.Token,
-        OrderNo:this.orderId,
-        RefuseContent:this.refuseContent
-      })
-      this.cancelOrderWindowStatus = false;
-      this.refuseContent=''
-      this.getData();
-      console.log(res.data,'取消成功')
+        if(toLogin(this.curPage)){
+          post('CustomerService/KfOrderCancel',{
+            CsdId:this.UserId,
+            Token:this.Token,
+            OrderNo:this.orderId,
+            RefuseContent:this.refuseContent
+          },this.curPage).then(res=>{
+              this.cancelOrderWindowStatus = false;
+              this.refuseContent=''
+              this.getData();
+              console.log(res.data,'取消成功')
+           })
+        }
     },
     // 线下付款
     confirmPay(){
@@ -275,17 +286,19 @@ export default {
         title:'支付确认',
         content:'此操作将完成订单付款！',
         confirmColor:'#ff662a',
-        success(res){
+        success:(res)=>{
             console.log(res,'用户点击')
           if(res.confirm){
-            post('CustomerService/ConfirmPayOrder',{
-              CsdId:that.UserId,
-              Token:that.Token,
-              OrderNo:that.orderId,
-              IsChange:0  //是否修改预计金额和运费0-否 1-是
-              }).then(res=>{
-                that.useSuccess(res,'线下付款成功!');
-              })
+            if(toLogin(this.curPage)){
+              post('CustomerService/ConfirmPayOrder',{
+                CsdId:that.UserId,
+                Token:that.Token,
+                OrderNo:that.orderId,
+                IsChange:0  //是否修改预计金额和运费0-否 1-是
+                },this.curPage).then(res=>{
+                  that.useSuccess(res,'线下付款成功!');
+                })
+            }
           } else if (res.cancel) {
             console.log('用户点击取消')
           }
@@ -330,14 +343,16 @@ export default {
       })
     },
     // 确认设计
-    async confirmButton(AuditType){
+    confirmButton(AuditType){
       console.log(AuditType,'设计确认状态')
-      const res = await post('CustomerService/KfOrderCollection',{
-            CsdId:this.UserId,
-            Token:this.Token,
-            OrderNo:this.orderId,
-            AuditType:AuditType
-            })
+      if(toLogin(this.curPage)){
+          post('CustomerService/KfOrderCollection',{
+                CsdId:this.UserId,
+                Token:this.Token,
+                OrderNo:this.orderId,
+                AuditType:AuditType
+          },this.curPage)
+      }
 
     },
     // 评论
@@ -364,7 +379,7 @@ export default {
     seeSchdule(orderId,OrderStatus){
        wx.setStorageSync('address',this.detail.AddressInfo)
       //console.log(orderNo,OrderStatus)
-        wx.navigateTo({url:"/pages/custom/schedule/main?OrderNoId="+orderId+"&OrderStatus="+OrderStatus})
+        wx.navigateTo({url:"/pages/servicemenu/schedule/main?OrderNoId="+orderId+"&OrderStatus="+OrderStatus})
     }
   }
 };

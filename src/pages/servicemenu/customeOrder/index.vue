@@ -90,7 +90,7 @@ export default {
           typeNo: 1
         },
         {
-          name: "安装中",
+          name: "处理中",
           typeNo: 7
         },
         {
@@ -108,6 +108,9 @@ export default {
   },
     onLoad() {
       this.setBarTitle();
+      this.text1 = '选择区域'
+      this.text2 = '订单状态'
+      this.typeNo = -1
   },
   onShow() {
     this.Token = wx.getStorageSync("token");
@@ -133,7 +136,6 @@ export default {
         this.showStatu = false;
         this.showArea = false;
         this.isShow = false;
-        this.typeNo = -1
         this.page =1;
         this.getData()
     },
@@ -194,6 +196,7 @@ export default {
     // 切换订单状态
     tabMenu(e) {
       this.typeNo = this.menu[e].typeNo;
+      this.curPage = getCurrentPageUrlWithArgs({typeNo:this.typeNo})
       //this.text2 = this.menu[e].name
       
     },
@@ -209,7 +212,7 @@ export default {
               this.text2 = this.menu[i].name
           }
       }
-       this.init()
+      this.init()
      
     },
     // 跳转到订单详情

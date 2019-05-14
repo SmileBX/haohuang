@@ -60,7 +60,9 @@
                 "customeOrder/main",
                 "orderDetail/main",
                 "myOrder/main",
-                "makeOrder/main"
+                "makeOrder/main",
+                "schedule/main",
+                "schelogs/main"
             ]
         }
     ],

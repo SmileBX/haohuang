@@ -117,7 +117,7 @@ import "@/css/common.css";
 import areaList from "@/utils/areaList";
 import CancelOrderWindow from "@/components/cancelOrderWindow.vue";
 import serviceTypeSelect from "@/components/serviceTypeSelect.vue";
-import { post } from "@/utils/index";
+import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 export default {
   components: { CancelOrderWindow, serviceTypeSelect },
   data() {
@@ -195,29 +195,36 @@ export default {
       this.page = 1;
       this.getData();
     },
-    async getData() {
+    getData() {
       if (this.orderListEnd) {
         return false;
       }
       if (this.page === 1) {
         this.orderList = [];
       }
-      const res = await post("Order/GetOrderList", {
-        UserId: this.UserId,
-        Token: this.Token,
-        page: this.page,
-        pageSize: this.pageSize,
-        Region: this.searchRegionCode,
-        orderStatus: this.typeNo
-      });
-      if (res.data.length !== this.pageSize) {
-        this.orderListEnd = true;
+      if(toLogin(this.curPage)){
+          post("Order/GetOrderList", {
+            UserId: this.UserId,
+            Token: this.Token,
+            page: this.page,
+            pageSize: this.pageSize,
+            Region: this.searchRegionCode,
+            orderStatus: this.typeNo
+          },this.curPage).then(res=>{
+              if (res.data.length !== this.pageSize) {
+                this.orderListEnd = true;
+              }
+              this.orderList = this.orderList.concat(res.data);
+          })
       }
-      this.orderList = this.orderList.concat(res.data);
+      
+      
     },
     // 切换订单状态
     tabMenu(typeNo) {
       this.typeNo = typeNo;
+      this.curPage = getCurrentPageUrlWithArgs({ typeNo: this.typeNo })
+      this.orderList = []
       this.init();
     },
     // 删除选中的城市
@@ -261,18 +268,23 @@ export default {
       });
     },
     // 取消订单的内容
-    async closeContent() {
+    closeContent() {
       console.log(this.refuseContent, "取消内容");
-      const res = post("Order/OrderCancel", {
-        UserId: this.UserId,
-        Token: this.Token,
-        OrderNo: this.editOrderId,
-        RefuseContent: this.refuseContent
-      });
-      this.cancelOrderWindowStatus = false;
-      this.refuseContent = "";
-      this.init();
-      console.log(res.data, "取消成功");
+      if(toLogin(this.curPage)){
+          post("Order/OrderCancel", {
+            UserId: this.UserId,
+            Token: this.Token,
+            OrderNo: this.editOrderId,
+            RefuseContent: this.refuseContent
+          },this.curPage).then(res=>{
+              this.cancelOrderWindowStatus = false;
+              this.refuseContent = "";
+              this.init();
+              console.log(res.data, "取消成功");
+          })
+      }
+      
+      
     },
     // 联系客服
     callService(phone) {
@@ -281,32 +293,35 @@ export default {
       this.selectServiceTypeStatus = true;
     },
      //付款
-  orderPay(OrderNo){
+    orderPay(OrderNo){
       console.log(OrderNo)
-      post('/Order/ConfirmWeiXinPay',{
-          UserId: this.UserId,
-          Token: this.Token,
-          OrderNo: OrderNo,
-      }).then(res=>{
-          console.log(res)
-          let payData=JSON.parse(res.data.JsParam);
-          wx.requestPayment({
-            timeStamp: payData.timeStamp,
-            nonceStr: payData.nonceStr,
-            package: payData.package,
-            signType: payData.signType,
-            paySign: payData.paySign,
-            success(res) {
-              this.init();
-              // wx.navigateTo({
-              //   url:"/pages/custom/order/main"
-              // });
-            },
-            fail(res) {
+      if(toLogin(this.curPage)){
+        post('/Order/ConfirmWeiXinPay',{
+            UserId: this.UserId,
+            Token: this.Token,
+            OrderNo: OrderNo,
+        },this.curPage).then(res=>{
+            console.log(res)
+            let payData=JSON.parse(res.data.JsParam);
+            wx.requestPayment({
+              timeStamp: payData.timeStamp,
+              nonceStr: payData.nonceStr,
+              package: payData.package,
+              signType: payData.signType,
+              paySign: payData.paySign,
+              success(res) {
+                this.init();
+                // wx.navigateTo({
+                //   url:"/pages/custom/order/main"
+                // });
+              },
+              fail(res) {
 
-            }
-          })
-      })
+              }
+            })
+        })
+
+      }
     },
     //查看订单进度
     seeSchdule(index){
@@ -318,36 +333,34 @@ export default {
     //确认收货
     getGoods(OrderNo){
       const that =this;
-      wx.showModal({
-        title:"确认收货",
-        confirmColor:'#33cc33',
-        cancelText:'不通过',
-        confirmText:'通过',
-        success:(res)=>{
-            if(res.confirm){
-               post('Order/OrderCollection',{
-                  UserId:this.UserId,
-                  Token:this.Token,
-                  OrderNo:OrderNo
-                  }).then(res=>{
-                    console.log(res)
-                    wx.showToast({
-                      title:res.msg,
-                      duration:2000
-                    })
-                     that.getData();
-                    
-                  })
-            }else if(res.cancel){
-                return false
-            }
-            
-        }
-        
-
-      })
-     
-        
+        wx.showModal({
+          title:"确认收货",
+          confirmColor:'#33cc33',
+          cancelText:'不通过',
+          confirmText:'通过',
+          success:(res)=>{
+              if(res.confirm){
+                if(toLogin(this.curPage)){
+                    post('Order/OrderCollection',{
+                        UserId:this.UserId,
+                        Token:this.Token,
+                        OrderNo:OrderNo
+                        },this.curPage
+                        ).then(res=>{
+                          console.log(res)
+                          wx.showToast({
+                            title:res.msg,
+                            duration:2000
+                          })
+                          that.getData();
+                          
+                        })
+                }
+              }else if(res.cancel){
+                  return false
+              }
+          }
+        })
     }
 
   },
