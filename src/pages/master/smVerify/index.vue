@@ -195,7 +195,9 @@ export default {
     this.curPage = getCurrentPageUrlWithArgs();
     if (this.$root.$mp.query.orderId) {
       this.orderId = this.$root.$mp.query.orderId;
-      this.getData();
+      if(toLogin(this.curPage)){
+        this.getData();
+      }
     }
     if (this.$root.$mp.query.masterType) {
       this.masterType = this.$root.$mp.query.masterType;
@@ -278,30 +280,21 @@ export default {
       console.log("chuangjinlaidezhi");
       console.log(arr);
       let base64Arr = [];
-      // arr.map(async (item) => {
-      //   console.log("进入数据:"+item);
-      //   const res = await pathToBase64(item);
-      //   console.log("res:"+res);
-      //   base64Arr.push({
-      //     PicUrl: res
-      //   });
-      // })
-      
-      //const res = await pathToBase64('http://hh.wtvxin.com/upload/20190513/2019051317034061362.jpg');
-     // console.log("res:"+res);
-      // for (let i = 0; i < arr.length; i += 1) {
-      //   console.log("进入数据:"+arr[i]);
-      //   //const res = await pathToBase64(arr[i]);
-      //   console.log(res);
-      //   base64Arr.push({
-      //     PicUrl: res
-      //   });
-      // }
+      for (let i = 0; i < arr.length; i += 1) {
+        const res = await pathToBase64(arr[i]);
+        console.log(res);
+        base64Arr.push({
+          PicUrl: res
+        });
+      }
       return base64Arr;
     },
     delImg(type, index) {
       if (type === 1) {
+        
         this.frontPicList.splice(index, 1);
+        console.log("删除过后的图片");
+        console.log(this.frontPicList)
       }
       if (type === 2) {
         this.insidePicList.splice(index, 1);
@@ -313,33 +306,23 @@ export default {
         this.receiptPicList.splice(index, 1);
       }
     },
-    submitApply() {
-      console.log("ffffffff");
+    async submitApply() {
       let that = this;
-      console.log("aaaaa:");
-      pathToBase64('http://hh.wtvxin.com/upload/20190513/2019051317034061362.jpg').then(res =>{
-        console.log("ffffffffffffffffffffffffssssssssssssssssssss");
-        console.log("resddddd:"+res);
-      })
-      // console.log(that.frontPicList);
-      // let frontPicList = await that.base64Img(that.frontPicList);
-      // console.log("dddddd:");
-      
-      // let insidePicList = await that.base64Img(that.insidePicList);
-      // let afterPicList = await that.base64Img(that.afterPicList);
-      // let receiptPicList = await that.base64Img(that.receiptPicList);
-      // let progressInfoList = "";
-      // if (that.masterType == 0) {
-      //   progressInfoList = JSON.stringify(that.progressInfoList);
-      // }
-      // console.log("vvvv:");
-      // that.AddInstallOrder(
-      //   JSON.stringify(frontPicList),
-      //   JSON.stringify(insidePicList),
-      //   JSON.stringify(afterPicList),
-      //   JSON.stringify(receiptPicList),
-      //   progressInfoList
-      // );
+      let frontPicList = await that.base64Img(that.frontPicList);
+      let insidePicList = await that.base64Img(that.insidePicList);
+      let afterPicList = await that.base64Img(that.afterPicList);
+      let receiptPicList = await that.base64Img(that.receiptPicList);
+      let progressInfoList = "";
+      if (that.masterType == 0) {
+        progressInfoList = JSON.stringify(that.progressInfoList);
+      }
+      that.AddInstallOrder(
+        JSON.stringify(frontPicList),
+        JSON.stringify(insidePicList),
+        JSON.stringify(afterPicList),
+        JSON.stringify(receiptPicList),
+        progressInfoList
+      );
     },
     addOrder() {
       //添加明细
@@ -371,29 +354,17 @@ export default {
           that.masterType = res.data.MasterType;
           if (res.data.FrontPicList !== "") {
             //安装前
-            // that.frontPicList = that.frontPicList.concat(
-            //   res.data.FrontPicList.split(",")
-            // );
             that.frontPicList = res.data.FrontPicList.split(",");
           }
           if (res.data.AfterPicList !== "") {
             //安装后
-            // that.afterPicList = that.afterPicList.concat(
-            //   res.data.AfterPicList.split(",")
-            // );
             that.afterPicList = res.data.AfterPicList.split(",");
           }
           if (res.data.InsidePicList !== "") {
-            // that.insidePicList = that.insidePicList.concat(
-            //   res.data.InsidePicList.split(",")
-            // );
             that.insidePicList = res.data.InsidePicList.split(",");
           }
           if (res.data.ReceiptPicList !== "") {
             //验收单图片
-            // that.receiptPicList = that.receiptPicList.concat(
-            //   res.data.ReceiptPicList.split(",")
-            // );
             that.receiptPicList = res.data.ReceiptPicList.split(",");
           }
           that.detail = res.data;

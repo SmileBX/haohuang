@@ -124,11 +124,16 @@ export default {
     console.log(this.orderId);
     if (this.identity == 1) {
       //客服
-      this.getKfOrderData();
+      if(toLogin(this.curPage)){
+        this.getKfOrderData();
+      }
+      
     }
     if (this.identity == 2) {
       //客户
-      this.getUserOrderData();
+      if(toLogin(this.curPage)){
+        this.getUserOrderData();
+      }
     }
     //this.getData()
   },
@@ -189,7 +194,7 @@ export default {
     },
     smApprise() {
       //提交评论
-      if (this.valOther()) {
+      if (this.valOther() && toLogin(this.curPage)) {
         let conStr = "";
         this.radioVal.forEach(item => {
           if (item) {
