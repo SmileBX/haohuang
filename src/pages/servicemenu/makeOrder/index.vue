@@ -149,7 +149,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="select__weui-cells" v-show="item.orderTypeName!='设计' && item.orderTypeName!='安装'">
+                <div class="select__weui-cells" v-show="item.orderType!=0 && item.orderType!=2">
                   <div class="weui-cells__title">制作材料</div>
                   <div class="ipt flex flexAlignCenter" @click="choseMartic(1,lindex)">
                     <div class="flex1">
@@ -158,7 +158,7 @@
                     <span class="icon-arrow arrow-right"></span>
                   </div>
                 </div>
-                <div class="select__weui-cells" v-show="item.orderTypeName!='设计' && item.orderTypeName!='制作' && item.orderTypeName!='设计_制作'">
+                <div class="select__weui-cells" v-show="item.orderType!=0 && item.orderType!=1 && item.orderType!=3">
                   <div class="weui-cells__title">安装材料</div>
                   <div class="ipt flex flexAlignCenter" @click="choseMartic(2,lindex)">
                     <div class="flex1">
@@ -860,17 +860,17 @@ export default {
     },
     // 更新图片数据
     updateImg(n) {
+      const that = this;
       console.log(
-        this.prolist[n].referencePicList.length,
+        that.prolist[n].referencePicList.length,
         "that.prolist[n].referencePicList1111111111"
       );
       // 判断是否大于图片最大数量
-      if (this.prolist[n].referencePicList.length === this.imgLenght * 1) {
-        this.prolist[n].isShowBtnUpload = false;
+      if (that.prolist[n].referencePicList.length === that.imgLenght * 1) {
+        that.prolist[n].isShowBtnUpload = false;
       } else {
-        this.prolist[n].isShowBtnUpload = true;
+        that.prolist[n].isShowBtnUpload = true;
       }
-      let that = this;
       that.prolist[n].imgBase=[]
       // 根据临时路径数组imgPathArr获取base64图片
       for (let i = 0; i < that.prolist[n].referencePicList.length; i++) {

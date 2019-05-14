@@ -70,7 +70,7 @@
             </div>
           </li>
           <li>
-            <div class="outside" @click="gotoUrl(2)">
+            <div class="outside" @click="gotoUrl(7)">
               <div class="icon-img">
                 <img src="/static/images/icons/chulizhong.png" alt>
                 <span class="circleNum" v-if="info.handleNum>0">{{info.handleNum}}</span>

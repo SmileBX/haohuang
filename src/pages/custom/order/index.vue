@@ -45,7 +45,7 @@
                 </div>
                 <div class="txtBox">
                   <p class="title text-line2">{{list.OrderName}}</p>
-                  <p class="title text-line2" style="font-size:26rpx;color:#1e1e1">{{list.TypeName}}</p>
+                  <p class="type">订单类型：<span v-if="list.OrderType===0">设计</span><span v-if="list.OrderType===1">制作</span><span v-if="list.OrderType===2">安装</span><span v-if="list.OrderType===3">设计+制作</span><span v-if="list.OrderType===4">制作+安装</span><span v-if="list.OrderType===5">设计+制作+安装</span></p>
                   <div class="flex">
                     <div class="flex1">
                       <p class="new-price">￥{{list.OfferTotal}}</p>
