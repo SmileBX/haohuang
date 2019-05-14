@@ -24,6 +24,17 @@ export default {
     this.setBarTitle();
     //identity: 1:客服；2：客户；3：师傅
   },
+  onShow() {
+    console.log("vvvvvvvvvvvvvvvv");
+    if (this.$root.$mp.query.askUrl) {
+      let askUrl = this.$root.$mp.query.askUrl
+        .toString()
+        .replace(/\%3F/g, "?")
+        .replace(/\%3D/g, "=")
+        .replace(/\%26/g, "&");
+      wx.setStorageSync('askUrl',askUrl);
+    }
+  },
   components: {},
   data() {
     return {};
@@ -35,7 +46,7 @@ export default {
       });
     },
     gotoLogin(index) {
-      wx.setStorageSync("identity",index);
+      wx.setStorageSync("identity", index);
       wx.navigateTo({
         url: "/pages/login/main"
       });

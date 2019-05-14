@@ -79,6 +79,13 @@ export default {
         title: "意见反馈"
       });
     },
+    initData(){
+      this.content = "";
+      this.inputTxtLength = 0;
+      this.imgPathArr = [];
+      this.imgPathArr2 = [];
+      this.isShowBtnUpload = true;
+    },
     limitInput() {
       this.inputTxtLength = this.content.length;
     },
@@ -113,6 +120,7 @@ export default {
           sourceType: ["album", "camera"],
           success(res) {
             // tempFilePath可以作为img标签的src属性显示图片
+            console.log(res.tempFilePaths);
             _this.imgPathArr = _this.imgPathArr.concat(res.tempFilePaths);
             if (_this.imgPathArr.length === 8) {
               _this.isShowBtnUpload = false;
@@ -179,6 +187,7 @@ export default {
                 wx.reLaunch({
                   url: "/pages/my/main"
                 });
+                that.initData();
               }, 1500);
             }
           });
@@ -209,6 +218,7 @@ export default {
                 wx.reLaunch({
                   url: "/pages/my/main"
                 });
+                that.initData();
               }, 1500);
             }
           });

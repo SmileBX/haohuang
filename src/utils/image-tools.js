@@ -1,10 +1,15 @@
 export function pathToBase64(path) {
+    console.log(path);
     return new Promise(function(resolve, reject) {
+
         if (typeof window === 'object' && 'document' in window) {
+
             var canvas = document.createElement('canvas')
             var c2x = canvas.getContext('2d')
             var img = new Image
+
             img.onload = function() {
+                //console.log("ffffffffff");
                 canvas.width = img.width
                 canvas.height = img.height
                 c2x.drawImage(img, 0, 0)
@@ -30,11 +35,32 @@ export function pathToBase64(path) {
             })
             return
         }
+        console.log("返回的地址：" + path);
+        if (typeof wx === 'object' && /https?:\/\/(?:[^/]+\.)?([^./]+\.\w*.(?:cn|com|top|com\.tw))(?:$|\/)/.test(path)) {
+            let objUrl = "https://" + path.split("://")[1];
+            console.log("组合好的：" + objUrl);
+            console.log("竟来了")
+            wx.request({
+                url: objUrl,
+                responseType: 'arraybuffer', //最关键的参数，设置返回的数据格式为arraybuffer
+                success: res => {
+                    console.log("bbbbbbbbbbbbb");
+                    //把arraybuffer转成base64
+                    let base64 = wx.arrayBufferToBase64(res.data);
+                    console.log(base64);
+                    resolve('data:image/png;base64,' + base64);
+                }
+            })
+            return
+        }
         if (typeof wx === 'object' && wx.canIUse('getFileSystemManager')) {
+            console.log("img:ddddddddd");
             wx.getFileSystemManager().readFile({
                 filePath: path,
                 encoding: 'base64',
                 success: function(res) {
+                    console.log("进来微信了")
+                    console.log(res.data)
                     resolve('data:image/png;base64,' + res.data)
                 },
                 fail: function(error) {
@@ -43,6 +69,7 @@ export function pathToBase64(path) {
             })
             return
         }
+
         reject(new Error('not support'))
     })
 }
