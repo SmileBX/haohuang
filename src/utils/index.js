@@ -25,12 +25,14 @@ export function formatTime(date) {
 
 
 export function getCurrentPageUrlWithArgs(changeJson) {
+    console.log(changeJson,"changeJson")
     const pages = getCurrentPages()
     const currentPage = pages[pages.length - 1]
     const url = currentPage.route
     let options = currentPage.options;
     if (changeJson) {
         options = Object.assign({}, options, changeJson);
+        console.log(options,"options")
     }
     let urlWithArgs = `/${url}?`
     for (let key in options) {

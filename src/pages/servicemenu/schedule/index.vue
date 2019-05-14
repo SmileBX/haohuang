@@ -274,8 +274,9 @@ export default {
     //获取订单进度
     getDate(){
         if(toLogin(this.curPage)){
-          post('Order/OrderProgressInfo',{
-              UserId:this.UserId,
+          // post('Order/OrderProgressInfo',{
+          post('CustomerService/OrderInfo',{
+              CsdId:this.UserId,
               Token:this.Token,
               OrderNo:this.OrderNoId
           },this.curPage).then(res=>{
@@ -369,7 +370,7 @@ export default {
     //查看物流
     seeLogs(OrderNo){
         wx.navigateTo({
-          url:"/pages/custom/schelogs/main?OrderNo="+OrderNo
+          url:"/pages/servicemenu/schelogs/main?OrderNo="+OrderNo
         })
     },
     //确认设计
@@ -396,23 +397,21 @@ export default {
     // 确认设计
     confirmButton(AuditType){
       console.log(AuditType,'设计确认状态')
-      if(toLogin(this.curPage)){
-        post('Order/OrderCollection',{
-              UserId:this.UserId,
-              Token:this.Token,
-              OrderNo:this.orderId,
-              AuditType:AuditType
-              }).then(res=>{
-                console.log(res)
-                wx.showToast({
-                  title:res.msg,
-                  duration:2000
-                })
-                setTimeout(function(){
-                  wx.redirectTo({url: '/pages/custom/order/main'});
-                },1000)
+      post('Order/OrderCollection',{
+            CsdId:this.UserId,
+            Token:this.Token,
+            OrderNo:this.orderId,
+            AuditType:AuditType
+            }).then(res=>{
+              console.log(res)
+              wx.showToast({
+                title:res.msg,
+                duration:2000
               })
-      }
+              setTimeout(function(){
+                wx.redirectTo({url: '/pages/custom/order/main'});
+              },1000)
+            })
     },
   }
 };

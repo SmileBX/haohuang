@@ -158,7 +158,7 @@
 //订单已取消--在线客服
 //交易成功---去评价
 import "@/css/common.css";
-import { post } from "@/utils/index";
+import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 import CancelOrderWindow from '@/components/cancelOrderWindow.vue'
 import serviceTypeSelect from "@/components/serviceTypeSelect.vue";
 export default {
@@ -211,35 +211,37 @@ export default {
       });
     },
     getData() {
-      post("Order/OrderInfo", {
-        UserId: this.UserId,
-        Token: this.Token,
-        OrderNo: this.orderId,
-      }).then(res=>{
-          console.log(res.data,"res.date.InstallList[0].MasterName");
-       //订单编号
-          this.OrderNo = res.data.orderNo
-          this.detail = res.data;
-          
-          // 邮费
-          this.detail.Freight = res.data.Freight.toFixed(2);
-          // 预计价格
-          this.detail.OfferTotal = res.data.OfferTotal.toFixed(2);
-          // 支付金额
-          this.detail.PayMoney = res.data.PayMoney.toFixed(2);
-          // 材料金额
-          this.detail.ProductMoney = res.data.ProductMoney.toFixed(2);
-          if(res.data.InstallList.length>0){
-                this.MasterName = res.data.InstallList[0].MasterName
-                // let date = res.data.InstallList[0].InstallTime.split("T")[0]
-                // let time = res.data.InstallList[0].InstallTime.split("T")[1].split(":").slice(0,-1).join(":")
-                // this.InstallTime =date+"  "+time
-                this.InstallTime = res.data.InstallList[0].InstallTime.split("T").join(" ").split(".")[0]
-                  console.log(this.InstallTime,"this.InstallTime")
-            }
-          
-          //console.log(Boolean(detail.InstallTime));
-          });
+      if(toLogin(this.curPage)){
+        post("Order/OrderInfo", {
+          UserId: this.UserId,
+          Token: this.Token,
+          OrderNo: this.orderId,
+        },this.curPage).then(res=>{
+            console.log(res.data,"res.date.InstallList[0].MasterName");
+        //订单编号
+            this.OrderNo = res.data.orderNo
+            this.detail = res.data;
+            
+            // 邮费
+            this.detail.Freight = res.data.Freight.toFixed(2);
+            // 预计价格
+            this.detail.OfferTotal = res.data.OfferTotal.toFixed(2);
+            // 支付金额
+            this.detail.PayMoney = res.data.PayMoney.toFixed(2);
+            // 材料金额
+            this.detail.ProductMoney = res.data.ProductMoney.toFixed(2);
+            if(res.data.InstallList.length>0){
+                  this.MasterName = res.data.InstallList[0].MasterName
+                  // let date = res.data.InstallList[0].InstallTime.split("T")[0]
+                  // let time = res.data.InstallList[0].InstallTime.split("T")[1].split(":").slice(0,-1).join(":")
+                  // this.InstallTime =date+"  "+time
+                  this.InstallTime = res.data.InstallList[0].InstallTime.split("T").join(" ").split(".")[0]
+                    console.log(this.InstallTime,"this.InstallTime")
+              }
+            
+            //console.log(Boolean(detail.InstallTime));
+            });
+      }
           
     },
     // 成功之后提示的状态
@@ -267,47 +269,53 @@ export default {
       })
     },
     // 取消订单的内容
-    async closeContent(){
+    closeContent(){
       console.log(this.refuseContent,'取消内容')
-      const res = post('Order/OrderCancel',{
-        UserId:this.UserId,
-        Token:this.Token,
-        OrderNo:this.orderId,
-        RefuseContent:this.refuseContent
-      })
-      this.cancelOrderWindowStatus = false;
-      this.refuseContent=''
-      this.getData();
-      console.log(res.data,'取消成功')
+        if(toLogin(this.curPage)){
+            post('Order/OrderCancel',{
+              UserId:this.UserId,
+              Token:this.Token,
+              OrderNo:this.orderId,
+              RefuseContent:this.refuseContent
+            },this.curPage).then(res=>{
+                this.cancelOrderWindowStatus = false;
+                this.refuseContent=''
+                this.getData();
+                console.log(res.data,'取消成功')
+            })
+        }
+      
     },
     // 付款
     orderPay(){
-      console.log(this.OrderNo,"this.orderNo")
-      post('/Order/ConfirmWeiXinPay',{
-          UserId: this.UserId,
-          Token: this.Token,
-          OrderNo: this.OrderNo,
-      }).then(res=>{
-          console.log(res)
-          let payData=JSON.parse(res.data.JsParam);
-          wx.requestPayment({
-            timeStamp: payData.timeStamp,
-            nonceStr: payData.nonceStr,
-            package: payData.package,
-            signType: payData.signType,
-            paySign: payData.paySign,
-            success(res) {
-              this.getData();
-              // wx.navigateTo({
-              //   url:"/pages/custom/order/main"
-              // });
-            },
-            fail(res) {
+        console.log(this.OrderNo,"this.orderNo")
+        if(toLogin(this.curPage)){
+          post('/Order/ConfirmWeiXinPay',{
+              UserId: this.UserId,
+              Token: this.Token,
+              OrderNo: this.OrderNo,
+          },this.curPage).then(res=>{
+              console.log(res)
+              let payData=JSON.parse(res.data.JsParam);
+              wx.requestPayment({
+                timeStamp: payData.timeStamp,
+                nonceStr: payData.nonceStr,
+                package: payData.package,
+                signType: payData.signType,
+                paySign: payData.paySign,
+                success(res) {
+                  this.getData();
+                  // wx.navigateTo({
+                  //   url:"/pages/custom/order/main"
+                  // });
+                },
+                fail(res) {
 
-            }
+                }
+              })
+
           })
-
-      })
+      }
         
     },
     // 确认收货/确认设计模态弹窗
@@ -350,22 +358,23 @@ export default {
     // 确认设计
     confirmButton(AuditType){
       console.log(AuditType,'设计确认状态')
-      post('Order/OrderCollection',{
-            UserId:this.UserId,
-            Token:this.Token,
-            OrderNo:this.orderId,
-            AuditType:AuditType
-            }).then(res=>{
-              console.log(res)
-              wx.showToast({
-                title:res.msg,
-                duration:2000
-              })
-              setTimeout(function(){
-                wx.redirectTo({url: '/pages/custom/order/main'});
-              },1000)
-            })
-
+        if(toLogin(this.curPage)){
+          post('Order/OrderCollection',{
+                UserId:this.UserId,
+                Token:this.Token,
+                OrderNo:this.orderId,
+                AuditType:AuditType
+                },this.curPage).then(res=>{
+                  console.log(res)
+                  wx.showToast({
+                    title:res.msg,
+                    duration:2000
+                  })
+                  setTimeout(function(){
+                    wx.redirectTo({url: '/pages/custom/order/main'});
+                  },1000)
+          })
+        }
     },
     // 评论
     gotoComment(){

@@ -12,12 +12,15 @@
               <div class="txtBox">
                 <p class="title" style="margin-bottom:0;">
                   物流状态：
-                  <span class="status">已签收</span>
+                  <span class="status" v-if="complete">已签收</span>
+                  <span class="status" v-else-if="carriage">运输中</span>
+                  <span class="status" v-else-if="getStatu">已揽件</span>
+                  <span class="status" v-else>处理中</span>
                 </p>
-                <p class="type">承运来源：{{schduleInfo.companyName}}</p>
+                <p class="type">承运来源：{{schduleInfo.companyName || '无'}}</p>
                 <p style="font-size:26rpx;">
-                  <span class="orderNo">运单编号：{{schduleInfo.orderNo}}</span>
-                  <span class="btnCopy2"  @click="copy(schduleInfo.orderNo)">复制</span>
+                  <span class="orderNo">运单编号：{{schduleInfo.orderNo || '无'}}</span>
+                  <span class="btnCopy2"  @click="copy(schduleInfo.orderNo)" v-if="schduleInfo.orderNo">复制</span>
                 </p>
               </div>
             </div>
@@ -26,7 +29,7 @@
       </div>
     </div>
     <!-- 进度 -->
-    <div class="scheduleBox">
+    <div class="scheduleBox"  v-if="transformList.length>0">
       <div class="schedule">
         <!--收-->
         <div class="item big flex" v-if="complete">
@@ -235,7 +238,11 @@ export default {
       schduleInfo:"",
       transformList:[],
       //收货的标记
-      complete:false
+      complete:false,
+      //运输中
+      carriage:false,
+      //揽件
+      getStatu:false
     };
   },
   methods: {
@@ -244,7 +251,7 @@ export default {
         title: "查看物流"
       });
     },
-    //获取订单进度
+    //获取物流
     getDate(){
         if(toLogin(this.curPage)){
           post('Order/GetLogistics',{
@@ -278,12 +285,15 @@ export default {
                   if(this.transformList[i].context.indexOf('派件')!=-1){
                     this.transformList[i].sendGoods=true
                     this.transformList[i+1].transform = true
+                     this.carriage = true
                   }
                   if(this.transformList[i].context.indexOf('揽件')!=-1 ||this.transformList[i].context.indexOf('收件')!=-1 ){
                     this.transformList[i].pullGoods=true
+                    this.getStatu = true
                   }
                   if(this.transformList[this.transformList.length-1].context.indexOf('派件')!=-1 || this.transformList[this.transformList.length-1].context.indexOf('签收')!=-1){
                       this.transformList[this.transformList.length-1].transform = true
+                      this.carriage = true
                   }
               }
             console.log(this.transformList,"transformList66666666666666666")
