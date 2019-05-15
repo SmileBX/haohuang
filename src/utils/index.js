@@ -206,6 +206,7 @@ function wxMemberLogin(code, iv, encryptedData) {
                             wx.reLaunch({
                                 url: wx.getStorageSync("askUrl")
                             });
+                            wx.setStorageSync("askUrl", "");
                         }, 1500);
                     } else {
                         setTimeout(function() {
@@ -261,6 +262,7 @@ function wxInstalMasterLogin(code, iv, encryptedData) {
                             wx.reLaunch({
                                 url: wx.getStorageSync("askUrl")
                             });
+                            wx.setStorageSync("askUrl", "");
                         }, 1500);
                     } else {
                         setTimeout(function() {
@@ -309,10 +311,11 @@ function wxCustomerServiceLogin(code, iv, encryptedData) {
                 success: function() {
                     if (wx.getStorageSync("askUrl") !== "undefined" && wx.getStorageSync("askUrl")) {
                         setTimeout(function() {
-                            console.log(wx.getStorageSync("askUrl"))
+
                             wx.reLaunch({
                                 url: wx.getStorageSync("askUrl")
                             });
+                            wx.setStorageSync("askUrl", "");
                         }, 1500);
                     } else {
                         setTimeout(function() {
