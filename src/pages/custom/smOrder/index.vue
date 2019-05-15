@@ -194,7 +194,7 @@
         <!-- 总金额 -->
         <div class="flex allPriceBox bg_fff mt10">总金额(员)：￥{{Total || 0}}</div>
         <!-- 快递选择 -->
-        <div class="weui-cells smDetail__weui-cells">
+        <div class="weui-cells smDetail__weui-cells" style="padding-bottom:5rpx;">
           <div class="select__weui-cells">
             <div class="weui-cells__title">快递选择</div>
             <div class="ipt flex flexAlignCenter" @click="chosePost">
