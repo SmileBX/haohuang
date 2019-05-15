@@ -1,5 +1,6 @@
 <template>
   <div class="page" style="min-heigth:100%">
+    <p>非订饭订饭订饭订饭订饭订饭</p>
     <div class="ftBtn" style="heigth:100rpx;">
       <div class="inner fixed bm0 border-box pd0">
         <div class="btn btn-active fill radius0">
