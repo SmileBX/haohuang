@@ -36,13 +36,11 @@
 import { getCurrentPageUrlWithArgs } from "@/utils";
 export default {
   props: ["identity"], //identity: 1:客服；2：客户；3：师傅
-  onLoad() {
-    
-  },
-  created(){
+  onLoad() {},
+  created() {
     console.log("dddddddddddddddd");
     this.curPage = getCurrentPageUrlWithArgs();
-    console.log("当前的页面："+this.curPage);
+    console.log("当前的页面：" + this.curPage);
     let that = this;
     that.page.forEach(element => {
       let num = 0;
@@ -53,10 +51,9 @@ export default {
       });
       if (num === 1) {
         that.activeIndex = element.index;
-        
       }
     });
-    console.log("activeIndex:"+that.activeIndex);
+    console.log("activeIndex:" + that.activeIndex);
   },
   data() {
     return {
@@ -71,12 +68,19 @@ export default {
         {
           //订单
           index: 1,
-          url: ["/pages/servicemenu/myOrder/main","/pages/custom/order/main","/pages/master/myOrder/main"]
+          url: [
+            "/pages/servicemenu/myOrder/main",
+            "/pages/custom/order/main",
+            "/pages/master/myOrder/main"
+          ]
         },
         {
           //下单
           index: 2,
-          url: ["/pages/servicemenu/makeOrder/main","/pages/custom/smOrder/main"]
+          url: [
+            "/pages/servicemenu/makeOrder/main",
+            "/pages/custom/smOrder/main"
+          ]
         },
         {
           //消息
@@ -101,11 +105,11 @@ export default {
       }
       if (that.identity == 2) {
         //客户
-        console.log(index)
+        console.log(index);
         if (index === 1 || index === 2) {
           //gotoUrl = that.page[index].url[1];
           gotoUrl = that.page[index].url[1];
-          console.log(that.page[index],"客户身份")
+          console.log(that.page[index], "客户身份");
         } else {
           gotoUrl = that.page[index].url[0];
         }
@@ -118,9 +122,13 @@ export default {
           gotoUrl = that.page[index].url[0];
         }
       }
-      wx.navigateTo({
-        url: gotoUrl
-      });
+      if (this.curPage == gotoUrl) {
+        return false;
+      } else {
+        wx.navigateTo({
+          url: gotoUrl
+        });
+      }
     }
   }
 };
