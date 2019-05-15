@@ -1,6 +1,6 @@
 <template>
   <div class="page" style="min-heigth:100%">
-    <div class="addressList">
+    <div class="addressList" v-if="sitelist.length>0">
       <radio-group class="radio-group" @change="radioChange">
         <div v-for="(item,index) in sitelist" :key="item.id">
           <div class="item">
@@ -40,6 +40,9 @@
           </div>
         </div>
       </radio-group>
+    </div>
+    <div v-else style="margin-top:500rpx;">
+      <p>还没有添加过地址哦！</p>
     </div>
     <div class="ftBtn" style="heigth:100rpx;" @click="addNewSite">
       <div class="inner fixed bm0 border-box pd0">
@@ -197,6 +200,7 @@ export default {
             this.curPage
           ).then(res => {
             this.sitelist.spilce(index, 1);
+            this.isshow=false
             // that.$router.go(0);
           });
           //on confirm
