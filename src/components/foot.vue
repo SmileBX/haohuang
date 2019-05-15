@@ -125,7 +125,7 @@ export default {
       if (this.curPage == gotoUrl) {
         return false;
       } else {
-        wx.navigateTo({
+        wx.redirectTo({
           url: gotoUrl
         });
       }

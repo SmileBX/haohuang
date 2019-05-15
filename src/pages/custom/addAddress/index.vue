@@ -51,8 +51,7 @@
           @click="showArea = true"
           :value="area"
         />
-
-        <van-field
+        <!-- <van-field
           label="详细地址"
           type="textarea"
           style="height:38rpx;"
@@ -63,8 +62,16 @@
           input-class="van-textarea-min-height"
           :value="address"
           @change="onAddress" 
-        />
+        /> -->
       </van-cell-group>
+       <div class="weui-cell" style="font-size:28rpx;background:#fff">
+        <div class="weui-cell__hd">
+            <label class="weui-label" style="color:#333333">详细地址</label>
+        </div>
+        <div class="weui-cell__bd" >
+            <input type="text"  class="weui-input text_r" style="text-align:left;margin-left:25rpx;font-size:28rpx;" placeholder="请输入详细地址" v-model="address">
+        </div>
+      </div>
       <div class="weui-cell">
         <div class="weui-cell__bd">
           设为默认地址

@@ -230,8 +230,10 @@
                 <div class="weui-item">
                   <div class="weui-cells__title">备注说明</div>
                   <div class="eaditArea" style="z-index:20" >
-                    <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
-                    <textarea  class="weui-area"  placeholder="请输入" v-model="item.remark" v-else></textarea>
+                    <!-- <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
+                    <textarea  class="weui-area"  placeholder="请输入" v-model="item.remark" v-else></textarea> -->
+                    <p class="weui-area" v-if="showP" @click="puttextatea" style="padding:20rpx;">{{item.remark || '请输入备注内容'}}</p>
+                    <textarea  class="weui-area" placeholder="请输入备注内容111111111" v-model="item.remark" @blur="showP=true" autofocus v-else></textarea>
                   </div>
                 </div>
                 <div class="priceBox flex">
@@ -344,6 +346,7 @@ export default {
         }
         return value;
       },
+      showP:true,
       userId: "",
       token: "",
       curPage: "",
@@ -1325,6 +1328,9 @@ export default {
           this.showTips()
           this.prolist[n].speclong=0
       }
+    },
+    puttextatea(){
+      this.showP=false
     }
   }
 };

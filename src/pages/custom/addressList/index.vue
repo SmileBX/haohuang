@@ -30,6 +30,13 @@
                 </div>
               </div>
             </div>
+            <div class="delmask flex" v-if="isshow">
+              <p class="btntitle">您确定删除该收货地址吗？</p>
+              <p class="flex buttontbn">
+                <text @click="isshow=false">取消</text>
+                <text @click="confirmDel(item.id,index)">确定</text>
+              </p>
+          </div>
           </div>
         </div>
       </radio-group>
@@ -42,15 +49,8 @@
       </div>
     </div>
     <!--遮罩层-->
-    <!-- <div class="mask" v-if="isshow"></div>
-    <div class="delmask flex" v-if="isshow">
-      <p class="btntitle">您确定删除该收货地址吗？</p>
-      <p class="flex buttontbn">
-        <text @click="cancle">取消</text>
-        <text>确定</text>
-      </p>
-    </div>-->
-    <van-dialog id="van-dialog"/>
+    <div class="mask" v-if="isshow"></div>
+    <!-- <van-dialog id="van-dialog"/> -->
   </div>
 </template>
 <script>
@@ -81,7 +81,7 @@ export default {
       identity: "",
       userid: "",
       token: "",
-      isshow: true,
+      isshow: false,
       data: 0,
       sitelist: [],
       page: 1,
@@ -154,31 +154,53 @@ export default {
       //编辑地址
       wx.redirectTo({ url: "/pages/custom/addAddress/main?id=" + id });
     },
-    Delete(id, index) {
+    // Delete(id, index) {
+    //   //删除地址
+    //   const that = this;
+    //   Dialog.confirm({
+    //     title: "您确定删除该收货地址吗？",
+    //     message: ""
+    //   })
+    //     .then(() => {
+    //       post(
+    //         "Address/DeleteAddress",
+    //         {
+    //           Id: id,
+    //           UserId: that.userid,
+    //           Token: that.token
+    //         },
+    //         that.curPage
+    //       ).then(res => {
+    //         that.sitelist.spilce(index, 1);
+    //         // that.$router.go(0);
+    //       });
+    //       //on confirm
+    //     })
+    //     .catch(() => {
+    //       //on cancle
+    //     });
+    // },
+     Delete(id, index) {
       //删除地址
       const that = this;
-      Dialog.confirm({
-        title: "您确定删除该收货地址吗？",
-        message: ""
-      })
-        .then(() => {
-          post(
+      that.isshow = true
+      
+    },
+    confirmDel(id, index){
+      post(
             "Address/DeleteAddress",
             {
               Id: id,
-              UserId: that.userid,
-              Token: that.token
+              UserId: this.userid,
+              Token: this.token
             },
-            that.curPage
+            this.curPage
           ).then(res => {
-            that.sitelist.spilce(index, 1);
-            that.$router.go(0);
+            this.sitelist.spilce(index, 1);
+            // that.$router.go(0);
           });
           //on confirm
-        })
-        .catch(() => {
-          //on cancle
-        });
+        
     },
     //选择地址
     choseAddress(e) {
