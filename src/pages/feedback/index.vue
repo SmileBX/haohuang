@@ -26,8 +26,8 @@
           class="upload-img img"
           v-for="(item,index) in imgPathArr"
           :key="index"
-          :style="'background-image:url('+item+')'"
         >
+          <img :src="item" alt="" class="upload-img img">
           <img src="/static/images/icons/cancle.png" class="close" @click="delImg(index)" alt>
         </div>
         <div
