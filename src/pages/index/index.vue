@@ -95,7 +95,7 @@
 </template>
 <script>
 import foot from "@/components/foot.vue";
-import { post , get } from "../../utils"
+import { post,get, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
 import "@/css/dd_style.css";
 export default {
   onLoad() {
@@ -103,15 +103,20 @@ export default {
     
   },
   onShow(){
-    this.identity = wx.getStorageSync("identity");
-    this.getBanner();
-    this.getConpanyInfo()
+    this.curPage = getCurrentPageUrlWithArgs();
+    if(toLogin(this.curPage)){
+      this.identity = wx.getStorageSync("identity");
+      this.getBanner();
+      this.getConpanyInfo()
+    }
+    
   },
   data() {
     return {
       bannerList: [],
       companyInfo:{},
-      identity:""
+      identity:"",
+      curPage:""
     };
   },
   components: {

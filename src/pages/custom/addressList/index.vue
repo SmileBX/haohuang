@@ -44,7 +44,7 @@
         <text>确定</text>
       </p>
     </div> -->
-    <van-dialog id="van-dialog"/>
+    <!-- <van-dialog id="van-dialog"/> -->
   </div>
 </template>
 <script>
@@ -150,11 +150,11 @@ export default {
         ()=>{
             post("Address/DeleteAddress",{
                 Id: id,
-                UserId: this.userid,
-                Token: this.token
-            },this.curPage).then(res=>{
-                that.sitelist.spilce(i,1)
-                this.$router.go(0)
+                UserId: that.userid,
+                Token: that.token
+            },that.curPage).then(res=>{
+                that.sitelist.spilce(index,1)
+                that.$router.go(0)
             })
             //on confirm
         }
