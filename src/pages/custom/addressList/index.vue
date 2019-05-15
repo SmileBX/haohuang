@@ -44,7 +44,7 @@
         <text>确定</text>
       </p>
     </div> -->
-    <!-- <van-dialog id="van-dialog"/> -->
+    <van-dialog id="van-dialog"/>
   </div>
 </template>
 <script>
