@@ -81,7 +81,7 @@
           </div>
         </div>
       </div>
-      <foot :identity="1"></foot>
+      <foot :identity="identity"></foot>
       <!-- 客服 -->
       <movable-view style="z-index:11;" x="300" y="460" direction="all" out-of-bounds="false" >
           <div class="fixed__kf">
@@ -100,16 +100,18 @@ import "@/css/dd_style.css";
 export default {
   onLoad() {
     this.setBarTitle();
-    this.getBanner();
-    this.getConpanyInfo()
+    
   },
   onShow(){
-      
+    this.identity = wx.getStorageSync("identity");
+    this.getBanner();
+    this.getConpanyInfo()
   },
   data() {
     return {
       bannerList: [],
-      companyInfo:{}
+      companyInfo:{},
+      identity:""
     };
   },
   components: {

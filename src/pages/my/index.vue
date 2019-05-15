@@ -502,7 +502,7 @@ export default {
       });
     },
     outLogin() {
-      //退出登录
+      //退出登录 
       wx.setStorageSync("userId", "");
       wx.setStorageSync("token", "");
       wx.setStorageSync("identity", "");
