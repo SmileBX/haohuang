@@ -20,7 +20,8 @@
               </div>
               <p>订单编号：{{item.OrderNo}}</p>
               <p>下单时间：{{item.CreateTime}}</p>
-              <p>完成时间：03/25-10:23</p>
+              <p v-if="item.OverTime">完成时间：{{item.OverTime}}</p>
+              <p v-else>完成时间：处理中</p>
           </div>
       </scroll-view>
       <!--弹框-->
@@ -159,6 +160,9 @@ export default {
         this.orderListEnd = true;
       }
       this.orderList = this.orderList.concat(res.data);
+      for(let i=0;i<this.orderList.length;i++){
+          this.$set(this.orderList[i],"CreateTime",this.orderList[i].CreateTime.split('T').join(" ").split(".")[0])
+      }
     },
     confirmArea(e){
       console.log(e,"confirmArea")

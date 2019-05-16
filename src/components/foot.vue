@@ -1,5 +1,5 @@
 <template>
-  <div class="foot">
+  <div class="foot" style="z-index:9999;border:1px solid red">
     <div class="inner">
       <ul class="list clear center" :class="[identity !==3 ? 'li_20':'li_25']">
         <li :class="{'active':activeIndex===0}" @click="gotoPage(0)">
@@ -96,6 +96,7 @@ export default {
     };
   },
   methods: {
+    //0 1 2 3 4
     gotoPage(index) {
       let that = this;
       let gotoUrl = "";

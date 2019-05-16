@@ -90,9 +90,9 @@
           <span class="btnCopy" @click="copy(detail.orderNo)">复制</span>
         </div>
         <div class="item">创建时间：{{detail.CreateTime}}</div>
-        <div class="item" v-if="detail.PayTime">支付时间：{{detail.PayTime}}</div>
-        <div class="item" v-if="detail.Fahuodate">发货时间：{{detail.Fahuodate}}</div>
-        <div class="item" v-if="detail.InstallTime">分配师傅：{{detail.InstallTime}}</div>
+        <div class="item" v-if="detail.OrderStatus==0 || detail.OrderStatus==2 || detail.OrderStatus==3 || detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 ||detail.OrderStatus==8 || detail.OrderStatus==9">支付时间：{{detail.PayTime}}</div>
+        <div class="item" v-if="detail.OrderStatus==4">发货时间：{{detail.Fahuodate}}</div>
+        <div class="item" v-if="detail.OrderStatus==7">分配师傅：{{detail.InstallTime}}</div>
         <div class="item" v-if="detail.EndTime">完成时间：{{detail.EndTime}}</div>
       </div>
     </div>
@@ -100,7 +100,7 @@
     <div class="ftBtn ftBtns">
       <div class="inner flex fixed bm0 bg_fff border-box justifyContentEnd">
         <!-- IsPay是否支付 -->
-        <div class="btn btn-active" v-if="detail.OrderStatus==0||detail.OrderStatus==1" @click="showCancelOrder">取消订单</div>
+        <div class="btn btn-active" v-if="(detail.OrderStatus==0||detail.OrderStatus==1) && detail.MemberId==0" @click="showCancelOrder">取消订单</div>
         <!-- 客服是否确认IsConfirm -->
         <!-- <div class="btn btn-active"  v-if="detail.IsConfirm==0">修改价格</div> -->
         <div class="btn linear" v-if="detail.IsConfirm==0" @click="showConfirmOrderWindow">确认订单</div>
@@ -108,8 +108,8 @@
         <div class="btn linear" v-if="detail.OrderStatus==1" @click="confirmPay">线下付款</div>
         <!--查看进度-->
         <div class="button active" v-if="detail.OrderStatus==2 || detail.OrderStatus==3 ||detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 || detail.OrderStatus==8" @click="seeSchdule(detail.orderId,detail.OrderStatus)">查看进度</div>
-        <div class="btn linear" v-if="detail.DesignStatus==1" @click="confirmButtonModal('design')">设计确认</div>
-        <div class="btn linear" v-if="detail.OrderStatus==4" @click="confirmButtonModal('logistics')">确认收货</div>
+        <div class="btn linear" v-if="detail.DesignStatus==1 && detail.MemberId==0" @click="confirmButtonModal('design')">设计确认</div>
+        <div class="btn linear" v-if="detail.OrderStatus==4 && detail.MemberId==0" @click="confirmButtonModal('logistics')">确认收货</div>
         <div class="btn linear" v-if="detail.OrderStatus==8" @click="gotoComment">评论</div>
         <!-- <div class="btn btn-active" v-if="detail.OrderStatus==9">删除订单</div> -->
       </div>
@@ -262,6 +262,10 @@ export default {
         confirmColor:'#ff662a',
         success(res){
           if(res.confirm){
+             wx.showToast({
+              title:'订单取消成功！',
+              duration:1500
+            })
             that.cancelOrderWindowStatus = !that.cancelOrderWindowStatus
           }
         }
@@ -316,8 +320,8 @@ export default {
       const that =this;
       let title=''
       let content=''
-        let cancelText='不通过'
-        let confirmText='通过'
+        let cancelText='取消'
+        let confirmText='确认'
         let cancelColor=''
       if(types==='design'){ //设计确认
         title='设计确认'

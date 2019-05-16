@@ -76,7 +76,7 @@
                     <div class="item flex flexAlignCenter">
                       <span class="lab">数量</span>
                       <div class="ipt flex">
-                        <input type="number" class="weui-input" style="width:140rpx;" v-model="item.specnum">
+                        <input type="number" class="weui-input" style="width:140rpx;" v-model="item.specnum" @focus="trimWide(lindex,44)" @blur="getWide(lindex)">
                         <span class="txt">&nbsp;</span>
                       </div>
                     </div>
@@ -137,7 +137,7 @@
                   </div>
                 </div>
                 <!--小计-->
-                <div class="priceBox flex" v-if="item.orderType!=0">
+                <div class="priceBox flex ppt" v-if="item.orderType!=0">
                   <div class="flex1">金额</div>
                   <div>
                     <span class="price">￥{{item.offerTotal}}</span>
@@ -337,6 +337,7 @@ export default {
         }
         // wx.setStorageSync("addressinfo",' ')
        console.log( this.addressinfo.length,"默认收货地址长度")
+       
   },
   computed:{
       Total(){  //总计
@@ -351,35 +352,52 @@ export default {
   watch:{
     //小计
     prolist: {
-    handler(offerTotal) {
-      for(let i=0;i<this.prolist.length;i++){
-        if(this.prolist[i].makestatic.length>0 || this.prolist[i].installstatic.length>0){
-          let subtotal1=0
-          let subtotal2=0
-          for(let m of this.prolist[i].makestatic){
-              // console.log(m,"item")
-              // console.log(m.split('￥')[1]*1)
-              subtotal1+=m.split('￥')[1]*1
-              //console.log(subtotal1,"小计111111111")
-          }
-          for(let k of this.prolist[i].installstatic){
-              // console.log(m,"item")
-              // console.log(m.split('￥')[1]*1)
-              subtotal2+=k.split('￥')[1]*1
+      handler(offerTotal) {
+        for(let i=0;i<this.prolist.length;i++){
+          if(this.prolist[i].makestatic.length>0 || this.prolist[i].installstatic.length>0){
+            let subtotal1=0
+            let subtotal2=0
+            for(let m of this.prolist[i].makestatic){
+                // console.log(m,"item")
+                // console.log(m.split('￥')[1]*1)
+                subtotal1+=m.split('￥')[1]*1
+                //console.log(subtotal1,"小计111111111")
+            }
+            for(let k of this.prolist[i].installstatic){
+                // console.log(m,"item")
+                // console.log(m.split('￥')[1]*1)
+                subtotal2+=k.split('￥')[1]*1
 
+            }
+              this.prolist[i].offerTotal=subtotal1+subtotal2
+              //console.log(this.prolist[i].offerTotal,"小计")
+              //console.log(this.prolist,"++++++++++++++++++++++++++++")
+            }else{
+              this.prolist[i].offerTotal=0
+            }
           }
-            this.prolist[i].offerTotal=subtotal1+subtotal2
-            //console.log(this.prolist[i].offerTotal,"小计")
-            console.log(this.prolist,"++++++++++++++++++++++++++++")
-          }else{
-            this.prolist[i].offerTotal=0
-          }
-        }
+      },
+      immediate: true,
+      deep: true
     },
-    immediate: true,
-    deep: true
-  }
-
+    //数量
+    prolist:{
+      handler(specnum){
+        for(let i=0;i<this.prolist.length;i++){
+            for(let m=0;m<this.prolist[i].proMastic.length;m++){
+                this.prolist[i].proMastic[m].Num = this.prolist[i].specnum
+            }
+            for(let n=0;n<this.prolist[i].proIns.length;n++){
+                this.prolist[i].proIns[n].Num = this.prolist[i].specnum
+            }
+           // console.log(this.prolist,"++++++++++++++++++++++++++++")
+        }
+      },
+      immediate: true,
+      deep: true
+    },
+    
+      
   },
   data(){
     return {
@@ -510,9 +528,10 @@ export default {
                   this.prolist[n].makestatic.push(this.list[i].name+"  "+"￥"+this.list[i].Price +"   ")
                   //this.prolist[n].makestatic+=this.list[i].name+"  "+"￥"+this.list[i].Price +"   "
                   //选中的材料--制作材料 安装材料
+                  //console.log(this.prolist[n].specnum,"specnum+++++++++++")
                   let item1={
                       Id:this.list[i].Id,
-                      Num:1,
+                      Num:this.prolist[n].specnum,
                       pType:0
                     }
                     console.log(item1)
@@ -526,7 +545,7 @@ export default {
                    //选中的材料--制作材料 安装材料
                   let  item2={
                       Id:this.list[i].Id,
-                      Num:1,
+                      Num:this.prolist[n].specnum,
                       pType:0
                     }
                      this.prolist[n].proIns.push(item2)
@@ -762,7 +781,7 @@ export default {
         // that.prolist[n].imgBase = imgBase
     },
     deleteImg(i,n) {
-      this.prolist[n].imgBase.splice(i, 1);
+      // this.prolist[n].imgBase.splice(i, 1);
       this.prolist[n].referencePicList.splice(i, 1);
       if (this.prolist[n].referencePicList.length < this.imgLenght*1) {
         this.prolist[n].isShowBtnUpload = null;
@@ -864,7 +883,8 @@ export default {
           console.log(info,"referencePicList999999999999++++++++++++++++++++++++++++++++++")
 
           //console.log(typeof this.prolist[i].estimateTime,"提交时间")
-          if(this.prolist[i].estimateTime.length==0　|| this.prolist[i].offerTotal.toString().length==0 || this.prolist[i].orderName.length==0){
+          // if(this.prolist[i].estimateTime.length==0　|| this.prolist[i].offerTotal.toString().length==0 || this.prolist[i].orderName.length==0){
+          if(this.prolist[i].estimateTime.length==0　||  this.prolist[i].orderName.length==0){
             wx.showToast({
               title:"必选项不能为空！",
               icon:'none'
@@ -939,6 +959,8 @@ export default {
             this.prolist[n].spechign=''
         }else if(m==33){
             this.prolist[n].speclong=''
+        }else if(m==44){
+            this.prolist[n].specnum=''
         }
         
     },
@@ -959,10 +981,25 @@ export default {
       }else if(this.prolist[n].speclong.length>4){
           this.showTips()
           this.prolist[n].speclong=0
+      }else if(this.prolist[n].specnum.length==0){
+          wx.showToast({
+            title:'数量不能小于1',
+            duration:1500
+          })
+          this.prolist[n].specnum=1
+      }else if(this.prolist[n].specnum.length>4){
+          this.showTips()
+          this.prolist[n].specnum=1
       }
     },
     puttextatea(){
       this.showP=false
+    },
+    showTips(){
+      wx.showToast({
+        title:'长度超过尺寸！'
+      })
+      return false
     },
     
   }

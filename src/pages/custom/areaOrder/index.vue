@@ -7,7 +7,7 @@
           <input type="text" class="weui-input" :value="searchRegion" disabled placeholder="请选择区域">
         </div>
         <div class="remove" @click="removeSelect" v-show="searchRegion"><img src="/static/images/icons/cancle.png" alt=""></div>
-        <div class="btn" @click="search">搜索</div>
+        <!-- <div class="btn" @click="search">搜索</div> -->
       </div>
     </div>
     <van-popup :show="areaListStatus" position="bottom">
@@ -15,14 +15,15 @@
     </van-popup>
     <!--订单列表-->
     <div class="orderlist">
-      <div class="item p30" v-for="(item,index) in orderList" :key="index">
+      <div class="item p30" v-for="(item,index) in orderList" :key="index" @click="gotoDetail(index)">
         <div class="flex ordertitle">
           <p class="itemname flex1">{{item.TypeName}}</p>
           <p class="active">{{item.StatuName}}</p>
         </div>
         <p>订单编号：{{item.OrderNo}}</p>
         <p>下单时间：{{item.CreateTime}}</p>
-        <p>完成时间：03/25-10:23</p>
+        <p v-if="item.OverTime">完成时间：{{item.OverTime}}</p>
+        <p v-else>完成时间：处理中</p>
       </div>
     </div>
     <!--弹框-->
@@ -98,7 +99,7 @@ export default {
         console.log("ggggggggg");
         console.log(this.searchRegionCode);
       this.areaListStatus = false;
-      //this.init();
+      this.init();
     },
     // 删除选中的城市
     removeSelect() {
@@ -138,6 +139,12 @@ export default {
           });
         }
         that.orderList = that.orderList.concat(res.data);
+      });
+    },
+    gotoDetail(index){
+      let orderId = this.orderList[index].Id
+      wx.navigateTo({
+        url: `/pages/custom/orderDetail/main?orderId=${orderId}`
       });
     }
   },

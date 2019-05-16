@@ -70,7 +70,7 @@
           </div>
         </div> -->
         <!--发货-->
-        <div class="item small flex" v-show=" schduleInfo.orderType!=2 &&  schduleInfo.orderType!=0 ">
+        <div class="item small flex" v-show=" schduleInfo.orderType!=2 &&  schduleInfo.orderType!=0 && schduleInfo.OrderStatus==4">
           <div class="left time">
             <p class="date" v-if="Fahuodate.length>0">{{Fahuodate}}</p>
             <p class="hours" v-if="Fahuotime.length>0">{{Fahuotime}}</p>

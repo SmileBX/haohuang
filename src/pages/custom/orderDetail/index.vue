@@ -98,9 +98,9 @@
           <span class="btnCopy" @click="copy(detail.orderNo)">复制</span>
         </div>
         <div class="item">创建时间：{{detail.CreateTime}}</div>
-        <div class="item" v-if="detail.PayTime">支付时间：{{detail.PayTime}}</div>
-        <div class="item" v-if="detail.InstallTime">分配师傅：{{detail.InstallTime}}</div>
-         <div class="item" v-if="detail.ConfirmTime">完工确认：{{detail.ConfirmTime}}</div>
+        <div class="item" v-if="detail.OrderStatus==2 || detail.OrderStatus==3 || detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 ||detail.OrderStatus==8 || detail.OrderStatus==9">支付时间：{{detail.PayTime}}</div>
+        <div class="item" v-if="detail.OrderStatus==7">分配师傅：{{detail.InstallTime}}</div>
+         <div class="item" v-if="detail.OrderStatus==8">完工确认：{{detail.EndTime}}</div>
         <div class="item" v-if="detail.EstimateTime">完成时间：{{detail.EstimateTime}}</div>
       </div>
     </div>
@@ -269,6 +269,10 @@ export default {
         confirmColor:'#ff662a',
         success(res){
           if(res.confirm){
+            wx.showToast({
+              title:'订单取消成功！',
+              duration:1500
+            })
             that.cancelOrderWindowStatus = !that.cancelOrderWindowStatus
           }
         }
@@ -329,8 +333,8 @@ export default {
       const that =this;
       let title=''
       let content=''
-        let cancelText='不通过'
-        let confirmText='通过'
+        let cancelText='取消'
+        let confirmText='确认'
         let cancelColor=''
       if(types==='design'){ //设计确认
         title='设计确认'

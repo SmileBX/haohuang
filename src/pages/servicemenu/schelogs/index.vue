@@ -228,6 +228,7 @@ export default {
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
     this.address =  wx.getStorageSync("address")
+    this.transformList = []
     //console.log(this.OrderNoId,this.orderStatus,"this.orderStatus")
     this.getDate()
   },

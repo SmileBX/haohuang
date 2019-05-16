@@ -83,16 +83,27 @@
 .addDetail {
     position: relative;
 }
-
-.addDetail::before {
-    position: absolute;
-    content: "";
-    left: 30rpx;
-    right: 30rpx;
-    top: 0;
-    height: 1px;
-    background: #e5e5e5;
+.ppt{
+    position:relative;
 }
+.ppt::after{
+    position: absolute;
+    content:"";
+    left:30rpx;
+    right:30rpx;
+    bottom:0;
+    height:1px;
+    background:#e5e5e5;
+}
+// .addDetail::before {
+//     position: absolute;
+//     content: "";
+//     left: 30rpx;
+//     right: 30rpx;
+//     top: 0;
+//     height: 1px;
+//     background: #e5e5e5;
+// }
 
 .allPriceBox {
     padding: 26rpx 30rpx;
@@ -141,7 +152,7 @@
     }
     .flex {
         justify-content: space-between;
-        border-bottom: 1rpx solid #ccc;
+        // border-bottom: 1rpx solid #ccc;
         padding: 20rpx;
         font-weight: 400;
         font-size: 30rpx;

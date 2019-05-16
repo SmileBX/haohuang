@@ -143,7 +143,7 @@
                     <div class="item flex flexAlignCenter">
                       <span class="lab">数量</span>
                       <div class="ipt flex">
-                        <input type="number" class="weui-input" style="width:140rpx;" v-model="item.specnum">
+                        <input type="number" class="weui-input" style="width:140rpx;" v-model="item.specnum" @focus="trimWide(lindex,44)" @blur="getWide(lindex)">
                         <span class="txt">&nbsp;</span>
                       </div>
                     </div>
@@ -176,7 +176,7 @@
                   <div class="uploadImage clear">
                     <!-- 上传展示的图片 -->
                     <div class="upload-img img" style="width:160rpx;height:160rpx;" v-for="(img,sindex) in item.referencePicList" :key="sindex">
-                        <div class="delete" @click="deleteImg(sindex,lindex)">×</div>
+                        <div class="delete" @click="deleteImg(sindex,lindex)" style="z-index:40">×</div>
                         <img :src="img"  style="width:160rpx;height:160rpx;" alt>
                     </div>
                     <img
@@ -195,7 +195,7 @@
                   <div class="uploadImage clear">
                     <!-- 上传展示的图片 -->
                     <div class="upload-img img" style="width:160rpx;height:160rpx;" v-for="(img,sindex) in item.referencePicList2" :key="sindex">
-                        <div class="delete" @click="deleteImg2(sindex,lindex)">×</div>
+                        <div class="delete" @click="deleteImg2(sindex,lindex)" style="z-index:40">×</div>
                         <img :src="img"  style="width:160rpx;height:160rpx;" alt>
                     </div>
                    
@@ -227,17 +227,17 @@
                     <img src="/static/images/icons/date.png" alt class="icon-date">
                   </div>
                 </div>
-                <div class="weui-item">
+                <div class="weui-item" style="padding-bottom:10rpx;">
                   <div class="weui-cells__title">备注说明</div>
                   <div class="eaditArea" style="z-index:20" >
                     <!-- <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
                     <textarea  class="weui-area"  placeholder="请输入" v-model="item.remark" v-else></textarea> -->
                     <p class="weui-area" v-if="showP" @click="puttextatea" style="padding:29rpx;">{{item.remark || '请输入备注内容'}}</p>
-                    <textarea  class="weui-area" placeholder="请输入备注内容" v-model="item.remark" @blur="showP=true" autofocus v-else></textarea>
+                    <textarea  class="weui-area" placeholder="请输入备注内容" v-model="item.remark" @blur="showP=true" auto-focus v-else></textarea>
                   </div>
                 </div>
                 <!--小计-->
-                <div class="priceBox flex" v-if="item.orderType!=0">
+                <div class="priceBox flex ppt" v-if="item.orderType!=0">
                   <div class="flex1">金额</div>
                   <div>
                     <span class="price">￥{{item.offerTotal}}</span>
@@ -309,18 +309,20 @@
             </div>
           </div>
         </div>
-        <!--确认支付-->
-        <div class="ftBtn" style="height:156rpx;position:relative">
+        
+        <!--选择地址省市遮罩层-->
+      <van-popup :show="showArea" position="bottom" :overlay="true" @close="showArea = false">
+          <van-area :area-list="areaList" @cancel="showArea = false" @confirm="confirmArea" columns-num="2"/>
+      </van-popup>
+      <!--弹层-->
+      <div class="mask" v-if="isShow" catchtouchmove='true'></div>
+      <!--确认支付-->
+      <div class="ftBtn" style="height:156rpx;position:relative">
           <div class="inner fixed bm0 border-box" style="background:#ffffff!important;position:relative">
             <div class="btn btn-active fill" @click="submit">确认下单</div>
           </div>
         </div>
-        <!--弹层-->
-        <div class="mask" v-if="isShow" catchtouchmove='true'></div>
-        <!--选择地址省市遮罩层-->
-        <van-popup :show="showArea" position="bottom" :overlay="true" @close="showArea = false">
-            <van-area :area-list="areaList" @cancel="showArea = false" @confirm="confirmArea"/>
-        </van-popup>
+      <foot :identity="identity"></foot>
     </div>
 </template>
 <script>
@@ -331,9 +333,11 @@ import {
   getCurrentPageUrlWithArgs,
   valPhone
 } from "@/utils";
+import foot from "@/components/foot.vue";
 import areaList from "@/utils/areaList";
 import {pathToBase64} from "@/utils/image-tools";
 import "@/css/dd_style.css";
+
 export default {
   data() {
     return {
@@ -517,6 +521,10 @@ export default {
     // this.isShowBtnUpload2 = true;
     // this.isShowBtnVedio = true;
   },
+  components: {
+    foot,
+    // serviceTypeSelect
+  },
   onShow() {
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
@@ -601,12 +609,28 @@ export default {
       },
       immediate: true,
       deep: true
-    }
+    },
+    //数量
+    prolist:{
+      handler(specnum){
+        for(let i=0;i<this.prolist.length;i++){
+            for(let m=0;m<this.prolist[i].proMastic.length;m++){
+                this.prolist[i].proMastic[m].Num = this.prolist[i].specnum
+            }
+            for(let n=0;n<this.prolist[i].proIns.length;n++){
+                this.prolist[i].proIns[n].Num = this.prolist[i].specnum
+            }
+            console.log(this.prolist,"++++++++++++++++++++++++++++")
+        }
+      },
+      immediate: true,
+      deep: true
+    },
   },
   methods: {
     setBarTitle() {
       wx.setNavigationBarTitle({
-        title: "师傅下单"
+        title: "客服下单"
       });
     },
     //普通弹框取消
@@ -655,7 +679,7 @@ export default {
             //选中的材料--制作材料 安装材料
             let item1 = {
               Id: this.list[i].Id,
-              Num: 1,
+              Num:this.prolist[n].specnum,
               pType: 0
             };
             console.log(item1);
@@ -671,7 +695,7 @@ export default {
             //选中的材料--制作材料 安装材料
             let item2 = {
               Id: this.list[i].Id,
-              Num: 1,
+              Num:this.prolist[n].specnum,
               pType: 0
             };
             this.prolist[n].proIns.push(item2);
@@ -904,7 +928,7 @@ export default {
       // }
     },
     deleteImg(i, n) {
-      this.prolist[n].imgBase.splice(i, 1);
+      // this.prolist[n].imgBase.splice(i, 1);
       this.prolist[n].referencePicList.splice(i, 1);
       if (this.prolist[n].referencePicList.length < this.imgLenght * 1) {
         this.prolist[n].isShowBtnUpload = null;
@@ -977,7 +1001,7 @@ export default {
       // }
     },
     deleteImg2(i, n) {
-      this.prolist[n].imgBase2.splice(i, 1);
+      // this.prolist[n].imgBase2.splice(i, 1);
       this.prolist[n].referencePicList2.splice(i, 1);
       if (this.prolist[n].referencePicList2.length < this.imgLenght * 1) {
         this.prolist[n].isShowBtnUpload2 = null;
@@ -1318,6 +1342,8 @@ export default {
             this.prolist[n].spechign=''
         }else if(m==33){
             this.prolist[n].speclong=''
+        }else if(m==44){
+            this.prolist[n].specnum=''
         }
         
     },
@@ -1338,6 +1364,15 @@ export default {
       }else if(this.prolist[n].speclong.length>4){
           this.showTips()
           this.prolist[n].speclong=0
+      }else if(this.prolist[n].specnum.length==0){
+          wx.showToast({
+            title:'数量不能小于1',
+            duration:1500
+          })
+          this.prolist[n].specnum=1
+      }else if(this.prolist[n].specnum.length>4){
+          this.showTips()
+          this.prolist[n].specnum=1
       }
     },
     puttextatea(){

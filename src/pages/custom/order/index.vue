@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" >
     <div class="tabBarBox">
       <ul class="tabBar flex li_20 fixed">
         <li
@@ -20,11 +20,11 @@
           <input type="text" class="weui-input" :value="searchRegion" disabled placeholder="请选择区域">
         </div>
         <div class="remove" @click="removeSelect" v-show="searchRegion">×</div>
-        <div class="btn" @click="init">搜索</div>
+        <!-- <div class="btn" @click="init">搜索</div> -->
       </div>
     </div>
     <van-popup :show="areaListStatus" position="bottom">
-      <van-area :area-list="areaList" @cancel="areaListStatus = false" @confirm="areaConfirm"></van-area>
+      <van-area :area-list="areaList" @cancel="areaListStatus = false" @confirm="areaConfirm" columns-num="2"></van-area>
     </van-popup>
     <!-- 订单列表-->
     <div class="tabContent">
@@ -248,7 +248,7 @@ export default {
       });
       this.searchRegion = val;
       this.searchRegionCode =
-        e.mp.detail.values[e.mp.detail.values.length - 1].code;
+        e.mp.detail.values[1].code;
       this.areaListStatus = false;
       this.init();
     },
@@ -343,8 +343,8 @@ export default {
         wx.showModal({
           title:"确认收货",
           confirmColor:'#33cc33',
-          cancelText:'不通过',
-          confirmText:'通过',
+          cancelText:'取消',
+          confirmText:'确认',
           success:(res)=>{
               if(res.confirm){
                 if(toLogin(this.curPage)){

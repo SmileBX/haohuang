@@ -21,7 +21,7 @@
           
         </div>
         <div class="remove" @click="removeSelect" v-show="searchRegion">×</div>
-        <div class="btn" @click="init">搜索</div>
+        <!-- <div class="btn" @click="init">搜索</div> -->
       </div>
     </div>
     <van-popup :show="areaListStatus" position="bottom">
@@ -306,8 +306,8 @@ export default {
       wx.showModal({
         title:"确认收货",
         confirmColor:'#33cc33',
-        cancelText:'不通过',
-        confirmText:'通过',
+        cancelText:'取消',
+        confirmText:'确认',
         success:(res)=>{
             if(res.confirm){
                 if(toLogin(this.curPage)){

@@ -7,6 +7,7 @@
       :close-on-click-overlay="true"
       :overlay="true"
       @close="closeWindow"
+      @catchtouchmove="true"
     >
       <div class="bottom__modal-content">
         <!-- <div class="modal__hd bb__modal__hd">
@@ -15,7 +16,8 @@
         </div>-->
         <div class="modal__bd">
           <div class="eaditArea">
-            <textarea name v-model="refuseContent" placeholder="请备注说明原因" id class="weui-area"></textarea>
+            <p class="weui-area" v-if="showP" @click="puttextatea" style="padding:29rpx;">{{refuseContent || '请备注说明原因'}}</p>
+            <textarea name fixed cursor-spacing="10" v-model="refuseContent" placeholder="请备注说明原因" id class="weui-area" @blur="showP=true" auto-focus v-else @touchstart="showP=true"></textarea>
           </div>
         </div>
         <div class="modal__ft flex ftBtn" style="height:100rpx;" @click="submit">
@@ -50,6 +52,7 @@ export default {
   },
   data() {
     return {
+      showP:true,
     };
   },
   watch:{
@@ -65,6 +68,9 @@ export default {
     // 关闭弹窗
     closeWindow() {
       this.$emit("update:cancelOrderWindowStatus", false);
+    },
+    puttextatea(){
+      this.showP=false
     }
   }
 };
