@@ -169,27 +169,13 @@ export default {
   onPullDownRefresh() {
     // 下拉刷新
     this.initData();
-    if (this.type == 0) {
-      //公告
-      this.perNoticeList();
-    }
-    if (this.type == 1) {
-      //服务消息
-      this.serverNoticeList();
-    }
+     this.perNoticeList();
   },
   onReachBottom() {
     //上拉加载
     if (!this.isOved) {
       this.page++;
-      if (this.type == 0) {
-        //公告
-        this.perNoticeList();
-      }
-      if (this.type == 1) {
-        //服务消息
-        this.serverNoticeList();
-      }
+      this.perNoticeList();
     }
   }
 };

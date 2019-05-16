@@ -123,7 +123,7 @@ export default {
           gotoUrl = that.page[index].url[0];
         }
       }
-      if (this.curPage == gotoUrl) {
+      if (that.curPage == gotoUrl) {
         return false;
       } else {
         wx.redirectTo({

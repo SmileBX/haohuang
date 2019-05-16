@@ -279,6 +279,7 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
+               that.initData();
               if (
                 wx.getStorageSync("askUrl") !== "undefined" &&
                 wx.getStorageSync("askUrl")
@@ -309,6 +310,7 @@ export default {
         PassWord: that.Pwd
       }).then(result => {
         if (result.code === 0) {
+         
           wx.setStorageSync("userId", result.data.MemberId);
           wx.setStorageSync("token", result.data.MemberToken);
           console.log("dfsdfsdfdsfsdf");
@@ -317,6 +319,7 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
+               that.initData();
               if (
                 wx.getStorageSync("askUrl") !== "undefined" &&
                 wx.getStorageSync("askUrl")
@@ -355,6 +358,7 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
+              that.initData();
               if (
                 wx.getStorageSync("askUrl") !== "undefined" &&
                 wx.getStorageSync("askUrl")
@@ -398,6 +402,7 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
+              that.initData();
               if (
                 wx.getStorageSync("askUrl") !== "undefined" &&
                 wx.getStorageSync("askUrl")
@@ -442,6 +447,7 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
+              that.initData();
               if (
                 wx.getStorageSync("askUrl") !== "undefined" &&
                 wx.getStorageSync("askUrl")
@@ -479,6 +485,7 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
+              that.initData();
               if (
                 wx.getStorageSync("askUrl") !== "undefined" &&
                 wx.getStorageSync("askUrl")
