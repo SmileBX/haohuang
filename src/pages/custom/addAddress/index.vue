@@ -39,7 +39,7 @@
       <van-cell-group>
         <van-field clearable label="收货人" :value="name" @change="onName" placeholder="请输入收货人姓名" title-width="70px"/>
         <van-field clearable label="手机号码" :value="phone" @change="onPhone"  placeholder="请输入手机号码" title-width="70px"/>
-        <van-field clearable label="店铺地址" :value="site" @change="onSite"  placeholder="请输入店铺地址" title-width="70px"/>
+        <van-field clearable label="店铺名称" :value="site" @change="onSite"  placeholder="请输入店铺名称" title-width="70px"/>
         <van-field
           clearable
           label="所在地区"
@@ -253,11 +253,15 @@ export default {
           return '请输入收货人'
       }if(!(/^1[3|4|5|6|7|8][0-9]\d{4,8}$/.test(this.phone))){
           return '请输入正确的手机号码'
+      }if(!this.site){
+        return '请输入店铺名称'
+      }if(!/^[A-Za-z0-9\u4e00-\u9fa5]+$/ .test(this.site)){
+         return "请输入正确的名称"
       }if(!this.area){
-         return '请选择省份'
+         return '请选择地区'
       }if(!this.address){
-        return '请输入收货地址'
-      }if(!/^[\u4e00-\u9fa5\u3001\A-\Z\d]+$/ .test(this.address)){
+        return '请输入地址'
+      }if(!/^[A-Za-z0-9\u4e00-\u9fa5]+$/ .test(this.address)){
          return "请输入正确的地址"
       }
       return false;

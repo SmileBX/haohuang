@@ -241,3 +241,20 @@
     top: -15rpx;
     right: 0;
 }
+.tetbox{
+    height: 350rpx;
+    width:100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+}
+// .tetbox textarea{
+//     box-sizing:border-box;
+//     height:300rpx;
+//     width:100%;
+//     padding:25rpx;
+//     position: absolute;
+//     top:50rpx;
+//     left:0;
+//     z-index:11
+// }

@@ -1,7 +1,7 @@
 export function pathToBase64(path) {
-    console.log(path);
+    console.log(path);//图片的路径
     return new Promise(function(resolve, reject) {
-
+        //浏览器
         if (typeof window === 'object' && 'document' in window) {
 
             var canvas = document.createElement('canvas')
@@ -19,6 +19,7 @@ export function pathToBase64(path) {
             img.src = path
             return
         }
+        //app
         if (typeof plus === 'object') {
             var bitmap = new plus.nativeObj.Bitmap('bitmap' + Date.now())
             bitmap.load(path, function() {
@@ -35,6 +36,7 @@ export function pathToBase64(path) {
             })
             return
         }
+        //小程序--不是临时上传带域名的
         if (typeof wx === 'object' && /https?:\/\/(?:[^/]+\.)?([^./]+\.\w*.(?:cn|com|top|com\.tw))(?:$|\/)/.test(path)) {
             let objUrl = "https://" + path.split("://")[1];
             wx.request({
@@ -48,6 +50,7 @@ export function pathToBase64(path) {
             })
             return
         }
+        //小程序--临时上传
         if (typeof wx === 'object' && wx.canIUse('getFileSystemManager')) {
             wx.getFileSystemManager().readFile({
                 filePath: path,

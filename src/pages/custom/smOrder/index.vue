@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" @touchstart="showP=true">
     <movable-area class="movearea">
       <div class="main">
         <!--步骤提示-->
@@ -127,16 +127,17 @@
                     <img src="/static/images/icons/date.png" alt class="icon-date">
                   </div>
                 </div>
-                <div class="weui-item">
+                <div class="weui-item tetbox">
                   <div class="weui-cells__title">备注说明</div>
                   <div class="eaditArea">
                     <!-- <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
                     <textarea  class="weui-area" placeholder="请输入备注内容111111111" v-model="item.remark" v-else></textarea> -->
-                    <p class="weui-area" v-if="showP" @click="puttextatea" style="padding:20rpx;">{{item.remark || '请输入备注内容'}}</p>
-                    <textarea  class="weui-area" placeholder="请输入备注内容111111111" v-model="item.remark" @blur="showP=true" autofocus v-else></textarea>
+                    <p class="weui-area" v-if="showP" @click="puttextatea" style="padding:29rpx;">{{item.remark || '请输入备注内容'}}</p>
+                    <textarea  style="resize:none" class="weui-area" :placeholder="signtext" v-model="item.remark" @blur="showP=true" autofocus="autofocus" v-else></textarea>
                   </div>
                 </div>
-                <div class="priceBox flex">
+                <!--小计-->
+                <div class="priceBox flex" v-if="item.orderType!=0">
                   <div class="flex1">金额</div>
                   <div>
                     <span class="price">￥{{item.offerTotal}}</span>
@@ -194,9 +195,9 @@
           </div>
         </div>
         <!-- 总金额 -->
-        <div class="flex allPriceBox bg_fff mt10">总金额(员)：￥{{Total || 0}}</div>
+        <div class="flex allPriceBox bg_fff mt10"  v-if="latShow && prolist.length>1">总金额(元)：￥{{Total || 0}}</div>
         <!-- 快递选择 -->
-        <div class="weui-cells smDetail__weui-cells" style="padding-bottom:5rpx;">
+        <div class="weui-cells smDetail__weui-cells" style="padding-bottom:5rpx;" v-if="latShow">
           <div class="select__weui-cells">
             <div class="weui-cells__title">快递选择</div>
             <div class="ipt flex flexAlignCenter" @click="chosePost">
@@ -208,7 +209,7 @@
           </div>
         </div>
         <!-- 地址选择 -->
-        <div class="weui-cells smDetail__weui-cells">
+        <div class="weui-cells smDetail__weui-cells" v-if="latShow">
             <div class="weui-cells__title">选择地址</div>
             <div class="addressList" @click="toAddress">
                 <div class="item flex flexAlignCenter" v-if="addressinfo.length>0">
@@ -218,7 +219,7 @@
                         <span class="name">{{addressinfo[0].name}}</span>
                         <span class="tel">{{addressinfo[0].tel}}</span>
                         </p>
-                        <p class="address">店铺地址：{{addressinfo[0].address}}</p>
+                        <p class="address">店铺名称：{{addressinfo[0].address}}</p>
                         <p class="address">详细地址：{{addressinfo[0].addressinfo}}</p>
                     </div>
                     <span class="icon-arrow arrow-right"></span>
@@ -258,7 +259,7 @@
             <p class="sure" @click="closeMask">确认</p>
         </div>
     </div>
-    
+    <foot :identity="identity"></foot>
   </div>
 </template>
 <script>
@@ -266,23 +267,30 @@
 import { get,post, toLogin, getCurrentPageUrlWithArgs, valPhone } from "@/utils";
 import "@/css/dd_style.css";
 import {pathToBase64} from "@/utils/image-tools";
+import foot from "@/components/foot.vue";
 export default {
   onLoad(){
     this.setBarTitle();
     this.imgBase= []
     this.imgPathArr= []
     this.postMsg = '选择快递'
+    this.signtext = '请输入备注内容'
     this.proitem={
       orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],isShowBtnUpload:true,
       estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,showType:false,  //日期 组件 不需要遮罩层
-    },
+    }
     this.prolist=[
       {
       orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
       estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false, showType:false,  //日期 组件 不需要遮罩层
       },
     ]
+    this.latShow=false//设计的时候隐藏地址 金额 快递
     
+  },
+  components: {
+    foot,
+    // serviceTypeSelect
   },
   onShow(){
         this.curPage = getCurrentPageUrlWithArgs();
@@ -290,7 +298,6 @@ export default {
         this.userId = wx.getStorageSync("userId");
         this.token = wx.getStorageSync("token");
         this.page=1
-        
         this.list=[],
         this.typelist=[],//orderTypeName类型...
         this.kuaidiList=[],//快递种类
@@ -363,6 +370,7 @@ export default {
           }
             this.prolist[i].offerTotal=subtotal1+subtotal2
             //console.log(this.prolist[i].offerTotal,"小计")
+            console.log(this.prolist,"++++++++++++++++++++++++++++")
           }else{
             this.prolist[i].offerTotal=0
           }
@@ -385,6 +393,9 @@ export default {
           }
           return value;
         },
+        signtext:'请输入备注内容',
+        latShow:false, //设计的时候隐藏地址  快递
+        priceShow:false,//显示总价格
         showP:true,
         userId: "",
         token: "",
@@ -482,6 +493,14 @@ export default {
             if(this.masktitle=="请选择订单类型"){
               this.prolist[n].orderTypeName=this.list[i].name
               this.prolist[n].orderType=this.list[i].Id
+               //遍历订单  如果订单类型都是设计 隐藏
+               for(let i=0;i<this.prolist.length;i++){
+                  if(this.prolist[i].orderType==1 || this.prolist[i].orderType==3 || this.prolist[i].orderType==4 || this.prolist[i].orderType==5 ){
+                      this.latShow = true;
+                  }else{
+                      this.latShow = false;
+                  }
+               }
             }
             
           }
@@ -624,7 +643,7 @@ export default {
               }
               this.list.push(info)
               }
-              
+              //遍历订单  如果订单类型都是设计 隐藏
               console.log(this.list,"订单类型")
             })
         }
@@ -873,8 +892,14 @@ export default {
           },this.curPage).then(res=>{
             console.log(res,'提交订单')
             if(res.code==0){
-                this.isShow=true
-                this.showPaymask=true
+                wx.showToast({
+                  title:res.msg,
+                  duration:1500,
+                })
+                setTimeout(()=>{
+                  this.isShow=true
+                  this.showPaymask=true
+                },1500)
                 // wx.setStorageSync("address",this.addressinfo[0].addressinfo)
                 // console.log(wx.getStorageSync("address"))
             }
@@ -938,7 +963,8 @@ export default {
     },
     puttextatea(){
       this.showP=false
-    }
+    },
+    
   }
 };
 </script>

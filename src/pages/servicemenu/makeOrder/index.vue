@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="page" @touchstart="showP=true">
         <div class="weui-cells" style="margin-top:1px;">
             <div class="select__weui-cells" @click="getCustomerList">
                 <div class="weui-cells__title">客户名称</div>
@@ -232,11 +232,12 @@
                   <div class="eaditArea" style="z-index:20" >
                     <!-- <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
                     <textarea  class="weui-area"  placeholder="请输入" v-model="item.remark" v-else></textarea> -->
-                    <p class="weui-area" v-if="showP" @click="puttextatea" style="padding:20rpx;">{{item.remark || '请输入备注内容'}}</p>
-                    <textarea  class="weui-area" placeholder="请输入备注内容111111111" v-model="item.remark" @blur="showP=true" autofocus v-else></textarea>
+                    <p class="weui-area" v-if="showP" @click="puttextatea" style="padding:29rpx;">{{item.remark || '请输入备注内容'}}</p>
+                    <textarea  class="weui-area" placeholder="请输入备注内容" v-model="item.remark" @blur="showP=true" autofocus v-else></textarea>
                   </div>
                 </div>
-                <div class="priceBox flex">
+                <!--小计-->
+                <div class="priceBox flex" v-if="item.orderType!=0">
                   <div class="flex1">金额</div>
                   <div>
                     <span class="price">￥{{item.offerTotal}}</span>
@@ -295,9 +296,9 @@
           </div>
         </div>
         <!-- 总金额 -->
-        <div class="flex allPriceBox bg_fff mt10">总金额(员)：￥{{Total || 0}}</div>
+        <div class="flex allPriceBox bg_fff mt10" v-if="latShow && prolist.length>1">总金额(元)：￥{{Total || 0}}</div>
         <!-- 快递选择 -->
-        <div class="weui-cells smDetail__weui-cells" style="padding:10rpx 0">
+        <div class="weui-cells smDetail__weui-cells" style="padding:10rpx 0" v-if="latShow">
           <div class="select__weui-cells">
             <div class="weui-cells__title">快递选择</div>
             <div class="ipt flex flexAlignCenter" @click="chosePost">
@@ -347,6 +348,7 @@ export default {
         return value;
       },
       showP:true,
+      latShow:false,//设计的时候隐藏地址 金额 快递
       userId: "",
       token: "",
       curPage: "",
@@ -445,6 +447,7 @@ export default {
   },
   onLoad() {
     this.setBarTitle();
+    this.latShow=false//设计的时候隐藏地址 金额 快递
     this.proitem= {
         orderType: "",
         orderTypeName: "",
@@ -629,6 +632,14 @@ export default {
           if (this.masktitle == "请选择订单类型") {
             this.prolist[n].orderTypeName = this.list[i].name;
             this.prolist[n].orderType = this.list[i].Id;
+             //遍历订单  如果订单类型都是设计 隐藏
+               for(let i=0;i<this.prolist.length;i++){
+                  if(this.prolist[i].orderType==1 || this.prolist[i].orderType==3 || this.prolist[i].orderType==4 || this.prolist[i].orderType==5 ){
+                      this.latShow = true;
+                  }else{
+                      this.latShow = false;
+                  }
+               }
           }
           if (this.masktitle == "请选择客户名称") {
             this.bindName = this.list[i].name;

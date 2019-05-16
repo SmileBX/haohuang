@@ -8,7 +8,7 @@
           <p class="title">首页</p>
         </li>
         <li :class="{'active':activeIndex===1}" @click="gotoPage(1)">
-          <img v-if="activeIndex===1" src="/static/images/footer/ft2.png" class="iconImg" alt>
+          <img v-if="activeIndex===1" src="/static/images/footer/ft2_2.png" class="iconImg" alt>
           <img v-else src="/static/images/footer/ft2.png" class="iconImg" alt>
           <p class="title">订单</p>
         </li>
