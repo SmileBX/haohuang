@@ -1159,7 +1159,7 @@ export default {
           guidancePicList: JSON.stringify(_referencePicList2), //现场图片集合
           guidanceVideo:this.prolist[i].guidanceVideo,//视频
           estimateTime: this.prolist[i].estimateTime, //完成时间!!!!!
-          offerTotal: this.prolist[i].offerTotal, //总金额!!!!!
+          offerTotal: 0, //总金额!!!!!
           proLists: _proLists, //材料集合
           logisticsType: this.logisticsType //快递类型!!!!!
         };
