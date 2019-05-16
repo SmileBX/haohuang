@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-if="isOved">
     <!-- 订单的 -->
     <div class="column levelPanel">
       <div class="item">
@@ -108,7 +108,8 @@ export default {
       },
       content: "", //用逗号隔开
       txt: "", //其他问题反馈
-      radioVal: []
+      radioVal: [],
+      isOved:false  //是否加载完
     };
   },
   onLoad() {
@@ -120,7 +121,6 @@ export default {
     this.token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
-    this.txt = ''
     console.log(this.orderId);
     if (this.identity == 1) {
       //客服
@@ -142,6 +142,18 @@ export default {
       wx.setNavigationBarTitle({
         title: "发表评价"
       });
+    },
+    initData(){
+        this.txt = '';
+        this.isOved = false;
+        this.detail = {
+        OrderName: "", //项目名称
+        OrderImg: "", //图片
+        OrderType: "", //项目类型
+        OrderTypeStr: "" //项目类型（文字）
+      };
+      this.content = ""; //用逗号隔开
+      thisradioVal = [];
     },
     getValue(index, e) {
       //获取radio的value
@@ -232,6 +244,7 @@ export default {
           OrderType: result.data.orderType, //项目类型
           OrderTypeStr: result.data.orderTypeStr //项目类型（文字）
         });
+        that.isOved = true;
       });
     },
     getKfOrderData() {
@@ -249,6 +262,7 @@ export default {
           OrderType: result.data.orderType, //项目类型
           OrderTypeStr: result.data.orderTypeStr //项目类型（文字）
         });
+        that.isOved = true;
       });
     },
     CommentOrder() {
@@ -272,9 +286,11 @@ export default {
             duration: 1500,
             success: function() {
               setTimeout(function() {
+                that.initData();
                 wx.redirectTo({
                   url: "/pages/custom/order/main?typeNo=8"
                 });
+                
               }, 1500);
             }
           });
@@ -300,6 +316,7 @@ export default {
           duration: 1500,
           success: function() {
             setTimeout(function() {
+              that.initData();
               wx.redirectTo({
                 url: "/pages/servicemenu/myOrder/main?typeNo=8"
               });
