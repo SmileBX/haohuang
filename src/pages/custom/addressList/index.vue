@@ -1,6 +1,6 @@
 <template>
   <div class="page" style="min-heigth:100%">
-    <div class="addressList" v-if="sitelist.length>0">
+    <div class="addressList" v-if="hasData">
       <radio-group class="radio-group" @change="radioChange">
         <div v-for="(item,index) in sitelist" :key="item.id">
           <div class="item">
@@ -34,7 +34,7 @@
         </div>
       </radio-group>
     </div>
-    <div v-else style="margin-top:350rpx;text-align:center;color:#666">暂无数据！</div>
+    <div v-if="!hasData" style="margin-top:350rpx;text-align:center;color:#666">暂无数据！</div>
     <div class="ftBtn" style="heigth:100rpx;" @click="addNewSite">
       <div class="inner fixed bm0 border-box pd0">
         <div class="btn btn-active fill radius0">
@@ -74,12 +74,12 @@ export default {
     this.identity = wx.getStorageSync("identity");
     this.userid = wx.getStorageSync("userId");
     this.token = wx.getStorageSync("token");
-    this.prama = this.$root.$mp.query.url
+    this.prama = this.$root.$mp.query.url;
     this.geSiteList();
   },
   data() {
     return {
-      prama:'',
+      prama: "",
       curPage: "",
       identity: "",
       userid: "",
@@ -88,7 +88,8 @@ export default {
       data: 0,
       sitelist: [],
       page: 1,
-      pageSize: 10
+      pageSize: 10,
+      hasData: false
     };
   },
   watch: {},
@@ -114,17 +115,22 @@ export default {
         if (this.page === 1) {
           this.sitelist = [];
         }
-        for (let i = 0; i < res.data.length; i += 1) {
-          const list = res.data[i];
-          this.sitelist.push({
-            id: list.id,
-            name: list.name,
-            phone: list.tel,
-            shopname: list.shopname,
-            site: list.addressinfo,
-            checked: list.is_def
-          });
+        if (res.data.length > 0) {
+          this.hasData = true;
+
+          for (let i = 0; i < res.data.length; i += 1) {
+            const list = res.data[i];
+            this.sitelist.push({
+              id: list.id,
+              name: list.name,
+              phone: list.tel,
+              shopname: list.shopname,
+              site: list.addressinfo,
+              checked: list.is_def
+            });
+          }
         }
+        console.log("数组的长度：" + this.sitelist.length);
         console.log(this.sitelist, "列表数组");
       }
     },
@@ -185,15 +191,14 @@ export default {
     },
     //选择地址
     choseAddress(e) {
-      if(this.prama){
-          console.log(e, this.sitelist[e]);
-          wx.setStorageSync("addressinfo", this.sitelist[e]);
-          // wx.navigateBack()
-          wx.redirectTo({ url: "/pages/custom/smOrder/main?url=addresslist" });
-      }else{
-        return false
+      if (this.prama) {
+        console.log(e, this.sitelist[e]);
+        wx.setStorageSync("addressinfo", this.sitelist[e]);
+        // wx.navigateBack()
+        wx.redirectTo({ url: "/pages/custom/smOrder/main?url=addresslist" });
+      } else {
+        return false;
       }
-      
     }
   },
   // 下拉刷新
