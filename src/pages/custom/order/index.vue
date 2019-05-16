@@ -48,7 +48,7 @@
                   <p class="type">订单类型：<span v-if="list.OrderType===0">设计</span><span v-if="list.OrderType===1">制作</span><span v-if="list.OrderType===2">安装</span><span v-if="list.OrderType===3">设计+制作</span><span v-if="list.OrderType===4">制作+安装</span><span v-if="list.OrderType===5">设计+制作+安装</span></p>
                   <div class="flex">
                     <div class="flex1">
-                      <p class="new-price">￥{{list.OfferTotal}}</p>
+                      <p class="new-price">￥{{list.TotalMoney}}</p>
                     </div>
                     <!-- <span class="buyNum">x1</span> -->
                   </div>
@@ -76,7 +76,7 @@
             >取消订单</div>
             <div class="button active" @click="callService(list.ServiceTel)">联系客服</div>
             <div class="button active" v-if="list.OrderStatus==2 || list.OrderStatus==3 ||list.OrderStatus==4 || list.OrderStatus==5 || list.OrderStatus==6 || list.OrderStatus==7" @click="seeSchdule(index)">查看进度</div>
-            <div class="button active" style="width:110rpx;color:#fff!important;background:linear-gradient(to right, #fc8556, #ff6666)" v-if="list.OrderStatus===1" @click="orderPay(list.OrderNo)">付款</div>
+            <!-- <div class="button active" style="width:110rpx;color:#fff!important;background:linear-gradient(to right, #fc8556, #ff6666)" v-if="list.OrderStatus===1" @click="orderPay(list.OrderNo)">付款</div> -->
             <!-- 客服是否确认IsConfirm -->
             <!-- <div class="button active"  v-if="list.IsConfirm==0">修改价格</div> -->
             <!-- <div class="button linear" v-if="list.IsConfirm==0">确认订单</div> -->

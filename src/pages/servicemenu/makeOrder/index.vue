@@ -240,7 +240,7 @@
                 <div class="priceBox flex ppt" v-if="item.orderType!=0">
                   <div class="flex1">金额</div>
                   <div>
-                    <span class="price">￥{{item.offerTotal}}</span>
+                    <span class="price">￥{{item.offerTotal || 0}}</span>
                   </div>
                 </div>
               </div>
@@ -580,7 +580,7 @@ export default {
   watch: {
     //小计
     prolist: {
-      handler(offerTotal) {
+      handler(offerTotal,specnum) {
         for (let i = 0; i < this.prolist.length; i++) {
           if (
             this.prolist[i].makestatic.length > 0 ||
@@ -600,31 +600,24 @@ export default {
               subtotal2 += k.split("￥")[1] * 1;
             }
             this.prolist[i].offerTotal = subtotal1 + subtotal2;
-            //console.log(this.prolist[i].offerTotal,"小计")
+            console.log(this.prolist[i].offerTotal,"小计")
           } else {
             this.prolist[i].offerTotal = 0;
           }
+          for(let m=0;m<this.prolist[i].proMastic.length;m++){
+              this.prolist[i].proMastic[m].Num = this.prolist[i].specnum
+          }
+          for(let n=0;n<this.prolist[i].proIns.length;n++){
+              this.prolist[i].proIns[n].Num = this.prolist[i].specnum
+          }
+          console.log(this.prolist,"++++++++++++++++++++++++++++")
+
         }
       },
       immediate: true,
       deep: true
     },
-    //数量
-    prolist:{
-      handler(specnum){
-        for(let i=0;i<this.prolist.length;i++){
-            for(let m=0;m<this.prolist[i].proMastic.length;m++){
-                this.prolist[i].proMastic[m].Num = this.prolist[i].specnum
-            }
-            for(let n=0;n<this.prolist[i].proIns.length;n++){
-                this.prolist[i].proIns[n].Num = this.prolist[i].specnum
-            }
-            console.log(this.prolist,"++++++++++++++++++++++++++++")
-        }
-      },
-      immediate: true,
-      deep: true
-    },
+   
   },
   methods: {
     setBarTitle() {
@@ -646,18 +639,19 @@ export default {
           // console.log(i)
           if (this.masktitle == "请选择快递类型") {
             this.postMsg = this.list[i].name;
-            if (this.postMsg.indexOf("物流") != -1) {
-              this.logisticsType = 1;
-            } else {
-              this.logisticsType = 0;
-            }
+            // if (this.postMsg.indexOf("物流") != -1) {
+            //   this.logisticsType = 1;
+            // } else {
+            //   this.logisticsType = 0;
+            // }
+            this.logisticsType = this.list[i].Id
           }
           if (this.masktitle == "请选择订单类型") {
             this.prolist[n].orderTypeName = this.list[i].name;
             this.prolist[n].orderType = this.list[i].Id;
              //遍历订单  如果订单类型都是设计 隐藏
                for(let i=0;i<this.prolist.length;i++){
-                  if(this.prolist[i].orderType==1 || this.prolist[i].orderType==3 || this.prolist[i].orderType==4 || this.prolist[i].orderType==5 ){
+                  if(this.prolist[i].orderType!=1){
                       this.latShow = true;
                   }else{
                       this.latShow = false;
@@ -1189,8 +1183,7 @@ export default {
 
         //console.log(typeof this.prolist[i].estimateTime,"提交时间")
         if (
-          this.prolist[i].estimateTime.length == 0 ||
-          this.prolist[i].offerTotal.toString().length == 0 ||
+          this.prolist[i].estimateTime.length == 0||
           this.prolist[i].orderName.length == 0
         ) {
           wx.showToast({
@@ -1308,12 +1301,15 @@ export default {
       if (!this.area) {
         return "请选择省份";
       }
-      if (!this.address) {
-        return "请输入地址";
+      if(latShow){
+          if (!this.address) {
+            return "请输入地址";
+          }
+          if(!/^[\u4e00-\u9fa5\u3001\A-\Z\d]+$/ .test(this.address)){
+            return "请输入正确的地址"
+          }
       }
-      if(!/^[\u4e00-\u9fa5\u3001\A-\Z\d]+$/ .test(this.address)){
-         return "请输入正确的地址"
-      }
+      
       if(!/^[\u4e00-\u9fa5\u3001\A-\Z\d]+$/ .test(this.name)){
          return "包含非法字符"
       }
@@ -1347,7 +1343,7 @@ export default {
         
     },
     getWide(n){
-      console.log(this.prolist[n].specwide.length)
+      //console.log(this.prolist[n].specwide.length)
       if(this.prolist[n].specwide.length==0){
           this.prolist[n].specwide=0
       }else if(this.prolist[n].specwide.length>4){

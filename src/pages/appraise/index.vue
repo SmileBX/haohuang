@@ -153,7 +153,7 @@ export default {
         OrderTypeStr: "" //项目类型（文字）
       };
       this.content = ""; //用逗号隔开
-      thisradioVal = [];
+      this.radioVal = [];
     },
     getValue(index, e) {
       //获取radio的value
@@ -285,7 +285,7 @@ export default {
             icon: "none",
             duration: 1500,
             success: function() {
-              setTimeout(function() {
+              setTimeout(()=>{
                 that.initData();
                 wx.redirectTo({
                   url: "/pages/custom/order/main?typeNo=8"
@@ -315,7 +315,7 @@ export default {
           icon: "none",
           duration: 1500,
           success: function() {
-            setTimeout(function() {
+            setTimeout(()=>{
               that.initData();
               wx.redirectTo({
                 url: "/pages/servicemenu/myOrder/main?typeNo=8"
