@@ -112,10 +112,12 @@
       :selectServiceTypeStatus.sync="selectServiceTypeStatus"
       :servicePhone="servicePhone"
     ></serviceTypeSelect>
+    <foot :identity="identity"></foot>
   </div>
 </template>
 <script>
 import "@/css/common.css";
+import foot from "@/components/foot.vue";
 // import areaList from '@/utils/areaList'
 import { post, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
 import serviceTypeSelect from "@/components/serviceTypeSelect.vue";
@@ -184,7 +186,7 @@ export default {
     }
   },
   components: {
-    serviceTypeSelect
+    serviceTypeSelect,foot
   },
   methods: {
     setBarTitle() {

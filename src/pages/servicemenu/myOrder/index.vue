@@ -94,15 +94,17 @@
         <CancelOrderWindow :cancelOrderWindowStatus.sync="cancelOrderWindowStatus"
         @success="closeContent" :refuseContent.sync="refuseContent"
         ></CancelOrderWindow>
+        <foot :identity="identity"></foot>
   </div>
 </template>
 <script>
 import "@/css/common.css";
 import areaList from '@/utils/areaList'
+import foot from "@/components/foot.vue";
 import CancelOrderWindow from '@/components/cancelOrderWindow.vue'
 import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 export default {
-  components:{CancelOrderWindow},
+  components:{CancelOrderWindow,foot},
   data() {
     return {
       UserId: "",

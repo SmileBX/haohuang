@@ -110,16 +110,18 @@
       @success="closeContent"
       :refuseContent.sync="refuseContent"
     ></CancelOrderWindow>
+    <foot :identity="identity"></foot>
   </div>
 </template>
 <script>
 import "@/css/common.css";
 import areaList from "@/utils/areaList";
+import foot from "@/components/foot.vue";
 import CancelOrderWindow from "@/components/cancelOrderWindow.vue";
 import serviceTypeSelect from "@/components/serviceTypeSelect.vue";
 import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 export default {
-  components: { CancelOrderWindow, serviceTypeSelect },
+  components: { CancelOrderWindow, serviceTypeSelect, foot},
   data() {
     return {
       UserId: "",
