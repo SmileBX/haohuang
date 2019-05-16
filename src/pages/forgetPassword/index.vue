@@ -200,6 +200,7 @@ export default {
             icon: "none",
             duration: 1500,
             success: function() {
+              that.initData();
               setTimeout(function() {
                 wx.redirectTo({
                   url: "/pages/loginfrom/main?identity=" + that.identity
