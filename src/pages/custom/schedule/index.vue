@@ -150,7 +150,6 @@
           </div>
           <div class="right flex1">
             <div class="txtBox">
-             
               <p>设计师上传设计稿</p>
             </div>
           </div>

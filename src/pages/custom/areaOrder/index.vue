@@ -14,7 +14,7 @@
       <van-area :area-list="areaList" @cancel="areaListStatus = false" @confirm="areaConfirm" columns-num="2"></van-area>
     </van-popup>
     <!--订单列表-->
-    <div class="orderlist">
+    <div class="orderlist" v-if="orderList.length>0">
       <div class="item p30" v-for="(item,index) in orderList" :key="index" @click="gotoDetail(index)">
         <div class="flex ordertitle">
           <p class="itemname flex1">{{item.TypeName}}</p>
@@ -84,6 +84,7 @@ export default {
     // 初始化数据
     init() {
       this.orderListEnd = false;
+      this.searchRegion = ''
       this.page = 1;
       this.getData();
     },
@@ -132,11 +133,6 @@ export default {
       ).then(res => {
         if (res.data.length !== that.pageSize) {
           that.orderListEnd = true;
-        }
-        if(res.data.length>0){
-          res.data.forEach(item => {
-            that.$set(item,'CreateTime',item.CreateTime.split("T")[0]+" "+item.CreateTime.split("T")[1].split(".")[0]);
-          });
         }
         that.orderList = that.orderList.concat(res.data);
       });
