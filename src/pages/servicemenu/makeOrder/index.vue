@@ -566,7 +566,6 @@ export default {
     // }
     // wx.setStorageSync("addressinfo",' ')
   },
-  components: {},
   computed: {
     Total() {
       //总计
