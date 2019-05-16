@@ -127,6 +127,7 @@ export default {
       UserId: "",
       Token: "",
       curPage: "",
+      identity:"",
       page: 1,
       pageSize: 12,
       typeNo: -1, //订单状态
@@ -169,6 +170,7 @@ export default {
     this.curPage = getCurrentPageUrlWithArgs();
     this.Token = wx.getStorageSync("token");
     this.UserId = wx.getStorageSync("userId");
+    this.identity = wx.getStorageSync("identity");
     // typeNo--进入订单列表展示的状态
     // 客服--订单状态：-1全部，0-待确认，1-待付款 7-已执行(安装中) 8-待评论9-已完成
     // 客户--订单状态：-1全部，0-待确认，1-待付款，2-处理中，10-待评论
