@@ -8,7 +8,7 @@
             <div class="outside">
               <div class="pictrueAll">
                 <div class="pictrue">
-                  <img  style="width:100%;position:absolute;top:0;height:100%;" :src="schduleInfo.OrderImg">
+                  <img style="width:100%;position:absolute;top:0;height:100%;" :src="schduleInfo.OrderImg">
                 </div>
               </div>
               <div class="txtBox">
@@ -28,7 +28,7 @@
       </div>
     </div>
     <!-- 进度 -->
-    <div class="scheduleBox">
+    <div class="scheduleBox" >
       <div class="schedule">
         <!-- 订单已完成 -->
         <div class="section" v-if="schduleInfo.OverTime.length>0">
@@ -321,7 +321,7 @@ export default {
       MasterName: "", //安装师傅队长名称
       MasterNameDate: "", //指派师傅的时间
       MasterNameTime: "",
-      isShow: true
+      isShow: false
     };
   },
   methods: {
@@ -343,6 +343,24 @@ export default {
           this.curPage
         ).then(res => {
           if (res.code === 0) {
+             this.schduleInfo = {
+              OrderStatusStr: res.data.OrderStatusStr,
+              orderTypeStr: res.data.orderTypeStr,
+              orderNo: res.data.orderNo,
+              OrderStatus: res.data.OrderStatus,
+              orderType: res.data.orderType,
+              orderId: res.data.orderId,
+              OrderImg: res.data.OrderImg,
+              IsDesignModule: res.data.IsDesignModule,
+              IsInstallModule: res.data.IsInstallModule,
+              IsMakeModule: res.data.IsMakeModule,
+              DesignStatus: res.data.DesignStatus,
+              InstallList: res.data.InstallList,
+              OverTime: res.data.OverTime
+            };
+             this.isShow = true;
+             console.log("fdsfsdfsdfsdf");
+          }
             if (res.data.InstallList.length > 0) {
               res.data.InstallList.forEach(item => {
                 if (item.IsMain === 1) {
@@ -441,24 +459,7 @@ export default {
                 .join(":"); //订单完成时间
             }
             //this.schduleInfo=res.data
-            this.schduleInfo = {
-              OrderStatusStr: res.data.OrderStatusStr,
-              orderTypeStr: res.data.orderTypeStr,
-              orderNo: res.data.orderNo,
-              OrderStatus: res.data.OrderStatus,
-              orderType: res.data.orderType,
-              orderId: res.data.orderId,
-              OrderImg: res.data.OrderImg,
-              IsDesignModule: res.data.IsDesignModule,
-              IsInstallModule: res.data.IsInstallModule,
-              IsMakeModule: res.data.IsMakeModule,
-              DesignStatus: res.data.DesignStatus,
-              InstallList: res.data.InstallList,
-              OverTime: res.data.OverTime
-            };
-          }
-
-          console.log(this.schduleInfo, "this.schduleInfo");
+           
         });
       }
     },
