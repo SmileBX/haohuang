@@ -1,13 +1,13 @@
 <template>
   <div class="page">
     <!-- 订单的 -->
-    <div class="column levelPanel">
+    <div class="column levelPanel" >
       <div class="item">
         <div class="item__bd">
           <div class="box">
             <div class="outside">
               <div class="pictrueAll">
-                <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
+                <img class="pictrue img"  style="width:160rpx;height:160rpx;" :src="schduleInfo.OrderImg"/>
               </div>
               <div class="txtBox">
                 <p class="title" style="margin-bottom:0;">
@@ -43,7 +43,7 @@
         </div>
         <!--已执行、安装中-->
         <!-- <div class="item big flex" v-if="schduleInfo.OrderStatus==7 || schduleInfo.OrderStatus==9"> -->
-        <div class="item big flex" v-show="schduleInfo.orderType!=0 && schduleInfo.orderType!=1 && schduleInfo.orderType!=3 && schduleInfo.OrderStatus==7">
+        <div class="item big flex" v-show="schduleInfo.IsInstallModule==1 && schduleInfo.OrderStatus==7">
           <div class="left time">
             <p class="date" v-if="Installdate.length>0">{{Installdate}}</p>
             <p class="hours" v-if="Installtime.length>0">{{Installtime}}</p>
@@ -70,14 +70,13 @@
           </div>
         </div> -->
         <!--发货-->
-        <div class="item small flex" v-show=" schduleInfo.orderType!=2 &&  schduleInfo.orderType!=0 && schduleInfo.OrderStatus==4">
+        <div class="item small flex" v-show="schduleInfo.IsMakeModule==1 && schduleInfo.OrderStatus==8">
           <div class="left time">
             <p class="date" v-if="Fahuodate.length>0">{{Fahuodate}}</p>
             <p class="hours" v-if="Fahuotime.length>0">{{Fahuotime}}</p>
           </div>
           <div class="right flex1">
             <div class="txtBox">
-              <!-- <h2 class="status">指派师傅</h2> orderNo -->
               <p>
                 已发货
                 <span class="btnCopy" @click="seeLogs(schduleInfo.orderNo)">查看物流</span>
@@ -90,7 +89,7 @@
         </div>
         <!--制作 -->
         <!-- <div class="item big flex" v-if="schduleInfo.OrderStatus==4 || schduleInfo.OrderStatus==6 || schduleInfo.OrderStatus==7 || schduleInfo.OrderStatus==9"> -->
-        <div class="item big flex" v-show="schduleInfo.orderType!=2 &&  schduleInfo.orderType!=0">
+        <div class="item big flex" v-show="schduleInfo.IsMakeModule==1 && schduleInfo.OrderStatus!=2">
           <div class="left time">
             <p class="date" v-if="Confirmdate.length>0">{{Confirmdate}}</p>
             <p class="hours" v-if="Confirmtime.length>0">{{Confirmtime}}</p>
@@ -104,7 +103,7 @@
           </div>
         </div>
         <!--设计-->
-        <div class="item big flex" v-show="schduleInfo.orderType!=4 && schduleInfo.orderType!=1 && schduleInfo.orderType!=2  && schduleInfo.DesignStatus == 2">
+        <div class="item big flex" v-show="schduleInfo.IsDesignModule==1  && schduleInfo.DesignStatus == 2">
           <div class="left time">
             <p class="date" v-if="DesignCreatedate2.length>0">{{DesignCreatedate2}}</p>
             <p class="hours" v-if="DesignCreatetime2.length>0">{{DesignCreatetime2}}</p>
@@ -116,7 +115,7 @@
             </div>
           </div>
         </div>
-        <div class="item small flex" v-show="schduleInfo.orderType!=4 && schduleInfo.orderType!=1 && schduleInfo.orderType!=2 && schduleInfo.DesignStatus == 1">
+        <div class="item small flex" v-show="schduleInfo.IsDesignModule==1 && schduleInfo.DesignStatus == 1">
           <div class="left time">
             <p class="date" v-if="DesignCreatedate2.length>0">{{DesignCreatedate2}}</p>
             <p class="hours" v-if="DesignCreatetime2.length>0">{{DesignCreatetime2}}</p>
@@ -125,12 +124,13 @@
             <div class="txtBox">
               <p>客户确认设计
                   <span class="btnCopy" @click="confirmButtonModal">确认设计</span>
+                  <span class="btnCopy" @click="seePics(schduleInfo.orderId)">查看设计图</span>
               </p>
             </div>
           </div>
         </div>
         <!-- <div class="item big flex" v-if="schduleInfo.OrderStatus==2 || schduleInfo.OrderStatus==4 || schduleInfo.OrderStatus==6 || schduleInfo.OrderStatus==7 || schduleInfo.OrderStatus==9"> -->
-        <div class="item big flex" v-show="schduleInfo.orderType!=4 && schduleInfo.orderType!=1 && schduleInfo.orderType!=2">
+        <div class="item big flex" v-show="schduleInfo.IsDesignModule==1 && schduleInfo.DesignStatus == 0">
           <div class="left time">
             <p class="date" v-if="DesignCreatedate.length>0">{{DesignCreatedate}}</p>
             <p class="hours" v-if="DesignCreatetime.length>0">{{DesignCreatetime}}</p>
@@ -259,7 +259,8 @@ export default {
       DesignCreatedate2:"",  //设计完成
       DesignCreatetime2:"",
       enddate:'',  //完成
-      endtime:""
+      endtime:"",
+      isShow:true,
 
 
     };
@@ -290,8 +291,8 @@ export default {
               
             //安装
               if(res.data.InstallList.length>0){
-                this.Installdate=res.data.InstallList[0].InstallTime.split("T")[0].split("-").splice(1).join('-')//安装时间
-                this.Installtime=res.data.InstallList[0].InstallTime.split("T")[1].split(":").slice(0,-1).join(":")//安装时间
+                this.Installdate=res.data.InstallList[0].InstallTime.split(" ")[0].split("-").splice(1).join('-')//安装时间
+                this.Installtime=res.data.InstallList[0].InstallTime.split(" ")[1].split(":").slice(0,-1).join(":")//安装时间
                   this.masterName=res.data.InstallList[0].MasterName
                   let num=''
                   for(let i=0;i<this.masterName.slice(1).length;i++){
@@ -344,7 +345,12 @@ export default {
                 orderTypeStr:res.data.orderTypeStr,
                 orderNo:res.data.orderNo,
                 OrderStatus:res.data.OrderStatus,
-                orderType:res.data.orderType
+                orderType:res.data.orderType,
+                orderId:res.data.orderId,
+                OrderImg:res.data.OrderImg,
+                IsDesignModule:res.data.IsDesignModule,
+                IsInstallModule:res.data.IsInstallModule,
+                IsMakeModule:res.data.IsMakeModule
              }
             console.log(this.schduleInfo,"this.schduleInfo")   
 
@@ -368,7 +374,7 @@ export default {
     //查看物流
     seeLogs(OrderNo){
         wx.navigateTo({
-          url:"/pages/custom/schelogs/main?OrderNo="+OrderNo
+          url:"/pages/schelogs/main?OrderNo="+OrderNo
         })
     },
     //确认设计
@@ -413,6 +419,10 @@ export default {
               })
       }
     },
+    //查看设计稿
+    seePics(orderId){
+      wx.navigateTo({url:'/pages/designPic/main?orderId='+orderId})
+    }
   }
 };
 </script>

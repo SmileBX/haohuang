@@ -17,7 +17,9 @@
         "pages/wxBindTel/main",
         "pages/chooseBank/main",
         "pages/setPhone/main",
-        "pages/appraise/main"
+        "pages/appraise/main",
+        "pages/designPic/main",
+        "pages/schelogs/main"
 
     ],
     "subpackages": [{
@@ -48,8 +50,9 @@
                 "addressList/main",
                 "addAddress/main",
                 "smOrder/main",
-                "areaOrder/main",
-                "schelogs/main"
+                "areaOrder/main"
+                
+               
             ]
         },
         {
@@ -61,8 +64,8 @@
                 "orderDetail/main",
                 "myOrder/main",
                 "makeOrder/main",
-                "schedule/main",
-                "schelogs/main"
+                "schedule/main"
+               
             ]
         }
     ],

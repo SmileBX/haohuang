@@ -27,7 +27,7 @@
           v-for="(item,index) in imgPathArr"
           :key="index"
         >
-          <img :src="item" alt="" class="upload-img img">
+          <img :src="item"  style="width:160rpx;height:160rpx;">
           <img src="/static/images/icons/cancle.png" class="close" @click="delImg(index)" alt>
         </div>
         <div
@@ -69,7 +69,7 @@ export default {
       inputTxtLength: 0,
       imgPathArr: [],
       imgPathArr2: [],
-      picLength:4,
+      picLength: 4,
       isShowBtnUpload: true
     };
   },
@@ -79,7 +79,7 @@ export default {
         title: "意见反馈"
       });
     },
-    initData(){
+    initData() {
       this.content = "";
       this.inputTxtLength = 0;
       this.imgPathArr = [];

@@ -24,3 +24,14 @@
     float:right;
     overflow: hidden;
 }
+.paySuccess{
+    background: #fff;
+    width: 540rpx;
+    height: 720rpx;
+    top: 175rpx;
+    left: 105rpx;
+    position: fixed;
+    z-index: 999;
+    padding: 52rpx 65rpx;
+    flex-direction: column;
+}
