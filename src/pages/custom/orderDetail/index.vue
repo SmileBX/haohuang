@@ -136,9 +136,9 @@
     ></serviceTypeSelect>
       <!-- 取消订单 -->
        <!-- refuseContent:'', //取消订单填写的原因 -->
-      <!-- <CancelOrderWindow :cancelOrderWindowStatus.sync="cancelOrderWindowStatus"
+      <CancelOrderWindow :cancelOrderWindowStatus.sync="cancelOrderWindowStatus"
        :refuseContent.sync="refuseContent" @success="closeContent" 
-       ></CancelOrderWindow> -->
+       ></CancelOrderWindow>
   </div>
 </template>
 <script>
