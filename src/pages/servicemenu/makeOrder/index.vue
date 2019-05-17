@@ -1288,8 +1288,9 @@ export default {
       }
       (this.provinceCode = areas[0].code || ""),
         (this.cityCode = areas[1].code || ""),
-        (this.districtCode = areas[2].code || ""),
+        // (this.districtCode = areas[2].code || ""),
         (this.area = text);
+        console.log(this.area)
     },
     jiaoyan() {
       if (!this.name) {
