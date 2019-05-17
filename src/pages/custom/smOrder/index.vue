@@ -503,7 +503,7 @@ export default {
               this.prolist[n].orderType=this.list[i].Id
                //遍历订单  如果订单类型都是设计 隐藏
                for(let i=0;i<this.prolist.length;i++){
-                  if(this.prolist[i].orderType!=1){
+                  if(this.prolist[i].orderType!=0){
                       this.latShow = true;
                   }else{
                       this.latShow = false;

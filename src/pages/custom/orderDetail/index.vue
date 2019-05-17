@@ -101,7 +101,7 @@
         <div class="item" v-if="detail.OrderStatus==2 || detail.OrderStatus==3 || detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 ||detail.OrderStatus==8 || detail.OrderStatus==9">支付时间：{{detail.PayTime}}</div>
         <div class="item" v-if="detail.OrderStatus==7">分配师傅：{{detail.InstallTime}}</div>
          <div class="item" v-if="detail.OrderStatus==8">完工确认：{{detail.EndTime}}</div>
-        <div class="item" v-if="detail.EstimateTime">完成时间：{{detail.EstimateTime}}</div>
+        <div class="item" v-if="detail.EstimateTime">预计完成时间：{{detail.EndTime}}</div>
       </div>
     </div>
     <!-- 在线客服 -->
@@ -269,10 +269,6 @@ export default {
         confirmColor:'#ff662a',
         success(res){
           if(res.confirm){
-            wx.showToast({
-              title:'订单取消成功！',
-              duration:1500
-            })
             that.cancelOrderWindowStatus = !that.cancelOrderWindowStatus
           }
         }
@@ -288,10 +284,17 @@ export default {
               OrderNo:this.orderId,
               RefuseContent:this.refuseContent
             },this.curPage).then(res=>{
-                this.cancelOrderWindowStatus = false;
-                this.refuseContent=''
-                this.getData();
-                console.log(res.data,'取消成功')
+                wx.showToast({
+                  title:'订单取消成功！',
+                  duration:1500,
+                })
+                setTimeout(()=>{
+                   this.cancelOrderWindowStatus = false
+                    this.refuseContent=''
+                    this.getData();
+                    console.log(res.data,'取消成功')
+                 },1500)
+                
             })
         }
       

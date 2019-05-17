@@ -21,9 +21,9 @@
           </div>
         </div>
         <div class="modal__ft flex ftBtn" style="height:100rpx;" @click="submit">
-          <div class="inner fixed bm0 border-box" style="padding:0;">
-            <div class="btn btn-active fill" style="border-radius:0;">确定</div>
-          </div>
+          <!-- <div class="inner fixed bm0 border-box" style="padding:0;"> -->
+            <div class="btn btn-active fill" style="border-radius:0;width:100%">确定</div>
+          <!-- </div> -->
         </div>
       </div>
     </van-action-sheet>

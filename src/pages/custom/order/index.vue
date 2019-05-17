@@ -284,10 +284,17 @@ export default {
             OrderNo: this.editOrderId,
             RefuseContent: this.refuseContent
           },this.curPage).then(res=>{
-              this.cancelOrderWindowStatus = false;
-              this.refuseContent = "";
-              this.init();
-              console.log(res.data, "取消成功");
+              wx.showToast({
+                title:'订单取消成功！',
+                duration:1500,
+              })
+              setTimeout(()=>{
+                  this.cancelOrderWindowStatus = false;
+                  this.refuseContent = "";
+                  this.init();
+                  console.log(res.data, "取消成功");
+                },1500)
+              
           })
       }
       

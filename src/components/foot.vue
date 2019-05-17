@@ -1,6 +1,6 @@
 <template>
   <div class="foot">
-    <cover-view class="inner">
+    <cover-view class="inner" style="border:1px solid red">
       <cover-view class="list clear center" :class="[identity !==3 ? 'wd':'w25']">
         <cover-view :class="{'active':activeIndex===0}" @click="gotoPage(0)" class="w20">
           <cover-image v-if="activeIndex===0" src="/static/images/footer/ft1_2.png" class="iconImg" alt/>
