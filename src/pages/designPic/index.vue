@@ -7,6 +7,9 @@
             <div class="box">
               <div class="outside">
                 <div class="pictrueAll">
+                  <div class="pictrue">
+                      <img class="img" style="width:100%;height:100%;position:absolute;top:0;left:0" :src="schduleInfo.OrderImg"/>
+                  </div>
                    <img class="pictrue img"  style="width:160rpx;height:160rpx;" :src="schduleInfo.OrderImg"/>
                 </div>
                 <div class="txtBox">
