@@ -103,6 +103,15 @@
         </div>
       </div>
     </div>
+    <div class="bg_fff masterSmPrice" v-if="detail.MasterType===0 && detail.ProgressInfo.length>0">
+      <div class="PriceItem" v-for="(item,index) in detail.ProgressInfo" :key="index">
+        <div class="PriceItem__title">明细({{index}})</div>
+        <p>交通费：{{item.TrafficMoney}}</p>
+        <p>餐费：{{item.Meals}}</p>
+        <p>材料费：{{item.HotelExpense}}</p>
+        <p>住宿费：{{item.MasterialFee}}</p>
+      </div>
+    </div>
     <!-- 订单信息 -->
     <div class="orderInfo bg_fff mb10">
       <div class="orderInfo__hd weui-cells__title bl__weui-cells__title">
