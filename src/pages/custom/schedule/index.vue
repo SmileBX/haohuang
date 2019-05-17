@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-if="isShow">
     <!-- 订单的 -->
     <div class="column levelPanel">
       <div class="item">
@@ -321,7 +321,7 @@ export default {
       MasterName: "", //安装师傅队长名称
       MasterNameDate: "", //指派师傅的时间
       MasterNameTime: "",
-      isShow: true
+      isShow: false
     };
   },
   methods: {
@@ -343,6 +343,22 @@ export default {
           this.curPage
         ).then(res => {
           if (res.code === 0) {
+            this.schduleInfo = {
+              OrderStatusStr: res.data.OrderStatusStr,
+              orderTypeStr: res.data.orderTypeStr,
+              orderNo: res.data.orderNo,
+              OrderStatus: res.data.OrderStatus,
+              orderType: res.data.orderType,
+              orderId: res.data.orderId,
+              OrderImg: res.data.OrderImg,
+              IsDesignModule: res.data.IsDesignModule,
+              IsInstallModule: res.data.IsInstallModule,
+              IsMakeModule: res.data.IsMakeModule,
+              DesignStatus: res.data.DesignStatus,
+              InstallList: res.data.InstallList,
+              OverTime: res.data.OverTime
+            };
+            this.isShow = true;
             if (res.data.InstallList.length > 0) {
               res.data.InstallList.forEach(item => {
                 if (item.IsMain === 1) {
@@ -441,21 +457,7 @@ export default {
                 .join(":"); //订单完成时间
             }
             //this.schduleInfo=res.data
-            this.schduleInfo = {
-              OrderStatusStr: res.data.OrderStatusStr,
-              orderTypeStr: res.data.orderTypeStr,
-              orderNo: res.data.orderNo,
-              OrderStatus: res.data.OrderStatus,
-              orderType: res.data.orderType,
-              orderId: res.data.orderId,
-              OrderImg: res.data.OrderImg,
-              IsDesignModule: res.data.IsDesignModule,
-              IsInstallModule: res.data.IsInstallModule,
-              IsMakeModule: res.data.IsMakeModule,
-              DesignStatus: res.data.DesignStatus,
-              InstallList: res.data.InstallList,
-              OverTime: res.data.OverTime
-            };
+            
           }
 
           console.log(this.schduleInfo, "this.schduleInfo");
