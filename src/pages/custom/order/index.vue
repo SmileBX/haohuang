@@ -12,7 +12,6 @@
         </li>
       </ul>
     </div>
-
     <!-- 搜索 -->
     <div class="searchBox">
       <div class="search flex AlignCenter border-box" style="margin-top:10rpx;">
@@ -110,7 +109,7 @@
       @success="closeContent"
       :refuseContent.sync="refuseContent"
     ></CancelOrderWindow>
-    <foot :identity="identity"></foot>
+    <foot :identity="identity" v-if="showTabbar"></foot>
   </div>
 </template>
 <script>
@@ -129,6 +128,7 @@ export default {
       page: 1,
       curPage: "",
       identity:'',
+      showTabbar:true,
       pageSize: 12,
       typeNo: -1, //订单状态
       searchRegion: "", //搜索地区字段
@@ -284,10 +284,17 @@ export default {
             OrderNo: this.editOrderId,
             RefuseContent: this.refuseContent
           },this.curPage).then(res=>{
-              this.cancelOrderWindowStatus = false;
-              this.refuseContent = "";
-              this.init();
-              console.log(res.data, "取消成功");
+              wx.showToast({
+                title:'订单取消成功！',
+                duration:1500,
+              })
+              setTimeout(()=>{
+                  this.cancelOrderWindowStatus = false;
+                  this.refuseContent = "";
+                  this.init();
+                  console.log(res.data, "取消成功");
+                },1500)
+              
           })
       }
       

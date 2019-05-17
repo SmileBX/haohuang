@@ -93,7 +93,7 @@
         <div class="item" v-if="detail.OrderStatus==0 || detail.OrderStatus==2 || detail.OrderStatus==3 || detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 ||detail.OrderStatus==8 || detail.OrderStatus==9">支付时间：{{detail.PayTime}}</div>
         <div class="item" v-if="detail.OrderStatus==4">发货时间：{{detail.Fahuodate}}</div>
         <div class="item" v-if="detail.OrderStatus==7">分配师傅：{{detail.InstallTime}}</div>
-        <div class="item" v-if="detail.EndTime">完成时间：{{detail.EndTime}}</div>
+        <div class="item" v-if="detail.EndTime">预计完成时间：{{detail.EndTime}}</div>
       </div>
     </div>
     <!-- 操作按钮 -->
@@ -281,10 +281,16 @@ export default {
             OrderNo:this.orderId,
             RefuseContent:this.refuseContent
           },this.curPage).then(res=>{
-              this.cancelOrderWindowStatus = false;
-              this.refuseContent=''
-              this.getData();
-              console.log(res.data,'取消成功')
+              wx.showToast({
+                title:'订单取消成功！',
+                duration:1500,
+              })
+              setTimeout(()=>{
+                  this.cancelOrderWindowStatus = false
+                  this.refuseContent=''
+                  this.getData();
+                  console.log(res.data,'取消成功')
+                },1500)
            })
         }
     },
@@ -325,11 +331,11 @@ export default {
         let cancelColor=''
       if(types==='design'){ //设计确认
         title='设计确认'
-        content='设计完成图可在流程内查看，设计是否通过审核!'
+        // content='设计完成图可在流程内查看，设计是否通过审核!'
         cancelColor='red'
       }else if(types==='logistics'){ //物流计确认
         title='确认收货'
-        content='设计完成图可在流程内查看，设计是否通过审核!'
+        // content='设计完成图可在流程内查看，设计是否通过审核!'
         let cancelText='取消'
         let confirmText='确认收货'
       }
@@ -361,7 +367,16 @@ export default {
                 Token:this.Token,
                 OrderNo:this.orderId,
                 AuditType:AuditType
-          },this.curPage)
+          },this.curPage).then(res=>{
+              console.log(res)
+                  wx.showToast({
+                    title:'操作成功！',
+                    duration:2000
+                  })
+                  setTimeout(()=>{
+                    wx.redirectTo({url: '/pages/servicemenu/myOrder/main'});
+                  },1000)
+          })
       }
 
     },

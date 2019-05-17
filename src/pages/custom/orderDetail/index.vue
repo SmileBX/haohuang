@@ -101,7 +101,7 @@
         <div class="item" v-if="detail.OrderStatus==2 || detail.OrderStatus==3 || detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 ||detail.OrderStatus==8 || detail.OrderStatus==9">支付时间：{{detail.PayTime}}</div>
         <div class="item" v-if="detail.OrderStatus==7">分配师傅：{{detail.InstallTime}}</div>
          <div class="item" v-if="detail.OrderStatus==8">完工确认：{{detail.EndTime}}</div>
-        <div class="item" v-if="detail.EstimateTime">完成时间：{{detail.EstimateTime}}</div>
+        <div class="item" v-if="detail.EstimateTime">预计完成时间：{{detail.EndTime}}</div>
       </div>
     </div>
     <!-- 在线客服 -->
@@ -136,9 +136,9 @@
     ></serviceTypeSelect>
       <!-- 取消订单 -->
        <!-- refuseContent:'', //取消订单填写的原因 -->
-      <!-- <CancelOrderWindow :cancelOrderWindowStatus.sync="cancelOrderWindowStatus"
+      <CancelOrderWindow :cancelOrderWindowStatus.sync="cancelOrderWindowStatus"
        :refuseContent.sync="refuseContent" @success="closeContent" 
-       ></CancelOrderWindow> -->
+       ></CancelOrderWindow>
   </div>
 </template>
 <script>
@@ -269,10 +269,6 @@ export default {
         confirmColor:'#ff662a',
         success(res){
           if(res.confirm){
-            wx.showToast({
-              title:'订单取消成功！',
-              duration:1500
-            })
             that.cancelOrderWindowStatus = !that.cancelOrderWindowStatus
           }
         }
@@ -288,10 +284,17 @@ export default {
               OrderNo:this.orderId,
               RefuseContent:this.refuseContent
             },this.curPage).then(res=>{
-                this.cancelOrderWindowStatus = false;
-                this.refuseContent=''
-                this.getData();
-                console.log(res.data,'取消成功')
+                wx.showToast({
+                  title:'订单取消成功！',
+                  duration:1500,
+                })
+                setTimeout(()=>{
+                   this.cancelOrderWindowStatus = false
+                    this.refuseContent=''
+                    this.getData();
+                    console.log(res.data,'取消成功')
+                 },1500)
+                
             })
         }
       
@@ -333,12 +336,14 @@ export default {
       const that =this;
       let title=''
       let content=''
-        let cancelText='取消'
-        let confirmText='确认'
+       let cancelText=''
+        let confirmText=''
         let cancelColor=''
       if(types==='design'){ //设计确认
         title='设计确认'
        // content='设计完成图可在流程内查看，设计是否通过审核!'
+        cancelText='不通过'
+        confirmText='通过'
         cancelColor='red'
       }else if(types==='logistics'){ //物流计确认
         title='确认收货'
@@ -377,10 +382,10 @@ export default {
                 },this.curPage).then(res=>{
                   console.log(res)
                   wx.showToast({
-                    title:res.msg,
+                    title:'操作成功！',
                     duration:2000
                   })
-                  setTimeout(function(){
+                  setTimeout(()=>{
                     wx.redirectTo({url: '/pages/custom/order/main'});
                   },1000)
           })

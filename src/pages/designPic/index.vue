@@ -27,7 +27,7 @@
       </div>
       <!--展示图片-->
       <div class="pic flex" v-for="(img,index) in piclist" :key="index" style="margin-top:20rpx;">
-          <div style="width:32%;">
+          <div style="width:30%;">
               <img :src="img" alt @click="lookPic(index,piclist)" mode="widthFix">
           </div>
       </div>
