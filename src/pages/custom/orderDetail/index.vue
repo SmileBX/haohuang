@@ -51,7 +51,7 @@
                   <div class="flex1">
                     <p class="price" style="font-size:26rpx">￥{{detail.ProductMoney}}</p>
                   </div>
-                  <span class="buyNum">x1</span>
+                  <span class="buyNum">x{{detail.SpecNum}}</span>
                 </div>
               </div>
             </div>
@@ -136,9 +136,9 @@
     ></serviceTypeSelect>
       <!-- 取消订单 -->
        <!-- refuseContent:'', //取消订单填写的原因 -->
-      <CancelOrderWindow :cancelOrderWindowStatus.sync="cancelOrderWindowStatus"
+      <!-- <CancelOrderWindow :cancelOrderWindowStatus.sync="cancelOrderWindowStatus"
        :refuseContent.sync="refuseContent" @success="closeContent" 
-       ></CancelOrderWindow>
+       ></CancelOrderWindow> -->
   </div>
 </template>
 <script>

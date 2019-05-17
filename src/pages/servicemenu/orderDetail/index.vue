@@ -43,7 +43,7 @@
                   <div class="flex1">
                     <p class="price">￥{{detail.ProductMoney}}</p>
                   </div>
-                  <span class="buyNum">x1</span>
+                  <span class="buyNum">x{{detail.SpecNum}}</span>
                 </div>
               </div>
             </div>
