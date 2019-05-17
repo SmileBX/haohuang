@@ -367,7 +367,16 @@ export default {
                 Token:this.Token,
                 OrderNo:this.orderId,
                 AuditType:AuditType
-          },this.curPage)
+          },this.curPage).then(res=>{
+              console.log(res)
+                  wx.showToast({
+                    title:'操作成功！',
+                    duration:2000
+                  })
+                  setTimeout(()=>{
+                    wx.redirectTo({url: '/pages/servicemenu/myOrder/main'});
+                  },1000)
+          })
       }
 
     },

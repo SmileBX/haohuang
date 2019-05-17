@@ -336,12 +336,14 @@ export default {
       const that =this;
       let title=''
       let content=''
-        let cancelText='取消'
-        let confirmText='确认'
+       let cancelText=''
+        let confirmText=''
         let cancelColor=''
       if(types==='design'){ //设计确认
         title='设计确认'
        // content='设计完成图可在流程内查看，设计是否通过审核!'
+        cancelText='不通过'
+        confirmText='通过'
         cancelColor='red'
       }else if(types==='logistics'){ //物流计确认
         title='确认收货'
@@ -380,10 +382,10 @@ export default {
                 },this.curPage).then(res=>{
                   console.log(res)
                   wx.showToast({
-                    title:res.msg,
+                    title:'操作成功！',
                     duration:2000
                   })
-                  setTimeout(function(){
+                  setTimeout(()=>{
                     wx.redirectTo({url: '/pages/custom/order/main'});
                   },1000)
           })
