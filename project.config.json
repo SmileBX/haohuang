@@ -34,7 +34,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 35,
+			"current": 36,
 			"list": [
 				{
 					"id": 0,
@@ -285,6 +285,13 @@
 					"id": 35,
 					"name": "设计稿查看",
 					"pathName": "pages/designPic/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "feedback",
+					"pathName": "pages/feedback/main",
 					"query": "",
 					"scene": null
 				}
