@@ -62,7 +62,7 @@
             </div>
             <div class="right flex1">
               <div class="txtBox">
-                <img src="/static/images/icons/sczz.png" class="statusIcon" alt>
+                <img src="/static/images/icons/zpsf.png" class="statusIcon" alt>
                 <h2 class="status">指派师傅</h2>
                 <p>{{MasterName}}开始为你安装中</p>
               </div>
