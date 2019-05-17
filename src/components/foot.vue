@@ -1,35 +1,36 @@
 <template>
   <div class="foot">
-    <div class="inner">
-      <ul class="list clear center" :class="[identity !==3 ? 'li_20':'li_25']">
-        <li :class="{'active':activeIndex===0}" @click="gotoPage(0)">
-          <img v-if="activeIndex===0" src="/static/images/footer/ft1_2.png" class="iconImg" alt>
-          <img v-else src="/static/images/footer/ft1.png" class="iconImg" alt>
-          <p class="title">首页</p>
-        </li>
-        <li :class="{'active':activeIndex===1}" @click="gotoPage(1)">
-          <img v-if="activeIndex===1" src="/static/images/footer/ft2_2.png" class="iconImg" alt>
-          <img v-else src="/static/images/footer/ft2.png" class="iconImg" alt>
-          <p class="title">订单</p>
-        </li>
-        <li :class="{'active':activeIndex===2}" @click="gotoPage(2)" v-if="identity !==3">
-          <div class="circle">
-            <img src="/static/images/footer/ft3.png" alt>
-            <span>下单</span>
-          </div>
-        </li>
-        <li :class="{'active':activeIndex===3}" @click="gotoPage(3)">
-          <img v-if="activeIndex===3" src="/static/images/footer/ft4_2.png" class="iconImg" alt>
-          <img v-else src="/static/images/footer/ft4.png" class="iconImg" alt>
-          <p class="title">消息</p>
-        </li>
-        <li :class="{'active':activeIndex===4}" @click="gotoPage(4)">
-          <img v-if="activeIndex===4" src="/static/images/footer/ft5_2.png" class="iconImg" alt>
-          <img v-else src="/static/images/footer/ft5.png" class="iconImg" alt>
-          <p class="title">我的</p>
-        </li>
-      </ul>
-    </div>
+    <cover-view class="inner">
+      <cover-view class="list clear center" :class="[identity !==3 ? 'wd':'w25']">
+        <cover-view :class="{'active':activeIndex===0}" @click="gotoPage(0)" class="w20">
+          <cover-image v-if="activeIndex===0" src="/static/images/footer/ft1_2.png" class="iconImg" alt/>
+          <cover-image v-else src="/static/images/footer/ft1.png" class="iconImg" alt/>
+          <cover-view class="title">首页</cover-view>
+        </cover-view>
+        <cover-view :class="{'active':activeIndex===1}" @click="gotoPage(1)" class="w20">
+          <cover-image v-if="activeIndex===1" src="/static/images/footer/ft2_2.png" class="iconImg" alt/>
+          <cover-image v-else src="/static/images/footer/ft2.png" class="iconImg" alt/>
+          <cover-view class="title">订单</cover-view>
+        </cover-view>
+        <cover-view :class="{'active':activeIndex===2}" @click="gotoPage(2)" v-if="identity !==3" class="w20">
+          
+        </cover-view>
+        <cover-view :class="{'active':activeIndex===3}" @click="gotoPage(3)" class="w20">
+          <cover-image v-if="activeIndex===3" src="/static/images/footer/ft4_2.png" class="iconImg" alt/>
+          <cover-image v-else src="/static/images/footer/ft4.png" class="iconImg" alt/>
+          <cover-view class="title">消息</cover-view>
+        </cover-view>
+        <cover-view :class="{'active':activeIndex===4}" @click="gotoPage(4)" class="w20">
+          <cover-image v-if="activeIndex===4" src="/static/images/footer/ft5_2.png" class="iconImg" alt/>
+          <cover-image v-else src="/static/images/footer/ft5.png" class="iconImg" alt/>
+          <cover-view class="title">我的</cover-view>
+        </cover-view>
+      </cover-view>
+    </cover-view>
+      <cover-view class="circle" @click="gotoPage(2)" v-if="identity !==3">
+            <cover-image src="/static/images/footer/ft3.png" alt/>
+            <cover-view class="downOrder">下单</cover-view>
+          </cover-view>
   </div>
 </template>
 <script>
@@ -175,11 +176,14 @@ export default {
   -o-align-items: center;
   align-items: center;
 }
-.list li.active {
+.w20.active {
   color: #5694fc;
 }
-.li_20 li {
+.wd .w20 {
   width: 20%;
+}
+.w25 .w20{
+  width:25%;
 }
 .clear::before,
 .clear::after {
@@ -192,24 +196,28 @@ export default {
 }
 .circle {
   width: 120rpx;
-  margin: 0 auto;
-  position: relative;
+  height:120rpx;
+  margin-left: -60rpx;
+  position: fixed;
+  bottom:10rpx;
+  left:50%;
+  z-index:51;
 }
-.circle img {
+.circle cover-image {
   width: 120rpx;
   height: 120rpx;
   position: absolute;
-  top: -80rpx;
+  top: 0;
   left: 0;
-  // z-index: 2;
+  z-index: 2;
 }
-.circle span {
+.circle .downOrder {
   width: 120rpx;
-  height: 120rpx;
   line-height: 120rpx;
   position: absolute;
-  top: -80rpx;
-  // z-index: 2;
+  top: 0;
+  z-index: 3;
+  text-align:center;
   left: 0;
   color: #fff;
   font-size: 30rpx;
