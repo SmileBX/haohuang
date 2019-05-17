@@ -45,7 +45,7 @@
                   <div class="flex1">
                     <p class="price"><span v-if="detail.MasterType==1">￥{{detail.Change}}</span><span v-if="detail.MasterType==0">无价格</span></p>
                   </div>
-                  <span class="buyNum">x{{detail.OrderNum}}</span>
+                  <!-- <span class="buyNum">x{{detail.OrderNum}}</span> -->
                 </div>
               </div>
             </div>
@@ -106,10 +106,10 @@
     <div class="bg_fff masterSmPrice" v-if="detail.MasterType===0 && detail.ProgressInfo.length>0">
       <div class="PriceItem" v-for="(item,index) in detail.ProgressInfo" :key="index">
         <div class="PriceItem__title">明细({{index}})</div>
-        <p>交通费：{{item.TrafficMoney}}</p>
-        <p>餐费：{{item.Meals}}</p>
-        <p>材料费：{{item.HotelExpense}}</p>
-        <p>住宿费：{{item.MasterialFee}}</p>
+        <p>交通费：￥{{item.TrafficMoney}}</p>
+        <p>餐费：￥{{item.Meals}}</p>
+        <p>材料费：￥{{item.MasterialFee}}</p>
+        <p>住宿费：￥{{item.HotelExpense}}</p>
       </div>
     </div>
     <!-- 订单信息 -->

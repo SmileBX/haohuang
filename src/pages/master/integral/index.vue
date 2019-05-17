@@ -3,7 +3,7 @@
     <div class="sum border-box column">
       <p>当前积分</p>
       <p>
-        <span class="score" v-if="hasData">{{info.Score}}</span>
+        <span class="score" v-if="hasData">{{info.Integral}}</span>
       </p>
     </div>
     <div class="scorelist" v-if="scoreList.length>0">

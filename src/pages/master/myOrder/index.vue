@@ -65,7 +65,7 @@
                         <span v-if="list.MasterType===1">￥{{list.InstallMoney}}</span>
                       </p>
                     </div>
-                    <span class="buyNum">x{{list.num}}</span>
+                    <!-- <span class="buyNum">x{{list.num}}</span> -->
                   </div>
                 </div>
               </div>

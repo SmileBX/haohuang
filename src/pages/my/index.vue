@@ -30,7 +30,7 @@
     <!-- 这个是师傅的时候才有的 -->
     <ul class="numberList flex li_50" v-if="hasData && identity==3">
       <li @click="gotoIntegral">
-        <p class="num">{{info.Score}}</p>
+        <p class="num">{{info.Integral}}</p>
         <p class="title">积分</p>
       </li>
       <li @click="gotoSun">
