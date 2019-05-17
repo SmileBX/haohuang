@@ -180,7 +180,19 @@ export default {
             },
             that.curPage
           ).then(res => {
-            that.sitelist.spilce(index, 1);
+            if (res.code === 0) {
+              wx.showToast({
+                title: "删除成功!",
+                icon: "success",
+                duration: 1500,
+                success:()=>{
+                  that.sitelist.splice(index, 1);
+                  if(that.sitelist.length<=0){
+                    that.hasData = false;
+                  }
+                }
+              });
+            }
             //that.$router.go(0);
           });
           //on confirm
