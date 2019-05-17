@@ -44,7 +44,7 @@
 
 .schedule .item .status {
     font-size: 34rpx;
-    padding-bottom: 10rpx;
+    /* padding-bottom: 10rpx; */
 }
 
 .schedule .item .txtBox {
@@ -86,17 +86,18 @@
     background: #ff662a;
 }
 
-.schedule .item:last-child .right {
-    border-left: none;
-}
 
-.schedule .item:last-child .txtBox:after {
+/* .schedule .item:last-child .txtBox:after {
     width: 1px;
     background: #e0e0e0;
     height: 20rpx;
     top: -10rpx;
     z-index: 3;
     left: -50rpx;
+} */
+
+.schedule .section:last-child .item .right {
+    border-left: none;
 }
 
 

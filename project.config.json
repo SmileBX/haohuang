@@ -34,7 +34,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 36,
+			"current": 4,
 			"list": [
 				{
 					"id": 0,
@@ -65,10 +65,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 4,
 					"name": "客户的查看进度",
 					"pathName": "pages/custom/schedule/main",
-					"query": "",
+					"query": "OrderNoId=1165",
 					"scene": null
 				},
 				{
@@ -170,7 +170,7 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 19,
 					"name": "登录入口选择身份",
 					"pathName": "pages/login2/main",
 					"query": "",
