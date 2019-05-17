@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-if="isShow">
     <!-- 订单的 -->
     <div class="column levelPanel">
       <div class="item">
@@ -8,7 +8,7 @@
             <div class="outside">
               <div class="pictrueAll">
                 <div class="pictrue">
-                  <img style="width:100%;position:absolute;top:0;height:100%;" :src="schduleInfo.OrderImg">
+                  <img  style="width:100%;position:absolute;top:0;height:100%;" :src="schduleInfo.OrderImg">
                 </div>
               </div>
               <div class="txtBox">
@@ -28,7 +28,7 @@
       </div>
     </div>
     <!-- 进度 -->
-    <div class="scheduleBox" >
+    <div class="scheduleBox">
       <div class="schedule">
         <!-- 订单已完成 -->
         <div class="section" v-if="schduleInfo.OverTime.length>0">
@@ -343,7 +343,7 @@ export default {
           this.curPage
         ).then(res => {
           if (res.code === 0) {
-             this.schduleInfo = {
+            this.schduleInfo = {
               OrderStatusStr: res.data.OrderStatusStr,
               orderTypeStr: res.data.orderTypeStr,
               orderNo: res.data.orderNo,
@@ -358,9 +358,7 @@ export default {
               InstallList: res.data.InstallList,
               OverTime: res.data.OverTime
             };
-             this.isShow = true;
-             console.log("fdsfsdfsdfsdf");
-          }
+            this.isShow = true;
             if (res.data.InstallList.length > 0) {
               res.data.InstallList.forEach(item => {
                 if (item.IsMain === 1) {
@@ -459,7 +457,10 @@ export default {
                 .join(":"); //订单完成时间
             }
             //this.schduleInfo=res.data
-           
+            
+          }
+
+          console.log(this.schduleInfo, "this.schduleInfo");
         });
       }
     },
