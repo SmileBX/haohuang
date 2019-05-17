@@ -107,10 +107,10 @@
         <!-- <div class="btn linear" v-if="detail.IsConfirm==1&&detail.IsPay==0" @click="confirmPay">线下付款</div> -->
         <div class="btn linear" v-if="detail.OrderStatus==1" @click="confirmPay">线下付款</div>
         <!--查看进度-->
-        <div class="button active" v-if="detail.OrderStatus==2 || detail.OrderStatus==3 ||detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 || detail.OrderStatus==8" @click="seeSchdule(detail.orderId,detail.OrderStatus)">查看进度</div>
+        <div class="button active" v-if="(detail.OrderStatus==2 || detail.OrderStatus==3 ||detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 || detail.OrderStatus==8) && detail.MemberId==0" @click="seeSchdule(detail.orderId,detail.OrderStatus)">查看进度</div>
         <div class="btn linear" v-if="detail.DesignStatus==1 && detail.MemberId==0" @click="confirmButtonModal('design')">设计确认</div>
         <div class="btn linear" v-if="detail.OrderStatus==4 && detail.MemberId==0" @click="confirmButtonModal('logistics')">确认收货</div>
-        <div class="btn linear" v-if="detail.OrderStatus==8" @click="gotoComment">评论</div>
+        <div class="btn linear" v-if="detail.OrderStatus==8 && detail.MemberId==0" @click="gotoComment">评论</div>
         <!-- <div class="btn btn-active" v-if="detail.OrderStatus==9">删除订单</div> -->
       </div>
     </div>

@@ -192,7 +192,7 @@ export default {
         }
       }
       if (this.detail.OrderType == 3) {
-        //验证设计
+        //验证安装
         if (!this.radioVal[0] || !this.radioVal[1]) {
           wx.showToast({
             title: "请评价完选项!",
@@ -220,6 +220,7 @@ export default {
         }
         console.log("conStr:" + conStr);
         this.content = conStr;
+        alert("+++++++++++++++++++++")
         if(this.identity==1){  //客服
           this.KfCommentOrder();
         }
