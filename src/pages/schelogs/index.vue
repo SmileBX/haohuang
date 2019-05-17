@@ -253,51 +253,69 @@ export default {
     },
     //获取物流
     getDate(){
+      //客户
+      if(this.identity == 2){
         if(toLogin(this.curPage)){
           post('Order/GetLogistics',{
               UserId:this.UserId,
               Token:this.Token,
               OrderNo:this.OrderNo
           },this.curPage).then(res=>{
-            //console.log(res,"物流进度")
-            this.schduleInfo= JSON.parse(res.data)
-            //console.log(this.schduleInfo,"this.schdulelog111111111111111111111111")
-            const transformList=JSON.parse(res.data).data;
-            console.log(transformList);
-            let info={}
-            for(let i=0;i<transformList.length;i++){
-                info={
-                  date:transformList[i].time.split(" ")[0].split("-").splice(1).join('-'),
-                  time:transformList[i].time.split(" ")[1].split(":").slice(0,-1).join(':'),
-                  context:transformList[i].context,
-                  getGoods:false,//是否签收
-                  sendGoods:false,//派件 
-                  pullGoods:false,//揽件 
-                  transform:false,//运输中 
-                }
-                this.transformList.push(info)
-              }
-              for(let i=0;i<this.transformList.length;i++){
-                  if(this.transformList[i].context.indexOf('签收')!=-1){
-                     this.transformList[i].getGoods=true
-                     this.complete = true
-                  }
-                  if(this.transformList[i].context.indexOf('派件')!=-1){
-                    this.transformList[i].sendGoods=true
-                    this.transformList[i+1].transform = true
-                     this.carriage = true
-                  }
-                  if(this.transformList[i].context.indexOf('揽件')!=-1 ||this.transformList[i].context.indexOf('收件')!=-1 ){
-                    this.transformList[i].pullGoods=true
-                    this.getStatu = true
-                  }
-                  if(this.transformList[this.transformList.length-1].context.indexOf('派件')!=-1 || this.transformList[this.transformList.length-1].context.indexOf('签收')!=-1){
-                      this.transformList[this.transformList.length-1].transform = true
-                      this.carriage = true
-                  }
-              }
+            this.getresDetail(res)
             console.log(this.transformList,"transformList66666666666666666")
             })
+        }
+      }
+      if(this.identity == 1){
+          if(toLogin(this.curPage)){
+          post('CustomerService/GetLogistics',{
+              CsdId:this.UserId,
+              Token:this.Token,
+              OrderNo:this.OrderNo
+          },this.curPage).then(res=>{
+            this.getresDetail(res)
+            // console.log(this.transformList,"transformList66666666666666666")
+            })
+        }
+      }
+    },
+    /////
+    getresDetail(res){
+      this.schduleInfo= JSON.parse(res.data)
+      //console.log(this.schduleInfo,"this.schdulelog111111111111111111111111")
+      const transformList=JSON.parse(res.data).data;
+      console.log(transformList);
+      let info={}
+      for(let i=0;i<transformList.length;i++){
+          info={
+            date:transformList[i].time.split(" ")[0].split("-").splice(1).join('-'),
+            time:transformList[i].time.split(" ")[1].split(":").slice(0,-1).join(':'),
+            context:transformList[i].context,
+            getGoods:false,//是否签收
+            sendGoods:false,//派件 
+            pullGoods:false,//揽件 
+            transform:false,//运输中 
+          }
+          this.transformList.push(info)
+        }
+        for(let i=0;i<this.transformList.length;i++){
+            if(this.transformList[i].context.indexOf('签收')!=-1){
+                this.transformList[i].getGoods=true
+                this.complete = true
+            }
+            if(this.transformList[i].context.indexOf('派件')!=-1){
+              this.transformList[i].sendGoods=true
+              this.transformList[i+1].transform = true
+                this.carriage = true
+            }
+            if(this.transformList[i].context.indexOf('揽件')!=-1 ||this.transformList[i].context.indexOf('收件')!=-1 ){
+              this.transformList[i].pullGoods=true
+              this.getStatu = true
+            }
+            if(this.transformList[this.transformList.length-1].context.indexOf('派件')!=-1 || this.transformList[this.transformList.length-1].context.indexOf('签收')!=-1){
+                this.transformList[this.transformList.length-1].transform = true
+                this.carriage = true
+            }
         }
     },
     // 复制

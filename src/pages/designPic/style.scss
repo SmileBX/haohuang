@@ -1,0 +1,40 @@
+.pic{
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width:100%;
+    height:100%;
+    background:#fff;
+    padding:30rpx 10rpx;
+    box-sizing: border-box;
+    position:relative;
+        
+}
+.pic::before{
+    position: absolute;
+    top:0;
+    left:0;
+    height:10rpx;
+    background:#e5e5e5;
+    content: "";
+    width: 100%;
+}
+.pic img {
+    width: 100%;
+    height: 100%;
+    margin-top: 20rpx;
+    // margin-right: 20rpx;
+}
+// .pic img:nth-child(3n) {
+//     margin-right: 0;
+// }
+.btnCopy2 {
+    font-size: 23rpx; 
+    border: 1px solid #ff662a;
+    border-radius:25rpx;
+    color: #ff662a;
+    padding: 0 18rpx;
+    display: block;
+    width:50rpx;
+    float:right;
+    overflow: hidden;
+}

@@ -7,7 +7,7 @@
           <div class="box">
             <div class="outside">
               <div class="pictrueAll">
-                <div class="pictrue img" style="background-image:url(/static/images/of/a1.png)"></div>
+                <img class="pictrue img"  style="width:160rpx;height:160rpx;" :src="schduleInfo.OrderImg"/>
               </div>
               <div class="txtBox">
                 <p class="title" style="margin-bottom:0;">
@@ -90,7 +90,7 @@
         </div>
         <!--制作 -->
         <!-- <div class="item big flex" v-if="schduleInfo.OrderStatus==4 || schduleInfo.OrderStatus==6 || schduleInfo.OrderStatus==7 || schduleInfo.OrderStatus==9"> -->
-        <div class="item big flex" v-show="schduleInfo.orderType!=2 &&  schduleInfo.orderType!=0">
+        <div class="item big flex" v-show="schduleInfo.orderType!=2 &&  schduleInfo.orderType!=0 && schduleInfo.OrderStatus!=2">
           <div class="left time">
             <p class="date" v-if="Confirmdate.length>0">{{Confirmdate}}</p>
             <p class="hours" v-if="Confirmtime.length>0">{{Confirmtime}}</p>
@@ -125,6 +125,7 @@
             <div class="txtBox">
               <p>客户确认设计
                   <span class="btnCopy" @click="confirmButtonModal">确认设计</span>
+                  <span class="btnCopy" @click="seePics(schduleInfo.orderId)">查看设计图</span>
               </p>
             </div>
           </div>
@@ -292,8 +293,8 @@ export default {
               
             //安装
               if(res.data.InstallList.length>0){
-                this.Installdate=res.data.InstallList[0].InstallTime.split("T")[0].split("-").splice(1).join('-')//安装时间
-                this.Installtime=res.data.InstallList[0].InstallTime.split("T")[1].split(":").slice(0,-1).join(":")//安装时间
+                this.Installdate=res.data.InstallList[0].InstallTime.split(" ")[0].split("-").splice(1).join('-')//安装时间
+                this.Installtime=res.data.InstallList[0].InstallTime.split(" ")[1].split(":").slice(0,-1).join(":")//安装时间
                   this.masterName=res.data.InstallList[0].MasterName
                   let num=''
                   for(let i=0;i<this.masterName.slice(1).length;i++){
@@ -346,7 +347,8 @@ export default {
                 orderTypeStr:res.data.orderTypeStr,
                 orderNo:res.data.orderNo,
                 OrderStatus:res.data.OrderStatus,
-                orderType:res.data.orderType
+                orderType:res.data.orderType,
+                OrderImg:res.data.OrderImg
              }
             console.log(this.schduleInfo,"this.schduleInfo")   
 
@@ -370,7 +372,7 @@ export default {
     //查看物流
     seeLogs(OrderNo){
         wx.navigateTo({
-          url:"/pages/servicemenu/schelogs/main?OrderNo="+OrderNo
+          url:"/pages/schelogs/main?OrderNo="+OrderNo
         })
     },
     //确认设计
@@ -413,6 +415,10 @@ export default {
               },1000)
             })
     },
+    //查看设计稿
+    seePics(orderId){
+      wx.navigateTo({url:'/pages/designPic/main?orderId='+orderId})
+    }
   }
 };
 </script>
