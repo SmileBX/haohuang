@@ -26,6 +26,9 @@ export default {
   },
   onShow() {
     console.log("vvvvvvvvvvvvvvvv");
+    if(wx.getStorageSync("identity") !=="undefined" && wx.getStorageSync("identity")){
+       this.identity = wx.getStorageSync("identity");
+    }
     if (this.$root.$mp.query.askUrl) {
       let askUrl = this.$root.$mp.query.askUrl
         .toString()
@@ -37,7 +40,9 @@ export default {
   },
   components: {},
   data() {
-    return {};
+    return {
+      identity:""
+    };
   },
   methods: {
     setBarTitle() {
@@ -47,6 +52,9 @@ export default {
     },
     gotoLogin(index) {
       wx.setStorageSync("identity", index);
+      if(index !==this.identity){
+        wx.setStorageSync('askUrl','');
+      }
       wx.navigateTo({
         url: "/pages/login/main"
       });

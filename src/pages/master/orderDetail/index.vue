@@ -54,13 +54,13 @@
       </div>
     </div>
     <div class="picList bg_fff" v-if="detail.Status!==0">
-      <div class="item" v-if="detail.AfterPicList.length>0">
+      <div class="item" v-if="detail.FrontPicList.length>0">
         <h2 class="title">安装前照片</h2>
         <div class="uploadImage clear">
           <div
             class="upload-img img"
-            @click="lookPic(index,detail.AfterPicList)"
-            v-for="(item,index) in detail.AfterPicList"
+            @click="lookPic(index,detail.FrontPicList)"
+            v-for="(item,index) in detail.FrontPicList"
             :key="index"
             :style="'background-image:url('+item+')'"
           ></div>
@@ -78,13 +78,13 @@
           ></div>
         </div>
       </div>
-      <div class="item" v-if="detail.FrontPicList.length>0">
+      <div class="item" v-if="detail.AfterPicList.length>0">
         <h2 class="title">安装后照片</h2>
         <div class="uploadImage clear">
           <div
             class="upload-img img"
-            @click="lookPic(index,detail.FrontPicList)"
-            v-for="(item,index) in detail.FrontPicList"
+            @click="lookPic(index,detail.AfterPicList)"
+            v-for="(item,index) in detail.AfterPicList"
             :key="index"
             :style="'background-image:url('+item+')'"
           ></div>
@@ -105,7 +105,7 @@
     </div>
     <div class="bg_fff masterSmPrice" v-if="detail.MasterType===0 && detail.ProgressInfo.length>0">
       <div class="PriceItem" v-for="(item,index) in detail.ProgressInfo" :key="index">
-        <div class="PriceItem__title">明细({{index}})</div>
+        <div class="PriceItem__title">明细({{index+1}})</div>
         <p>交通费：￥{{item.TrafficMoney}}</p>
         <p>餐费：￥{{item.Meals}}</p>
         <p>材料费：￥{{item.MasterialFee}}</p>
@@ -180,6 +180,7 @@ export default {
     this.setBarTitle();
   },
   onShow() {
+    this.detail = {};
     this.UserId = wx.getStorageSync("userId");
     this.Token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();

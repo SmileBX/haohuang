@@ -45,8 +45,8 @@
             class="upload-img img"
             v-for="(item, index) in frontPicList"
             :key="index"
-            :style="'background-image:url('+item+')'"
           >
+            <img :src="item" alt="">
             <img src="/static/images/icons/cancle.png" class="close" @click="delImg(1,index)" alt>
           </div>
           <div v-if="frontPicList.length<picLength" class="button-upload" @click="chosseImg(1)">
@@ -62,8 +62,8 @@
             class="upload-img img"
             v-for="(item, index) in insidePicList"
             :key="index"
-            :style="'background-image:url('+item+')'"
           >
+            <img :src="item" alt="">
             <img src="/static/images/icons/cancle.png" class="close" @click="delImg(2,index)" alt>
           </div>
           <div v-if="insidePicList.length<picLength" class="button-upload" @click="chosseImg(2)">
@@ -79,8 +79,8 @@
             class="upload-img img"
             v-for="(item, index) in afterPicList"
             :key="index"
-            :style="'background-image:url('+item+')'"
           >
+          <img :src="item" alt="">
             <img src="/static/images/icons/cancle.png" class="close" @click="delImg(3,index)" alt>
           </div>
           <div v-if="afterPicList.length<picLength" class="button-upload" @click="chosseImg(3)">
@@ -96,8 +96,8 @@
             class="upload-img img"
             v-for="(item, index) in receiptPicList"
             :key="index"
-            :style="'background-image:url('+item+')'"
           >
+            <img :src="item" alt="">
             <img src="/static/images/icons/cancle.png" class="close" @click="delImg(4,index)" alt>
           </div>
           <div v-if="receiptPicList.length<picLength" class="button-upload" @click="chosseImg(4)">

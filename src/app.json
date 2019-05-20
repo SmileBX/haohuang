@@ -20,7 +20,6 @@
         "pages/appraise/main",
         "pages/designPic/main",
         "pages/schelogs/main"
-
     ],
     "subpackages": [{
             "root": "pages/master/",
@@ -49,10 +48,8 @@
                 "schedule/main",
                 "addressList/main",
                 "addAddress/main",
-                "smOrder/main",
-                "areaOrder/main"
-                
-               
+                "areaOrder/main",
+                "smOrder/main"
             ]
         },
         {
@@ -65,7 +62,6 @@
                 "myOrder/main",
                 "makeOrder/main",
                 "schedule/main"
-               
             ]
         }
     ],
@@ -86,5 +82,4 @@
         "navigationBarTitleText": "浩煌",
         "navigationBarTextStyle": "black"
     }
-
 }

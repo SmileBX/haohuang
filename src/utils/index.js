@@ -131,6 +131,7 @@ export function toLogin(objUrl) { //identity: 1:客服；2：客户；3：师傅
     if (userId && token && identity) {
         return true;
     } else {
+        wx.setStorageSync('askUrl', '');
         if (objUrl) {
             let gotoUrl = objUrl.replace(/\?/g, '%3F').replace(/\=/g, '%3D').replace(/\&/g, '%26');
             wx.redirectTo({
