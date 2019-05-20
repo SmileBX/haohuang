@@ -331,7 +331,7 @@ export default {
         let cancelColor=''
       if(types==='design'){ //设计确认
         title='设计确认'
-        // content='设计完成图可在流程内查看，设计是否通过审核!'
+        content='设计完成图可在流程内查看，设计是否通过审核!'
         cancelColor='red'
       }else if(types==='logistics'){ //物流计确认
         title='确认收货'
@@ -340,8 +340,8 @@ export default {
         let confirmText='确认收货'
       }
       wx.showModal({
-        title:'',
-        content:'',
+        title:title,
+        content:content,
         confirmColor:'#33cc33',
         cancelColor,
         cancelText,
@@ -371,7 +371,7 @@ export default {
               console.log(res)
                   wx.showToast({
                     title:'操作成功！',
-                    duration:2000
+                    duration:1500
                   })
                   setTimeout(()=>{
                     wx.redirectTo({url: '/pages/servicemenu/myOrder/main'});
@@ -380,6 +380,7 @@ export default {
       }
 
     },
+    //确认收货
     // 评论
     gotoComment(){
       wx.navigateTo({

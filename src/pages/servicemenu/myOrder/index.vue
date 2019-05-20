@@ -318,14 +318,14 @@ export default {
         success:(res)=>{
             if(res.confirm){
                 if(toLogin(this.curPage)){
-                  post('Order/OrderCollection',{
-                      UserId:this.UserId,
+                  post('CustomerService/KfOrderCollection',{
+                      CsdId:this.UserId,
                       Token:this.Token,
                       OrderNo:OrderNo
                       },this.curPage).then(res=>{
                         console.log(res)
                         wx.showToast({
-                          title:res.msg,
+                          title:'操作成功！',
                           duration:2000
                         })
                         that.getData();

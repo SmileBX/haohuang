@@ -517,7 +517,7 @@ export default {
         }).then(res => {
           console.log(res);
           wx.showToast({
-            title: res.msg,
+            title:'操作成功！',
             duration: 2000
           });
           setTimeout(function() {
