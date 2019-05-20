@@ -22,8 +22,7 @@
         </div>
         <p>订单编号：{{item.OrderNo}}</p>
         <p>下单时间：{{item.CreateTime}}</p>
-        <p v-if="item.OverTime">完成时间：{{item.OverTime}}</p>
-        <p v-else>完成时间：处理中</p>
+        <p>完成时间：{{item.OverTime}}</p>
       </div>
     </div>
     <!--弹框-->
