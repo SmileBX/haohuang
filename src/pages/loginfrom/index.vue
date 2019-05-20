@@ -272,6 +272,14 @@ export default {
         VerifyCode: that.Code
       }).then(result => {
         if (result.code === 0) {
+          if (
+            wx.getStorageSync("askUrl") &&
+            wx.getStorageSync("askUrl") !== "undefined"
+          ) {
+            if (wx.getStorageSync("askUrl") !== that.Tel) {
+              wx.setStorageSync("askUrl", "");
+            }
+          }
           wx.setStorageSync("userId", result.data.MemberId);
           wx.setStorageSync("token", result.data.MemberToken);
           wx.showToast({
@@ -279,7 +287,7 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-               that.initData();
+              that.initData();
               if (
                 wx.getStorageSync("askUrl") !== "undefined" &&
                 wx.getStorageSync("askUrl")
@@ -310,7 +318,14 @@ export default {
         PassWord: that.Pwd
       }).then(result => {
         if (result.code === 0) {
-         
+          if (
+            wx.getStorageSync("askUrl") &&
+            wx.getStorageSync("askUrl") !== "undefined"
+          ) {
+            if (wx.getStorageSync("askUrl") !== that.Tel) {
+              wx.setStorageSync("askUrl", "");
+            }
+          }
           wx.setStorageSync("userId", result.data.MemberId);
           wx.setStorageSync("token", result.data.MemberToken);
           console.log("dfsdfsdfdsfsdf");
@@ -319,7 +334,7 @@ export default {
             icon: "success",
             duration: 1500,
             success: function() {
-               that.initData();
+              that.initData();
               if (
                 wx.getStorageSync("askUrl") !== "undefined" &&
                 wx.getStorageSync("askUrl")
@@ -351,6 +366,14 @@ export default {
         PassWord: that.Pwd
       }).then(result => {
         if (result.code === 0) {
+          if (
+            wx.getStorageSync("askUrl") &&
+            wx.getStorageSync("askUrl") !== "undefined"
+          ) {
+            if (wx.getStorageSync("askUrl") !== that.Tel) {
+              wx.setStorageSync("askUrl", "");
+            }
+          }
           wx.setStorageSync("userId", result.data.MasterId);
           wx.setStorageSync("token", result.data.MasterToken);
           wx.showToast({
@@ -395,6 +418,14 @@ export default {
         VerifyCode: that.Code
       }).then(result => {
         if (result.code === 0) {
+          if (
+            wx.getStorageSync("askUrl") &&
+            wx.getStorageSync("askUrl") !== "undefined"
+          ) {
+            if (wx.getStorageSync("askUrl") !== that.Tel) {
+              wx.setStorageSync("askUrl", "");
+            }
+          }
           wx.setStorageSync("userId", result.data.MasterId);
           wx.setStorageSync("token", result.data.MasterToken);
           wx.showToast({
@@ -440,6 +471,14 @@ export default {
         VerifyCode: that.Code
       }).then(result => {
         if (result.code === 0) {
+          if (
+            wx.getStorageSync("askUrl") &&
+            wx.getStorageSync("askUrl") !== "undefined"
+          ) {
+            if (wx.getStorageSync("askUrl") !== that.Tel) {
+              wx.setStorageSync("askUrl", "");
+            }
+          }
           wx.setStorageSync("userId", result.data.ServiceId);
           wx.setStorageSync("token", result.data.ServiceToken);
           wx.showToast({
@@ -478,6 +517,14 @@ export default {
         PassWord: that.Pwd
       }).then(result => {
         if (result.code === 0) {
+          if (
+            wx.getStorageSync("askUrl") &&
+            wx.getStorageSync("askUrl") !== "undefined"
+          ) {
+            if (wx.getStorageSync("askUrl") !== that.Tel) {
+              wx.setStorageSync("askUrl", "");
+            }
+          }
           wx.setStorageSync("userId", result.data.ServiceId);
           wx.setStorageSync("token", result.data.ServiceToken);
           wx.showToast({
