@@ -201,10 +201,10 @@ export default {
       receiptPicList: [], //验收单据图片
       progressInfoList: [
         {
-          TrafficMoney: "", //交通费
-          Meals: "", //餐费
-          HotelExpense: "", //住宿费
-          MasterialFee: "" //材料费
+          TrafficMoney: "0", //交通费
+          Meals: "0", //餐费
+          HotelExpense: "0", //住宿费
+          MasterialFee: "0" //材料费
         }
       ], //明细
       infoLength: 10,
@@ -339,7 +339,7 @@ export default {
           JSON.stringify(afterPicList),
           JSON.stringify(receiptPicList),
           progressInfoList
-          
+
         );
       }
     },
