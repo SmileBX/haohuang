@@ -10,7 +10,7 @@
     </div>
     <div class="allPadd">
       <div class="botbtn deposit" @click="gotoDepositmoney">提现</div>
-      <div class="tips watch" @click="gotoWithdrawRecord">查看资金明细></div>
+      <div class="tips watch" @click="gotoWithdrawRecord">查看提现明细></div>
     </div>
   </div>
 </template>

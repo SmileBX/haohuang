@@ -105,7 +105,7 @@
     </div>
     <div class="bg_fff masterSmPrice" v-if="detail.MasterType===0 && detail.ProgressInfo.length>0">
       <div class="PriceItem" v-for="(item,index) in detail.ProgressInfo" :key="index">
-        <div class="PriceItem__title">明细({{index}})</div>
+        <div class="PriceItem__title">明细({{index+1}})</div>
         <p>交通费：￥{{item.TrafficMoney}}</p>
         <p>餐费：￥{{item.Meals}}</p>
         <p>材料费：￥{{item.MasterialFee}}</p>
@@ -180,6 +180,7 @@ export default {
     this.setBarTitle();
   },
   onShow() {
+    this.detail = {};
     this.UserId = wx.getStorageSync("userId");
     this.Token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
