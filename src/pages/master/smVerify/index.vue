@@ -415,7 +415,7 @@ export default {
             duration: 1500,
             success: function() {
               setTimeout(function() {
-                wx.reLaunch({
+                wx.navigateTo({
                   url: "/pages/master/orderDetail/main?orderId="+that.orderId
                 });
               }, 1500);

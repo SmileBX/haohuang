@@ -193,9 +193,15 @@ function wxMemberLogin(code, iv, encryptedData) {
         console.log(result);
         if (result.code === 0) { //登录成功
             //把返回的userId、token保存起来
+            if (wx.getStorageSync("askUrl") && wx.getStorageSync("askUrl") !== "undefined") {
+                if (wx.getStorageSync("mobile") !== result.data.MemberMobile && wx.getStorageSync("mobile") && wx.getStorageSync("mobile") !== "undefined") {
+                    wx.setStorageSync("askUrl", "");
+                }
+            }
             wx.setStorageSync("userId", result.data.MemberId);
             wx.setStorageSync("token", result.data.MemberToken);
             wx.setStorageSync("openId", result.data.MemberOpenId);
+            wx.setStorageSync("mobile", result.data.MemberMobile);
             wx.showToast({
                 title: '登录成功',
                 icon: 'success',
@@ -249,9 +255,15 @@ function wxInstalMasterLogin(code, iv, encryptedData) {
         encryptedData
     }).then(result => {
         if (result.code === 0) { //登录成功
+            if (wx.getStorageSync("askUrl") && wx.getStorageSync("askUrl") !== "undefined") {
+                if (wx.getStorageSync("mobile") !== result.data.MasterMobile && wx.getStorageSync("mobile") && wx.getStorageSync("mobile") !== "undefined") {
+                    wx.setStorageSync("askUrl", "");
+                }
+            }
             wx.setStorageSync("userId", result.data.MasterId);
             wx.setStorageSync("token", result.data.MasterToken);
             wx.setStorageSync("openId", result.data.MasterOpenId);
+            wx.setStorageSync("mobile", result.data.MasterMobile);
             wx.showToast({
                 title: '登录成功',
                 icon: 'success',
@@ -302,9 +314,15 @@ function wxCustomerServiceLogin(code, iv, encryptedData) {
         encryptedData
     }).then(result => {
         if (result.code === 0) { //登录成功
+            if (wx.getStorageSync("askUrl") && wx.getStorageSync("askUrl") !== "undefined") {
+                if (wx.getStorageSync("mobile") !== result.data.ServiceMobile && wx.getStorageSync("mobile") && wx.getStorageSync("mobile") !== "undefined") {
+                    wx.setStorageSync("askUrl", "");
+                }
+            }
             wx.setStorageSync("userId", result.data.ServiceId);
             wx.setStorageSync("token", result.data.ServiceToken);
             wx.setStorageSync("openId", result.data.ServiceOpenId);
+            wx.setStorageSync("mobile", result.data.ServiceMobile);
             wx.showToast({
                 title: '登录成功',
                 icon: 'success',
