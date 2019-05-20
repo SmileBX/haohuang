@@ -70,6 +70,8 @@ export default {
   onShow() {
     this.page = 1;
     this.sitelist = [];
+    this.hasData = false;
+    thisisshow = true;
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
     this.userid = wx.getStorageSync("userId");
