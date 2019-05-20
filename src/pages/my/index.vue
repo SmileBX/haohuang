@@ -351,7 +351,6 @@ export default {
       });
     },
     customService(){  //客户的点击专属客服
-    console.log("ffffffffff");
       this.selectServiceTypeStatus = true;
       console.log(this.selectServiceTypeStatus);
     },
@@ -459,9 +458,6 @@ export default {
       ).then(result => {
         console.log(result);
         if (result.code === 0) {
-          console.log("gfgfgfgfgfg");
-          console.log("_______________");
-          wx.setStorageSync("mobile", result.data.Mobile);
           that.$set(
             result.data,
             "Mobile",
@@ -470,7 +466,6 @@ export default {
               result.data.Mobile.substring(result.data.Mobile.length - 4)
           );
           that.hasData = true;
-          console.log("oooo" + that.hasData);
           that.info = result.data;
         }
       });
@@ -488,7 +483,6 @@ export default {
       ).then(result => {
         if (result.code === 0) {
           that.servicePhone = result.data.ServiceTel;
-          wx.setStorageSync("mobile", result.data.Mobile);
           that.$set(
             result.data,
             "Mobile",

@@ -276,12 +276,17 @@ export default {
             wx.getStorageSync("askUrl") &&
             wx.getStorageSync("askUrl") !== "undefined"
           ) {
-            if (wx.getStorageSync("askUrl") !== that.Tel) {
+            if (
+              wx.getStorageSync("mobile") !== that.Tel &&
+              wx.getStorageSync("mobile") &&
+              wx.getStorageSync("mobile") !== "undefined"
+            ) {
               wx.setStorageSync("askUrl", "");
             }
           }
           wx.setStorageSync("userId", result.data.MemberId);
           wx.setStorageSync("token", result.data.MemberToken);
+          wx.setStorageSync("mobile", that.Tel);
           wx.showToast({
             title: "登录成功",
             icon: "success",
@@ -322,12 +327,17 @@ export default {
             wx.getStorageSync("askUrl") &&
             wx.getStorageSync("askUrl") !== "undefined"
           ) {
-            if (wx.getStorageSync("askUrl") !== that.Tel) {
+            if (
+              wx.getStorageSync("mobile") !== that.Tel &&
+              wx.getStorageSync("mobile") &&
+              wx.getStorageSync("mobile") !== "undefined"
+            ) {
               wx.setStorageSync("askUrl", "");
             }
           }
           wx.setStorageSync("userId", result.data.MemberId);
           wx.setStorageSync("token", result.data.MemberToken);
+          wx.setStorageSync("token", that.Tel);
           console.log("dfsdfsdfdsfsdf");
           wx.showToast({
             title: "登录成功",
@@ -370,12 +380,17 @@ export default {
             wx.getStorageSync("askUrl") &&
             wx.getStorageSync("askUrl") !== "undefined"
           ) {
-            if (wx.getStorageSync("askUrl") !== that.Tel) {
+            if (
+              wx.getStorageSync("mobile") !== that.Tel &&
+              wx.getStorageSync("mobile") &&
+              wx.getStorageSync("mobile") !== "undefined"
+            ) {
               wx.setStorageSync("askUrl", "");
             }
           }
           wx.setStorageSync("userId", result.data.MasterId);
           wx.setStorageSync("token", result.data.MasterToken);
+          wx.setStorageSync("token", that.Tel);
           wx.showToast({
             title: "登录成功",
             icon: "success",
@@ -422,12 +437,17 @@ export default {
             wx.getStorageSync("askUrl") &&
             wx.getStorageSync("askUrl") !== "undefined"
           ) {
-            if (wx.getStorageSync("askUrl") !== that.Tel) {
+            if (
+              wx.getStorageSync("mobile") !== that.Tel &&
+              wx.getStorageSync("mobile") &&
+              wx.getStorageSync("mobile") !== "undefined"
+            ) {
               wx.setStorageSync("askUrl", "");
             }
           }
           wx.setStorageSync("userId", result.data.MasterId);
           wx.setStorageSync("token", result.data.MasterToken);
+          wx.setStorageSync("mobile", that.Tel);
           wx.showToast({
             title: "登录成功",
             icon: "success",
@@ -475,12 +495,17 @@ export default {
             wx.getStorageSync("askUrl") &&
             wx.getStorageSync("askUrl") !== "undefined"
           ) {
-            if (wx.getStorageSync("askUrl") !== that.Tel) {
+            if (
+              wx.getStorageSync("mobile") !== that.Tel &&
+              wx.getStorageSync("mobile") &&
+              wx.getStorageSync("mobile") !== "undefined"
+            ) {
               wx.setStorageSync("askUrl", "");
             }
           }
           wx.setStorageSync("userId", result.data.ServiceId);
           wx.setStorageSync("token", result.data.ServiceToken);
+          wx.setStorageSync("mobile", that.Tel);
           wx.showToast({
             title: "登录成功",
             icon: "success",
@@ -521,12 +546,17 @@ export default {
             wx.getStorageSync("askUrl") &&
             wx.getStorageSync("askUrl") !== "undefined"
           ) {
-            if (wx.getStorageSync("askUrl") !== that.Tel) {
+            if (
+              wx.getStorageSync("mobile") !== that.Tel &&
+              wx.getStorageSync("mobile") &&
+              wx.getStorageSync("mobile") !== "undefined"
+            ) {
               wx.setStorageSync("askUrl", "");
             }
           }
           wx.setStorageSync("userId", result.data.ServiceId);
           wx.setStorageSync("token", result.data.ServiceToken);
+          wx.setStorageSync("mobile", that.Tel);
           wx.showToast({
             title: "登录成功",
             icon: "success",
