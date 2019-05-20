@@ -337,7 +337,7 @@ export default {
           }
           wx.setStorageSync("userId", result.data.MemberId);
           wx.setStorageSync("token", result.data.MemberToken);
-          wx.setStorageSync("token", that.Tel);
+          wx.setStorageSync("mobile", that.Tel);
           console.log("dfsdfsdfdsfsdf");
           wx.showToast({
             title: "登录成功",
@@ -390,7 +390,7 @@ export default {
           }
           wx.setStorageSync("userId", result.data.MasterId);
           wx.setStorageSync("token", result.data.MasterToken);
-          wx.setStorageSync("token", that.Tel);
+          wx.setStorageSync("mobile", that.Tel);
           wx.showToast({
             title: "登录成功",
             icon: "success",

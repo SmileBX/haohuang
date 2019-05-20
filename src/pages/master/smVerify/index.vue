@@ -41,12 +41,8 @@
         <h2 class="uploadTitle">安装前照片</h2>
         <div class="uploadImage clear">
           <!-- 上传展示的图片 -->
-          <div
-            class="upload-img img"
-            v-for="(item, index) in frontPicList"
-            :key="index"
-          >
-            <img :src="item" alt="">
+          <div class="upload-img img" v-for="(item, index) in frontPicList" :key="index">
+            <img :src="item" alt>
             <img src="/static/images/icons/cancle.png" class="close" @click="delImg(1,index)" alt>
           </div>
           <div v-if="frontPicList.length<picLength" class="button-upload" @click="chosseImg(1)">
@@ -58,12 +54,8 @@
         <h2 class="uploadTitle">内部结构照片</h2>
         <div class="uploadImage clear">
           <!-- 上传展示的图片 -->
-          <div
-            class="upload-img img"
-            v-for="(item, index) in insidePicList"
-            :key="index"
-          >
-            <img :src="item" alt="">
+          <div class="upload-img img" v-for="(item, index) in insidePicList" :key="index">
+            <img :src="item" alt>
             <img src="/static/images/icons/cancle.png" class="close" @click="delImg(2,index)" alt>
           </div>
           <div v-if="insidePicList.length<picLength" class="button-upload" @click="chosseImg(2)">
@@ -75,12 +67,8 @@
         <h2 class="uploadTitle">安装后照片</h2>
         <div class="uploadImage clear">
           <!-- 上传展示的图片 -->
-          <div
-            class="upload-img img"
-            v-for="(item, index) in afterPicList"
-            :key="index"
-          >
-          <img :src="item" alt="">
+          <div class="upload-img img" v-for="(item, index) in afterPicList" :key="index">
+            <img :src="item" alt>
             <img src="/static/images/icons/cancle.png" class="close" @click="delImg(3,index)" alt>
           </div>
           <div v-if="afterPicList.length<picLength" class="button-upload" @click="chosseImg(3)">
@@ -92,12 +80,8 @@
         <h2 class="uploadTitle">客户验收单</h2>
         <div class="uploadImage clear">
           <!-- 上传展示的图片 -->
-          <div
-            class="upload-img img"
-            v-for="(item, index) in receiptPicList"
-            :key="index"
-          >
-            <img :src="item" alt="">
+          <div class="upload-img img" v-for="(item, index) in receiptPicList" :key="index">
+            <img :src="item" alt>
             <img src="/static/images/icons/cancle.png" class="close" @click="delImg(4,index)" alt>
           </div>
           <div v-if="receiptPicList.length<picLength" class="button-upload" @click="chosseImg(4)">
@@ -234,6 +218,41 @@ export default {
         title: "提交审核"
       });
     },
+    valOther() {
+      if (this.frontPicList.length <= 0) {
+        wx.showToast({
+          title: "请上传安装前图片!",
+          icon: "none",
+          duration: 1500
+        });
+        return false;
+      }
+      if (this.insidePicList.length <= 0) {
+        wx.showToast({
+          title: "请上传内部结构图片!",
+          icon: "none",
+          duration: 1500
+        });
+        return false;
+      }
+      if (this.afterPicList.length <= 0) {
+        wx.showToast({
+          title: "请上传安装后图片!",
+          icon: "none",
+          duration: 1500
+        });
+        return false;
+      }
+      if (this.receiptPicList.length <= 0) {
+        wx.showToast({
+          title: "请验收单据图片!",
+          icon: "none",
+          duration: 1500
+        });
+        return false;
+      }
+      return true;
+    },
     chosseImg(index) {
       let that = this;
       let num = 0;
@@ -313,13 +332,16 @@ export default {
       if (that.masterType == 0) {
         progressInfoList = JSON.stringify(that.progressInfoList);
       }
-      that.AddInstallOrder(
-        JSON.stringify(frontPicList),
-        JSON.stringify(insidePicList),
-        JSON.stringify(afterPicList),
-        JSON.stringify(receiptPicList),
-        progressInfoList
-      );
+      if (that.valOther()) {
+        that.AddInstallOrder(
+          JSON.stringify(frontPicList),
+          JSON.stringify(insidePicList),
+          JSON.stringify(afterPicList),
+          JSON.stringify(receiptPicList),
+          progressInfoList
+          
+        );
+      }
     },
     addOrder() {
       //添加明细
@@ -416,7 +438,7 @@ export default {
             success: function() {
               setTimeout(function() {
                 wx.navigateTo({
-                  url: "/pages/master/orderDetail/main?orderId="+that.orderId
+                  url: "/pages/master/orderDetail/main?orderId=" + that.orderId
                 });
               }, 1500);
             }

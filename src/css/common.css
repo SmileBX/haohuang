@@ -1083,15 +1083,6 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     position: relative;
 }
 
-.uploadImage .close {
-    position: absolute;
-    width: 40rpx;
-    height: 40rpx;
-    top: -10rpx;
-    right: -10rpx;
-    z-index: 4;
-}
-
 .uploadTitle {
     font-size: 30rpx;
     padding: 0 30rpx;
@@ -1139,12 +1130,23 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     background-repeat: no-repeat !important; */
 }
 
-.uploadImage .button-upload img {
+.uploadImage .button-upload img,
+.uploadImage .upload-img img {
     width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
     left: 0;
+}
+
+.uploadImage .close {
+    position: absolute;
+    width: 40rpx !important;
+    height: 40rpx !important;
+    top: -10rpx !important;
+    right: -10rpx !important;
+    z-index: 4 !important;
+    left: inherit !important;
 }
 
 .ftBtn .inner {
