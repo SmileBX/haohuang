@@ -100,8 +100,8 @@
         <div class="item">创建时间：{{detail.CreateTime}}</div>
         <div class="item" v-if="detail.OrderStatus==2 || detail.OrderStatus==3 || detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 ||detail.OrderStatus==8 || detail.OrderStatus==9">支付时间：{{detail.PayTime}}</div>
         <div class="item" v-if="detail.OrderStatus==7">分配师傅：{{detail.InstallTime}}</div>
-         <div class="item" v-if="detail.OrderStatus==8">完工确认：{{detail.EndTime}}</div>
-        <div class="item" v-if="detail.EstimateTime">预计完成时间：{{detail.EndTime}}</div>
+         <div class="item" v-if="detail.OrderStatus==9">完工确认：{{detail.OverTime}}</div>
+        <div class="item" v-if="detail.EstimateTime">预计完成时间：{{detail.EstimateTime}}</div>
       </div>
     </div>
     <!-- 在线客服 -->

@@ -93,7 +93,7 @@
         <div class="item" v-if="detail.OrderStatus==0 || detail.OrderStatus==2 || detail.OrderStatus==3 || detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 ||detail.OrderStatus==8 || detail.OrderStatus==9">支付时间：{{detail.PayTime}}</div>
         <div class="item" v-if="detail.OrderStatus==4">发货时间：{{detail.Fahuodate}}</div>
         <div class="item" v-if="detail.OrderStatus==7">分配师傅：{{detail.InstallTime}}</div>
-        <div class="item" v-if="detail.EndTime">预计完成时间：{{detail.EndTime}}</div>
+        <div class="item" v-if="detail.EstimateTime">预计完成时间：{{detail.EstimateTime}}</div>
       </div>
     </div>
     <!-- 操作按钮 -->

@@ -312,7 +312,7 @@
         
         <!--选择地址省市遮罩层-->
       <van-popup :show="showArea" position="bottom" :overlay="true" @close="showArea = false">
-          <van-area :area-list="areaList" @cancel="showArea = false" @confirm="confirmArea" columns-num="2"/>
+          <van-area :area-list="areaList" @cancel="showArea = false" @confirm="confirmArea"/>
       </van-popup>
       <!--弹层-->
       <div class="mask" v-if="isShow" catchtouchmove='true'></div>
@@ -1116,13 +1116,6 @@ export default {
           });
           return false;
       }
-      if (this.logisticsType.toString().length < 1) {
-        wx.showToast({
-          title: "请选择快递！"
-        });
-        return false;
-      }
-
       //console.log(this.prolist,"this.prolist")
       let _OrderInsertList = [];
       let n = []  //视频集合
@@ -1178,7 +1171,7 @@ export default {
           estimateTime: this.prolist[i].estimateTime, //完成时间!!!!!
           offerTotal: 0, //总金额!!!!!
           proLists: _proLists, //材料集合
-          logisticsType: this.logisticsType //快递类型!!!!!
+          logisticsName: this.logisticsType //快递类型!!!!!
         };
 
         //console.log(typeof this.prolist[i].estimateTime,"提交时间")
@@ -1288,7 +1281,7 @@ export default {
       }
       (this.provinceCode = areas[0].code || ""),
         (this.cityCode = areas[1].code || ""),
-        // (this.districtCode = areas[2].code || ""),
+        (this.districtCode = areas[2].code || ""),
         (this.area = text);
         console.log(this.area)
     },
@@ -1302,16 +1295,22 @@ export default {
       if (!this.area) {
         return "请选择省份";
       }
-      if(latShow){
-          if (!this.address) {
-            return "请输入地址";
-          }
-          if(!/^[\u4e00-\u9fa5\u3001\A-\Z\d]+$/ .test(this.address)){
-            return "请输入正确的地址"
-          }
+      if (!this.address) {
+        return "请输入地址";
+      }
+      if(!/^[A-Za-z0-9\u4e00-\u9fa5]+$/ .test(this.address)){
+        return "请输入正确的地址"
+      }
+      if(this.latShow){
+          if (this.logisticsType.toString().length < 1) {
+          wx.showToast({
+            title: "请选择快递！"
+          });
+          return false;
+        }
       }
       
-      if(!/^[\u4e00-\u9fa5\u3001\A-\Z\d]+$/ .test(this.name)){
+      if(!/^[A-Za-z\u4e00-\u9fa5]+$/ .test(this.name)){
          return "包含非法字符"
       }
       return false;
