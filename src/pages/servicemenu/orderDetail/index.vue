@@ -381,7 +381,7 @@ export default {
 
     },
     //确认收货
-    // 评论
+    // 评论123
     gotoComment(){
       wx.navigateTo({
         url: '/pages/appraise/main?orderId='+this.orderId
