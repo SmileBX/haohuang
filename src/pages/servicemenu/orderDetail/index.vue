@@ -32,8 +32,8 @@
           <div class="box">
             <div class="outside">
               <div class="pictrueAll">
-                <div class="pictrue img">
-                  <img :src="detail.OrderImg" class="pictrue img">
+                <div class="pictrue">
+                  <img  style="width:100%;position:absolute;top:0;height:100%;" :src="detail.OrderImg">
                 </div>
               </div>
               <div class="txtBox">
@@ -92,7 +92,7 @@
         <div class="item">创建时间：{{detail.CreateTime}}</div>
         <div class="item" v-if="detail.OrderStatus==0 || detail.OrderStatus==2 || detail.OrderStatus==3 || detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 ||detail.OrderStatus==8 || detail.OrderStatus==9">支付时间：{{detail.PayTime}}</div>
         <div class="item" v-if="detail.OrderStatus==4">发货时间：{{detail.Fahuodate}}</div>
-        <div class="item" v-if="detail.OrderStatus==7">分配师傅：{{detail.InstallTime}}</div>
+        <div class="item" v-if="detail.OrderStatus==7">分配师傅：{{detail.InstallList[0].InstallTime}}</div>
         <div class="item" v-if="detail.EstimateTime">预计完成时间：{{detail.EstimateTime}}</div>
       </div>
     </div>
@@ -246,12 +246,20 @@ export default {
     useSuccess(res,content){
       if(res.code==0){
         wx.showToast({
-            title:content
+            title:content,
+            duration:1500,
         })
         this.confirmOrderStatus=false
         setTimeout(()=>{
         this.getData();
-        },1000)
+        },1500)
+      }
+      if(res.code==1){
+        wx.showToast({
+            title:res.msg,
+            icon:'none',
+            duration:1500,
+        })
       }
     },
     // 展示取消订单窗口
@@ -326,13 +334,14 @@ export default {
       const that =this;
       let title=''
       let content=''
-        let cancelText='取消'
-        let confirmText='确认'
-        let cancelColor=''
+        let cancelText=''
+        let confirmText=''
+        let cancelColor='#ff0000'
       if(types==='design'){ //设计确认
         title='设计确认'
         content='设计完成图可在流程内查看，设计是否通过审核!'
-        cancelColor='red'
+        cancelText='不通过'
+        confirmText='通过'
       }else if(types==='logistics'){ //物流计确认
         title='确认收货'
         // content='设计完成图可在流程内查看，设计是否通过审核!'
@@ -343,7 +352,7 @@ export default {
         title:title,
         content:content,
         confirmColor:'#33cc33',
-        cancelColor,
+        cancelColor:cancelColor,
         cancelText,
         confirmText,
         success(res){

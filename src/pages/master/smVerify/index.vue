@@ -127,7 +127,7 @@
             <input
               type="number"
               class="weui-input"
-              v-model="item.MasterialFee"
+              v-model="item.MaterialFee"
               placeholder="请输入安装所需的材料费"
             >
           </div>
@@ -204,7 +204,7 @@ export default {
           TrafficMoney: "0", //交通费
           Meals: "0", //餐费
           HotelExpense: "0", //住宿费
-          MasterialFee: "0" //材料费
+          MaterialFee: "0" //材料费
         }
       ], //明细
       infoLength: 10,
@@ -251,6 +251,7 @@ export default {
         });
         return false;
       }
+     
       return true;
     },
     chosseImg(index) {
@@ -294,12 +295,10 @@ export default {
       });
     },
     async base64Img(arr) {
-      console.log("chuangjinlaidezhi");
-      console.log(arr);
+      
       let base64Arr = [];
       for (let i = 0; i < arr.length; i += 1) {
         const res = await pathToBase64(arr[i]);
-        console.log(res);
         base64Arr.push({
           PicUrl: res
         });
@@ -309,8 +308,6 @@ export default {
     delImg(type, index) {
       if (type === 1) {
         this.frontPicList.splice(index, 1);
-        console.log("删除过后的图片");
-        console.log(this.frontPicList);
       }
       if (type === 2) {
         this.insidePicList.splice(index, 1);
@@ -329,9 +326,19 @@ export default {
       let afterPicList = await that.base64Img(that.afterPicList);
       let receiptPicList = await that.base64Img(that.receiptPicList);
       let progressInfoList = "";
+      that.progressInfoList.forEach(item =>{
+         for(let key in item){
+           console.log(key);
+           if(item[key] ==""){
+             item[key] = 0;
+           }
+         }
+       });
+      //  console.log()
       if (that.masterType == 0) {
         progressInfoList = JSON.stringify(that.progressInfoList);
       }
+       
       if (that.valOther()) {
         that.AddInstallOrder(
           JSON.stringify(frontPicList),
@@ -351,7 +358,7 @@ export default {
           TrafficMoney: "", //交通费
           Meals: "", //餐费
           HotelExpense: "", //住宿费
-          MasterialFee: "" //材料费
+          MaterialFee: "" //材料费
         });
       } else {
         //提示最多只能加10次明细
@@ -390,14 +397,14 @@ export default {
           that.hasData = true;
           if (res.data.ProgressInfo.length > 0) {
             //明细
-            let info = JSON.parse(res.data.ProgressInfo);
+            // let info = JSON.parse(res.data.ProgressInfo);
             that.progressInfoList = [];
-            info.map(item => {
+            res.data.ProgressInfo.map(item => {
               that.progressInfoList.push({
                 TrafficMoney: item.TrafficMoney, //交通费
                 Meals: item.Meals, //餐费
                 HotelExpense: item.HotelExpense, //住宿费
-                MasterialFee: item.MasterialFee //材料费
+                MaterialFee: item.MaterialFee //材料费
               });
             });
           }
@@ -431,14 +438,31 @@ export default {
         that.curPage
       ).then(result => {
         if (result.code === 0) {
+            this.detail={}
+            this.frontPicList=[], //安装前图片
+            this.insidePicList=[], //内部结构图片
+            this.afterPicList=[], //安装后图片
+            this.receiptPicList=[], //验收单据图片
+            this.progressInfoList=[
+            {
+              TrafficMoney: "0", //交通费
+              Meals: "0", //餐费
+              HotelExpense: "0", //住宿费
+              MaterialFee: "0" //材料费
+            }
+            
+          ], //明细
           wx.showToast({
             title: "提交成功!",
             icon: "success",
             duration: 1500,
             success: function() {
               setTimeout(function() {
-                wx.navigateTo({
-                  url: "/pages/master/orderDetail/main?orderId=" + that.orderId
+                // wx.navigateTo({
+                //   url: "/pages/master/orderDetail/main?orderId=" + that.orderId
+                // });
+                 wx.reLaunch({
+                  url: "/pages/master/myOrder/main?typeNo=1"
                 });
               }, 1500);
             }

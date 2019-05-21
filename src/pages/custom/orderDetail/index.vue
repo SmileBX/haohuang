@@ -40,8 +40,8 @@
           <div class="box">
             <div class="outside">
               <div class="pictrueAll">
-                <div class="pictrue img">
-                  <img :src="detail.OrderImg" class="pictrue img">
+                <div class="pictrue">
+                  <img  style="width:100%;position:absolute;top:0;height:100%;" :src="detail.OrderImg">
                 </div>
               </div>
               <div class="txtBox" >
@@ -99,7 +99,7 @@
         </div>
         <div class="item">创建时间：{{detail.CreateTime}}</div>
         <div class="item" v-if="detail.OrderStatus==2 || detail.OrderStatus==3 || detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 ||detail.OrderStatus==8 || detail.OrderStatus==9">支付时间：{{detail.PayTime}}</div>
-        <div class="item" v-if="detail.OrderStatus==7">分配师傅：{{detail.InstallTime}}</div>
+        <div class="item" v-if="detail.OrderStatus==7">分配师傅：{{detail.InstallList[0].InstallTime}}</div>
          <div class="item" v-if="detail.OrderStatus==9">完工确认：{{detail.OverTime}}</div>
         <div class="item" v-if="detail.EstimateTime">预计完成时间：{{detail.EstimateTime}}</div>
       </div>
@@ -338,13 +338,12 @@ export default {
       let content=''
        let cancelText=''
         let confirmText=''
-        let cancelColor=''
+        let cancelColor='#ff0000'
       if(types==='design'){ //设计确认
         title='设计确认'
        // content='设计完成图可在流程内查看，设计是否通过审核!'
         cancelText='不通过'
         confirmText='通过'
-        cancelColor='red'
       }else if(types==='logistics'){ //物流计确认
         title='确认收货'
        // content='设计完成图可在流程内查看，设计是否通过审核!'
@@ -355,7 +354,7 @@ export default {
         title:title,
         content:content,
         confirmColor:'#33cc33',
-        cancelColor,
+        cancelColor:cancelColor,
         cancelText,
         confirmText,
         success(res){

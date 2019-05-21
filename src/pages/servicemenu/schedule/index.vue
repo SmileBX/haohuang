@@ -31,7 +31,7 @@
     <div class="scheduleBox">
       <div class="schedule">
         <!-- 订单已完成 -->
-        <div class="section" v-if="schduleInfo.OverTime.length>0">
+        <div class="section" v-if="schduleInfo.OrderStatus==9">
           <div class="item big flex active">
             <div class="left time">
               <p class="date">{{OverDate}}</p>
@@ -183,7 +183,7 @@
               <div class="txtBox">
                 <p>
                   客户确认设计
-                  <span class="btnCopy" @click="confirmButtonModal">确认设计</span>
+                  <span class="btnCopy" @click="confirmButtonModal(schduleInfo.orderId)">确认设计</span>
                   <span class="btnCopy" @click="seePics(schduleInfo.orderId)">查看设计图</span>
                 </p>
               </div>
@@ -477,33 +477,32 @@ export default {
         })
     },
     //确认设计
-    confirmButtonModal(){
+    confirmButtonModal(orderId){
+      const that =this;
         wx.showModal({
         title:'设计确认',
         confirmColor:'#33cc33',
-        cancelColor,
+        cancelColor:"#ff0000",
         cancelText:'不通过',
         confirmText:'通过',
         success(res){
           if(res.confirm){
-            that.confirmButton(0)
+            that.confirmButton(0,orderId)
           }else if(res.cancel){
             // 等于设计的时候才有不通过
-            if(types==='design'){
-              that.confirmButton(1)
-            }
+              that.confirmButton(1,orderId)
           }
         }
       })
     },
     //
     // 确认设计
-    confirmButton(AuditType){
+    confirmButton(AuditType,orderId){
       console.log(AuditType,'设计确认状态')
       post('CustomerService/KfOrderCollection',{
             CsdId:this.UserId,
             Token:this.Token,
-            OrderNo:this.orderId,
+            OrderNo:orderId,
             AuditType:AuditType
             }).then(res=>{
               console.log(res)

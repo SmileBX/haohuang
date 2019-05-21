@@ -71,7 +71,7 @@ export default {
     this.page = 1;
     this.sitelist = [];
     this.hasData = false;
-    thisisshow = true;
+    this.isshow = true;
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
     this.userid = wx.getStorageSync("userId");
@@ -109,7 +109,6 @@ export default {
             UserId: this.userid,
             Token: this.token,
             Page: this.page,
-
             PageSize: this.pageSize
           },
           this.curPage

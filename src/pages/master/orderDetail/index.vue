@@ -35,8 +35,13 @@
         <div class="item">
           <div class="box">
             <div class="outside">
+              <!-- <div class="pictrueAll">
+                <div class="pictrue" :style="'background-image:url('+detail.OrderImg+')'"></div>
+              </div> -->
               <div class="pictrueAll">
-                <div class="pictrue img" :style="'background-image:url('+detail.OrderImg+')'"></div>
+                <div class="pictrue">
+                  <img  style="width:100%;position:absolute;top:0;height:100%;" :src="detail.OrderImg">
+                </div>
               </div>
               <div class="txtBox">
                 <p class="title text-line2">{{detail.OrderName}}</p>
@@ -54,7 +59,7 @@
       </div>
     </div>
     <div class="picList bg_fff" v-if="detail.Status!==0">
-      <div class="item" v-if="detail.FrontPicList.length>0">
+      <div class="item" v-if="detail.FrontPicList !==''">
         <h2 class="title">安装前照片</h2>
         <div class="uploadImage clear">
           <div
@@ -66,7 +71,7 @@
           ></div>
         </div>
       </div>
-      <div class="item" v-if="detail.InsidePicList.length>0">
+      <div class="item" v-if="detail.InsidePicList !==''">
         <h2 class="title">内部结构照片</h2>
         <div class="uploadImage clear">
           <div
@@ -78,7 +83,7 @@
           ></div>
         </div>
       </div>
-      <div class="item" v-if="detail.AfterPicList.length>0">
+      <div class="item" v-if="detail.AfterPicList !==''">
         <h2 class="title">安装后照片</h2>
         <div class="uploadImage clear">
           <div
@@ -90,7 +95,7 @@
           ></div>
         </div>
       </div>
-      <div class="item" v-if="detail.ReceiptPicList.length>0">
+      <div class="item" v-if="detail.ReceiptPicList !=''">
         <h2 class="title">客户验收单</h2>
         <div class="uploadImage clear">
           <div
@@ -108,7 +113,7 @@
         <div class="PriceItem__title">明细({{index+1}})</div>
         <p>交通费：￥{{item.TrafficMoney}}</p>
         <p>餐费：￥{{item.Meals}}</p>
-        <p>材料费：￥{{item.MasterialFee}}</p>
+        <p>材料费：￥{{item.MaterialFee}}</p>
         <p>住宿费：￥{{item.HotelExpense}}</p>
       </div>
     </div>
@@ -170,7 +175,8 @@ export default {
       Token: "",
       curPage: "",
       orderId: "",
-      detail: {},
+      detail: {
+      },
       hasData: false,
       servicePhone:"", //客服电话
       selectServiceTypeStatus: false, //联系客服类型弹窗状态
@@ -238,6 +244,7 @@ export default {
         that.curPage
       ).then(res => {
         if (res.code === 0) {
+           
           if (res.data.AfterPicList !== "") {
             //安装前图片列表
             that.$set(
@@ -295,7 +302,7 @@ export default {
             );
           }
           that.detail = res.data;
-          that.hasData = true;
+         that.hasData = true;
         }
       });
     },

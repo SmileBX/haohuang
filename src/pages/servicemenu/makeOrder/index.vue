@@ -446,64 +446,12 @@ export default {
       // proLists:[],//材料--制作材料 安装材料
       // proMastic:[],//制作材料集合
       // proIns:[],  //安装材料集合
-      logisticsType: 3 //物流类型 0-快递 1-物流 2-自提
+      logisticsType: 0 //快递Id
     };
   },
   onLoad() {
     this.setBarTitle();
     this.latShow=false//设计的时候隐藏地址 金额 快递
-    this.proitem= {
-        orderType: "",
-        orderTypeName: "",
-        spechign: 0,
-        speclong: 0,
-        specwide: 0,
-        specnum: 1,
-        referencePicList: [],
-        referencePicList2: [],
-        guidanceVideo:'',
-        isShowBtnUpload: true, //显示上传图片按钮的状态
-        isShowBtnUpload2: true, //显示上传图片按钮的状态
-        isShowBtnVedio: true, //显示上传视频按钮的状态
-        showDate: false, //日期 组件 不需要遮罩层
-        vedio:"",
-        estimateTime: "",
-        remark: "",
-        offerTotal: "",
-        makestatic: [],
-        installstatic: [],
-        proMastic: [],
-        proIns: [],
-        orderName: "",
-        showType:false,
-      },
-      this.prolist= [
-        {
-          orderType: "",
-          orderTypeName: "",
-          spechign: 0,
-          speclong: 0,
-          specwide: 0,
-          specnum: 1,
-          referencePicList: [],//现场图视图循环
-          referencePicList2: [], //指导图视图循环
-          guidanceVideo:'',
-          isShowBtnUpload: true, //显示上传图片按钮的状态
-          isShowBtnUpload2: true, //显示上传图片按钮的状态
-          isShowBtnVedio: true, //显示上传视频按钮的状态
-          showDate: false, //日期 组件 不需要遮罩层
-          vedio:"",
-          estimateTime: "",
-          remark: "",
-          offerTotal: "",
-          makestatic: [],
-          installstatic: [],
-          proMastic: [],
-          proIns: [],
-          orderName: "",
-          showType:false,
-        }
-      ]
       this.bindName = "";
       this.page = 1;
       this.tip = 0;
@@ -1106,6 +1054,7 @@ export default {
       }
     },
     submit() {
+      
       const toast = this.jiaoyan()
       console.log(toast)
       if(toast){
@@ -1122,6 +1071,19 @@ export default {
       let _referencePicList1=[]  //现场图片
       let _referencePicList2=[]  //指导图片
       for (let i = 0; i < this.prolist.length; i++) {
+        //如果是制作类型 集合为空提示  
+          if((this.prolist[i].orderType==1 || this.prolist[i].orderType==3 || this.prolist[i].orderType==4 ||this.prolist[i].orderType==5)&& this.prolist[i].proMastic.length<1){
+              wx.showToast({
+                  title:"请选择制作材料！"
+                })
+              return false
+          }
+          if((this.prolist[i].orderType==2 || this.prolist[i].orderType==4 || this.prolist[i].orderType==5 )&& this.prolist[i].proIns.length<1){
+              wx.showToast({
+                  title:"请选择安装材料！"
+                })
+              return false
+          }
         n.push(i)
         let _proLists = this.prolist[i].proMastic.concat(
           this.prolist[i].proIns

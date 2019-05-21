@@ -127,7 +127,7 @@ export default {
       if (that.curPage == gotoUrl) {
         return false;
       } else {
-        wx.redirectTo({
+        wx.reLaunch({
           url: `${gotoUrl}`
         });
       }

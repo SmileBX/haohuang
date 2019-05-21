@@ -276,7 +276,8 @@ export default {
     //   this.init()
     // },
     // 跳转到订单详情
-    gotoDetail(orderId, masterType) {
+    // gotoDetail(orderId, masterType) {
+    gotoDetail(orderId) {
       wx.navigateTo({
         url: `/pages/master/orderDetail/main?orderId=${orderId}`
       });

@@ -99,8 +99,8 @@ export default {
               orderId:res.data.orderId,
               OrderImg:res.data.OrderImg
             }
-            console.log(res.data.DesignFrontPicList,"data.DesignAfterPicList------")
-              this.piclist=res.data.DesignFrontPicList.split(",")
+            console.log(res.data.DesignAfterPicList,"data.DesignAfterPicList------")
+              this.piclist=res.data.DesignAfterPicList.split(",")
               console.log(this.piclist,"piclist+++++++")
           })
         }
@@ -123,8 +123,8 @@ export default {
               orderId:res.data.orderId,
               OrderImg:res.data.OrderImg
             }
-            console.log(res.data.DesignFrontPicList,"data.DesignAfterPicList------")
-              this.piclist=res.data.DesignFrontPicList.split(",")
+            console.log(res.data.DesignAfterPicList,"data.DesignAfterPicList------")
+              this.piclist=res.data.DesignAfterPicList.split(",")
               console.log(this.piclist,"piclist+++++++")
           })
         }

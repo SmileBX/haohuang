@@ -109,7 +109,7 @@ export default {
       content: "", //用逗号隔开
       txt: "", //其他问题反馈
       radioVal: [],
-      isOved:false  //是否加载完
+      isOved: false //是否加载完
     };
   },
   onLoad() {
@@ -124,14 +124,13 @@ export default {
     console.log(this.orderId);
     if (this.identity == 1) {
       //客服
-      if(toLogin(this.curPage)){
+      if (toLogin(this.curPage)) {
         this.getKfOrderData();
       }
-      
     }
     if (this.identity == 2) {
       //客户
-      if(toLogin(this.curPage)){
+      if (toLogin(this.curPage)) {
         this.getUserOrderData();
       }
     }
@@ -143,10 +142,10 @@ export default {
         title: "发表评价"
       });
     },
-    initData(){
-        this.txt = '';
-        this.isOved = false;
-        this.detail = {
+    initData() {
+      this.txt = "";
+      this.isOved = false;
+      this.detail = {
         OrderName: "", //项目名称
         OrderImg: "", //图片
         OrderType: "", //项目类型
@@ -169,8 +168,23 @@ export default {
         this.detail.OrderType == 5
       ) {
         //验证所有的
-        this.radioVal.forEach(item => {
-          if (!item) {
+        // if (this.radioVal.length > 0) {   ----此法不通
+          // let num = 0;
+          // this.radioVal.forEach(item => {
+          //   console.log(item);
+          //   if (!item) {
+          //     num++;
+          //   }
+          // });
+          // if (num >= 1) {
+          //   wx.showToast({
+          //     title: "请评价完选项!",
+          //     icon: "none",
+          //     duration: 1500
+          //   });
+          //   return false;
+          // }
+          if (!this.radioVal[0] || !this.radioVal[1] || !this.radioVal[2]　|| !this.radioVal[3]) {
             wx.showToast({
               title: "请评价完选项!",
               icon: "none",
@@ -178,11 +192,12 @@ export default {
             });
             return false;
           }
-        });
-      }
+        } 
+      // }
       if (this.detail.OrderType == 0) {
         //验证设计
         if (!this.radioVal[0]) {
+          console.log("走到底是了");
           wx.showToast({
             title: "请评价完选项!",
             icon: "none",
@@ -191,8 +206,8 @@ export default {
           return false;
         }
       }
-      if (this.detail.OrderType == 3) {
-        //验证安装
+      if (this.detail.OrderType == 3 || this.detail.OrderType == 1) {
+        //验证制作
         if (!this.radioVal[0] || !this.radioVal[1]) {
           wx.showToast({
             title: "请评价完选项!",
@@ -220,13 +235,14 @@ export default {
         }
         console.log("conStr:" + conStr);
         this.content = conStr;
-        alert("+++++++++++++++++++++")
-        if(this.identity==1){  //客服
-          this.KfCommentOrder();
+        if (this.identity == 1) {
+          //客服
+         this.KfCommentOrder();
         }
-        if(this.identity==2){  //客户
+        if (this.identity == 2) {
+          //客户
           this.CommentOrder();
-        }        
+        }
       }
     },
     getUserOrderData() {
@@ -286,12 +302,11 @@ export default {
             icon: "none",
             duration: 1500,
             success: function() {
-              setTimeout(()=>{
+              setTimeout(() => {
                 that.initData();
                 wx.redirectTo({
                   url: "/pages/custom/order/main?typeNo=8"
                 });
-                
               }, 1500);
             }
           });

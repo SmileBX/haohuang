@@ -132,8 +132,8 @@
                   <div class="eaditArea">
                     <!-- <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
                     <textarea  class="weui-area" placeholder="请输入备注内容111111111" v-model="item.remark" v-else></textarea> -->
-                    <p class="weui-area" v-if="showP" @click="puttextatea" style="padding:29rpx;">{{item.remark || '请输入备注内容'}}</p>
-                    <textarea  style="resize:none" class="weui-area" :placeholder="signtext" v-model="item.remark" @blur="showP=true" autofocus="autofocus" v-else></textarea>
+                    <p class="weui-area" v-if="showP" @click="showP=false" style="padding:29rpx;">{{item.remark || '请输入备注内容'}}</p>
+                    <textarea  style="resize:none" class="weui-area" :placeholder="signtext" v-model="item.remark" @blur="showP=true" auto-focus v-else></textarea>
                   </div>
                 </div>
                 <!--小计-->
@@ -271,21 +271,17 @@ import foot from "@/components/foot.vue";
 export default {
   onLoad(){
     this.setBarTitle();
-    this.imgBase= []
-    this.imgPathArr= []
+    this.tip=0
+    this.active = 0
     this.postMsg = '选择快递'
     this.signtext = '请输入备注内容'
-    this.proitem={
-      orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],isShowBtnUpload:true,
-      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,showType:false,  //日期 组件 不需要遮罩层
-    }
-    this.prolist=[
-      {
-      orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
-      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false, showType:false,  //日期 组件 不需要遮罩层
-      },
-    ]
-    this.latShow=false//设计的时候隐藏地址 金额 快递
+    this.addressinfo = [];
+    this.area = "";
+    this.address = "";
+    this.provinceCode = "";
+    this.cityCode = "";
+    this.districtCode = "";
+    //this.latShow=false//设计的时候隐藏地址 金额 快递
     
   },
   components: {
@@ -298,26 +294,23 @@ export default {
         this.userId = wx.getStorageSync("userId");
         this.token = wx.getStorageSync("token");
         this.page=1
-        this.list=[],
-        this.typelist=[],//orderTypeName类型...
-        this.kuaidiList=[],//快递种类
-        this.addressinfo=[],//默认的收货地址
+        this.showP=true,
+        //this.list=[],
+        //this.typelist=[],//orderTypeName类型...
+        //this.kuaidiList=[],//快递种类
+        //this.addressinfo=[],//默认的收货地址
         this.pageSize=10,//制作材料 安装材料
         this.allPage=0,//总页数
         this.count=0,//总数
         this.isLoad=false,
         // this.isShowBtnUpload= true,//显示上传按钮的状态
         this.imgLenght=8,
-        this.adressId='', //地址编号
-        this.logisticsType=''   //物流类型 0-快递 1-物流 2-自提
-        this.tip=0
-        this.active = 0
-        this.addressinfo=[]
+        //this.adressId='', //地址编号
+        //this.logisticsType=''   //物流类型 0-快递 1-物流 2-自提
+       // this.addressinfo=[]
         this.showPaymask=false
         this.isShow=false
         this.showKuaidiType=false
-       
-
         //获取收货地址
         if(this.$root.$mp.query.url){
             console.log(wx.getStorageSync('addressinfo'))
@@ -415,18 +408,6 @@ export default {
         isShow:false, //遮罩层
         // showType:false,  //普通选择的弹框
         showPaymask:false,//支付确认弹框
-        // orderName:"",//项目名称
-        // speclong:"",//厚
-        // specwide:"",//宽
-        // spechign:"",//高
-        // specnum:"",//数量
-        // orderTypeName:"",//订单类型 --0:设计,1:制作,2:安装,3:设计-制作,4:制作-安装,5:设计-制作-安装
-        // referencePicList:"",//参考图片
-        // estimateTime:"",//交付时间
-        // makestatic:"",//制作材料
-        // installstatic:"",//安装材料
-        // remark:"",//备注说明
-        // offerTotal:"",//总金额
         ContactName:"",//联系人
         Tel:"",//电话
         Addr:"",//地址
@@ -443,15 +424,14 @@ export default {
         //   isShowBtnUpload:true
         //   },
         proitem:{
-          orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showType:false, 
+          orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],isShowBtnUpload:true,
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,showType:false,  //日期 组件 不需要遮罩层
         },
         prolist:[
           {
-         orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],
-          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",
-          isShowBtnUpload:true,showType:false, 
-          },
+          orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
+          estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false, showType:false,  //日期 组件 不需要遮罩层
+          }
         ],
         list:[],
         typelist:[],//orderTypeName类型...
@@ -470,7 +450,7 @@ export default {
         // proLists:[],//材料--制作材料 安装材料
         // proMastic:[],//制作材料集合
         // proIns:[],  //安装材料集合
-        logisticsType:''   //物流类型 0-快递 1-物流 2-自提
+        logisticsType:0   //快递id
     }
   },
   methods:{
@@ -626,7 +606,9 @@ export default {
       },
       //日期
       choseDate(n){
+       // console.log(n,"***********++++++++++++++++++++++++++")
         this.prolist[n].showDate=true
+       // console.log("-----------------------5252525252----")
       },
       //选择订单类型
       choseType(n){
@@ -821,22 +803,36 @@ export default {
         }
     },
     submit(){
-        if(this.adressId.toString().length<1){
-          wx.showToast({
-              title:"请选择地址！"
-            })
-          return false
-        }
-        if(this.logisticsType.toString().length<1){
-          wx.showToast({
-              title:"请选择快递！"
-            })
-          return false
-        }
-
+       if(this.latShow){
+          if(this.adressId.toString().length<1){
+              wx.showToast({
+                  title:"请选择地址！"
+                })
+              return false
+            }
+            if(this.logisticsType.toString().length<1){
+              wx.showToast({
+                  title:"请选择快递！"
+                })
+              return false
+            }
+       }
         //console.log(this.prolist,"this.prolist")
         let _OrderInsertList=[]
         for(let i=0;i<this.prolist.length;i++){
+          //如果是制作类型 集合为空提示  
+          if((this.prolist[i].orderType==1 || this.prolist[i].orderType==3 || this.prolist[i].orderType==4 ||this.prolist[i].orderType==5)&& this.prolist[i].proMastic.length<1){
+              wx.showToast({
+                  title:"请选择制作材料！"
+                })
+              return false
+          }
+          if((this.prolist[i].orderType==2 || this.prolist[i].orderType==4 || this.prolist[i].orderType==5 )&& this.prolist[i].proIns.length<1){
+              wx.showToast({
+                  title:"请选择安装材料！"
+                })
+              return false
+          }
           let info={}
           let _referencePicList=[]
           //材料集合
@@ -902,6 +898,16 @@ export default {
           },this.curPage).then(res=>{
             console.log(res,'提交订单')
             if(res.code==0){
+                this.proitem={
+                  orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],isShowBtnUpload:true,
+                  estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,showType:false,  //日期 组件 不需要遮罩层
+                }
+                this.prolist=[
+                  {
+                  orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
+                  estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false, showType:false,  //日期 组件 不需要遮罩层
+                  },
+                ]
                 wx.showToast({
                   title:res.msg,
                   duration:1500,
@@ -985,9 +991,9 @@ export default {
           this.prolist[n].specnum=1
       }
     },
-    puttextatea(){
-      this.showP=false
-    },
+    // puttextatea(){
+    //   this.showP=false
+    // },
     showTips(){
       wx.showToast({
         title:'长度超过尺寸！'
