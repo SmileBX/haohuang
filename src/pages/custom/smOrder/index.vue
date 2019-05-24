@@ -24,12 +24,6 @@
         <div v-for="(item,lindex) in prolist" :key="lindex">
               <!--子no1-->
               <div class="weui-cells smDetail__weui-cells" style="padding-top:10rpx;">
-                <!-- <div class="select__weui-cells flex  flexAlignCenter">
-                  <div class="weui-cells__title">项目名称:</div>
-                  <div class="flex1">
-                    <input type="text" class="weui-input" placeholder="请输入（必填）" style="margin-left:20rpx;" v-model="item.orderName">
-                  </div>
-                </div> -->
                 <div class="select__weui-cells" >
                   <div class="weui-cells__title">项目名称</div>
                   <div class="ipt flex flexAlignCenter">
@@ -132,8 +126,8 @@
                   <div class="eaditArea">
                     <!-- <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
                     <textarea  class="weui-area" placeholder="请输入备注内容111111111" v-model="item.remark" v-else></textarea> -->
-                    <p class="weui-area" v-if="showP" @click="showP=false" style="padding:29rpx;">{{item.remark || '请输入备注内容'}}</p>
-                    <textarea  style="resize:none" class="weui-area" :placeholder="signtext" v-model="item.remark" @blur="showP=true" auto-focus v-else></textarea>
+                    <p class="weui-area" v-if="item.showP" @click="item.showP=false" style="padding:29rpx;">{{item.remark || '请输入备注内容'}}</p>
+                    <textarea  style="resize:none" cursor-spacing="20" class="weui-area"  adjust-position="true" :placeholder="signtext" v-model="item.remark" @blur="item.showP=true" auto-focus v-else></textarea>
                   </div>
                 </div>
                 <!--小计-->
@@ -237,7 +231,7 @@
           </div>
         </div>
         <!-- 客服 -->
-        <movable-view style="z-index:11;" x="300" y="460" direction="all" out-of-bounds="false">
+        <movable-view style="z-index:11;" x="300" y="460" direction="all" out-of-bounds="false" @click="customService">
           <div class="fixed__kf">
             <img src="/static/images/icons/fixed__kf.png" alt>
           </div>
@@ -259,12 +253,18 @@
             <p class="sure" @click="closeMask">确认</p>
         </div>
     </div>
+    <!-- 客户的联系客服 -->
+    <serviceTypeSelect
+      :selectServiceTypeStatus.sync="selectServiceTypeStatus"
+      :servicePhone="servicePhone"
+    ></serviceTypeSelect>
     <foot :identity="identity"></foot>
   </div>
 </template>
 <script>
 //orderType 0-设计 1-制作" 2-安装 3-设计_制作 4-制作_安装 5-设计_制作_安装
 import { get,post, toLogin, getCurrentPageUrlWithArgs, valPhone } from "@/utils";
+import serviceTypeSelect from "@/components/serviceTypeSelect.vue";
 import "@/css/dd_style.css";
 import {pathToBase64} from "@/utils/image-tools";
 import foot from "@/components/foot.vue";
@@ -286,7 +286,7 @@ export default {
   },
   components: {
     foot,
-    // serviceTypeSelect
+    serviceTypeSelect
   },
   onShow(){
         this.curPage = getCurrentPageUrlWithArgs();
@@ -294,7 +294,7 @@ export default {
         this.userId = wx.getStorageSync("userId");
         this.token = wx.getStorageSync("token");
         this.page=1
-        this.showP=true,
+        this.showP=true,//显示为p元素
         //this.list=[],
         //this.typelist=[],//orderTypeName类型...
         //this.kuaidiList=[],//快递种类
@@ -330,6 +330,13 @@ export default {
         }
         // wx.setStorageSync("addressinfo",' ')
        console.log( this.addressinfo.length,"默认收货地址长度")
+       if(toLogin(this.curPage)){
+         console.log( this.identity," this.identity+++++++")
+          if (this.identity == 2) {
+            //客户
+            this.GetMemberInfo();
+          } 
+       }
        
   },
   computed:{
@@ -393,9 +400,11 @@ export default {
           }
           return value;
         },
+        servicePhone:'',
         signtext:'请输入备注内容',
         latShow:false, //设计的时候隐藏地址  快递
         priceShow:false,//显示总价格
+        selectServiceTypeStatus: false, //联系客服类型弹窗状态
         showP:true,
         userId: "",
         token: "",
@@ -426,11 +435,13 @@ export default {
         proitem:{
           orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],isShowBtnUpload:true,
           estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,showType:false,  //日期 组件 不需要遮罩层
+          showP:true
         },
         prolist:[
           {
           orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
           estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false, showType:false,  //日期 组件 不需要遮罩层
+          showP:true
           }
         ],
         list:[],
@@ -1000,7 +1011,57 @@ export default {
       })
       return false
     },
+    customService(){  //客户的点击专属客服
+      this.selectServiceTypeStatus = true;
+      console.log(this.selectServiceTypeStatus);
+    },
+    GetMemberInfo() {
+      let that = this;
+      //客户信息
+      post(
+        "User/GetMemberInfo",
+        {
+          UserId: that.userId,
+          Token: that.token
+        },
+        that.curPage
+      ).then(result => {
+        if (result.code === 0) {
+          that.servicePhone = result.data.ServiceTel;
+          console.log(that.servicePhone,"servicePhone+++++++++++++")
+        }
+      });
+    },
     
+  },
+  // 下拉刷新
+  onPullDownRefresh() {
+    wx.startPullDownRefresh()
+    this.latShow=false//设计的时候隐藏地址 金额 快递
+    this.bindName = "";
+    this.page = 1;
+    this.tip = 0;
+    this.active = 0;
+    this.addressinfo = [];
+    this.name = "";
+    this.phone = "";
+    this.area = "";
+    this.address = "";
+    this.provinceCode = "";
+    this.cityCode = "";
+    this.districtCode = "";
+    this.postMsg = '选择快递'
+    this.proitem={
+      orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],isShowBtnUpload:true,
+      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,showType:false,  //日期 组件 不需要遮罩层
+    }
+    this.prolist=[
+      {
+      orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
+      estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false, showType:false,  //日期 组件 不需要遮罩层
+      },
+    ]
+    wx.stopPullDownRefresh();
   }
 };
 </script>

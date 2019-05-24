@@ -232,8 +232,8 @@
                   <div class="eaditArea" style="z-index:20" >
                     <!-- <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
                     <textarea  class="weui-area"  placeholder="请输入" v-model="item.remark" v-else></textarea> -->
-                    <p class="weui-area" v-if="showP" @click="puttextatea" style="padding:29rpx;">{{item.remark || '请输入备注内容'}}</p>
-                    <textarea  class="weui-area" placeholder="请输入备注内容" v-model="item.remark" @blur="showP=true" auto-focus v-else></textarea>
+                    <p class="weui-area" v-if="item.showP" @click="item.showP=false" style="padding:29rpx;">{{item.remark || '请输入备注内容'}}</p>
+                    <textarea  style="resize:none" cursor-spacing="20" class="weui-area"  adjust-position="true" :placeholder="signtext" v-model="item.remark" @blur="item.showP=true" auto-focus v-else></textarea>
                   </div>
                 </div>
                 <!--小计-->
@@ -402,7 +402,8 @@ export default {
         installstatic: [],
         proMastic: [],
         proIns: [],
-        orderName: ""
+        orderName: "",
+        showP:true,
       },
       prolist: [
         {
@@ -427,7 +428,8 @@ export default {
           installstatic: [],
           proMastic: [],
           proIns: [],
-          orderName: ""
+          orderName: "",
+          showP:true,
         }
       ],
       list: [],
@@ -1054,7 +1056,6 @@ export default {
       }
     },
     submit() {
-      
       const toast = this.jiaoyan()
       console.log(toast)
       if(toast){
@@ -1181,7 +1182,58 @@ export default {
             for(let i of n ){
                this.updateVedio(i) ///提交视频
             }
-           
+            this.proitem={
+              orderType: "",
+              orderTypeName: "",
+              spechign: 0,
+              speclong: 0,
+              specwide: 0,
+              specnum: 1,
+              referencePicList: [],
+              referencePicList2: [],
+              guidanceVideo:'',
+              isShowBtnUpload: true, //显示上传图片按钮的状态
+              isShowBtnUpload2: true, //显示上传图片按钮的状态
+              isShowBtnVedio: true, //显示上传视频按钮的状态
+              showDate: false, //日期 组件 不需要遮罩层
+              vedio:"",
+              estimateTime: "",
+              remark: "",
+              offerTotal: "",
+              makestatic: [],
+              installstatic: [],
+              proMastic: [],
+              proIns: [],
+              orderName: "",
+              showP:true,
+            },
+            this.prolist=[
+              {
+                orderType: "",
+                orderTypeName: "",
+                spechign: 0,
+                speclong: 0,
+                specwide: 0,
+                specnum: 1,
+                referencePicList: [],
+                referencePicList2: [],
+                guidanceVideo:'',
+                isShowBtnUpload: true, //显示上传图片按钮的状态
+                isShowBtnUpload2: true, //显示上传图片按钮的状态
+                isShowBtnVedio: true, //显示上传视频按钮的状态
+                showDate: false, //日期 组件 不需要遮罩层
+                vedio:"",
+                estimateTime: "",
+                remark: "",
+                offerTotal: "",
+                makestatic: [],
+                installstatic: [],
+                proMastic: [],
+                proIns: [],
+                orderName: "",
+                showP:true,
+              }
+            ],
 
             wx.showToast({
               title: "订单提交成功！"
@@ -1335,6 +1387,75 @@ export default {
     puttextatea(){
       this.showP=false
     }
+  },
+  onPullDownRefresh() {
+    this.latShow=false//设计的时候隐藏地址 金额 快递
+    this.bindName = "";
+    this.page = 1;
+    this.tip = 0;
+    this.active = 0;
+    this.addressinfo = [];
+    this.name = "";
+    this.phone = "";
+    this.area = "";
+    this.address = "";
+    this.provinceCode = "";
+    this.cityCode = "";
+    this.districtCode = "";
+    this.postMsg = '选择快递'
+    this.proitem={
+              orderType: "",
+              orderTypeName: "",
+              spechign: 0,
+              speclong: 0,
+              specwide: 0,
+              specnum: 1,
+              referencePicList: [],
+              referencePicList2: [],
+              guidanceVideo:'',
+              isShowBtnUpload: true, //显示上传图片按钮的状态
+              isShowBtnUpload2: true, //显示上传图片按钮的状态
+              isShowBtnVedio: true, //显示上传视频按钮的状态
+              showDate: false, //日期 组件 不需要遮罩层
+              vedio:"",
+              estimateTime: "",
+              remark: "",
+              offerTotal: "",
+              makestatic: [],
+              installstatic: [],
+              proMastic: [],
+              proIns: [],
+              orderName: "",
+              showP:true,
+            },
+            this.prolist=[
+              {
+                orderType: "",
+                orderTypeName: "",
+                spechign: 0,
+                speclong: 0,
+                specwide: 0,
+                specnum: 1,
+                referencePicList: [],
+                referencePicList2: [],
+                guidanceVideo:'',
+                isShowBtnUpload: true, //显示上传图片按钮的状态
+                isShowBtnUpload2: true, //显示上传图片按钮的状态
+                isShowBtnVedio: true, //显示上传视频按钮的状态
+                showDate: false, //日期 组件 不需要遮罩层
+                vedio:"",
+                estimateTime: "",
+                remark: "",
+                offerTotal: "",
+                makestatic: [],
+                installstatic: [],
+                proMastic: [],
+                proIns: [],
+                orderName: "",
+                showP:true,
+              }
+            ]
+    wx.stopPullDownRefresh();
   }
 };
 </script>

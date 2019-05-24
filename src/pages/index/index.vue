@@ -83,13 +83,18 @@
       </div>
       <foot :identity="identity"></foot>
       <!-- 客服 -->
-      <movable-view style="z-index:11;" x="300" y="460" direction="all" out-of-bounds="false" >
+      <movable-view style="z-index:11;" x="300" y="460" direction="all" out-of-bounds="false"  @click="customService" v-if="identity==2">
           <div class="fixed__kf">
               <img src="/static/images/icons/fixed__kf.png" alt="">
           </div>
       </movable-view>
     </div>
     </movable-area>
+    <!-- 客户的联系客服 -->
+    <serviceTypeSelect
+      :selectServiceTypeStatus.sync="selectServiceTypeStatus"
+      :servicePhone="servicePhone"
+    ></serviceTypeSelect>
   </div>
   
 </template>
@@ -97,6 +102,7 @@
 import foot from "@/components/foot.vue";
 import { post,get, toLogin, getCurrentPageUrlWithArgs } from "@/utils";
 import "@/css/dd_style.css";
+import serviceTypeSelect from "@/components/serviceTypeSelect.vue";
 export default {
   onLoad() {
     this.setBarTitle();
@@ -104,10 +110,18 @@ export default {
   },
   onShow(){
     this.curPage = getCurrentPageUrlWithArgs();
+    this.userId = wx.getStorageSync("userId");
+    this.token = wx.getStorageSync("token");
     if(toLogin(this.curPage)){
       this.identity = wx.getStorageSync("identity");
+      console.log( this.identity," this.identity+++++++")
+      if (this.identity == 2) {
+        //客户
+        this.GetMemberInfo();
+      } 
       this.getBanner();
       this.getConpanyInfo()
+
     }
     
   },
@@ -116,11 +130,17 @@ export default {
       bannerList: [],
       companyInfo:{},
       identity:"",
-      curPage:""
+      servicePhone:'',
+      selectServiceTypeStatus: false, //联系客服类型弹窗状态
+      curPage:"",
+      userId: "",
+      token: "",
     };
   },
   components: {
-    foot
+    foot,
+    serviceTypeSelect
+
   },
   methods: {
     async getBanner(){
@@ -144,7 +164,28 @@ export default {
       wx.setNavigationBarTitle({
         title: "浩煌"
       });
-    }
+    },
+    customService(){  //客户的点击专属客服
+      this.selectServiceTypeStatus = true;
+      console.log(this.servicePhone,"servicePhone");
+    },
+    GetMemberInfo() {
+      let that = this;
+      //客户信息
+      post(
+        "User/GetMemberInfo",
+        {
+          UserId: that.userId,
+          Token: that.token
+        },
+        that.curPage
+      ).then(result => {
+        if (result.code === 0) {
+          that.servicePhone = result.data.ServiceTel;
+          console.log(that.servicePhone,"servicePhone+++++++++++++")
+        }
+      });
+    },
   }
 };
 </script>
