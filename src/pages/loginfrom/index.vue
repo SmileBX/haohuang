@@ -375,6 +375,8 @@ export default {
         Mobile: that.Tel,
         PassWord: that.Pwd
       }).then(result => {
+        wx.setStorageSync("userId", result.data.MasterId);
+        wx.setStorageSync("token", result.data.MasterToken);
         if (result.code === 0) {
           if (
             wx.getStorageSync("askUrl") &&
@@ -388,8 +390,7 @@ export default {
               wx.setStorageSync("askUrl", "");
             }
           }
-          wx.setStorageSync("userId", result.data.MasterId);
-          wx.setStorageSync("token", result.data.MasterToken);
+      
           wx.setStorageSync("mobile", that.Tel);
           wx.showToast({
             title: "登录成功",
@@ -432,6 +433,8 @@ export default {
         Mobile: that.Tel,
         VerifyCode: that.Code
       }).then(result => {
+          wx.setStorageSync("userId", result.data.MasterId);
+          wx.setStorageSync("token", result.data.MasterToken);
         if (result.code === 0) {
           if (
             wx.getStorageSync("askUrl") &&
@@ -445,8 +448,7 @@ export default {
               wx.setStorageSync("askUrl", "");
             }
           }
-          wx.setStorageSync("userId", result.data.MasterId);
-          wx.setStorageSync("token", result.data.MasterToken);
+          
           wx.setStorageSync("mobile", that.Tel);
           wx.showToast({
             title: "登录成功",

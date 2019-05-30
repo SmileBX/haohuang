@@ -254,14 +254,15 @@ function wxInstalMasterLogin(code, iv, encryptedData) {
         code,
         encryptedData
     }).then(result => {
+        wx.setStorageSync("userId", result.data.MasterId);
+        wx.setStorageSync("token", result.data.MasterToken);
         if (result.code === 0) { //登录成功
             if (wx.getStorageSync("askUrl") && wx.getStorageSync("askUrl") !== "undefined") {
                 if (wx.getStorageSync("mobile") !== result.data.MasterMobile && wx.getStorageSync("mobile") && wx.getStorageSync("mobile") !== "undefined") {
                     wx.setStorageSync("askUrl", "");
                 }
             }
-            wx.setStorageSync("userId", result.data.MasterId);
-            wx.setStorageSync("token", result.data.MasterToken);
+            
             wx.setStorageSync("openId", result.data.MasterOpenId);
             wx.setStorageSync("mobile", result.data.MasterMobile);
             wx.showToast({
@@ -295,8 +296,6 @@ function wxInstalMasterLogin(code, iv, encryptedData) {
             })
         }
         if (result.code === 102) { //没有填写审核资料
-            wx.setStorageSync("userId", result.data.MasterId);
-            wx.setStorageSync("token", result.data.MasterToken);
             wx.setStorageSync("openId", result.data.MasterOpenId);
             wx.navigateTo({
                 url: '/pages/FillInfp/main'
