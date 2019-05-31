@@ -405,7 +405,7 @@ export default {
         latShow:false, //设计的时候隐藏地址  快递
         priceShow:false,//显示总价格
         selectServiceTypeStatus: false, //联系客服类型弹窗状态
-        showP:true,
+        // showP:true,
         userId: "",
         token: "",
         curPage: "",
@@ -493,12 +493,17 @@ export default {
               this.prolist[n].orderTypeName=this.list[i].name
               this.prolist[n].orderType=this.list[i].Id
                //遍历订单  如果订单类型都是设计 隐藏
+               console.log(this.prolist,"+++++++++++++++++++++++++++++++++++++++")
+               let num =0;
                for(let i=0;i<this.prolist.length;i++){
-                  if(this.prolist[i].orderType!=0){
+                  if(this.prolist[i].orderType!==0){
                       this.latShow = true;
                   }else{
-                      this.latShow = false;
+                    num++;
                   }
+               }
+               if(num===this.prolist.length && num !==0){
+                   this.latShow = false;
                }
             }
             
@@ -507,9 +512,6 @@ export default {
           if(this.list[i].statu){
               if(this.masktitle=="请选择制作材料"){
                   this.prolist[n].makestatic.push(this.list[i].name+"  "+"￥"+this.list[i].Price +"   ")
-                  //this.prolist[n].makestatic+=this.list[i].name+"  "+"￥"+this.list[i].Price +"   "
-                  //选中的材料--制作材料 安装材料
-                  //console.log(this.prolist[n].specnum,"specnum+++++++++++")
                   let item1={
                       Id:this.list[i].Id,
                       Num:this.prolist[n].specnum,
@@ -617,9 +619,7 @@ export default {
       },
       //日期
       choseDate(n){
-       // console.log(n,"***********++++++++++++++++++++++++++")
         this.prolist[n].showDate=true
-       // console.log("-----------------------5252525252----")
       },
       //选择订单类型
       choseType(n){
@@ -911,12 +911,12 @@ export default {
             if(res.code==0){
                 this.proitem={
                   orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],isShowBtnUpload:true,
-                  estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,showType:false,  //日期 组件 不需要遮罩层
+                  estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,showType:false, showP:true //日期 组件 不需要遮罩层
                 }
                 this.prolist=[
                   {
                   orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
-                  estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false, showType:false,  //日期 组件 不需要遮罩层
+                  estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false, showType:false, showP:true //日期 组件 不需要遮罩层
                   },
                 ]
                 wx.showToast({

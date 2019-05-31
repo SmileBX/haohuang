@@ -86,7 +86,7 @@
         </div>
       </div>
     </div>
-    <div class="foot">
+    <div class="foot" v-if="!disBtn">
       <div class="fixd-foot">
         <button class="btn btn_org" @click="Submint">提交</button>
       </div>
@@ -130,7 +130,7 @@ export default {
       userId: "",
       token: "",
       realName: "", //师傅真实姓名
-      IdentifyNumber: "", //师傅的身份证号
+      IdentifyNumber:"", //师傅的身份证号
       BankId: "", //选择的银行
       BankAddress: "", //开户行名称
       BankNo: "", //银行卡卡号
@@ -147,6 +147,7 @@ export default {
       AreaCode: "", //所属区县
       area: "",
       bankName: "",
+      disBtn: false //禁用提交按钮
     };
   },
   methods: {
@@ -158,15 +159,16 @@ export default {
       this.BankId = ""; //选择的银行
       this.BankAddress = ""; //开户行名称
       this.BankNo = ""; //银行卡卡号
-      this.ElectricianImgSrc = "";//电工证书
-      this.WelderImgSrc = "";//焊工证书
-      this.HighAltitudeImgSrc = "";//高空证书
-      this.OtherImgSrc = "";//其他证书图片非必填的
+      this.ElectricianImgSrc = ""; //电工证书
+      this.WelderImgSrc = ""; //焊工证书
+      this.HighAltitudeImgSrc = ""; //高空证书
+      this.OtherImgSrc = ""; //其他证书图片非必填的
       this.ProvinceCode = ""; //所属省份
       this.CityCode = ""; //	所属市区
       this.AreaCode = ""; //所属区县
       this.area = "";
       this.bankName = "";
+      this.disBtn = false;
     },
     setBarTitle() {
       wx.setNavigationBarTitle({
@@ -244,7 +246,7 @@ export default {
         });
         return false;
       }
-      if (this.ElectricianImg == "") {
+      if (this.ElectricianImgSrc == "") {
         wx.showToast({
           title: "请上传电工证!",
           icon: "none",
@@ -252,7 +254,7 @@ export default {
         });
         return false;
       }
-      if (this.WelderImg == "") {
+      if (this.WelderImgSrc == "") {
         wx.showToast({
           title: "请上传焊工证!",
           icon: "none",
@@ -260,7 +262,7 @@ export default {
         });
         return false;
       }
-      if (this.HighAltitudeImg == "") {
+      if (this.HighAltitudeImgSrc == "") {
         wx.showToast({
           title: "请上传高空证!",
           icon: "none",
@@ -285,9 +287,9 @@ export default {
       for (let i = 0; i < areas.length; i++) {
         text += areas[i].name;
       }
-      (this.provinceCode = areas[0].code || ""),
-        (this.cityCode = areas[1].code || ""),
-        (this.districtCode = areas[2].code || ""),
+      (this.ProvinceCode = areas[0].code || ""),
+        (this.CityCode = areas[1].code || ""),
+        (this.AreaCode = areas[2].code || ""),
         (this.area = text);
     },
     selectCardName() {
@@ -386,16 +388,19 @@ export default {
     },
     async sumbitMasterApplication() {
       let that = this;
-      let ElectricianImg = await base64Img(that.ElectricianImgSrc);
-      let WelderImg = await base64Img(that.WelderImgSrc);
-      let HighAltitudeImg = await base64Img(that.HighAltitudeImgSrc);
-      let OtherImg = await base64Img(that.OtherImgSrc);
+      let ElectricianImg =await that.base64Img(that.ElectricianImgSrc);
+      let WelderImg = await that.base64Img(that.WelderImgSrc);
+      let HighAltitudeImg = await that.base64Img(that.HighAltitudeImgSrc);
+      let OtherImg ="";
+      if(that.OtherImgSrc !==""){
+         OtherImg= await that.base64Img(that.OtherImgSrc);
+      }
       post("InstalMaster/SumbitMasterApplication", {
         MasterId: that.userId,
         MasterToken: that.token,
-        ProvinceCode: that.provinceCode,
-        CityCode: that.cityCode,
-        AreaCode: that.districtCode,
+        ProvinceCode: that.ProvinceCode,
+        CityCode: that.CityCode,
+        AreaCode: that.AreaCode,
         RealName: that.realName,
         IdentifyNumber: that.IdentifyNumber,
         BankId: that.BankId,
@@ -414,7 +419,7 @@ export default {
           wx.showModal({
             title: "审核资料提交成功",
             content:
-              "审核资料需要1~7个工作日才能完成，请耐心等待，审核通过会以短信方式通知您",
+              "审核资料需要1~7个工作日才能完成，请耐心等待!",
             showCancel: false,
             confirmColor: "#ff7e22",
             success(res) {
@@ -446,20 +451,25 @@ export default {
         that.curPage
       ).then(res => {
         if (res.code === 0) {
-          that.realName = res.data.RealName; //师傅真实姓名
-          that.IdentifyNumber = res.data.IdentityNum; //师傅的身份证号
-          that.BankId = res.data.OwnBankId; //选择的银行
-          that.BankAddress = res.data.BankAddress; //开户行名称
-          that.BankNo = res.data.BankCardNo; //银行卡卡号
-          that.ElectricianImgSrc = res.data.ElectricianCertificate;//电工证书
-          that.WelderImgSrc = res.data.WelderCertificate;//焊工证书
-          that.HighAltitudeImgSrc = res.data.HighAltitudeCertificate;//高空证书
-          that.OtherImgSrc = res.data.OtherCertificate;//其他证书图片非必填的
-          that.ProvinceCode = res.data.ProvinceCode; //所属省份
-          that.CityCode = res.data.CityCode; //	所属市区
-          that.AreaCode = res.data.AreaCode; //所属区县
-          that.area = res.data.AddressInfo;
-          that.bankName = res.data.BankName;
+          if (res.data.Status === 1 || res.data.Status === 2 || res.data.Status === 99) {
+            that.disBtn = true;
+          }
+          if (res.data.Status !== 4) {
+            that.realName = res.data.RealName; //师傅真实姓名
+            that.IdentifyNumber = res.data.IdentityNum; //师傅的身份证号
+            that.BankId = res.data.BankId; //选择的银行
+            that.BankAddress = res.data.BankAddress; //开户行名称
+            that.BankNo = res.data.BankCardNo; //银行卡卡号
+            that.ElectricianImgSrc = res.data.ElectricianCertificate; //电工证书
+            that.WelderImgSrc = res.data.WelderCertificate; //焊工证书
+            that.HighAltitudeImgSrc = res.data.HighAltitudeCertificate; //高空证书
+            that.OtherImgSrc = res.data.OtherCertificate; //其他证书图片非必填的
+            that.ProvinceCode = res.data.ProvinceCode; //所属省份
+            that.CityCode = res.data.CityCode; //	所属市区
+            that.AreaCode = res.data.AreaCode; //所属区县
+            that.area = res.data.AddressInfo;
+            that.bankName = res.data.BankName;
+          }
         }
       });
     }

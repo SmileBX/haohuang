@@ -600,13 +600,17 @@ export default {
             this.prolist[n].orderTypeName = this.list[i].name;
             this.prolist[n].orderType = this.list[i].Id;
              //遍历订单  如果订单类型都是设计 隐藏
+             let num = 0
                for(let i=0;i<this.prolist.length;i++){
                   if(this.prolist[i].orderType!=0){
                       this.latShow = true;
                   }else{
-                      this.latShow = false;
+                      num++
                   }
                }
+               if(num===this.prolist.length && num !==0){
+                   this.latShow = false;
+                }
           }
           if (this.masktitle == "请选择客户名称") {
             this.bindName = this.list[i].name;
