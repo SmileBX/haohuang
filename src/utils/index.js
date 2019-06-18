@@ -67,6 +67,7 @@ function request(url, method, data, curPage, header = {}) {
         title: '加载中' //数据请求前loading
     })
     return new Promise((resolve, reject) => {
+
         wx.request({
             url: host + url, //仅为示例，并非真实的接口地址
             method: method,
@@ -77,8 +78,14 @@ function request(url, method, data, curPage, header = {}) {
             success: function(res) {
                 wx.hideLoading();
                 if (res.data.code === 0) {
-                    resolve(res.data);
+                    setTimeout(() => {
+                        resolve(res.data);
+                    }, 1000)
+
                 } else if (res.data.code === 2) {
+
+
+
                     wx.showToast({
                         title: '需要重新登录!',
                         icon: 'none',
@@ -91,13 +98,14 @@ function request(url, method, data, curPage, header = {}) {
                     }, 1500);
 
                 } else {
-                    resolve(res.data);
-                    wx.showToast({
-                        title: res.data.msg + '!',
-                        icon: 'none',
-                        duration: 1500
-                    })
-
+                    setTimeout(() => {
+                        resolve(res.data);
+                        wx.showToast({
+                            title: res.data.msg + '!',
+                            icon: 'none',
+                            duration: 1500
+                        })
+                    }, 800)
                 }
             },
             fail: function(error) {
@@ -262,7 +270,7 @@ function wxInstalMasterLogin(code, iv, encryptedData) {
                     wx.setStorageSync("askUrl", "");
                 }
             }
-            
+
             wx.setStorageSync("openId", result.data.MasterOpenId);
             wx.setStorageSync("mobile", result.data.MasterMobile);
             wx.showToast({
