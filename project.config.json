@@ -15,7 +15,7 @@
 	"projectname": "my-project",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
-	"libVersion": "2.6.6",
+	"libVersion": "2.3.2",
 	"condition": {
 		"search": {
 			"current": -1,

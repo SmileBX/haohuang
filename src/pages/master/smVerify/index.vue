@@ -226,6 +226,8 @@ export default {
         title: "提交审核"
       });
     },
+    initData(){
+    },
     valOther() {
       if (this.frontPicList.length <= 0) {
         wx.showToast({
@@ -405,10 +407,10 @@ export default {
           }
           that.detail = res.data;
           that.hasData = true;
+          that.progressInfoList = [];
           if (res.data.ProgressInfo.length > 0) {
             //明细
             // let info = JSON.parse(res.data.ProgressInfo);
-            that.progressInfoList = [];
             res.data.ProgressInfo.map(item => {
               that.progressInfoList.push({
                 TrafficMoney: item.TrafficMoney, //交通费
