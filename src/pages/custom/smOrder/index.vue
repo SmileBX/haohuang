@@ -480,6 +480,7 @@ export default {
             if(this.masktitle=="请选择快递类型"){
               this.postMsg = this.list[i].name
               this.logisticsType = this.list[i].Id
+              console.log(this.logisticsType,"96969696")
             //  if( this.postMsg.indexOf('物流')!=-1){
             //     this.logisticsType=1
             //  }else{
@@ -811,36 +812,30 @@ export default {
         }
     },
     submit(){
-       if(this.latShow){
-          if(this.adressId.toString().length<1){
-              wx.showToast({
-                  title:"请选择地址！"
-                })
-              return false
-            }
-            if(this.logisticsType.toString().length<1){
-              wx.showToast({
-                  title:"请选择快递！"
-                })
-              return false
-            }
-       }
+      console.log(this.logisticsType,"________")
+      if(this.jiaoyan()){
+        this.addSubmit()
+      }
+    },
+    addSubmit(){
+        // if(this.latShow){
+        //     if(this.adressId.toString().length<1){
+        //         wx.showToast({
+        //             title:"请选择地址！"
+        //           })
+        //         return false
+        //       }
+        //       if(this.logisticsType<1){
+        //         wx.showToast({
+        //             title:"请选择快递！"
+        //           })
+        //         return false
+        //       }
+        // }
         //console.log(this.prolist,"this.prolist")
         let _OrderInsertList=[]
         for(let i=0;i<this.prolist.length;i++){
           //如果是制作类型 集合为空提示  
-          if((this.prolist[i].orderType==1 || this.prolist[i].orderType==3 || this.prolist[i].orderType==4 ||this.prolist[i].orderType==5)&& this.prolist[i].proMastic.length<1){
-              wx.showToast({
-                  title:"请选择制作材料！"
-                })
-              return false
-          }
-          if((this.prolist[i].orderType==2 || this.prolist[i].orderType==4 || this.prolist[i].orderType==5 )&& this.prolist[i].proIns.length<1){
-              wx.showToast({
-                  title:"请选择安装材料！"
-                })
-              return false
-          }
           let info={}
           let _referencePicList=[]
           //材料集合
@@ -874,25 +869,9 @@ export default {
               logisticsName:this.logisticsType,//快递类型
           }                 
           
-          console.log(info,"referencePicList999999999999++++++++++++++++++++++++++++++++++")
-
-          //console.log(typeof this.prolist[i].estimateTime,"提交时间")
-          // if(this.prolist[i].estimateTime.length==0　|| this.prolist[i].offerTotal.toString().length==0 || this.prolist[i].orderName.length==0){
-          if(this.prolist[i].estimateTime.length==0　||  this.prolist[i].orderName.length==0){
-            wx.showToast({
-              title:"必选项不能为空！",
-              icon:'none'
-            })
-            return false
-          } else if( this.prolist[i].specnum<1){
-            wx.showToast({
-                title: "数量不能小于1",
-                icon: "none"
-            });
-              return false;
-          }else{
-                _OrderInsertList.push(info);//JSON.stringify(info)
-            }
+          // console.log(info,"referencePicList999999999999++++++++++++++++++++++++++++++++++")
+        _OrderInsertList.push(info);//JSON.stringify(info)
+          
           
         }
        
@@ -939,28 +918,63 @@ export default {
 
     },
     jiaoyan() {
-      if (!this.name) {
-        return "请输入联系人";
-      }
-      if (!/^1[3|4|5|6|7|8][0-9]\d{4,8}$/.test(this.phone)) {
-        return "请输入正确的手机号码";
-      }
-      if (!this.area) {
-        return "请选择省份";
-      }
+      if(this.latShow){
+            if(this.adressId.toString().length<1){
+                wx.showToast({
+                    title:"请选择地址！",
+                    icon:"none"
+                  })
+                return false
+              }
+              if(this.logisticsType<1){
+                wx.showToast({
+                    title:"请选择快递！",
+                    icon:"none"
+                  })
+                return false
+              }
+        }
+        for(let i=0;i<this.prolist.length;i++){
+          //如果是制作类型 集合为空提示  
+          if((this.prolist[i].orderType==1 || this.prolist[i].orderType==3 || this.prolist[i].orderType==4 ||this.prolist[i].orderType==5)&& this.prolist[i].proMastic.length<1){
+              wx.showToast({
+                  title:"请选择制作材料！",
+                  icon:"none"
+                })
+              return false
+          }
+          if((this.prolist[i].orderType==2 || this.prolist[i].orderType==4 || this.prolist[i].orderType==5 )&& this.prolist[i].proIns.length<1){
+              wx.showToast({
+                  title:"请选择安装材料！",
+                  icon:"none"
+                })
+              return false
+          }
+          if(this.prolist[i].orderType==""){
+                wx.showToast({
+                  title:"请选择订单类型！",
+                  icon:"none"
+                })
+              return false
+          }
+          if(this.prolist[i].estimateTime.length==0　||  this.prolist[i].orderName.length==0){
+            wx.showToast({
+              title:"必选项不能为空！",
+              icon:'none'
+            })
+            return false
+          }
+          if( this.prolist[i].specnum<1){
+            wx.showToast({
+                title: "数量不能小于1",
+                icon: "none"
+            });
+              return false;
+          }
+        }
+         
 
-      if(latShow){
-          if (!this.address) {
-            return "请输入地址";
-          }
-          if(!/^[A-Za-z0-9\u4e00-\u9fa5]+$/ .test(this.address)){
-            return "请输入正确的地址"
-          }
-      }
-      if(!/^[A-Za-z\u4e00-\u9fa5]+$/ .test(this.name)){
-         return "包含非法字符"
-      }
-      return false;
+      return true;
     },
     closeMask(){
       wx.redirectTo({url:"/pages/custom/order/main"})
