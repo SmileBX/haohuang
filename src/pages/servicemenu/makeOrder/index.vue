@@ -241,6 +241,15 @@
                   </div>
                 </div>
               </div>
+              <div
+                style="padding-bottom:40rpx;padding-top:40rpx;"
+                class="addDetail bg_fff" v-if="prolist.length>1 && lindex !==prolist.length-1"
+              >
+                <div class="btn btn-add" style="color:#666;border-color:#e5e5e5;" @click="delOrder(lindex)">
+                  删除明细
+                </div>
+              </div>
+
               <!--子no2-->
               
               <!--子no3-->
@@ -666,7 +675,7 @@ export default {
     //增加明细（增加子订单）
     addOrder() {
       this.tip++;
-      if (this.tip > 2) {
+      if (this.prolist.length > 2) {
         wx.showToast({
           title: "已超过订单添加的数量啦...",
           icon: "none",
@@ -677,7 +686,7 @@ export default {
       } else {
         //console.log(this.proitem)
         const proitem = JSON.stringify(this.proitem);
-        this.prolist.push(JSON.parse(proitem));
+        this.prolist.unshift(JSON.parse(proitem));
         console.log(this.prolist, "1111111111111");
       }
     },
@@ -1373,6 +1382,9 @@ export default {
           this.showTips()
           this.prolist[n].specnum=1
       }
+    },
+    delOrder(index){  //删除明细
+     this.prolist.splice(index,1);
     },
   },
   onPullDownRefresh() {

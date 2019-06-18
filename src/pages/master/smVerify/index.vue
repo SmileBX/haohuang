@@ -303,7 +303,6 @@ export default {
       });
     },
     async base64Img(arr) {
-      
       let base64Arr = [];
       for (let i = 0; i < arr.length; i += 1) {
         const res = await pathToBase64(arr[i]);
@@ -362,7 +361,7 @@ export default {
       //添加明细
       if (this.curInfo < this.infoLength) {
         this.curInfo++;
-        this.progressInfoList.push({
+        this.progressInfoList.unshift({
           TrafficMoney: "", //交通费
           Meals: "", //餐费
           HotelExpense: "", //住宿费
