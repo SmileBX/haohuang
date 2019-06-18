@@ -58,6 +58,7 @@ export default {
       };
       this.activeIndex = index;
       const selectCard = this.$store.state.selectCard;
+      
       if (!selectCard.status) {
         return false;
       }

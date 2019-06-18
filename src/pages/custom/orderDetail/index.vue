@@ -18,7 +18,7 @@
           <p class="txt" style="color:#ff6325">安装完工确认</p>
           <p class="time">{{detail.EndTime}}</p>
         </div>
-        <span class="icon-arrow arrow-right" style="margin-right:-20rpx;"></span>
+        <!-- <span class="icon-arrow arrow-right" style="margin-right:-20rpx;"></span> -->
       </div>
       <div class="addressList">
         <div class="item flex flexAlignEnd">

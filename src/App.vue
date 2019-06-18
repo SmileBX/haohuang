@@ -66,4 +66,5 @@ textarea{
 -webkit-appearance: none;
 
 }
+.van-field__input--disabled{color:#1a1a1a!important;background-color:initial;opacity:1}
 </style>

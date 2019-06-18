@@ -10,7 +10,7 @@
           <p class="txt">分配师傅：{{MasterName}}师傅为你服务</p>
           <p class="time">{{InstallTime}}</p>
         </div>
-        <span class="icon-arrow arrow-right" style="margin-right:-20rpx;"></span>
+        <!-- <span class="icon-arrow arrow-right" style="margin-right:-20rpx;"></span> -->
       </div>
       <div class="addressList">
         <div class="item flex flexAlignEnd">

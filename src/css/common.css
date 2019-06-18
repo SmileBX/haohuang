@@ -1357,3 +1357,6 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     font-size: 32rpx;
     color: #5694fc;
 }
+.weui-area,.weui-input{
+    color:#1a1a1a
+}

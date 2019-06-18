@@ -47,21 +47,21 @@
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">宽</span>
                       <div class="ipt flex">
-                        <input type="number" class="flex1 weui-input" v-model="item.specwide" @focus="trimWide(lindex,11)" @blur="getWide(lindex)">
+                        <input type="number" placeholder="0" class="flex1 weui-input" v-model="item.specwide"  @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">高</span>
                       <div class="ipt flex">
-                        <input type="number" class="flex1 weui-input" v-model="item.spechign" @focus="trimWide(lindex,22)" @blur="getWide(lindex)">
+                        <input type="number" placeholder="0" class="flex1 weui-input" v-model="item.spechign" @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">厚</span>
                       <div class="ipt flex">
-                        <input type="number" class="flex1 weui-input" v-model="item.speclong" @focus="trimWide(lindex,33)" @blur="getWide(lindex)">
+                        <input type="number" placeholder="0" class="flex1 weui-input" v-model="item.speclong" @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
@@ -70,7 +70,7 @@
                     <div class="item flex flexAlignCenter">
                       <span class="lab">数量</span>
                       <div class="ipt flex">
-                        <input type="number" class="weui-input" style="width:140rpx;" v-model="item.specnum" @focus="trimWide(lindex,44)" @blur="getWide(lindex)">
+                        <input type="number" placeholder="1" class="weui-input" style="width:140rpx;" v-model="item.specnum" @blur="getWide(lindex)">
                         <span class="txt">&nbsp;</span>
                       </div>
                     </div>
@@ -124,9 +124,8 @@
                 <div class="weui-item tetbox">
                   <div class="weui-cells__title">备注说明</div>
                   <div class="eaditArea">
-                    <!-- <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
-                    <textarea  class="weui-area" placeholder="请输入备注内容111111111" v-model="item.remark" v-else></textarea> -->
-                    <p class="weui-area" v-if="item.showP" @click="item.showP=false" style="padding:29rpx;">{{item.remark || '请输入备注内容'}}</p>
+                    <p class="weui-area colorGray" v-if="item.showP" @click="item.showP=false" style="padding:29rpx;" :class="[item.remark.length>0 ?'colorA':'']">{{item.remark || '请输入备注内容'}}</p>
+
                     <textarea  style="resize:none" cursor-spacing="20" class="weui-area"  adjust-position="true" :placeholder="signtext" v-model="item.remark" @blur="item.showP=true" auto-focus v-else></textarea>
                   </div>
                 </div>
@@ -422,16 +421,6 @@ export default {
         Addr:"",//地址
         masktitle:'设计',
         tip:0,//点击增加明细增加子订单的次数标识
-        // proitem:{
-        //   orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
-        //   estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true
-        // },
-        // prolist:[
-        //   {
-        //  orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
-        //   estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",
-        //   isShowBtnUpload:true
-        //   },
         proitem:{
           orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],isShowBtnUpload:true,
           estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,showType:false,  //日期 组件 不需要遮罩层
@@ -910,12 +899,18 @@ export default {
             console.log(res,'提交订单')
             if(res.code==0){
                 this.proitem={
-                  orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],isShowBtnUpload:true,
+                  orderType:'',orderTypeName:"",spechign: '',
+              speclong: '',
+              specwide: '',
+              specnum: '',referencePicList:[],imgBase:[],isShowBtnUpload:true,
                   estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",showDate:false,showType:false, showP:true //日期 组件 不需要遮罩层
                 }
                 this.prolist=[
                   {
-                  orderType:'',orderTypeName:"",spechign:0,speclong:0,specwide:0,specnum:1,referencePicList:[],imgBase:[],
+                  orderType:'',orderTypeName:"",spechign: '',
+              speclong: '',
+              specwide: '',
+              specnum: '',referencePicList:[],imgBase:[],
                   estimateTime:"",remark:"",offerTotal:"",makestatic:[],installstatic:[],proMastic:[],proIns:[],orderName:"",isShowBtnUpload:true,showDate:false, showType:false, showP:true //日期 组件 不需要遮罩层
                   },
                 ]
@@ -962,42 +957,36 @@ export default {
     closeMask(){
       wx.redirectTo({url:"/pages/custom/order/main"})
     },
-    trimWide(n,m){
-        if(m==11){
-          this.prolist[n].specwide=''
-        }else if(m==22){
-            this.prolist[n].spechign=''
-        }else if(m==33){
-            this.prolist[n].speclong=''
-        }else if(m==44){
-            this.prolist[n].specnum=''
-        }
-        
-    },
     getWide(n){
-      console.log(this.prolist[n].specwide.length)
-      if(this.prolist[n].specwide.length==0){
+      if(this.prolist[n].specwide===''){
           this.prolist[n].specwide=0
-      }else if(this.prolist[n].specwide.length>4){
+      }
+      if(this.prolist[n].specwide.length>4){
           this.showTips()
           this.prolist[n].specwide=0
-      }else if(this.prolist[n].spechign.length==0){
+      }
+      if(this.prolist[n].spechign===''){
           this.prolist[n].spechign=0
-      }else if(this.prolist[n].spechign.length>4){
+      }
+      if(this.prolist[n].spechign.length>4){
           this.showTips()
           this.prolist[n].spechign=0
-      }else if(this.prolist[n].speclong.length==0){
+      }
+      if(this.prolist[n].speclong===''){
           this.prolist[n].speclong=0
-      }else if(this.prolist[n].speclong.length>4){
+      }
+      if(this.prolist[n].speclong.length>4){
           this.showTips()
           this.prolist[n].speclong=0
-      }else if(this.prolist[n].specnum.length==0){
+      }
+      if(this.prolist[n].specnum===''||this.prolist[n].specnum*1==0){
           wx.showToast({
             title:'数量不能小于1',
             duration:1500
           })
           this.prolist[n].specnum=1
-      }else if(this.prolist[n].specnum.length>4){
+      }
+      if(this.prolist[n].specnum.length>4){
           this.showTips()
           this.prolist[n].specnum=1
       }

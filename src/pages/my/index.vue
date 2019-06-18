@@ -520,11 +520,14 @@ export default {
       // typeNo--进入订单列表展示的状态
       // 客服--订单状态：-1全部，0-待确认，1-待付款 7-已执行(安装中) 8-待评论9-已完成
       // 客户--订单状态：-1全部，0-待确认，1-待付款，2-处理中，10-待评论
+
       console.log("跳转类型", typeNo);
       if (this.identity === 1) {
       wx.navigateTo({ url: `/pages/servicemenu/myOrder/main?typeNo=${typeNo}` });
       } else if (this.identity === 2) {
       wx.navigateTo({ url: `/pages/custom/order/main?typeNo=${typeNo}` });
+      }else{
+      wx.navigateTo({ url: `/pages/master/myOrder/main?typeNo=${typeNo}` });
       }
     },
     // 跳转到客服

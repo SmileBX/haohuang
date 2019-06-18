@@ -21,32 +21,28 @@
                     title-width="70px"
                     icon="arrow"
                     disabled
-                    :input-class="area?'color333':''"
                     @click="showArea = true"
                     :value="area"
                     />
 
-                    <!-- <van-field
+                    <van-field
                     label="详细地址"
-                    type="textarea"
-                    style="height:38rpx;"
-                    placeholder="道路、门牌号、小区、楼栋号、单元、 室等"
-                    placeholder-style="height:38rpx!important"
+                    clearable
+                    placeholder="请输入详细地址"
                     :border="false"
                     title-width="70px"
-                    input-class="van-textarea-min-height"
                     :value="address"
                     @change="onAddress" 
-                    /> -->
+                    />
                 </van-cell-group>
-                <div class="weui-cell" style="font-size:28rpx;">
+                <!-- <div class="weui-cell" style="font-size:28rpx;">
                   <div class="weui-cell__hd">
                       <label class="weui-label" style="color:#333333">详细地址</label>
                   </div>
                   <div class="weui-cell__bd">
                       <input type="text"  class="weui-input text_r" style="text-align:left;margin-left:25rpx;font-size:28rpx;" placeholder="请输入详细地址" v-model="address">
                   </div>
-                </div>
+                </div> -->
             <!-- <div class="weui-cell">
                 <div class="weui-cell__hd">
                     <label class="weui-label">联系人</label>
@@ -120,21 +116,22 @@
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">宽</span>
                       <div class="ipt flex">
-                        <input type="number" class="flex1 weui-input" v-model="item.specwide" @focus="trimWide(lindex,11)" @blur="getWide(lindex)">
+                        <input type="number" class="flex1 weui-input" v-model="item.specwide" placeholder="0" @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">高</span>
                       <div class="ipt flex">
-                        <input type="number" class="flex1 weui-input" v-model="item.spechign" @focus="trimWide(lindex,22)" @blur="getWide(lindex)">
+                        <input type="number" class="flex1 weui-input" v-model="item.spechign" placeholder="0"  @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">厚</span>
                       <div class="ipt flex">
-                        <input type="number" class="flex1 weui-input" v-model="item.speclong" @focus="trimWide(lindex,33)" @blur="getWide(lindex)">
+                        <input type="number" class="flex1 weui-input" v-model="item.speclong" 
+                        placeholder="0"  @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
@@ -143,7 +140,8 @@
                     <div class="item flex flexAlignCenter">
                       <span class="lab">数量</span>
                       <div class="ipt flex">
-                        <input type="number" class="weui-input" style="width:140rpx;" v-model="item.specnum" @focus="trimWide(lindex,44)" @blur="getWide(lindex)">
+                        <input type="number" 
+                         placeholder="1" class="weui-input" style="width:140rpx;" v-model="item.specnum"  @blur="getWide(lindex)">
                         <span class="txt">&nbsp;</span>
                       </div>
                     </div>
@@ -230,9 +228,8 @@
                 <div class="weui-item" style="padding-bottom:10rpx;">
                   <div class="weui-cells__title">备注说明</div>
                   <div class="eaditArea" style="z-index:20" >
-                    <!-- <p class="weui-area" v-if="item.showDate">{{item.remark || '请输入备注内容'}}</p>
-                    <textarea  class="weui-area"  placeholder="请输入" v-model="item.remark" v-else></textarea> -->
-                    <p class="weui-area" v-if="item.showP" @click="item.showP=false" style="padding:29rpx;">{{item.remark || '请输入备注内容'}}</p>
+                    <p class="weui-area colorGray" v-if="item.showP" @click="item.showP=false" style="padding:29rpx;" :class="[item.remark.length>0 ?'colorA':'']">{{item.remark || '请输入备注内容'}}</p>
+
                     <textarea  style="resize:none" cursor-spacing="20" class="weui-area"  adjust-position="true" :placeholder="signtext" v-model="item.remark" @blur="item.showP=true" auto-focus v-else></textarea>
                   </div>
                 </div>
@@ -279,11 +276,6 @@
                           <p :class="index==active?'itemactive':''" @click="chose(index)" style="margin-top:3rpx;" v-else>{{item.name}}
                             &nbsp;&nbsp;<span v-if="item.Price">￥{{item.Price}}</span>
                           </p>
-                          <!-- <p>设计</p>
-                          <p>设计+制作</p>
-                          <p>制作</p>
-                          <p>安装</p>
-                          <p>制作+安装</p> -->  
                       </div>
                     </scroll-view>
                 </div>      
@@ -409,7 +401,7 @@ export default {
         {
           orderType: "",
           orderTypeName: "",
-          spechign: 0,
+          spechign:0,
           speclong: 0,
           specwide: 0,
           specnum: 1,
@@ -1189,10 +1181,10 @@ export default {
             this.proitem={
               orderType: "",
               orderTypeName: "",
-              spechign: 0,
-              speclong: 0,
-              specwide: 0,
-              specnum: 1,
+              spechign: '',
+              speclong: '',
+              specwide: '',
+              specnum: '',
               referencePicList: [],
               referencePicList2: [],
               guidanceVideo:'',
@@ -1215,10 +1207,10 @@ export default {
               {
                 orderType: "",
                 orderTypeName: "",
-                spechign: 0,
-                speclong: 0,
-                specwide: 0,
-                specnum: 1,
+                spechign: '',
+                speclong: '',
+                specwide: '',
+                specnum: '',
                 referencePicList: [],
                 referencePicList2: [],
                 guidanceVideo:'',
@@ -1339,58 +1331,49 @@ export default {
     onPhone(e) {
       this.phone = e.mp.detail;
     },
-    // onAddress(e) {
-    //   this.address = e.mp.detail;
-    // }
+    onAddress(e) {
+      this.address = e.mp.detail;
+    },
     showTips(){
       wx.showToast({
         title:'长度超过尺寸！'
       })
       return false
     },
-    trimWide(n,m){
-        if(m==11){
-          this.prolist[n].specwide=''
-        }else if(m==22){
-            this.prolist[n].spechign=''
-        }else if(m==33){
-            this.prolist[n].speclong=''
-        }else if(m==44){
-            this.prolist[n].specnum=''
-        }
-        
-    },
     getWide(n){
-      //console.log(this.prolist[n].specwide.length)
-      if(this.prolist[n].specwide.length==0){
+      if(this.prolist[n].specwide===''){
           this.prolist[n].specwide=0
-      }else if(this.prolist[n].specwide.length>4){
+      }
+      if(this.prolist[n].specwide.length>4){
           this.showTips()
           this.prolist[n].specwide=0
-      }else if(this.prolist[n].spechign.length==0){
+      }
+      if(this.prolist[n].spechign===''){
           this.prolist[n].spechign=0
-      }else if(this.prolist[n].spechign.length>4){
+      }
+      if(this.prolist[n].spechign.length>4){
           this.showTips()
           this.prolist[n].spechign=0
-      }else if(this.prolist[n].speclong.length==0){
+      }
+      if(this.prolist[n].speclong===''){
           this.prolist[n].speclong=0
-      }else if(this.prolist[n].speclong.length>4){
+      }
+       if(this.prolist[n].speclong.length>4){
           this.showTips()
           this.prolist[n].speclong=0
-      }else if(this.prolist[n].specnum.length==0){
+      }
+      if(this.prolist[n].specnum===''||this.prolist[n].specnum*1==0){
           wx.showToast({
             title:'数量不能小于1',
             duration:1500
           })
           this.prolist[n].specnum=1
-      }else if(this.prolist[n].specnum.length>4){
+      }
+      if(this.prolist[n].specnum.length>4){
           this.showTips()
           this.prolist[n].specnum=1
       }
     },
-    puttextatea(){
-      this.showP=false
-    }
   },
   onPullDownRefresh() {
     this.latShow=false//设计的时候隐藏地址 金额 快递
@@ -1465,5 +1448,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "./style";
+.colorA{
+    color:#1a1a1a!important;
+}
 </style>
 
