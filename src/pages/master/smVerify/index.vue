@@ -145,6 +145,14 @@
             >
           </div>
         </div>
+        <div
+        style="padding-bottom:40rpx;padding-top:40rpx;"
+        class="addDetail bg_fff" v-if="progressInfoList.length>1 && index !==progressInfoList.length-1"
+      >
+        <div class="btn btn-add" style="color:#666;border-color:#e5e5e5;" @click="delOrder(index)">
+          删除明细
+        </div>
+      </div>
       </div>
       <!--按钮增加明细-->
       <div
@@ -363,6 +371,9 @@ export default {
       } else {
         //提示最多只能加10次明细
       }
+    },
+    delOrder(index){  //删除明细
+     this.progressInfoList.splice(index,1);
     },
     getData() {
       //获取订单信息
