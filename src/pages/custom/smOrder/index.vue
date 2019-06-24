@@ -950,7 +950,7 @@ export default {
                 })
               return false
           }
-          if(this.prolist[i].orderType==""){
+          if(this.prolist[i].orderType===""){
                 wx.showToast({
                   title:"请选择订单类型！",
                   icon:"none"
