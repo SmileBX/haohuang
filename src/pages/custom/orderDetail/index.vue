@@ -7,7 +7,7 @@
       <div class="newsLogistics flex flexAlignCenter"  v-if="detail.OrderStatus==7" >
         <img src="/static/images/icons/logistics.png" class="icon_xiaoche" alt>
         <div class="flexItem flex1">
-          <p class="txt">分配师傅：{{MasterName}}师傅为你服务</p>
+          <p class="txt">分配师傅：{{MasterName}}为你服务</p>
           <p class="time">{{InstallTime}}</p>
         </div>
         <span class="icon-arrow arrow-right" style="margin-right:-20rpx;"></span>

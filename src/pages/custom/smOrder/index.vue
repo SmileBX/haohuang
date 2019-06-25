@@ -494,7 +494,7 @@ export default {
                console.log(this.prolist,"+++++++++++++++++++++++++++++++++++++++")
                let num =0;
                for(let i=0;i<this.prolist.length;i++){
-                  if(this.prolist[i].orderType!==0){
+                  if(this.prolist[i].orderType!==0 && this.prolist[i].orderType!==2){
                       this.latShow = true;
                   }else{
                     num++;
@@ -648,32 +648,60 @@ export default {
             })
         }
       },
+      choseMartic(e, n){
+        post('Product/GetProductClass',{
+          parentId:0,
+          page:1,
+          pageSize:20
+        }).then(res=>{
+          console.log("Res:",res)
+          let cid = 0
+          this.page = 1;
+          this.list = [];
+          this.active = 0;
+          this.isShow = true;
+          this.prolist[n].showType=true
+          if (e == 1) {
+            this.masktitle = "请选择制作材料";
+            cid = res.data[0].Id
+            this.prolist[n].makestatic = [];
+            this.prolist[n].proMastic = [];
+          } else {
+            this.masktitle = "请选择安装材料";
+            cid = res.data[1].Id
+            this.prolist[n].installstatic = [];
+            this.prolist[n].proIns = [];
+          }
+          this.choseMarticMain(e, n,cid)
+        })
+      },
       //制作材料////安装材料
-      choseMartic(e,n){ 
-        this.page=1
-        this.list=[]
-        this.active=0
-        this.isShow=true;
-        this.prolist[n].showType=true;
-        if(e==1){
-             this.masktitle="请选择制作材料"
-            //  this.prolist[n].makestatic='' 
-              this.prolist[n].makestatic=[] 
-             this.prolist[n].proMastic=[]
-              //this.prolist[n].installstatic=''
-        }else{
-            this.masktitle="请选择安装材料"
-            //this.prolist[n].makestatic='' 
-            this.prolist[n].installstatic=[]
-            this.prolist[n].proIns=[]
-             // this.prolist[n].installstatic=''
-        }
+      choseMarticMain(e,n,cid){ 
+        // this.page=1
+        // this.list=[]
+        // this.active=0
+        // this.isShow=true;
+        // this.prolist[n].showType=true;
+        // if(e==1){
+        //      this.masktitle="请选择制作材料"
+        //     //  this.prolist[n].makestatic='' 
+        //       this.prolist[n].makestatic=[] 
+        //      this.prolist[n].proMastic=[]
+        //       //this.prolist[n].installstatic=''
+        // }else{
+        //     this.masktitle="请选择安装材料"
+        //     //this.prolist[n].makestatic='' 
+        //     this.prolist[n].installstatic=[]
+        //     this.prolist[n].proIns=[]
+        //      // this.prolist[n].installstatic=''
+        // }
         if(toLogin(this.curPage)){
           post('/Product/ProductList',{
               UserId:this.userId,
               Token:this.token,
               page:this.page,
-              pageSize: this.pageSize
+              pageSize: this.pageSize,
+              cid:cid
           },this.curPage).then(res=>{
             this.count=res.count
             if (parseInt(this.count) % this.pageSize === 0) {
