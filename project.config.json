@@ -34,7 +34,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 34,
+			"current": 37,
 			"list": [
 				{
 					"id": 0,
@@ -292,6 +292,13 @@
 					"id": -1,
 					"name": "feedback",
 					"pathName": "pages/feedback/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "指派师傅",
+					"pathName": "pages/perform/makePerform/main",
 					"query": "",
 					"scene": null
 				}

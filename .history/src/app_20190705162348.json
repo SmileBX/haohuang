@@ -1,0 +1,97 @@
+{
+    "pages": [
+        "pages/index/main",
+        "pages/news/main",
+        "pages/my/main",
+        "pages/myInfo/main",
+        "pages/feedback/main",
+        "pages/newsList/main",
+        "pages/newsDetail/main",
+        "pages/login/main",
+        "pages/login2/main",
+        "pages/warrant/main",
+        "pages/loginfrom/main",
+        "pages/register/main",
+        "pages/FillInfp/main",
+        "pages/forgetPassword/main",
+        "pages/wxBindTel/main",
+        "pages/chooseBank/main",
+        "pages/setPhone/main",
+        "pages/appraise/main",
+        "pages/designPic/main",
+        "pages/schelogs/main"
+    ],
+    "subpackages": [{
+            "root": "pages/master/",
+            "pages": [
+                "addCradSuccess/main",
+                "addCard2/main",
+                "addCard/main",
+                "cardList/main",
+                "census/main",
+                "smVerify/main",
+                "sum/main",
+                "deposit/main",
+                "integral/main",
+                "depositmoney/main",
+                "account/main",
+                "withdrawRecord/main",
+                "myOrder/main",
+                "orderDetail/main"
+            ]
+        },
+        {
+            "root": "pages/custom/",
+            "pages": [
+                "order/main",
+                "orderDetail/main",
+                "schedule/main",
+                "addressList/main",
+                "addAddress/main",
+                "areaOrder/main",
+                "smOrder/main"
+            ]
+        },
+        {
+            "root": "pages/servicemenu/",
+            "pages": [
+                "installOrder/main",
+                "bindCustomInfo/main",
+                "customeOrder/main",
+                "orderDetail/main",
+                "myOrder/main",
+                "makeOrder/main",
+                "schedule/main"
+            ]
+        },
+        {
+            "root": "pages/perform/",
+            "pages": [
+                "installOrder/main",
+                "bindCustomInfo/main",
+                "customeOrder/main",
+                "orderDetail/main",
+                "myOrder/main",
+                "makeOrder/main",
+                "schedule/main"
+            ]
+        }
+    ],
+    "usingComponents": {
+        "van-datetime-picker": "./static/vant/datetime-picker/index",
+        "van-action-sheet": "./static/vant/action-sheet/index",
+        "van-button": "./static/vant/button/index",
+        "van-dialog": "./static/vant/dialog/index",
+        "van-field": "./static/vant/field/index",
+        "van-cell-group": "./static/vant/cell-group/index",
+        "van-area": "./static/vant/area/index",
+        "van-popup": "./static/vant/popup/index",
+        "van-switch": "./static/vant/switch/index"
+    },
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "浩煌",
+        "navigationBarTextStyle": "black"
+    }
+}
