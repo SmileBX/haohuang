@@ -488,12 +488,14 @@ export default {
                 }else if(res.data.orderModel.OrderType==5){
                   key.orderTypeName = '设计_制作_安装'
                 }
+                
                 key.orderType = res.data.orderModel.OrderType
                 key.spechign = res.data.orderModel.SpecHign
                 key.speclong = res.data.orderModel.SpecLong
                 key.specnum = res.data.orderModel.SpecNum
                 key.specwide = res.data.orderModel.SpecWide
                 key.estimateTime = res.data.orderModel.EstimateTime.split("T")[0]
+                // key.offerTotal = res.data.orderModel.OfferTotal//小计
                 key.orderName = res.data.orderModel.OrderName
                 console.log("!33333333")
                 //单个订单只需要简单判断

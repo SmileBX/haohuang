@@ -116,7 +116,7 @@
     </div>
     <!-- 确认订单 -->
       <confirmOrder :confirmOrderStatus.sync="confirmOrderStatus" 
-      :payPrice="detail.OfferTotal" :payFreight='detail.Freight' :CostRemark='detail.CostRemark' @confirm="onConfirmOrder">
+      :payPrice="detail.OfferTotal" :payFreight='detail.Freight' @confirm="onConfirmOrder">
       </confirmOrder>
       <!-- 取消订单 -->
        <!-- refuseContent:'', //取消订单填写的原因 -->
@@ -157,8 +157,7 @@ export default {
       MasterName:'',
       detail: {
         ProductMoney:0,
-        Freight:0,
-        CostRemark:""
+        Freight:0
       },
       // 确认订单
       confirmOrderStatus: false,

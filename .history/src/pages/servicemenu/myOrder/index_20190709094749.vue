@@ -318,12 +318,13 @@ export default {
             }else if(res.cancel){
                 return false
             }
+            
         }
+        
+
       })
-    },
-    //再来一单
-    againOrder(id){
-      wx.redirectTo({url: '/pages/servicemenu/makeOrder/main?orderId='+id });
+     
+        
     }
   },
     // 上拉加载

@@ -566,23 +566,21 @@ export default {
                 }else if(res.data.orderModel.OrderType==5){
                   key.orderTypeName = '设计_制作_安装'
                 }
-                
-                this.name = res.data.orderModel.ContactName
-                this.phone = res.data.orderModel.Tel
+                //单个订单只需要简单判断
+                if(key.orderType!==0 && key.orderType!==2){
+                  this.latShow = true;
+                }else{
+                  this.latShow = false;
+                }
                 key.orderType = res.data.orderModel.OrderType
                 key.spechign = res.data.orderModel.SpecHign
                 key.speclong = res.data.orderModel.SpecLong
                 key.specnum = res.data.orderModel.SpecNum
                 key.specwide = res.data.orderModel.SpecWide
                 key.estimateTime = res.data.orderModel.EstimateTime.split("T")[0]
+                // key.offerTotal = res.data.orderModel.OfferTotal//小计
                 key.orderName = res.data.orderModel.OrderName
                 console.log("!33333333")
-                console.log(key.orderType,"????????????????????????")
-                if(key.orderType!==0 && key.orderType!==2){
-                  this.latShow = true;
-                }else{
-                  this.latShow = false;
-                }
                 res.data.orderDetailModel.map(item=>{
                   console.log(item,"!44444")
                   if(item.Column1=='制作材料'){
@@ -611,37 +609,10 @@ export default {
               
               this.adressId=res.data.orderModel.AddressId
               this.logisticsType = res.data.orderModel.LogisticsName
-              this.getPost()//根据快递的Id获取快递名称
               // this.getAddressInfo()
+              // this.getPost()//根据快递的Id获取快递名称
           }
       }
-    },
-    //重复下单获取收货地址信息---暂时没有接口获取
-    // getAddressInfo(){
-    //   console.log("666666666")
-    //   if(toLogin(this.curPage)){
-    //     post('Address/GetInfo',{
-    //       UserId: this.userId,
-    //       Token: this.token,
-    //       Id:this.adressId
-    //     },this.curPage).then(res=>{
-    //       if(res.code==0){
-    //         this.area = res.data
-    //         this.address = res.data
-           
-    //       }
-    //     })
-    //   }
-    // },
-     //根据快递的Id获取快递名称
-    getPost(){
-      get('Address/KuaiDiList').then(res=>{
-        res.data.map(item=>{
-          if(item.Id == this.logisticsType){
-            this.postMsg = item.Company
-          }
-        })
-      })
     },
     //普通弹框取消
     cancle(n) {

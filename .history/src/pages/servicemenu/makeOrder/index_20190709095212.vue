@@ -443,9 +443,13 @@ export default {
       allPage: 0, //总页数
       count: 0, //总数
       isLoad: false,
+      // imgPathArr: [],
+      // imgBase: [],
       imgLenght: 8,
       adressId: "", //地址编号
-      
+      // proLists:[],//材料--制作材料 安装材料
+      // proMastic:[],//制作材料集合
+      // proIns:[],  //安装材料集合
       logisticsType: 0 //快递Id
     };
   },
@@ -465,6 +469,9 @@ export default {
       this.cityCode = "";
       this.districtCode = "";
       this.postMsg = '选择快递'
+    // this.isShowBtnUpload = true;
+    // this.isShowBtnUpload2 = true;
+    // this.isShowBtnVedio = true;
   },
   components: {
     foot,
@@ -543,105 +550,6 @@ export default {
       wx.setNavigationBarTitle({
         title: "客服下单"
       });
-    },
-    async getAgainOrderDetail(){
-      if(toLogin(this.curPage)){
-        const res=await post('CustomerService/AgainAddOrderInfo',{
-            CsdId: this.userId,
-            Token: this.token,
-            OrderId: this.orderId,
-          },this.curPage)
-           if(res.code==0){
-              this.prolist.map(key=>{
-                if(res.data.orderModel.OrderType==0){
-                  key.orderTypeName = '设计'
-                }else if(res.data.orderModel.OrderType==1){
-                  key.orderTypeName = '制作'
-                }else if(res.data.orderModel.OrderType==2){
-                  key.orderTypeName = '安装'
-                }else if(res.data.orderModel.OrderType==3){
-                  key.orderTypeName = '设计_制作'
-                }else if(res.data.orderModel.OrderType==4){
-                  key.orderTypeName = '制作_安装'
-                }else if(res.data.orderModel.OrderType==5){
-                  key.orderTypeName = '设计_制作_安装'
-                }
-                
-                this.name = res.data.orderModel.ContactName
-                this.phone = res.data.orderModel.Tel
-                key.orderType = res.data.orderModel.OrderType
-                key.spechign = res.data.orderModel.SpecHign
-                key.speclong = res.data.orderModel.SpecLong
-                key.specnum = res.data.orderModel.SpecNum
-                key.specwide = res.data.orderModel.SpecWide
-                key.estimateTime = res.data.orderModel.EstimateTime.split("T")[0]
-                key.orderName = res.data.orderModel.OrderName
-                console.log("!33333333")
-                console.log(key.orderType,"????????????????????????")
-                if(key.orderType!==0 && key.orderType!==2){
-                  this.latShow = true;
-                }else{
-                  this.latShow = false;
-                }
-                res.data.orderDetailModel.map(item=>{
-                  console.log(item,"!44444")
-                  if(item.Column1=='制作材料'){
-                    //制作才材料集合
-                    key.makestatic.push(item.productName+"  "+"￥"+item.market_price +"   ")
-                    let item1={
-                        Id:item.id,
-                        Num:item.num,
-                        pType:0
-                      }
-                    key.proMastic.push(item1)
-                  }else if(item.Column1=='安装材料'){
-                    //安装材料集合
-                    key.installstatic.push(item.productName+"  "+"￥"+item.market_price +"   ")
-                    console.log(key.installstatic,"}}}}}}}}}}}}}}}}")
-                    let item2={
-                        Id:item.id,
-                        Num:item.num,
-                        pType:0
-                      }
-                    key.proIns.push(item2)
-                    console.log(key.proIns,"*************")
-                  }
-                })
-              })
-              
-              this.adressId=res.data.orderModel.AddressId
-              this.logisticsType = res.data.orderModel.LogisticsName
-              this.getPost()//根据快递的Id获取快递名称
-              // this.getAddressInfo()
-          }
-      }
-    },
-    //重复下单获取收货地址信息---暂时没有接口获取
-    // getAddressInfo(){
-    //   console.log("666666666")
-    //   if(toLogin(this.curPage)){
-    //     post('Address/GetInfo',{
-    //       UserId: this.userId,
-    //       Token: this.token,
-    //       Id:this.adressId
-    //     },this.curPage).then(res=>{
-    //       if(res.code==0){
-    //         this.area = res.data
-    //         this.address = res.data
-           
-    //       }
-    //     })
-    //   }
-    // },
-     //根据快递的Id获取快递名称
-    getPost(){
-      get('Address/KuaiDiList').then(res=>{
-        res.data.map(item=>{
-          if(item.Id == this.logisticsType){
-            this.postMsg = item.Company
-          }
-        })
-      })
     },
     //普通弹框取消
     cancle(n) {

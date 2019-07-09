@@ -575,8 +575,10 @@ export default {
                 key.specnum = res.data.orderModel.SpecNum
                 key.specwide = res.data.orderModel.SpecWide
                 key.estimateTime = res.data.orderModel.EstimateTime.split("T")[0]
+                // key.offerTotal = res.data.orderModel.OfferTotal//小计
                 key.orderName = res.data.orderModel.OrderName
                 console.log("!33333333")
+                //单个订单只需要简单判断
                 console.log(key.orderType,"????????????????????????")
                 if(key.orderType!==0 && key.orderType!==2){
                   this.latShow = true;

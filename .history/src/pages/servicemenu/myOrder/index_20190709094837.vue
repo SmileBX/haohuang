@@ -323,7 +323,7 @@ export default {
     },
     //再来一单
     againOrder(id){
-      wx.redirectTo({url: '/pages/servicemenu/makeOrder/main?orderId='+id });
+      wx.redirectTo({url: '/pages/custom/smOrder/main?orderId='+id });
     }
   },
     // 上拉加载

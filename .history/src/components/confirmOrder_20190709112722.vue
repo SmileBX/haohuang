@@ -93,20 +93,11 @@ export default {
     },
     // 点击完成确认订单
     async onConfirmOrder() {
-      if(this.payPrice < 0){
-        wx.showToast({
-          title:"费用不能低于0",
-          icon:"none",
-          duration:1500
-        })
-        return false
-      }else{
-        this.$emit("confirm", {
-          offerMoney: this.payPrice * 1,
-          freight: this.payFreight * 1,
-          CostRemark:this.CostRemark
-        });
-      }
+      this.$emit("confirm", {
+        offerMoney: this.payPrice * 1,
+        freight: this.payFreight * 1,
+        CostRemark:this.CostRemark
+      });
     },
     // 点击取消
     cancel() {

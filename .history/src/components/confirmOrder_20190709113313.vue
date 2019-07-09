@@ -93,9 +93,9 @@ export default {
     },
     // 点击完成确认订单
     async onConfirmOrder() {
-      if(this.payPrice < 0){
+      if(this.payPrice == 0){
         wx.showToast({
-          title:"费用不能低于0",
+          title:"请填写费用",
           icon:"none",
           duration:1500
         })

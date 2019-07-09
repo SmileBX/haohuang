@@ -56,13 +56,30 @@
                 </div>
               </div>
             </div>
+            <!-- <div class="priceAllBox flex">
+              <div class="flexItem"></div>
+              <div class="flexItem flex1 text_r">
+                共3件商品（含配送费）合计
+                <span class="hj_price">￥3300.00</span>
+              </div>
+            </div>-->
           </div>
           <div class="item__ft">
+            <!-- <div class="button" v-if="list.OrderStatus===0">取消订单</div>
+            <div class="button active" v-if="list.OrderStatus===1">付款</div>
+            <div class="button active" v-if="list.OrderStatus===0">联系客服</div>
+            <div class="button active" v-if="list.OrderStatus===8">去评价</div> -->
+
             <!-- IsPay是否支付 -->
             <div class="button" v-if="(list.OrderStatus==0||list.OrderStatus==1) && list.MemberId==0 " @click="showCancelOrder(list.Id)">取消订单</div>
             <div class="button active" v-if="(list.OrderStatus==2 || list.OrderStatus==3 ||list.OrderStatus==4 || list.OrderStatus==5 || list.OrderStatus==6 || list.OrderStatus==7) && list.MemberId==0" @click="seeSchdule(index)">查看进度</div>
+            <!-- 客服是否确认IsConfirm -->
+            <!-- <div class="button active"  v-if="list.IsConfirm==0">修改价格</div> -->
+            <!-- <div class="button linear" v-if="list.IsConfirm==0">确认订单</div> -->
+            <!-- <div class="button linear" v-if="list.IsConfirm==1&&list.IsPay==0">已付款</div> -->
+            <!-- <div class="button active" v-if="list.OrderStatus===0">设计确认</div> -->
              <div class="button active" v-if="list.OrderStatus==4 && list.MemberId==0" @click="getGoods(list.Id)">确认收货</div>
-            <div class="button active" @tap="againOrder(list.Id)">再来一单</div>
+            <!--<div class="button linear" v-if="list.OrderStatus==8">评论</div> -->
             <!-- <div class="button active" v-if="list.OrderStatus==9">删除订单</div> -->
           </div>
         </div>
@@ -318,12 +335,13 @@ export default {
             }else if(res.cancel){
                 return false
             }
+            
         }
+        
+
       })
-    },
-    //再来一单
-    againOrder(id){
-      wx.redirectTo({url: '/pages/servicemenu/makeOrder/main?orderId='+id });
+     
+        
     }
   },
     // 上拉加载

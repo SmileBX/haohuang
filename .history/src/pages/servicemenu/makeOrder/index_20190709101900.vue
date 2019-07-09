@@ -566,7 +566,12 @@ export default {
                 }else if(res.data.orderModel.OrderType==5){
                   key.orderTypeName = '设计_制作_安装'
                 }
-                
+                //单个订单只需要简单判断
+                if(key.orderType!==0 && key.orderType!==2){
+                  this.latShow = true;
+                }else{
+                  this.latShow = false;
+                }
                 this.name = res.data.orderModel.ContactName
                 this.phone = res.data.orderModel.Tel
                 key.orderType = res.data.orderModel.OrderType
@@ -575,14 +580,9 @@ export default {
                 key.specnum = res.data.orderModel.SpecNum
                 key.specwide = res.data.orderModel.SpecWide
                 key.estimateTime = res.data.orderModel.EstimateTime.split("T")[0]
+                // key.offerTotal = res.data.orderModel.OfferTotal//小计
                 key.orderName = res.data.orderModel.OrderName
                 console.log("!33333333")
-                console.log(key.orderType,"????????????????????????")
-                if(key.orderType!==0 && key.orderType!==2){
-                  this.latShow = true;
-                }else{
-                  this.latShow = false;
-                }
                 res.data.orderDetailModel.map(item=>{
                   console.log(item,"!44444")
                   if(item.Column1=='制作材料'){
