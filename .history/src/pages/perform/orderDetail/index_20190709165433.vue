@@ -121,7 +121,7 @@
        <!--指派-->
         <div class="btn linear" v-if="detail.OrderStatus==6" @click="gotoPoint(0)">指派</div>
         <!--重新指派-->
-        <div class="btn linear" v-if="isAgain" @click="gotoPoint(1)">重新指派</div>
+        <div class="btn linear" v-if="isAgain && InstallList.length>1" @click="gotoPoint(1)">重新指派</div>
         <!-- <div class="btn btn-active" v-if="detail.OrderStatus==9">删除订单</div> -->
       </div>
     </div>
@@ -141,12 +141,7 @@
 // 待评论=8,
 // 已完成=9,
 // 交易关闭=99,
-//AuditStatus==3
-//0-待安装或安装中
-//1-待审核
-//2-审核通过
-//3-审核拒绝
-
+//AuditStatus==3审核不通过 重新指派  0开始接单   2审核通过
 import "@/css/common.css";
 import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 export default {

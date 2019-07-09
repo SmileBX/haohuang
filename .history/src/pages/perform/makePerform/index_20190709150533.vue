@@ -43,7 +43,7 @@
           </div>
         </div>
         <!--按钮增加明细-->
-        <div style="padding-bottom:40rpx;padding-top:40rpx;" class="addDetail bg_fff" @click="addOrder" v-if="ExecuteType!=2">
+        <div style="padding-bottom:40rpx;padding-top:40rpx;" class="addDetail bg_fff" @click="addOrder">
           <div class="btn btn-add">
             <img src="/static/images/icons/add_2.png" alt>增加安装师傅
           </div>
@@ -87,8 +87,7 @@ export default {
       showType:false
     }],//安装师傅指派订单
     list:[],
-    ExecuteType:"",//0-普通执行 1-重新安排所有的安装师傅 2-修改某一个安装师傅
-    MsId:0,//修改某一个师傅的Id
+    num:0,
 
 
     };
@@ -105,26 +104,10 @@ export default {
     this.Token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
-    this.MasterList = [{
-      bindName:"",
-      MasterId:0,
-      IsMain:0,
-      InstallMoney:0,
-      showType:false
-    }]
     if (this.$root.$mp.query.orderId) {
       this.orderId = this.$root.$mp.query.orderId;
     }
-    if(this.$root.$mp.query.ExecuteType){
-       this.ExecuteType = this.$root.$mp.query.ExecuteType;
-    }
-    if(this.$root.$mp.query.MsId){
-       this.MsId = this.$root.$mp.query.MsId;
-    }
-    if(this.$root.$mp.query.IsMain){
-       this.IsMain = this.$root.$mp.query.IsMain;
-    }
-    console.log(this.MsId)
+    
   },
   methods: {
     setBarTitle() {
@@ -175,25 +158,26 @@ export default {
       this.active = index
     },
     subConfirm(index){
-      let num = 0
       this.MasterList.map(item=>{
         if(item.bindName !== this.list[this.active].RealName){
-          num++
+          this.num++
+        }
+        console.log(this.num,"num")
+        console.log(this.num==this.MasterList.length)
+        if(this.num==this.MasterList.length &&　num!=0){
+          this.MasterList[index].bindName = this.list[this.active].RealName
+          this.MasterList[index].MasterId = this.list[this.active].Id
+          this.isShow = false
+          this.MasterList[index].showType = false
+          this.active=0
+        }else{
+          wx.showToast({
+              title:"此订单中已存在该师傅！",
+              icon:"none",
+              duration:1500
+            })
         }
       })
-      if(num==this.MasterList.length &&　num!=0){
-        this.MasterList[index].bindName = this.list[this.active].RealName
-        this.MasterList[index].MasterId = this.list[this.active].Id
-        this.isShow = false
-        this.MasterList[index].showType = false
-        this.active=0
-      }else{
-        wx.showToast({
-            title:"此订单中已存在该师傅！",
-            icon:"none",
-            duration:1500
-          })
-      }
       
     },
     val(){
@@ -230,12 +214,7 @@ export default {
           }
           
         }else{
-          if(!this.IsMain){
-            this.$set(this.MasterList[0],"IsMain",1)
-          }else{
-            this.$set(this.MasterList[0],"IsMain",this.IsMain)
-          }
-          
+          this.$set(this.MasterList[0],"IsMain",1)
         }
         console.log(this.MasterList,"改造后")
         const _MasterList = JSON.stringify(this.MasterList)
@@ -249,9 +228,7 @@ export default {
             ExecuteId: this.UserId,
             Token: this.Token,
             OrderNo:this.orderId,
-            MasterList:_MasterList,
-            ExecuteType:this.ExecuteType,
-            MsId:this.MsId
+            MasterList:_MasterList
         },this.curPage).then(res=>{
           console.log(res)
           if(res.code==0){

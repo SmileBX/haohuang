@@ -1,11 +1,8 @@
 <template>
   <div class="page">
-    <!-- <div class="orderStatus">
+    <div class="orderStatus">
       <span v-if="detail.OrderStatus == 6">待处理</span>
        <span v-else>已处理</span>
-    </div> -->
-    <div class="orderStatus">
-      <span>{{detail.OrderStatusStr}}</span>
     </div>
     <div class="orderAddr bg_fff">
       <!-- <div class="newsLogistics flex flexAlignCenter" v-if="detail.OrderStatus==7" >
@@ -100,28 +97,25 @@
       </div>
     </div>
     <!-- 指派师傅的列表 -->
-    <div class="orderInfo bg_fff mb10" v-if="InstallList.length>0">
+    <div class="orderInfo bg_fff mb10">
       <div class="orderInfo__hd weui-cells__title bl__weui-cells__title">
         <span class="title">师傅信息</span>
       </div>
-      <div class="orderInfo__bd" v-for="(item,sindex) in InstallList" :key="sindex">
-        <div class="flexItem flex" v-if="item.IsMain==1">
-          <p class="txt" >主负责师傅：{{item.MasterName}}</p>
-          <p class="txt2" @tap="editMasterPoint(2,item.MasterId,item.IsMain)" v-if="item.AuditStatus==3">重新指派</p>
-        </div>
-        <div class="flexItem flex " v-if="item.IsMain==0">
-          <p class="txt1">其他师傅：{{item.MasterName}}</p>
-          <p class="txt2" @tap="editMasterPoint(2,item.MasterId,item.IsMain)" v-if="item.AuditStatus==3">重新指派</p>
-        </div>
+      <div class="orderInfo__bd">
+        <div class="item">创建时间：{{detail.CreateTime}}</div>
+        <div class="item" v-if="detail.OrderStatus==0 || detail.OrderStatus==2 || detail.OrderStatus==3 || detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 ||detail.OrderStatus==8 || detail.OrderStatus==9">支付时间：{{detail.PayTime}}</div>
+        <div class="item" v-if="detail.OrderStatus==4">发货时间：{{detail.Fahuodate}}</div>
+        <div class="item" v-if="detail.OrderStatus==7">分配师傅：{{detail.InstallList[0].InstallTime}}</div>
+        <div class="item" v-if="detail.EstimateTime">预计完成时间：{{detail.EstimateTime}}</div>
       </div>
     </div>
     <!-- 操作按钮 -->
     <div class="ftBtn ftBtns">
       <div class="inner flex fixed bm0 bg_fff border-box justifyContentEnd">
        <!--指派-->
-        <div class="btn linear" v-if="detail.OrderStatus==6" @click="gotoPoint(0)">指派</div>
+        <div class="btn linear" v-if="detail.OrderStatus==6" @click="gotoPoint">指派</div>
         <!--重新指派-->
-        <div class="btn linear" v-if="isAgain" @click="gotoPoint(1)">重新指派</div>
+        <div class="btn linear" v-if="isAgain" @click="gotoPoint">重新指派</div>
         <!-- <div class="btn btn-active" v-if="detail.OrderStatus==9">删除订单</div> -->
       </div>
     </div>
@@ -141,12 +135,6 @@
 // 待评论=8,
 // 已完成=9,
 // 交易关闭=99,
-//AuditStatus==3
-//0-待安装或安装中
-//1-待审核
-//2-审核通过
-//3-审核拒绝
-
 import "@/css/common.css";
 import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 export default {
@@ -160,9 +148,11 @@ export default {
       identity:'',
       InstallTime:'',
       MasterName:'',
-      detail: { },
+      detail: {
+        ProductMoney:0,
+        Freight:0
+      },
       isAgain:false,//是否显示重新指派 安装师傅的状态都为0的时候显示
-      InstallList:[],//安装师傅列表
     };
   },
   computed:{
@@ -179,7 +169,6 @@ export default {
     this.Token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
-    this.detail = {}
     console.log(this.$root.$mp.query.orderId);
     if (this.$root.$mp.query.orderId) {
       this.orderId = this.$root.$mp.query.orderId;
@@ -214,59 +203,37 @@ export default {
                   this.MasterName = res.data.InstallList[0].MasterName
                   this.InstallTime = res.data.InstallList[0].InstallTime.split("T").join(" ").split(".")[0]
                     console.log(this.InstallTime,"this.InstallTime")
-                  this.InstallList = res.data.InstallList
-                  let num=0
-                  res.data.InstallList.map(item=>{
-                    if(item.AuditStatus==0){
-                      num++
-                    }
-                  })
-                  if(num == res.data.InstallList.length&&num!=0){
-                    this.isAgain = true
-                  }else{
-                    this.isAgain = false
-                  } 
                 }
-                if(res.data.InstallList.length>1){
-                  //排序
-                    function sortId(a,b){
-                      return b.IsMain-a.IsMain
-                    }
-                  res.data.InstallList.sort(sortId)
-                }
+              
+              console.log(Boolean(detail.InstallTime));
           })
       }
      
     },
-    //指派师傅
-    gotoPoint(ExecuteType){
+    
+    // 评论123
+    gotoPoint(){
       wx.navigateTo({
-        url: '/pages/perform/makePerform/main?orderId='+this.orderId+"&ExecuteType="+ExecuteType
+        url: '/pages/perform/makePerform/main?orderId='+this.orderId
       })
     },
-    //编辑师傅
-    editMasterPoint(ExecuteType,MsId,IsMain){
-      wx.navigateTo({
-        url: '/pages/perform/makePerform/main?orderId='+this.orderId+"&ExecuteType="+ExecuteType+"&MsId="+MsId+"&IsMain="+IsMain
-      })
+    // 复制
+    copy(orderNo) {
+      wx.setClipboardData({
+        data: orderNo,
+        success() {
+          wx.showToast({
+            title: "复制成功！"
+          });
+        },
+        fail(err) {
+          console.log(err);
+        }
+      });
     },
   }
 };
 </script>
 <style lang='scss' scoped>
 @import "./style";
-.txt1{
-  color:#9999B3;
-}
-.txt2{
-  color:#fff;
-  border-radius:25rpx;
-  padding:5rpx 15rpx;
-  font-size:24rpx;
-  background:#ff6325;
-}
-.flexItem{
-  margin-top:20rpx;
-  justify-content:space-between;
-}
 </style>

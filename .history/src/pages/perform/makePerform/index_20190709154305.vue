@@ -105,26 +105,13 @@ export default {
     this.Token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
-    this.MasterList = [{
-      bindName:"",
-      MasterId:0,
-      IsMain:0,
-      InstallMoney:0,
-      showType:false
-    }]
     if (this.$root.$mp.query.orderId) {
       this.orderId = this.$root.$mp.query.orderId;
     }
     if(this.$root.$mp.query.ExecuteType){
        this.ExecuteType = this.$root.$mp.query.ExecuteType;
     }
-    if(this.$root.$mp.query.MsId){
-       this.MsId = this.$root.$mp.query.MsId;
-    }
-    if(this.$root.$mp.query.IsMain){
-       this.IsMain = this.$root.$mp.query.IsMain;
-    }
-    console.log(this.MsId)
+    console.log(this.ExecuteType)
   },
   methods: {
     setBarTitle() {
@@ -230,12 +217,7 @@ export default {
           }
           
         }else{
-          if(!this.IsMain){
-            this.$set(this.MasterList[0],"IsMain",1)
-          }else{
-            this.$set(this.MasterList[0],"IsMain",this.IsMain)
-          }
-          
+          this.$set(this.MasterList[0],"IsMain",1)
         }
         console.log(this.MasterList,"改造后")
         const _MasterList = JSON.stringify(this.MasterList)

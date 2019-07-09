@@ -111,7 +111,7 @@ export default {
       IsMain:0,
       InstallMoney:0,
       showType:false
-    }]
+    }],
     if (this.$root.$mp.query.orderId) {
       this.orderId = this.$root.$mp.query.orderId;
     }

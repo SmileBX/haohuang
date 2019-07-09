@@ -106,12 +106,12 @@ export default {
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
     this.MasterList = [{
-      bindName:"",
-      MasterId:0,
+      bindName:"",//安装师傅名称
+      MasterId:0,//..
       IsMain:0,
       InstallMoney:0,
       showType:false
-    }]
+    }],
     if (this.$root.$mp.query.orderId) {
       this.orderId = this.$root.$mp.query.orderId;
     }

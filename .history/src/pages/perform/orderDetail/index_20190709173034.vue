@@ -141,12 +141,7 @@
 // 待评论=8,
 // 已完成=9,
 // 交易关闭=99,
-//AuditStatus==3
-//0-待安装或安装中
-//1-待审核
-//2-审核通过
-//3-审核拒绝
-
+//AuditStatus==3审核不通过 重新指派  0开始接单   2审核通过
 import "@/css/common.css";
 import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 export default {

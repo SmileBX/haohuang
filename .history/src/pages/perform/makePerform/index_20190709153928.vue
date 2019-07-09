@@ -43,7 +43,7 @@
           </div>
         </div>
         <!--按钮增加明细-->
-        <div style="padding-bottom:40rpx;padding-top:40rpx;" class="addDetail bg_fff" @click="addOrder" v-if="ExecuteType!=2">
+        <div style="padding-bottom:40rpx;padding-top:40rpx;" class="addDetail bg_fff" @click="addOrder">
           <div class="btn btn-add">
             <img src="/static/images/icons/add_2.png" alt>增加安装师傅
           </div>
@@ -101,30 +101,18 @@ export default {
     this.setBarTitle();
   },
   onShow() {
+    this.num = 0
     this.UserId = wx.getStorageSync("userId");
     this.Token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
-    this.MasterList = [{
-      bindName:"",
-      MasterId:0,
-      IsMain:0,
-      InstallMoney:0,
-      showType:false
-    }]
     if (this.$root.$mp.query.orderId) {
       this.orderId = this.$root.$mp.query.orderId;
     }
     if(this.$root.$mp.query.ExecuteType){
        this.ExecuteType = this.$root.$mp.query.ExecuteType;
     }
-    if(this.$root.$mp.query.MsId){
-       this.MsId = this.$root.$mp.query.MsId;
-    }
-    if(this.$root.$mp.query.IsMain){
-       this.IsMain = this.$root.$mp.query.IsMain;
-    }
-    console.log(this.MsId)
+    console.log(this.ExecuteType)
   },
   methods: {
     setBarTitle() {
@@ -230,12 +218,7 @@ export default {
           }
           
         }else{
-          if(!this.IsMain){
-            this.$set(this.MasterList[0],"IsMain",1)
-          }else{
-            this.$set(this.MasterList[0],"IsMain",this.IsMain)
-          }
-          
+          this.$set(this.MasterList[0],"IsMain",1)
         }
         console.log(this.MasterList,"改造后")
         const _MasterList = JSON.stringify(this.MasterList)

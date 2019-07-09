@@ -1,11 +1,8 @@
 <template>
   <div class="page">
-    <!-- <div class="orderStatus">
+    <div class="orderStatus">
       <span v-if="detail.OrderStatus == 6">待处理</span>
        <span v-else>已处理</span>
-    </div> -->
-    <div class="orderStatus">
-      <span>{{detail.OrderStatusStr}}</span>
     </div>
     <div class="orderAddr bg_fff">
       <!-- <div class="newsLogistics flex flexAlignCenter" v-if="detail.OrderStatus==7" >
@@ -107,11 +104,11 @@
       <div class="orderInfo__bd" v-for="(item,sindex) in InstallList" :key="sindex">
         <div class="flexItem flex" v-if="item.IsMain==1">
           <p class="txt" >主负责师傅：{{item.MasterName}}</p>
-          <p class="txt2" @tap="editMasterPoint(2,item.MasterId,item.IsMain)" v-if="item.AuditStatus==3">重新指派</p>
+          <p class="txt2" @tap="editMasterPoint(2,item.MasterId)">重新指派</p>
         </div>
         <div class="flexItem flex " v-if="item.IsMain==0">
           <p class="txt1">其他师傅：{{item.MasterName}}</p>
-          <p class="txt2" @tap="editMasterPoint(2,item.MasterId,item.IsMain)" v-if="item.AuditStatus==3">重新指派</p>
+          <p class="txt2" @tap="editMasterPoint(2,item.MasterId)">重新指派</p>
         </div>
       </div>
     </div>
@@ -121,7 +118,7 @@
        <!--指派-->
         <div class="btn linear" v-if="detail.OrderStatus==6" @click="gotoPoint(0)">指派</div>
         <!--重新指派-->
-        <div class="btn linear" v-if="isAgain" @click="gotoPoint(1)">重新指派</div>
+        <div class="btn linear" v-if="isAgain && InstallList.length>1" @click="gotoPoint(1)">重新指派</div>
         <!-- <div class="btn btn-active" v-if="detail.OrderStatus==9">删除订单</div> -->
       </div>
     </div>
@@ -141,12 +138,6 @@
 // 待评论=8,
 // 已完成=9,
 // 交易关闭=99,
-//AuditStatus==3
-//0-待安装或安装中
-//1-待审核
-//2-审核通过
-//3-审核拒绝
-
 import "@/css/common.css";
 import {post,toLogin, getCurrentPageUrlWithArgs} from "@/utils/index";
 export default {
@@ -160,7 +151,10 @@ export default {
       identity:'',
       InstallTime:'',
       MasterName:'',
-      detail: { },
+      detail: {
+        ProductMoney:0,
+        Freight:0
+      },
       isAgain:false,//是否显示重新指派 安装师傅的状态都为0的时候显示
       InstallList:[],//安装师傅列表
     };
@@ -179,7 +173,6 @@ export default {
     this.Token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
-    this.detail = {}
     console.log(this.$root.$mp.query.orderId);
     if (this.$root.$mp.query.orderId) {
       this.orderId = this.$root.$mp.query.orderId;
@@ -225,19 +218,16 @@ export default {
                     this.isAgain = true
                   }else{
                     this.isAgain = false
-                  } 
+                  }
+                    
                 }
-                if(res.data.InstallList.length>1){
-                  //排序
-                    function sortId(a,b){
-                      return b.IsMain-a.IsMain
-                    }
-                  res.data.InstallList.sort(sortId)
-                }
+              
+              console.log(Boolean(detail.InstallTime));
           })
       }
      
     },
+    
     //指派师傅
     gotoPoint(ExecuteType){
       wx.navigateTo({
@@ -245,10 +235,24 @@ export default {
       })
     },
     //编辑师傅
-    editMasterPoint(ExecuteType,MsId,IsMain){
+    editMasterPoint(ExecuteType,MsId){
       wx.navigateTo({
-        url: '/pages/perform/makePerform/main?orderId='+this.orderId+"&ExecuteType="+ExecuteType+"&MsId="+MsId+"&IsMain="+IsMain
+        url: '/pages/perform/makePerform/main?orderId='+this.orderId+"&ExecuteType="+ExecuteType+"&MsId="+MsId
       })
+    },
+    // 复制
+    copy(orderNo) {
+      wx.setClipboardData({
+        data: orderNo,
+        success() {
+          wx.showToast({
+            title: "复制成功！"
+          });
+        },
+        fail(err) {
+          console.log(err);
+        }
+      });
     },
   }
 };
