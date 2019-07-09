@@ -302,11 +302,19 @@ export default {
         this.token = wx.getStorageSync("token");
         this.page=1
         this.showP=true,//显示为p元素
+        //this.list=[],
+        //this.typelist=[],//orderTypeName类型...
+        //this.kuaidiList=[],//快递种类
+        //this.addressinfo=[],//默认的收货地址
         this.pageSize=10,//制作材料 安装材料
         this.allPage=0,//总页数
         this.count=0,//总数
         this.isLoad=false,
+        // this.isShowBtnUpload= true,//显示上传按钮的状态
         this.imgLenght=8,
+        //this.adressId='', //地址编号
+        //this.logisticsType=''   //物流类型 0-快递 1-物流 2-自提
+       // this.addressinfo=[]
         this.showPaymask=false
         this.isShow=false
         this.showKuaidiType=false
@@ -325,6 +333,7 @@ export default {
             console.log( this.addressinfo.length,"收货地址长度--选择")
         }else{
             this.getDefaultAddress()
+            
         }
         // wx.setStorageSync("addressinfo",' ')
        console.log( this.addressinfo.length,"默认收货地址长度")
@@ -334,11 +343,6 @@ export default {
             //客户
             this.GetMemberInfo();
           } 
-       }
-       //如果有订单号重复下单
-       if(this.$root.$mp.query.orderId){
-         this.orderId = this.$root.$mp.query.orderId
-         this.getAgainOrderDetail()
        }
        
   },
@@ -463,109 +467,6 @@ export default {
         wx.setNavigationBarTitle({
           title: "客户下单"
         });
-      },
-      //重复下单信息
-      async getAgainOrderDetail(){
-        if(toLogin(this.curPage)){
-        const res=await post('Order/AgainAddOrderInfo',{
-            UserId: this.userId,
-            Token: this.token,
-            OrderId: this.orderId,
-          },this.curPage)
-          console.log(res)
-          if(res.code==0){
-              this.prolist.map(key=>{
-                if(res.data.orderModel.OrderType==0){
-                  key.orderTypeName = '设计'
-                }else if(res.data.orderModel.OrderType==1){
-                  key.orderTypeName = '制作'
-                }else if(res.data.orderModel.OrderType==2){
-                  key.orderTypeName = '安装'
-                }else if(res.data.orderModel.OrderType==3){
-                  key.orderTypeName = '设计_制作'
-                }else if(res.data.orderModel.OrderType==4){
-                  key.orderTypeName = '制作_安装'
-                }else if(res.data.orderModel.OrderType==5){
-                  key.orderTypeName = '设计_制作_安装'
-                }
-                //单个订单只需要简单判断
-                if(key.orderType!==0 && key.orderType!==2){
-                  this.latShow = true;
-                }else{
-                  this.latShow = false;
-                }
-                key.orderType = res.data.orderModel.OrderType
-                key.spechign = res.data.orderModel.SpecHign
-                key.speclong = res.data.orderModel.SpecLong
-                key.specnum = res.data.orderModel.SpecNum
-                key.specwide = res.data.orderModel.SpecWide
-                key.estimateTime = res.data.orderModel.EstimateTime.split("T")[0]
-                // key.offerTotal = res.data.orderModel.OfferTotal//小计
-                key.orderName = res.data.orderModel.OrderName
-                console.log("!33333333")
-                res.data.orderDetailModel.map(item=>{
-                  console.log("!44444")
-                  if(item.Column1=='制作材料'){
-                    //制作才材料集合
-                    key.makestatic.push(item.productName+"  "+"￥"+item.market_price +"   ")
-                    let item1={
-                        Id:item.id,
-                        Num:item.num,
-                        pType:0
-                      }
-                    key.proMastic.push(item1)
-                  }else if(item.Column1=='安装材料'){
-                    //安装材料集合
-                    key.installstatic.push(item.productName+"  "+"￥"+item.market_price +"   ")
-                    console.log(key.installstatic,"}}}}}}}}}}}}}}}}")
-                    let item2={
-                        Id:item.id,
-                        Num:item.num,
-                        pType:0
-                      }
-                    key.proIns.push(item2)
-                    console.log(key.proIns,"*************")
-                  }
-                })
-              })
-              
-              this.adressId=res.data.orderModel.AddressId
-              this.logisticsType = res.data.orderModel.LogisticsName
-              this.getAddressInfo()
-              this.getPost()//根据快递的Id获取快递名称
-          }
-        }
-        
-      },
-      //根据快递的Id获取快递名称
-      getPost(){
-        get('Address/KuaiDiList').then(res=>{
-          res.data.map(item=>{
-            if(item.Id == this.logisticsType){
-              this.postMsg = item.Company
-            }
-          })
-        })
-      },
-      //重复下单获取收货地址信息
-      getAddressInfo(){
-        console.log("666666666")
-        if(toLogin(this.curPage)){
-          post('Address/GetInfo',{
-            UserId: this.userId,
-            Token: this.token,
-            Id:this.adressId
-          },this.curPage).then(res=>{
-            if(res.code==0){
-              this.addressinfo.push({
-                name:res.data.name,
-                tel:res.data.tel,
-                address:res.data.shopname,
-                addressinfo:res.data.addressinfo
-              })
-            }
-          })
-        }
       },
       cancle(n){
         this.isShow=false
@@ -946,6 +847,21 @@ export default {
       }
     },
     addSubmit(){
+        // if(this.latShow){
+        //     if(this.adressId.toString().length<1){
+        //         wx.showToast({
+        //             title:"请选择地址！"
+        //           })
+        //         return false
+        //       }
+        //       if(this.logisticsType<1){
+        //         wx.showToast({
+        //             title:"请选择快递！"
+        //           })
+        //         return false
+        //       }
+        // }
+        //console.log(this.prolist,"this.prolist")
         let _OrderInsertList=[]
         for(let i=0;i<this.prolist.length;i++){
           //如果是制作类型 集合为空提示  

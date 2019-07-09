@@ -82,7 +82,6 @@
             <!-- <div class="button linear" v-if="list.IsConfirm==1&&list.IsPay==0">已付款</div> -->
             <!-- <div class="button active" v-if="list.OrderStatus===0">设计确认</div> -->
             <div class="button active" v-if="list.OrderStatus==4" @click="getGoods(list.Id)">确认收货</div>
-            <div class="button active" @tap="againOrder(list.Id)">再来一单</div>
             <!--<div class="button linear" v-if="list.OrderStatus==8">评论</div> -->
             <!-- <div class="button active" v-if="list.OrderStatus==9">删除订单</div> -->
           </div>
@@ -376,10 +375,6 @@ export default {
               }
           }
         })
-    },
-    //再来一单
-    againOrder(id){
-      wx.redirectTo({url: '/pages/custom/smOrder/main?orderId='+id });
     }
 
   },

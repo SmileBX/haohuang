@@ -513,18 +513,19 @@ export default {
                         Num:item.num,
                         pType:0
                       }
+                      console.log(item1)
                     key.proMastic.push(item1)
                   }else if(item.Column1=='安装材料'){
+                    console.log("!55555")
                     //安装材料集合
                     key.installstatic.push(item.productName+"  "+"￥"+item.market_price +"   ")
-                    console.log(key.installstatic,"}}}}}}}}}}}}}}}}")
                     let item2={
                         Id:item.id,
                         Num:item.num,
                         pType:0
                       }
+                      console.log(item2)
                     key.proIns.push(item2)
-                    console.log(key.proIns,"*************")
                   }
                 })
               })

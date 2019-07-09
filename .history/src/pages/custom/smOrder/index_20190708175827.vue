@@ -499,7 +499,7 @@ export default {
                 key.speclong = res.data.orderModel.SpecLong
                 key.specnum = res.data.orderModel.SpecNum
                 key.specwide = res.data.orderModel.SpecWide
-                key.estimateTime = res.data.orderModel.EstimateTime.split("T")[0]
+                key.estimateTime = res.data.orderModel.EstimateTime
                 // key.offerTotal = res.data.orderModel.OfferTotal//小计
                 key.orderName = res.data.orderModel.OrderName
                 console.log("!33333333")
@@ -513,18 +513,19 @@ export default {
                         Num:item.num,
                         pType:0
                       }
+                      console.log(item1)
                     key.proMastic.push(item1)
                   }else if(item.Column1=='安装材料'){
+                    console.log("!55555")
                     //安装材料集合
                     key.installstatic.push(item.productName+"  "+"￥"+item.market_price +"   ")
-                    console.log(key.installstatic,"}}}}}}}}}}}}}}}}")
                     let item2={
                         Id:item.id,
                         Num:item.num,
                         pType:0
                       }
+                      console.log(item2)
                     key.proIns.push(item2)
-                    console.log(key.proIns,"*************")
                   }
                 })
               })

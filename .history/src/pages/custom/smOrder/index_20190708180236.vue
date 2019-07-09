@@ -524,7 +524,6 @@ export default {
                         pType:0
                       }
                     key.proIns.push(item2)
-                    console.log(key.proIns,"*************")
                   }
                 })
               })

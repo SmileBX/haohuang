@@ -376,10 +376,6 @@ export default {
               }
           }
         })
-    },
-    //再来一单
-    againOrder(id){
-      wx.redirectTo({url: '/pages/custom/smOrder/main?orderId='+id });
     }
 
   },
