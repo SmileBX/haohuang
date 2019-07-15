@@ -134,6 +134,7 @@ export default {
       searchRegion: "", //搜索地区字段
       searchRegionCode: "", //搜索地区字段
       areaListStatus: false, //选择地区状态
+      WxOpenid:"",
       areaList,
       menu: [
         {
@@ -176,6 +177,7 @@ export default {
     this.UserId = wx.getStorageSync("userId");
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
+    this.WxOpenid = wx.getStorageSync("openId");
     // typeNo--进入订单列表展示的状态
     // 客服--订单状态：-1全部，0-待确认，1-待付款 7-已执行(安装中) 8-待评论9-已完成
     // 客户--订单状态：-1全部，0-待确认，1-待付款，2-处理中，8-待评论
@@ -314,8 +316,10 @@ export default {
             UserId: this.UserId,
             Token: this.Token,
             OrderNo: OrderNo,
+            WxOpenid:this.WxOpenid
         },this.curPage).then(res=>{
             console.log(res)
+            //201-获取授权没有openId
             let payData=JSON.parse(res.data.JsParam);
             wx.requestPayment({
               timeStamp: payData.timeStamp,
