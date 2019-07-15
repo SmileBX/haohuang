@@ -345,15 +345,6 @@ export default {
         })
       }
     },
-    //支付微信授权获取code
-    getLogin(){
-      console.log("}}}}}}}}}}}}}}}}}}}}}}}}}")
-      wx.login({
-        success:res=>{
-          console.log(res,"{{{{{{{{{{{{{{{")
-        }
-      })
-    },
     //查看订单进度
     seeSchdule(index){
       wx.setStorageSync('address',this.orderList[index].AddressInfo)

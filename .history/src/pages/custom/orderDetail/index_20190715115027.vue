@@ -205,7 +205,6 @@ export default {
     this.Token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
-    this.WxOpenid = wx.getStorageSync("openId");
     this.cancelOrderWindowStatus = false
     console.log(this.$root.$mp.query.orderId);
     if (this.$root.$mp.query.orderId) {
@@ -305,7 +304,6 @@ export default {
     // 付款
     orderPay(){
         console.log(this.OrderNo,"this.orderNo")
-        console.log(this.WxOpenid,"}}}}}}}}}}}}}}}}")
         if(toLogin(this.curPage)){
           post('/Order/ConfirmWeiXinPay',{
               UserId: this.UserId,
@@ -344,11 +342,10 @@ export default {
         
     },
     //支付微信授权获取code
-    getLogin(url){
-        wx.setStorageSync("askUrl",this.curPage)
+    getLogin(data){
         wx.navigateTo({
-          url: "/pages/outpage/main?url=" + url
-        });
+          url:data
+        })
     },
     // 确认收货/确认设计模态弹窗
     confirmButtonModal(types){

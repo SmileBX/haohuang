@@ -318,7 +318,7 @@ export default {
             WxOpenid:this.WxOpenid,
             WxCode:this.WxCode
         },this.curPage).then(res=>{
-            console.log(res)
+            console.log(res,"77777777777777777777777777")
             if(res.code == 201){
               //201-获取授权没有openId
               console.log("6666666666")
@@ -344,15 +344,6 @@ export default {
             }
         })
       }
-    },
-    //支付微信授权获取code
-    getLogin(){
-      console.log("}}}}}}}}}}}}}}}}}}}}}}}}}")
-      wx.login({
-        success:res=>{
-          console.log(res,"{{{{{{{{{{{{{{{")
-        }
-      })
     },
     //查看订单进度
     seeSchdule(index){

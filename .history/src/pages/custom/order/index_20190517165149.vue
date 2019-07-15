@@ -316,30 +316,44 @@ export default {
             UserId: this.UserId,
             Token: this.Token,
             OrderNo: OrderNo,
-            WxOpenid:this.WxOpenid
+            
         },this.curPage).then(res=>{
             console.log(res)
-            //201-获取授权没有openId
-            let payData=JSON.parse(res.data.JsParam);
-            wx.requestPayment({
-              timeStamp: payData.timeStamp,
-              nonceStr: payData.nonceStr,
-              package: payData.package,
-              signType: payData.signType,
-              paySign: payData.paySign,
-              success(res) {
-                this.init();
-                // wx.navigateTo({
-                //   url:"/pages/custom/order/main"
-                // });
-              },
-              fail(res) {
+            if(res.code == 201){
+              //201-获取授权没有openId
+              console.log("6666666666")
+              this.getLogin()
+            }else{
+                let payData=JSON.parse(res.data.JsParam);
+                wx.requestPayment({
+                  timeStamp: payData.timeStamp,
+                  nonceStr: payData.nonceStr,
+                  package: payData.package,
+                  signType: payData.signType,
+                  paySign: payData.paySign,
+                  success(res) {
+                    this.init();
+                    // wx.navigateTo({
+                    //   url:"/pages/custom/order/main"
+                    // });
+                  },
+                  fail(res) {
 
-              }
-            })
+                  }
+                })
+            }
         })
 
       }
+    },
+    //支付微信授权获取code
+    getLogin(){
+      console.log("}}}}}}}}}}}}}}}}}}}}}}}}}")
+      wx.login({
+        success:res=>{
+          console.log(res,"{{{{{{{{{{{{{{{")
+        }
+      })
     },
     //查看订单进度
     seeSchdule(index){

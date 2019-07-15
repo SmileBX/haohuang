@@ -201,7 +201,6 @@ function wxMemberLogin(code, iv, encryptedData) {
         console.log(result);
         if (result.code === 0) { //登录成功
             //把返回的userId、token保存起来
-            console.log("____________________111",wx.getStorageSync("askUrl"))
             if (wx.getStorageSync("askUrl") && wx.getStorageSync("askUrl") !== "undefined") {
                 if (wx.getStorageSync("mobile") !== result.data.MemberMobile && wx.getStorageSync("mobile") && wx.getStorageSync("mobile") !== "undefined") {
                     wx.setStorageSync("askUrl", "");
@@ -216,9 +215,9 @@ function wxMemberLogin(code, iv, encryptedData) {
                 icon: 'success',
                 duration: 1500,
                 success: function() {
-                    console.log(wx.getStorageSync("askUrl"),"??????????????????????")
                     if (wx.getStorageSync("askUrl") !== "undefined" && wx.getStorageSync("askUrl")) {
                         setTimeout(function() {
+                            console.log(wx.getStorageSync("askUrl"))
                             wx.reLaunch({
                                 url: wx.getStorageSync("askUrl")
                             });
@@ -338,7 +337,7 @@ function wxCustomerServiceLogin(code, iv, encryptedData) {
                 success: function() {
                     if (wx.getStorageSync("askUrl") !== "undefined" && wx.getStorageSync("askUrl")) {
                         setTimeout(function() {
-                            console.log("____________________",wx.getStorageSync("askUrl"))
+
                             wx.reLaunch({
                                 url: wx.getStorageSync("askUrl")
                             });

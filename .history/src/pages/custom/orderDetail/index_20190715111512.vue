@@ -186,9 +186,7 @@ export default {
       refuseContent:'', //取消订单填写的原因
       // 联系客服
       selectServiceTypeStatus: false, //联系客服类型弹窗状态
-      servicePhone: "", //客服的服务电话
-      WxCode:"",
-      WxOpenid:""
+      servicePhone: "" //客服的服务电话
     };
   },
   computed:{
@@ -205,7 +203,6 @@ export default {
     this.Token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
-    this.WxOpenid = wx.getStorageSync("openId");
     this.cancelOrderWindowStatus = false
     console.log(this.$root.$mp.query.orderId);
     if (this.$root.$mp.query.orderId) {
@@ -305,50 +302,34 @@ export default {
     // 付款
     orderPay(){
         console.log(this.OrderNo,"this.orderNo")
-        console.log(this.WxOpenid,"}}}}}}}}}}}}}}}}")
         if(toLogin(this.curPage)){
           post('/Order/ConfirmWeiXinPay',{
               UserId: this.UserId,
               Token: this.Token,
               OrderNo: this.OrderNo,
-              WxOpenid:this.WxOpenid,
-              WxCode:this.WxCode
           },this.curPage).then(res=>{
               console.log(res,"77777777777777777")
-              if(res.code == 201){
-              //201-获取授权没有openId
-              this.getLogin(res.data)
-            }else{
-                let payData=JSON.parse(res.data.JsParam);
-                wx.requestPayment({
-                  timeStamp: payData.timeStamp,
-                  nonceStr: payData.nonceStr,
-                  package: payData.package,
-                  signType: payData.signType,
-                  paySign: payData.paySign,
-                  success(res) {
-                    this.getData();
-                    // wx.navigateTo({
-                    //   url:"/pages/custom/order/main"
-                    // });
-                  },
-                  fail(res) {
+              let payData=JSON.parse(res.data.JsParam);
+              wx.requestPayment({
+                timeStamp: payData.timeStamp,
+                nonceStr: payData.nonceStr,
+                package: payData.package,
+                signType: payData.signType,
+                paySign: payData.paySign,
+                success(res) {
+                  this.getData();
+                  // wx.navigateTo({
+                  //   url:"/pages/custom/order/main"
+                  // });
+                },
+                fail(res) {
 
-                  }
-                })
-
-            }
+                }
+              })
 
           })
       }
         
-    },
-    //支付微信授权获取code
-    getLogin(url){
-        wx.setStorageSync("askUrl",this.curPage)
-        wx.navigateTo({
-          url: "/pages/outpage/main?url=" + url
-        });
     },
     // 确认收货/确认设计模态弹窗
     confirmButtonModal(types){

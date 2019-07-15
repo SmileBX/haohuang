@@ -205,7 +205,6 @@ export default {
     this.Token = wx.getStorageSync("token");
     this.curPage = getCurrentPageUrlWithArgs();
     this.identity = wx.getStorageSync("identity");
-    this.WxOpenid = wx.getStorageSync("openId");
     this.cancelOrderWindowStatus = false
     console.log(this.$root.$mp.query.orderId);
     if (this.$root.$mp.query.orderId) {

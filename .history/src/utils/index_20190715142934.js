@@ -216,9 +216,9 @@ function wxMemberLogin(code, iv, encryptedData) {
                 icon: 'success',
                 duration: 1500,
                 success: function() {
-                    console.log(wx.getStorageSync("askUrl"),"??????????????????????")
                     if (wx.getStorageSync("askUrl") !== "undefined" && wx.getStorageSync("askUrl")) {
                         setTimeout(function() {
+                            console.log(wx.getStorageSync("askUrl"),"??????????????????????")
                             wx.reLaunch({
                                 url: wx.getStorageSync("askUrl")
                             });
