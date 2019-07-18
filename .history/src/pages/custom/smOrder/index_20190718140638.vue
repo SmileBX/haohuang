@@ -103,7 +103,7 @@
                   <div class="uploadImage clear">
                     <!-- 上传展示的图片 -->
                     <div class="upload-img img" style="width:160rpx;height:160rpx;" v-for="(img,sindex) in item.referencePicList" :key="sindex">
-                        <div class="delete" @click="deleteImg(sindex,lindex)" style="z-index:20">×</div>
+                        <div class="delete" @click="deleteImg(sindex,lindex)" style="z-index=20">×</div>
                         <img :src="img"  style="width:160rpx;height:160rpx;" alt>
                     </div>
                     <img
@@ -1069,16 +1069,9 @@ export default {
                 })
               return false
           }
-          if(this.prolist[i].estimateTime.length==0){
+          if(this.prolist[i].estimateTime.length==0　||  this.prolist[i].orderName.length==0){
             wx.showToast({
-              title:"请选择交付时间！",
-              icon:'none'
-            })
-            return false
-          }
-          if(this.prolist[i].orderName.length==0){
-            wx.showToast({
-              title:"请输入项目名称！",
+              title:"必选项不能为空！",
               icon:'none'
             })
             return false

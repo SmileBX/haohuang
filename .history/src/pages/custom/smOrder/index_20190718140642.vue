@@ -1069,16 +1069,9 @@ export default {
                 })
               return false
           }
-          if(this.prolist[i].estimateTime.length==0){
+          if(this.prolist[i].estimateTime.length==0　||  this.prolist[i].orderName.length==0){
             wx.showToast({
-              title:"请选择交付时间！",
-              icon:'none'
-            })
-            return false
-          }
-          if(this.prolist[i].orderName.length==0){
-            wx.showToast({
-              title:"请输入项目名称！",
+              title:"必选项不能为空！",
               icon:'none'
             })
             return false

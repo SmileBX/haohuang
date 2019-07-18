@@ -118,8 +118,8 @@
         <div class="btn" v-if="detail.OrderStatus==0||detail.OrderStatus==1" @click="showCancelOrder">取消订单</div>
             <div class="button active" @click="callService(detail.ServiceTel)">联系客服</div>
         <!-- 客服是否确认IsConfirm -->
-        <div class="btn linear" v-if="detail.OrderStatus==1 && detail.CheckoutWay!=2" @click="orderPay">付款</div>
-        <div class="btn linear" v-if="detail.OrderStatus==1 && detail.CheckoutWay==2" style="font-size:25rpx;">待客服确认</div>
+        <div class="btn linear" v-if="detail.OrderStatus==1 && detail.CheckoutWay!=2" @click="orderPay" style="font-size:25rpx;">待客服确认</div>
+        <div class="btn linear" v-if="detail.OrderStatus==1 && detail.CheckoutWay==2" @click="orderPay">等待客服确认</div>
         <!--查看进度-->
         <div class="button active" v-if="detail.OrderStatus==2 || detail.OrderStatus==3 ||detail.OrderStatus==4 || detail.OrderStatus==5 || detail.OrderStatus==6 || detail.OrderStatus==7 || detail.OrderStatus==8 || detail.OrderStatus==9" @click="seeSchdule(detail.orderId,detail.OrderStatus)">查看进度</div>
         <!-- <div class="btn btn-active" v-if="detail.OrderStatus==4">查看物流</div> -->

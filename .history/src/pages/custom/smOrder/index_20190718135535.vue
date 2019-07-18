@@ -47,21 +47,21 @@
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">宽</span>
                       <div class="ipt flex">
-                        <input type="number" placeholder="0" class="flex1 weui-input" v-model="item.specwide"  @blur="getWide(lindex)" @focus="item.specwide=''">
+                        <input type="number" placeholder="0" class="flex1 weui-input" v-model="item.specwide"  @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">高</span>
                       <div class="ipt flex">
-                        <input type="number" placeholder="0" class="flex1 weui-input" v-model="item.spechign" @blur="getWide(lindex)" @focus="item.spechign=''">
+                        <input type="number" placeholder="0" class="flex1 weui-input" v-model="item.spechign" @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
                     <div class="item flex flex1 flexAlignCenter">
                       <span class="lab">厚</span>
                       <div class="ipt flex">
-                        <input type="number" placeholder="0" class="flex1 weui-input" v-model="item.speclong" @blur="getWide(lindex)" @focus="item.speclong=''">
+                        <input type="number" placeholder="0" class="flex1 weui-input" v-model="item.speclong" @blur="getWide(lindex)">
                         <span class="txt">mm</span>
                       </div>
                     </div>
@@ -70,7 +70,7 @@
                     <div class="item flex flexAlignCenter">
                       <span class="lab">数量</span>
                       <div class="ipt flex">
-                        <input type="number" placeholder="0" class="weui-input" style="width:140rpx;" v-model="item.specnum" @blur="getWide(lindex)" @focus="item.specnum=''">
+                        <input type="number" placeholder="0" class="weui-input" style="width:140rpx;" v-model="item.specnum" @blur="getWide(lindex)">
                         <span class="txt">&nbsp;</span>
                       </div>
                     </div>
@@ -103,7 +103,7 @@
                   <div class="uploadImage clear">
                     <!-- 上传展示的图片 -->
                     <div class="upload-img img" style="width:160rpx;height:160rpx;" v-for="(img,sindex) in item.referencePicList" :key="sindex">
-                        <div class="delete" @click="deleteImg(sindex,lindex)" style="z-index:20">×</div>
+                        <div class="delete" @click="deleteImg(sindex,lindex)">×</div>
                         <img :src="img"  style="width:160rpx;height:160rpx;" alt>
                     </div>
                     <img
@@ -1069,16 +1069,9 @@ export default {
                 })
               return false
           }
-          if(this.prolist[i].estimateTime.length==0){
+          if(this.prolist[i].estimateTime.length==0　||  this.prolist[i].orderName.length==0){
             wx.showToast({
-              title:"请选择交付时间！",
-              icon:'none'
-            })
-            return false
-          }
-          if(this.prolist[i].orderName.length==0){
-            wx.showToast({
-              title:"请输入项目名称！",
+              title:"必选项不能为空！",
               icon:'none'
             })
             return false
@@ -1098,40 +1091,40 @@ export default {
     closeMask(){
       wx.redirectTo({url:"/pages/custom/order/main"})
     },
-    getWide(n){
-      if(this.prolist[n].specwide===''){
-          this.prolist[n].specwide=0
-      }
-      if(this.prolist[n].specwide.length>4){
-          this.showTips()
-          this.prolist[n].specwide=0
-      }
-      if(this.prolist[n].spechign===''){
-          this.prolist[n].spechign=0
-      }
-      if(this.prolist[n].spechign.length>4){
-          this.showTips()
-          this.prolist[n].spechign=0
-      }
-      if(this.prolist[n].speclong===''){
-          this.prolist[n].speclong=0
-      }
-      if(this.prolist[n].speclong.length>4){
-          this.showTips()
-          this.prolist[n].speclong=0
-      }
-      if(this.prolist[n].specnum===''){
-          wx.showToast({
-            title:'数量不能小于1',
-            duration:1500
-          })
-          this.prolist[n].specnum=0
-      }
-      // if(this.prolist[n].specnum.length>4){
-      //     this.showTips()
-      //     this.prolist[n].specnum=1
-      // }
-    },
+    // getWide(n){
+    //   if(this.prolist[n].specwide===''){
+    //       this.prolist[n].specwide=0
+    //   }
+    //   if(this.prolist[n].specwide.length>4){
+    //       this.showTips()
+    //       this.prolist[n].specwide=0
+    //   }
+    //   if(this.prolist[n].spechign===''){
+    //       this.prolist[n].spechign=0
+    //   }
+    //   if(this.prolist[n].spechign.length>4){
+    //       this.showTips()
+    //       this.prolist[n].spechign=0
+    //   }
+    //   if(this.prolist[n].speclong===''){
+    //       this.prolist[n].speclong=0
+    //   }
+    //   if(this.prolist[n].speclong.length>4){
+    //       this.showTips()
+    //       this.prolist[n].speclong=0
+    //   }
+    //   if(this.prolist[n].specnum===''||this.prolist[n].specnum*1==0){
+    //       wx.showToast({
+    //         title:'数量不能小于1',
+    //         duration:1500
+    //       })
+    //       return false
+    //   }
+    //   // if(this.prolist[n].specnum.length>4){
+    //   //     this.showTips()
+    //   //     this.prolist[n].specnum=1
+    //   // }
+    // },
     // puttextatea(){
     //   this.showP=false
     // },
